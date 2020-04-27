@@ -1,0 +1,5145 @@
+[
+  {
+    "media": {
+      "@ref": "ABBA/1974 - Waterloo/01 - Waterloo.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "73613570",
+          "Duration": "167.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "3526399",
+          "StreamSize": "0",
+          "Title": "Waterloo",
+          "Album": "Waterloo",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "Waterloo",
+          "Track_Position": "1",
+          "Track_Position_Total": "12",
+          "Performer": "ABBA, Bjorn, Benny, Agnetha & Frida",
+          "Genre": "Pop",
+          "File_Modified_Date": "UTC 2020-04-26 04:04:32",
+          "File_Modified_Date_Local": "2020-04-25 23:04:32"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "167.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "3525975",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "16032000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "73604726",
+          "StreamSize_Proportion": "0.99988",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1974 - Waterloo/02 - Sitting in the palmtree.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "87853997",
+          "Duration": "220.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "3194691",
+          "StreamSize": "0",
+          "Title": "Sitting in the palmtree",
+          "Album": "Waterloo",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "Sitting in the palmtree",
+          "Track_Position": "2",
+          "Track_Position_Total": "12",
+          "Performer": "ABBA, Bjorn, Benny, Agnetha & Frida",
+          "Genre": "Pop",
+          "File_Modified_Date": "UTC 2020-04-26 04:04:33",
+          "File_Modified_Date_Local": "2020-04-25 23:04:33"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "220.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "3194365",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "21120000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "87845048",
+          "StreamSize_Proportion": "0.99990",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1974 - Waterloo/03 - King Kong song.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "84356141",
+          "Duration": "195.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "3460765",
+          "StreamSize": "0",
+          "Title": "King Kong song",
+          "Album": "Waterloo",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "King Kong song",
+          "Track_Position": "3",
+          "Track_Position_Total": "12",
+          "Performer": "ABBA, Bjorn, Benny, Agnetha & Frida",
+          "Genre": "Pop",
+          "File_Modified_Date": "UTC 2020-04-26 04:04:34",
+          "File_Modified_Date_Local": "2020-04-25 23:04:34"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "195.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "3460399",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "18720000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "84347237",
+          "StreamSize_Proportion": "0.99989",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1974 - Waterloo/04 - Hasta ma�ana.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "82106479",
+          "Duration": "193.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "3403377",
+          "StreamSize": "0",
+          "Title": "Hasta ma�ana",
+          "Album": "Waterloo",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "Hasta ma�ana",
+          "Track_Position": "4",
+          "Track_Position_Total": "12",
+          "Performer": "ABBA, Bjorn, Benny, Agnetha & Frida",
+          "Genre": "Pop",
+          "File_Modified_Date": "UTC 2020-04-26 04:04:35",
+          "File_Modified_Date_Local": "2020-04-25 23:04:35"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "193.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "3403008",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "18528000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "82097575",
+          "StreamSize_Proportion": "0.99989",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1974 - Waterloo/05 - My mama said.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "77479074",
+          "Duration": "195.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "3178629",
+          "StreamSize": "0",
+          "Title": "My mama said",
+          "Album": "Waterloo",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "My mama said",
+          "Track_Position": "5",
+          "Track_Position_Total": "12",
+          "Performer": "ABBA",
+          "Genre": "Pop",
+          "Recorded_Date": "1974",
+          "File_Modified_Date": "UTC 2020-04-26 04:04:36",
+          "File_Modified_Date_Local": "2020-04-25 23:04:36"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "195.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "3178264",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "18720000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "77470190",
+          "StreamSize_Proportion": "0.99989",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1974 - Waterloo/06 - Dance (while the music still goes on).flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "86065984",
+          "Duration": "198.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "3477413",
+          "StreamSize": "0",
+          "Title": "Dance (while the music still goes on)",
+          "Album": "Waterloo",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "Dance (while the music still goes on)",
+          "Track_Position": "6",
+          "Track_Position_Total": "12",
+          "Performer": "ABBA, Bjorn, Benny, Agnetha & Frida",
+          "Genre": "Pop",
+          "File_Modified_Date": "UTC 2020-04-26 04:04:36",
+          "File_Modified_Date_Local": "2020-04-25 23:04:36"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "198.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "3477053",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "19008000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "86057057",
+          "StreamSize_Proportion": "0.99990",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1974 - Waterloo/07 - Honey, honey.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "75787888",
+          "Duration": "178.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "3406197",
+          "StreamSize": "0",
+          "Title": "Honey, honey",
+          "Album": "Waterloo",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "Honey, honey",
+          "Track_Position": "7",
+          "Track_Position_Total": "12",
+          "Performer": "ABBA, Bjorn, Benny, Agnetha & Frida",
+          "Genre": "Pop",
+          "File_Modified_Date": "UTC 2020-04-26 04:04:37",
+          "File_Modified_Date_Local": "2020-04-25 23:04:37"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "178.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "3405799",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "17088000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "75779022",
+          "StreamSize_Proportion": "0.99988",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1974 - Waterloo/08 - Watch out.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "93585620",
+          "Duration": "227.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "3298172",
+          "StreamSize": "0",
+          "Title": "Watch out",
+          "Album": "Waterloo",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "Watch out",
+          "Track_Position": "8",
+          "Track_Position_Total": "12",
+          "Performer": "ABBA, Bjorn, Benny, Agnetha & Frida",
+          "Genre": "Pop",
+          "File_Modified_Date": "UTC 2020-04-26 04:04:38",
+          "File_Modified_Date_Local": "2020-04-25 23:04:38"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "227.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "3297856",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "21792000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "93576667",
+          "StreamSize_Proportion": "0.99990",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1974 - Waterloo/09 - What about Livingstone.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "72039861",
+          "Duration": "176.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "3274539",
+          "StreamSize": "0",
+          "Title": "What about Livingstone",
+          "Album": "Waterloo",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "What about Livingstone",
+          "Track_Position": "9",
+          "Track_Position_Total": "12",
+          "Performer": "ABBA, Bjorn, Benny, Agnetha & Frida",
+          "Genre": "Pop",
+          "File_Modified_Date": "UTC 2020-04-26 04:04:38",
+          "File_Modified_Date_Local": "2020-04-25 23:04:38"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "176.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "3274136",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "16896000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "72030985",
+          "StreamSize_Proportion": "0.99988",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1974 - Waterloo/10 - Gonna sing you my lovesong.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "88324840",
+          "Duration": "220.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "3211812",
+          "StreamSize": "0",
+          "Title": "Gonna sing you my lovesong",
+          "Album": "Waterloo",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "Gonna sing you my lovesong",
+          "Track_Position": "10",
+          "Track_Position_Total": "12",
+          "Performer": "ABBA, Bjorn, Benny, Agnetha & Frida",
+          "Genre": "Pop",
+          "File_Modified_Date": "UTC 2020-04-26 04:04:40",
+          "File_Modified_Date_Local": "2020-04-25 23:04:40"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "220.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "3211487",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "21120000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "88315887",
+          "StreamSize_Proportion": "0.99990",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1974 - Waterloo/11 - Suzy-hang-around.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "80362729",
+          "Duration": "194.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "3313927",
+          "StreamSize": "0",
+          "Title": "Suzy-hang-around",
+          "Album": "Waterloo",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "Suzy-hang-around",
+          "Track_Position": "11",
+          "Track_Position_Total": "12",
+          "Performer": "ABBA, Bjorn, Benny, Agnetha & Frida",
+          "Genre": "Pop",
+          "File_Modified_Date": "UTC 2020-04-26 04:04:40",
+          "File_Modified_Date_Local": "2020-04-25 23:04:40"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "194.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "3313560",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "18624000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "80353822",
+          "StreamSize_Proportion": "0.99989",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1974 - Waterloo/12 - Waterloo (English Version).flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "80105248",
+          "Duration": "186.714",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "3432212",
+          "StreamSize": "0",
+          "Title": "Waterloo (English Version)",
+          "Album": "Waterloo",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "Waterloo (English Version)",
+          "Track_Position": "12",
+          "Track_Position_Total": "12",
+          "Performer": "ABBA, Bjorn, Benny, Agnetha & Frida",
+          "Genre": "Pop",
+          "File_Modified_Date": "UTC 2020-04-26 04:04:41",
+          "File_Modified_Date_Local": "2020-04-25 23:04:41"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "186.714",
+          "BitRate_Mode": "VBR",
+          "BitRate": "3431830",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "17924544",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "80096349",
+          "StreamSize_Proportion": "0.99989",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1975 - Abba/01 - Mamma Mia.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "88906290",
+          "Duration": "214.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "3323600",
+          "StreamSize": "0",
+          "Title": "Mamma Mia",
+          "Album": "Abba",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "Mamma Mia",
+          "Track_Position": "1",
+          "Track_Position_Total": "11",
+          "Performer": "ABBA",
+          "Genre": "Pop",
+          "Recorded_Date": "1975",
+          "File_Modified_Date": "UTC 2020-04-26 03:52:07",
+          "File_Modified_Date_Local": "2020-04-25 22:52:07"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "214.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "3323266",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "20544000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "88897377",
+          "StreamSize_Proportion": "0.99990",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1975 - Abba/02 - Hey, Hey Helen.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "82859189",
+          "Duration": "198.500",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "3339413",
+          "StreamSize": "0",
+          "Title": "Hey, Hey Helen",
+          "Album": "Abba",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "Hey, Hey Helen",
+          "Track_Position": "2",
+          "Track_Position_Total": "11",
+          "Performer": "ABBA",
+          "Genre": "Pop",
+          "Recorded_Date": "1975",
+          "File_Modified_Date": "UTC 2020-04-26 03:52:07",
+          "File_Modified_Date_Local": "2020-04-25 22:52:07"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "198.500",
+          "BitRate_Mode": "VBR",
+          "BitRate": "3339055",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "19056000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "82850307",
+          "StreamSize_Proportion": "0.99989",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1975 - Abba/03 - Tropical Loveland.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "76439260",
+          "Duration": "186.500",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "3278896",
+          "StreamSize": "0",
+          "Title": "Tropical Loveland",
+          "Album": "Abba",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "Tropical Loveland",
+          "Track_Position": "3",
+          "Track_Position_Total": "11",
+          "Performer": "ABBA",
+          "Genre": "Pop",
+          "Recorded_Date": "1975",
+          "File_Modified_Date": "UTC 2020-04-26 03:52:08",
+          "File_Modified_Date_Local": "2020-04-25 22:52:08"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "186.500",
+          "BitRate_Mode": "VBR",
+          "BitRate": "3278516",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "17904000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "76430393",
+          "StreamSize_Proportion": "0.99988",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1975 - Abba/04 - SOS.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "85619331",
+          "Duration": "204.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "3357621",
+          "StreamSize": "0",
+          "Title": "SOS",
+          "Album": "Abba",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "SOS",
+          "Track_Position": "4",
+          "Track_Position_Total": "11",
+          "Performer": "ABBA",
+          "Genre": "Pop",
+          "Recorded_Date": "1975",
+          "File_Modified_Date": "UTC 2020-04-26 03:52:09",
+          "File_Modified_Date_Local": "2020-04-25 22:52:09"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "204.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "3357272",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "19584000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "85610442",
+          "StreamSize_Proportion": "0.99990",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1975 - Abba/05 - Man In The Middle.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "78104569",
+          "Duration": "184.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "3395851",
+          "StreamSize": "0",
+          "Title": "Man In The Middle",
+          "Album": "Abba",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "Man In The Middle",
+          "Track_Position": "5",
+          "Track_Position_Total": "11",
+          "Performer": "ABBA",
+          "Genre": "Pop",
+          "Recorded_Date": "1975",
+          "File_Modified_Date": "UTC 2020-04-26 03:52:10",
+          "File_Modified_Date_Local": "2020-04-25 22:52:10"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "184.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "3395465",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "17664000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "78095702",
+          "StreamSize_Proportion": "0.99989",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1975 - Abba/06 - Bang-A-Boomerang.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "82058206",
+          "Duration": "190.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "3455082",
+          "StreamSize": "0",
+          "Title": "Bang-A-Boomerang",
+          "Album": "Abba",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "Bang-A-Boomerang",
+          "Track_Position": "6",
+          "Track_Position_Total": "11",
+          "Performer": "ABBA",
+          "Genre": "Pop",
+          "Recorded_Date": "1975",
+          "File_Modified_Date": "UTC 2020-04-26 03:52:11",
+          "File_Modified_Date_Local": "2020-04-25 22:52:11"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "190.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "3454709",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "18240000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "82049340",
+          "StreamSize_Proportion": "0.99989",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1975 - Abba/07 - I Do, I Do, I Do, I Do, I Do.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "84774316",
+          "Duration": "199.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "3408013",
+          "StreamSize": "0",
+          "Title": "I Do, I Do, I Do, I Do, I Do",
+          "Album": "Abba",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "I Do, I Do, I Do, I Do, I Do",
+          "Track_Position": "7",
+          "Track_Position_Total": "11",
+          "Performer": "ABBA",
+          "Genre": "Pop",
+          "Recorded_Date": "1975",
+          "File_Modified_Date": "UTC 2020-04-26 03:52:12",
+          "File_Modified_Date_Local": "2020-04-25 22:52:12"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "199.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "3407655",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "19104000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "84765420",
+          "StreamSize_Proportion": "0.99990",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1975 - Abba/08 - Rock Me.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "80605004",
+          "Duration": "185.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "3485622",
+          "StreamSize": "0",
+          "Title": "Rock Me",
+          "Album": "Abba",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "Rock Me",
+          "Track_Position": "8",
+          "Track_Position_Total": "11",
+          "Performer": "ABBA",
+          "Genre": "Pop",
+          "Recorded_Date": "1975",
+          "File_Modified_Date": "UTC 2020-04-26 03:52:12",
+          "File_Modified_Date_Local": "2020-04-25 22:52:12"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "185.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "3485239",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "17760000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "80596147",
+          "StreamSize_Proportion": "0.99989",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1975 - Abba/09 - Intermezzo no'1.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "94384976",
+          "Duration": "230.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "3282956",
+          "StreamSize": "0",
+          "Title": "Intermezzo no'1",
+          "Album": "Abba",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "Intermezzo no'1",
+          "Track_Position": "9",
+          "Track_Position_Total": "11",
+          "Performer": "ABBA",
+          "Genre": "Pop",
+          "Recorded_Date": "1975",
+          "File_Modified_Date": "UTC 2020-04-26 03:52:13",
+          "File_Modified_Date_Local": "2020-04-25 22:52:13"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "230.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "3282645",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "22080000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "94376039",
+          "StreamSize_Proportion": "0.99991",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1975 - Abba/10 - I've Been Waiting For You.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "93186605",
+          "Duration": "223.020",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "3342717",
+          "StreamSize": "0",
+          "Title": "I've Been Waiting For You",
+          "Album": "Abba",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "I've Been Waiting For You",
+          "Track_Position": "10",
+          "Track_Position_Total": "11",
+          "Performer": "ABBA",
+          "Genre": "Pop",
+          "Recorded_Date": "1975",
+          "File_Modified_Date": "UTC 2020-04-26 03:52:14",
+          "File_Modified_Date_Local": "2020-04-25 22:52:14"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "223.020",
+          "BitRate_Mode": "VBR",
+          "BitRate": "3342396",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "21409920",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "93177657",
+          "StreamSize_Proportion": "0.99990",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1975 - Abba/11 - So Long.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "80413288",
+          "Duration": "192.532",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "3341295",
+          "StreamSize": "0",
+          "Title": "So Long",
+          "Album": "Abba",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "So Long",
+          "Track_Position": "11",
+          "Track_Position_Total": "11",
+          "Performer": "ABBA",
+          "Genre": "Pop",
+          "Recorded_Date": "1975",
+          "File_Modified_Date": "UTC 2020-04-26 03:52:14",
+          "File_Modified_Date_Local": "2020-04-25 22:52:14"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "192.532",
+          "BitRate_Mode": "VBR",
+          "BitRate": "3340927",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "18483072",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "80404412",
+          "StreamSize_Proportion": "0.99989",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1978 - ARRIVAL/01 - When I Kissed The Teacher.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "63259701",
+          "Duration": "183.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "2765451",
+          "StreamSize": "0",
+          "Title": "When I Kissed The Teacher",
+          "Album": "АББА - ARRIVAL",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "When I Kissed The Teacher",
+          "Track_Position": "1",
+          "Track_Position_Total": "10",
+          "Performer": "ABBA",
+          "Genre": "POP, DANCE, Electronic",
+          "Recorded_Date": "1978",
+          "File_Modified_Date": "UTC 2020-04-26 04:06:06",
+          "File_Modified_Date_Local": "2020-04-25 23:06:06",
+          "Comment": "Студия -Мелодия-, USSR. Оцифровка LP с Электроника-017 + Audio Technica AT 440 MLb (MM) на KORG DS-DAC-10R."
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "183.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "2765055",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "17568000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "63250638",
+          "StreamSize_Proportion": "0.99986",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1978 - ARRIVAL/02 - Dancing Queen.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "81143585",
+          "Duration": "230.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "2822386",
+          "StreamSize": "0",
+          "Title": "Dancing Queen",
+          "Album": "АББА - ARRIVAL",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "Dancing Queen",
+          "Track_Position": "2",
+          "Track_Position_Total": "10",
+          "Performer": "ABBA",
+          "Genre": "POP, DANCE, Electronic",
+          "Recorded_Date": "1978",
+          "File_Modified_Date": "UTC 2020-04-26 04:06:07",
+          "File_Modified_Date_Local": "2020-04-25 23:06:07",
+          "Comment": "Студия -Мелодия-, USSR. Оцифровка LP с Электроника-017 + Audio Technica AT 440 MLb (MM) на KORG DS-DAC-10R."
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "230.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "2822068",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "22080000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "81134462",
+          "StreamSize_Proportion": "0.99989",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1978 - ARRIVAL/03 - My Love, My Life.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "75637283",
+          "Duration": "231.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "2619473",
+          "StreamSize": "0",
+          "Title": "My Love, My Life",
+          "Album": "АББА - ARRIVAL",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "My Love, My Life",
+          "Track_Position": "3",
+          "Track_Position_Total": "10",
+          "Performer": "ABBA",
+          "Genre": "POP, DANCE, Electronic",
+          "Recorded_Date": "1978",
+          "File_Modified_Date": "UTC 2020-04-26 04:06:08",
+          "File_Modified_Date_Local": "2020-04-25 23:06:08",
+          "Comment": "Студия -Мелодия-, USSR. Оцифровка LP с Электроника-017 + Audio Technica AT 440 MLb (MM) на KORG DS-DAC-10R."
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "231.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "2619156",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "22176000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "75628139",
+          "StreamSize_Proportion": "0.99988",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1978 - ARRIVAL/04 - Dum Dum Diddle.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "57647995",
+          "Duration": "173.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "2665803",
+          "StreamSize": "0",
+          "Title": "Dum Dum Diddle",
+          "Album": "АББА - ARRIVAL",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "Dum Dum Diddle",
+          "Track_Position": "4",
+          "Track_Position_Total": "10",
+          "Performer": "ABBA",
+          "Genre": "POP, DANCE, Electronic",
+          "Recorded_Date": "1978",
+          "File_Modified_Date": "UTC 2020-04-26 04:06:08",
+          "File_Modified_Date_Local": "2020-04-25 23:06:08",
+          "Comment": "Студия -Мелодия-, USSR. Оцифровка LP с Электроника-017 + Audio Technica AT 440 MLb (MM) на KORG DS-DAC-10R."
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "173.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "2665385",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "16608000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "57638961",
+          "StreamSize_Proportion": "0.99984",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1978 - ARRIVAL/05 - Knowing Me, Knowing You.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "82881169",
+          "Duration": "243.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "2728598",
+          "StreamSize": "0",
+          "Title": "Knowing Me, Knowing You",
+          "Album": "ARRIVAL",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "Knowing Me, Knowing You",
+          "Track_Position": "5",
+          "Track_Position_Total": "10",
+          "Performer": "ABBA",
+          "Genre": "Pop",
+          "Recorded_Date": "1978",
+          "File_Modified_Date": "UTC 2020-04-26 04:06:10",
+          "File_Modified_Date_Local": "2020-04-25 23:06:10"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "243.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "2728302",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "23328000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "82872185",
+          "StreamSize_Proportion": "0.99989",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1978 - ARRIVAL/06 - Money, Money, Money.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "60230040",
+          "Duration": "186.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "2590539",
+          "StreamSize": "0",
+          "Title": "Money, Money, Money",
+          "Album": "АББА - ARRIVAL",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "Money, Money, Money",
+          "Track_Position": "6",
+          "Track_Position_Total": "10",
+          "Performer": "ABBA",
+          "Genre": "POP, DANCE, Electronic",
+          "Recorded_Date": "1978",
+          "File_Modified_Date": "UTC 2020-04-26 04:06:10",
+          "File_Modified_Date_Local": "2020-04-25 23:06:10",
+          "Comment": "Студия -Мелодия-, USSR. Оцифровка LP с Электроника-017 + Audio Technica AT 440 MLb (MM) на KORG DS-DAC-10R."
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "186.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "2590150",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "17856000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "60220983",
+          "StreamSize_Proportion": "0.99985",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1978 - ARRIVAL/07 - That's Me.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "65702299",
+          "Duration": "195.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "2695479",
+          "StreamSize": "0",
+          "Title": "That's Me",
+          "Album": "АББА - ARRIVAL",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "That's Me",
+          "Track_Position": "7",
+          "Track_Position_Total": "10",
+          "Performer": "ABBA",
+          "Genre": "POP, DANCE, Electronic",
+          "Recorded_Date": "1978",
+          "File_Modified_Date": "UTC 2020-04-26 04:06:11",
+          "File_Modified_Date_Local": "2020-04-25 23:06:11",
+          "Comment": "Студия -Мелодия-, USSR. Оцифровка LP с Электроника-017 + Audio Technica AT 440 MLb (MM) на KORG DS-DAC-10R."
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "195.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "2695107",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "18720000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "65693234",
+          "StreamSize_Proportion": "0.99986",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1978 - ARRIVAL/08 - Why Did It Have To Be Me.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "66449313",
+          "Duration": "201.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "2644749",
+          "StreamSize": "0",
+          "Title": "Why Did It Have To Be Me",
+          "Album": "АББА - ARRIVAL",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "Why Did It Have To Be Me",
+          "Track_Position": "8",
+          "Track_Position_Total": "10",
+          "Performer": "ABBA",
+          "Genre": "POP, DANCE, Electronic",
+          "Recorded_Date": "1978",
+          "File_Modified_Date": "UTC 2020-04-26 04:06:11",
+          "File_Modified_Date_Local": "2020-04-25 23:06:11",
+          "Comment": "Студия -Мелодия-, USSR. Оцифровка LP с Электроника-017 + Audio Technica AT 440 MLb (MM) на KORG DS-DAC-10R."
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "201.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "2644387",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "19296000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "66440215",
+          "StreamSize_Proportion": "0.99986",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1978 - ARRIVAL/09 - Tiger.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "58730656",
+          "Duration": "175.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "2684830",
+          "StreamSize": "0",
+          "Title": "Tiger",
+          "Album": "АББА - ARRIVAL",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "Tiger",
+          "Track_Position": "9",
+          "Track_Position_Total": "10",
+          "Performer": "ABBA",
+          "Genre": "POP, DANCE, Electronic",
+          "Recorded_Date": "1978",
+          "File_Modified_Date": "UTC 2020-04-26 04:06:12",
+          "File_Modified_Date_Local": "2020-04-25 23:06:12",
+          "Comment": "Студия -Мелодия-, USSR. Оцифровка LP с Электроника-017 + Audio Technica AT 440 MLb (MM) на KORG DS-DAC-10R."
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "175.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "2684417",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "16800000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "58721631",
+          "StreamSize_Proportion": "0.99985",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1978 - ARRIVAL/10 - Arrival.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "61144884",
+          "Duration": "183.661",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "2663380",
+          "StreamSize": "0",
+          "Title": "Arrival",
+          "Album": "АББА - ARRIVAL",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "Arrival",
+          "Track_Position": "10",
+          "Track_Position_Total": "10",
+          "Performer": "ABBA",
+          "Genre": "POP, DANCE, Electronic",
+          "Recorded_Date": "1978",
+          "File_Modified_Date": "UTC 2020-04-26 04:06:12",
+          "File_Modified_Date_Local": "2020-04-25 23:06:12",
+          "Comment": "Студия -Мелодия-, USSR. Оцифровка LP с Электроника-017 + Audio Technica AT 440 MLb (MM) на KORG DS-DAC-10R."
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "183.661",
+          "BitRate_Mode": "VBR",
+          "BitRate": "2662986",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "17631456",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "61135838",
+          "StreamSize_Proportion": "0.99985",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1978 - ARRIVAL/cover.jpg",
+      "track": [
+        {
+          "@type": "General",
+          "ImageCount": "1",
+          "FileExtension": "jpg",
+          "Format": "JPEG",
+          "FileSize": "43457",
+          "StreamSize": "0",
+          "File_Modified_Date": "UTC 2020-04-26 04:06:05",
+          "File_Modified_Date_Local": "2020-04-25 23:06:05"
+        },
+        {
+          "@type": "Image",
+          "Format": "JPEG",
+          "Width": "500",
+          "Height": "500",
+          "ColorSpace": "YUV",
+          "ChromaSubsampling": "4:2:0",
+          "BitDepth": "8",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "43457"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1981 - The Visitors/01 - The Visitors.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "133378228",
+          "Duration": "344.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "3101819",
+          "StreamSize": "0",
+          "Title": "The Visitors",
+          "Album": "The Visitors",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "The Visitors",
+          "Track_Position": "1",
+          "Track_Position_Total": "9",
+          "Performer": "ABBA",
+          "Genre": "Pop",
+          "Recorded_Date": "1981",
+          "File_Modified_Date": "UTC 2020-04-26 04:02:52",
+          "File_Modified_Date_Local": "2020-04-25 23:02:52"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "344.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "3101606",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "33024000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "133369072",
+          "StreamSize_Proportion": "0.99993",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1981 - The Visitors/02 - Head Over Heels.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "87827580",
+          "Duration": "229.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "3068212",
+          "StreamSize": "0",
+          "Title": "Head Over Heels",
+          "Album": "The Visitors",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "Head Over Heels",
+          "Track_Position": "2",
+          "Track_Position_Total": "9",
+          "Performer": "ABBA",
+          "Genre": "Pop",
+          "Recorded_Date": "1981",
+          "File_Modified_Date": "UTC 2020-04-26 04:02:52",
+          "File_Modified_Date_Local": "2020-04-25 23:02:52"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "229.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "3067900",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "21984000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "87818637",
+          "StreamSize_Proportion": "0.99990",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1981 - The Visitors/03 - When All Is Said And Done.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "76339550",
+          "Duration": "199.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "3068927",
+          "StreamSize": "0",
+          "Title": "When All Is Said And Done",
+          "Album": "The Visitors",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "When All Is Said And Done",
+          "Track_Position": "3",
+          "Track_Position_Total": "9",
+          "Performer": "ABBA",
+          "Genre": "Pop",
+          "Recorded_Date": "1981",
+          "File_Modified_Date": "UTC 2020-04-26 04:02:53",
+          "File_Modified_Date_Local": "2020-04-25 23:02:53"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "199.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "3068569",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "19104000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "76330651",
+          "StreamSize_Proportion": "0.99988",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1981 - The Visitors/04 - Soldiers.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "108149904",
+          "Duration": "278.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "3112227",
+          "StreamSize": "0",
+          "Title": "Soldiers",
+          "Album": "The Visitors",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "Soldiers",
+          "Track_Position": "4",
+          "Track_Position_Total": "9",
+          "Performer": "ABBA",
+          "Genre": "Pop",
+          "Recorded_Date": "1981",
+          "File_Modified_Date": "UTC 2020-04-26 04:02:54",
+          "File_Modified_Date_Local": "2020-04-25 23:02:54"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "278.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "3111968",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "26688000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "108140878",
+          "StreamSize_Proportion": "0.99992",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1981 - The Visitors/05 - I Let The Music Speak.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "125045344",
+          "Duration": "324.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "3087539",
+          "StreamSize": "0",
+          "Title": "I Let The Music Speak",
+          "Album": "The Visitors",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "I Let The Music Speak",
+          "Track_Position": "5",
+          "Track_Position_Total": "9",
+          "Performer": "ABBA",
+          "Genre": "Pop",
+          "Recorded_Date": "1981",
+          "File_Modified_Date": "UTC 2020-04-26 04:02:56",
+          "File_Modified_Date_Local": "2020-04-25 23:02:56"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "324.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "3087314",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "31104000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "125036215",
+          "StreamSize_Proportion": "0.99993",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1981 - The Visitors/06 - One Of Us.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "91466859",
+          "Duration": "237.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "3087489",
+          "StreamSize": "0",
+          "Title": "One Of Us",
+          "Album": "The Visitors",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "One Of Us",
+          "Track_Position": "6",
+          "Track_Position_Total": "9",
+          "Performer": "ABBA",
+          "Genre": "Pop",
+          "Recorded_Date": "1981",
+          "File_Modified_Date": "UTC 2020-04-26 04:02:56",
+          "File_Modified_Date_Local": "2020-04-25 23:02:56"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "237.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "3087187",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "22752000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "91457904",
+          "StreamSize_Proportion": "0.99990",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1981 - The Visitors/07 - Two For The Price Of One.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "82977830",
+          "Duration": "217.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "3059091",
+          "StreamSize": "0",
+          "Title": "Two For The Price Of One",
+          "Album": "The Visitors",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "Two For The Price Of One",
+          "Track_Position": "7",
+          "Track_Position_Total": "9",
+          "Performer": "ABBA",
+          "Genre": "Pop",
+          "Recorded_Date": "1981",
+          "File_Modified_Date": "UTC 2020-04-26 04:02:57",
+          "File_Modified_Date_Local": "2020-04-25 23:02:57"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "217.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "3058761",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "20832000",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "82968896",
+          "StreamSize_Proportion": "0.99989",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1981 - The Visitors/08 - Slipping Through My Fingers.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "87180263",
+          "Duration": "232.610",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "2998332",
+          "StreamSize": "0",
+          "Title": "Slipping Through My Fingers",
+          "Album": "The Visitors",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "Slipping Through My Fingers",
+          "Track_Position": "8",
+          "Track_Position_Total": "9",
+          "Performer": "ABBA",
+          "Genre": "Pop",
+          "Recorded_Date": "1981",
+          "File_Modified_Date": "UTC 2020-04-26 04:02:58",
+          "File_Modified_Date_Local": "2020-04-25 23:02:58"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "232.610",
+          "BitRate_Mode": "VBR",
+          "BitRate": "2998024",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "22330560",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "87171290",
+          "StreamSize_Proportion": "0.99990",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/1981 - The Visitors/09 - Like An Angel Passing Through My Room.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "78540753",
+          "Duration": "229.646",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "2736063",
+          "StreamSize": "0",
+          "Title": "Like An Angel Passing Through My Room",
+          "Album": "The Visitors",
+          "Album_Performer": "ABBA",
+          "Part": "1",
+          "Part_Position_Total": "1",
+          "Track": "Like An Angel Passing Through My Room",
+          "Track_Position": "9",
+          "Track_Position_Total": "9",
+          "Performer": "ABBA",
+          "Genre": "Pop",
+          "Recorded_Date": "1981",
+          "File_Modified_Date": "UTC 2020-04-26 04:02:58",
+          "File_Modified_Date_Local": "2020-04-25 23:02:58"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "229.646",
+          "BitRate_Mode": "VBR",
+          "BitRate": "2735751",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "96000",
+          "SamplingCount": "22046016",
+          "BitDepth": "24",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "78531788",
+          "StreamSize_Proportion": "0.99989",
+          "Encoded_Library": "reference libFLAC 1.3.3 20190804",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.3.3",
+          "Encoded_Library_Date": "UTC 2019-08-04"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/ABBA - GOLD - Greatest Hits 1973-1981 (1992)[FLAC]/ABBA - Gold - Greatest Hits - 01 - Dancing Queen.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "28399474",
+          "Duration": "231.493",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "981437",
+          "StreamSize": "0",
+          "Title": "Dancing Queen",
+          "Album": "Gold - Greatest Hits",
+          "Track": "Dancing Queen",
+          "Track_Position": "01",
+          "Performer": "ABBA",
+          "Genre": "Dance-pop",
+          "Recorded_Date": "1993",
+          "File_Modified_Date": "UTC 2020-04-01 20:47:49",
+          "File_Modified_Date_Local": "2020-04-01 14:47:49",
+          "Comment": "Music For All The World"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "231.493",
+          "BitRate_Mode": "VBR",
+          "BitRate": "981287",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "44100",
+          "SamplingCount": "10208841",
+          "BitDepth": "16",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "28395135",
+          "StreamSize_Proportion": "0.99985",
+          "Encoded_Library": "reference libFLAC 1.2.1 20070917",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.2.1",
+          "Encoded_Library_Date": "UTC 2007-09-17"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/ABBA - GOLD - Greatest Hits 1973-1981 (1992)[FLAC]/ABBA - Gold - Greatest Hits - 02 - Knowing Me, Knowing You.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "28726573",
+          "Duration": "242.333",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "948334",
+          "StreamSize": "0",
+          "Title": "Knowing Me, Knowing You",
+          "Album": "Gold - Greatest Hits",
+          "Track": "Knowing Me, Knowing You",
+          "Track_Position": "02",
+          "Performer": "ABBA",
+          "Genre": "Dance-pop",
+          "Recorded_Date": "1993",
+          "File_Modified_Date": "UTC 2020-04-01 20:47:49",
+          "File_Modified_Date_Local": "2020-04-01 14:47:49",
+          "Comment": "Music For All The World"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "242.333",
+          "BitRate_Mode": "VBR",
+          "BitRate": "948190",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "44100",
+          "SamplingCount": "10686885",
+          "BitDepth": "16",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "28722224",
+          "StreamSize_Proportion": "0.99985",
+          "Encoded_Library": "reference libFLAC 1.2.1 20070917",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.2.1",
+          "Encoded_Library_Date": "UTC 2007-09-17"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/ABBA - GOLD - Greatest Hits 1973-1981 (1992)[FLAC]/ABBA - Gold - Greatest Hits - 03 - Take A Chance On Me.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "29555205",
+          "Duration": "244.333",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "967702",
+          "StreamSize": "0",
+          "Title": "Take A Chance On Me",
+          "Album": "Gold - Greatest Hits",
+          "Track": "Take A Chance On Me",
+          "Track_Position": "03",
+          "Performer": "ABBA",
+          "Genre": "Dance-pop",
+          "Recorded_Date": "1993",
+          "File_Modified_Date": "UTC 2020-04-01 20:47:49",
+          "File_Modified_Date_Local": "2020-04-01 14:47:49",
+          "Comment": "Music For All The World"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "244.333",
+          "BitRate_Mode": "VBR",
+          "BitRate": "967560",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "44100",
+          "SamplingCount": "10775085",
+          "BitDepth": "16",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "29550860",
+          "StreamSize_Proportion": "0.99985",
+          "Encoded_Library": "reference libFLAC 1.2.1 20070917",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.2.1",
+          "Encoded_Library_Date": "UTC 2007-09-17"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/ABBA - GOLD - Greatest Hits 1973-1981 (1992)[FLAC]/ABBA - Gold - Greatest Hits - 04 - Mamma Mia.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "22666911",
+          "Duration": "213.506",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "849322",
+          "StreamSize": "0",
+          "Title": "Mamma Mia",
+          "Album": "Gold - Greatest Hits",
+          "Track": "Mamma Mia",
+          "Track_Position": "04",
+          "Performer": "ABBA",
+          "Genre": "Dance-pop",
+          "Recorded_Date": "1993",
+          "File_Modified_Date": "UTC 2020-04-01 20:47:50",
+          "File_Modified_Date_Local": "2020-04-01 14:47:50",
+          "Comment": "Music For All The World"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "213.506",
+          "BitRate_Mode": "VBR",
+          "BitRate": "849159",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "44100",
+          "SamplingCount": "9415615",
+          "BitDepth": "16",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "22662576",
+          "StreamSize_Proportion": "0.99981",
+          "Encoded_Library": "reference libFLAC 1.2.1 20070917",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.2.1",
+          "Encoded_Library_Date": "UTC 2007-09-17"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/ABBA - GOLD - Greatest Hits 1973-1981 (1992)[FLAC]/ABBA - Gold - Greatest Hits - 05 - Lay All Your Love On Me.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "31299165",
+          "Duration": "274.333",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "912735",
+          "StreamSize": "0",
+          "Title": "Lay All Your Love On Me",
+          "Album": "Gold - Greatest Hits",
+          "Track": "Lay All Your Love On Me",
+          "Track_Position": "05",
+          "Performer": "ABBA",
+          "Genre": "Dance-pop",
+          "Recorded_Date": "1993",
+          "File_Modified_Date": "UTC 2020-04-01 20:47:50",
+          "File_Modified_Date_Local": "2020-04-01 14:47:50",
+          "Comment": "Music For All The World"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "274.333",
+          "BitRate_Mode": "VBR",
+          "BitRate": "912608",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "44100",
+          "SamplingCount": "12098085",
+          "BitDepth": "16",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "31294816",
+          "StreamSize_Proportion": "0.99986",
+          "Encoded_Library": "reference libFLAC 1.2.1 20070917",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.2.1",
+          "Encoded_Library_Date": "UTC 2007-09-17"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/ABBA - GOLD - Greatest Hits 1973-1981 (1992)[FLAC]/ABBA - Gold - Greatest Hits - 06 - Super Trouper.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "28541126",
+          "Duration": "254.160",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "898367",
+          "StreamSize": "0",
+          "Title": "Super Trouper",
+          "Album": "Gold - Greatest Hits",
+          "Track": "Super Trouper",
+          "Track_Position": "06",
+          "Performer": "ABBA",
+          "Genre": "Dance-pop",
+          "Recorded_Date": "1993",
+          "File_Modified_Date": "UTC 2020-04-01 20:47:51",
+          "File_Modified_Date_Local": "2020-04-01 14:47:51",
+          "Comment": "Music For All The World"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "254.160",
+          "BitRate_Mode": "VBR",
+          "BitRate": "898231",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "44100",
+          "SamplingCount": "11208456",
+          "BitDepth": "16",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "28536787",
+          "StreamSize_Proportion": "0.99985",
+          "Encoded_Library": "reference libFLAC 1.2.1 20070917",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.2.1",
+          "Encoded_Library_Date": "UTC 2007-09-17"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/ABBA - GOLD - Greatest Hits 1973-1981 (1992)[FLAC]/ABBA - Gold - Greatest Hits - 07 - I Have A Dream.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "33183073",
+          "Duration": "284.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "934734",
+          "StreamSize": "0",
+          "Title": "I Have A Dream",
+          "Album": "Gold - Greatest Hits",
+          "Track": "I Have A Dream",
+          "Track_Position": "07",
+          "Performer": "ABBA",
+          "Genre": "Dance-pop",
+          "Recorded_Date": "1993",
+          "File_Modified_Date": "UTC 2020-04-01 20:47:51",
+          "File_Modified_Date_Local": "2020-04-01 14:47:51",
+          "Comment": "Music For All The World"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "284.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "934612",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "44100",
+          "SamplingCount": "12524400",
+          "BitDepth": "16",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "33178733",
+          "StreamSize_Proportion": "0.99987",
+          "Encoded_Library": "reference libFLAC 1.2.1 20070917",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.2.1",
+          "Encoded_Library_Date": "UTC 2007-09-17"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/ABBA - GOLD - Greatest Hits 1973-1981 (1992)[FLAC]/ABBA - Gold - Greatest Hits - 08 - The Winner Takes It All.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "32577825",
+          "Duration": "295.333",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "882470",
+          "StreamSize": "0",
+          "Title": "The Winner Takes It All",
+          "Album": "Gold - Greatest Hits",
+          "Track": "The Winner Takes It All",
+          "Track_Position": "08",
+          "Performer": "ABBA",
+          "Genre": "Dance-pop",
+          "Recorded_Date": "1993",
+          "File_Modified_Date": "UTC 2020-04-01 20:47:52",
+          "File_Modified_Date_Local": "2020-04-01 14:47:52",
+          "Comment": "Music For All The World"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "295.333",
+          "BitRate_Mode": "VBR",
+          "BitRate": "882352",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "44100",
+          "SamplingCount": "13024185",
+          "BitDepth": "16",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "32573476",
+          "StreamSize_Proportion": "0.99987",
+          "Encoded_Library": "reference libFLAC 1.2.1 20070917",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.2.1",
+          "Encoded_Library_Date": "UTC 2007-09-17"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/ABBA - GOLD - Greatest Hits 1973-1981 (1992)[FLAC]/ABBA - Gold - Greatest Hits - 09 - Money, Money, Money.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "19715168",
+          "Duration": "188.506",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "836691",
+          "StreamSize": "0",
+          "Title": "Money, Money, Money",
+          "Album": "Gold - Greatest Hits",
+          "Track": "Money, Money, Money",
+          "Track_Position": "09",
+          "Performer": "ABBA",
+          "Genre": "Dance-pop",
+          "Recorded_Date": "1993",
+          "File_Modified_Date": "UTC 2020-04-01 20:47:52",
+          "File_Modified_Date_Local": "2020-04-01 14:47:52",
+          "Comment": "Music For All The World"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "188.506",
+          "BitRate_Mode": "VBR",
+          "BitRate": "836507",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "44100",
+          "SamplingCount": "8313115",
+          "BitDepth": "16",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "19710823",
+          "StreamSize_Proportion": "0.99978",
+          "Encoded_Library": "reference libFLAC 1.2.1 20070917",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.2.1",
+          "Encoded_Library_Date": "UTC 2007-09-17"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/ABBA - GOLD - Greatest Hits 1973-1981 (1992)[FLAC]/ABBA - Gold - Greatest Hits - 10 - S.O.S..flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "21577910",
+          "Duration": "201.666",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "855986",
+          "StreamSize": "0",
+          "Title": "S.O.S.",
+          "Album": "Gold - Greatest Hits",
+          "Track": "S.O.S.",
+          "Track_Position": "10",
+          "Performer": "ABBA",
+          "Genre": "Dance-pop",
+          "Recorded_Date": "1993",
+          "File_Modified_Date": "UTC 2020-04-01 20:47:52",
+          "File_Modified_Date_Local": "2020-04-01 14:47:52",
+          "Comment": "Music For All The World"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "201.666",
+          "BitRate_Mode": "VBR",
+          "BitRate": "855814",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "44100",
+          "SamplingCount": "8893471",
+          "BitDepth": "16",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "21573578",
+          "StreamSize_Proportion": "0.99980",
+          "Encoded_Library": "reference libFLAC 1.2.1 20070917",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.2.1",
+          "Encoded_Library_Date": "UTC 2007-09-17"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/ABBA - GOLD - Greatest Hits 1973-1981 (1992)[FLAC]/ABBA - Gold - Greatest Hits - 11 - Chiquitita.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "35567544",
+          "Duration": "326.333",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "871933",
+          "StreamSize": "0",
+          "Title": "Chiquitita",
+          "Album": "Gold - Greatest Hits",
+          "Track": "Chiquitita",
+          "Track_Position": "11",
+          "Performer": "ABBA",
+          "Genre": "Dance-pop",
+          "Recorded_Date": "1993",
+          "File_Modified_Date": "UTC 2020-04-01 20:47:53",
+          "File_Modified_Date_Local": "2020-04-01 14:47:53",
+          "Comment": "Music For All The World"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "326.333",
+          "BitRate_Mode": "VBR",
+          "BitRate": "871826",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "44100",
+          "SamplingCount": "14391285",
+          "BitDepth": "16",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "35563208",
+          "StreamSize_Proportion": "0.99988",
+          "Encoded_Library": "reference libFLAC 1.2.1 20070917",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.2.1",
+          "Encoded_Library_Date": "UTC 2007-09-17"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/ABBA - GOLD - Greatest Hits 1973-1981 (1992)[FLAC]/ABBA - Gold - Greatest Hits - 12 - Fernando.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "27981461",
+          "Duration": "253.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "884789",
+          "StreamSize": "0",
+          "Title": "Fernando",
+          "Album": "Gold - Greatest Hits",
+          "Track": "Fernando",
+          "Track_Position": "12",
+          "Performer": "ABBA",
+          "Genre": "Dance-pop",
+          "Recorded_Date": "1993",
+          "File_Modified_Date": "UTC 2020-04-01 20:47:53",
+          "File_Modified_Date_Local": "2020-04-01 14:47:53",
+          "Comment": "Music For All The World"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "253.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "884652",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "44100",
+          "SamplingCount": "11157300",
+          "BitDepth": "16",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "27977127",
+          "StreamSize_Proportion": "0.99985",
+          "Encoded_Library": "reference libFLAC 1.2.1 20070917",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.2.1",
+          "Encoded_Library_Date": "UTC 2007-09-17"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/ABBA - GOLD - Greatest Hits 1973-1981 (1992)[FLAC]/ABBA - Gold - Greatest Hits - 13 - Voulez Vous.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "30807821",
+          "Duration": "262.826",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "937740",
+          "StreamSize": "0",
+          "Title": "Voulez Vous",
+          "Album": "Gold - Greatest Hits",
+          "Track": "Voulez Vous",
+          "Track_Position": "13",
+          "Performer": "ABBA",
+          "Genre": "Dance-pop",
+          "Recorded_Date": "1993",
+          "File_Modified_Date": "UTC 2020-04-01 20:47:54",
+          "File_Modified_Date_Local": "2020-04-01 14:47:54",
+          "Comment": "Music For All The World"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "262.826",
+          "BitRate_Mode": "VBR",
+          "BitRate": "937608",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "44100",
+          "SamplingCount": "11590627",
+          "BitDepth": "16",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "30803484",
+          "StreamSize_Proportion": "0.99986",
+          "Encoded_Library": "reference libFLAC 1.2.1 20070917",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.2.1",
+          "Encoded_Library_Date": "UTC 2007-09-17"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/ABBA - GOLD - Greatest Hits 1973-1981 (1992)[FLAC]/ABBA - Gold - Greatest Hits - 14 - Gimme! Gimme! Gimme! (A Man After Midnight).flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "31011539",
+          "Duration": "288.506",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "859921",
+          "StreamSize": "0",
+          "Title": "Gimme! Gimme! Gimme! (A Man After Midnight)",
+          "Album": "Gold - Greatest Hits",
+          "Track": "Gimme! Gimme! Gimme! (A Man After Midnight)",
+          "Track_Position": "14",
+          "Performer": "ABBA",
+          "Genre": "Dance-pop",
+          "Recorded_Date": "1993",
+          "File_Modified_Date": "UTC 2020-04-01 20:47:55",
+          "File_Modified_Date_Local": "2020-04-01 14:47:55",
+          "Comment": "Music For All The World"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "288.506",
+          "BitRate_Mode": "VBR",
+          "BitRate": "859800",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "44100",
+          "SamplingCount": "12723115",
+          "BitDepth": "16",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "31007170",
+          "StreamSize_Proportion": "0.99986",
+          "Encoded_Library": "reference libFLAC 1.2.1 20070917",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.2.1",
+          "Encoded_Library_Date": "UTC 2007-09-17"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/ABBA - GOLD - Greatest Hits 1973-1981 (1992)[FLAC]/ABBA - Gold - Greatest Hits - 15 - Does Your Mother Know.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "22169114",
+          "Duration": "195.666",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "906406",
+          "StreamSize": "0",
+          "Title": "Does Your Mother Know",
+          "Album": "Gold - Greatest Hits",
+          "Track": "Does Your Mother Know",
+          "Track_Position": "15",
+          "Performer": "ABBA",
+          "Genre": "Dance-pop",
+          "Recorded_Date": "1993",
+          "File_Modified_Date": "UTC 2020-04-01 20:47:55",
+          "File_Modified_Date_Local": "2020-04-01 14:47:55",
+          "Comment": "Music For All The World"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "195.666",
+          "BitRate_Mode": "VBR",
+          "BitRate": "906229",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "44100",
+          "SamplingCount": "8628871",
+          "BitDepth": "16",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "22164767",
+          "StreamSize_Proportion": "0.99980",
+          "Encoded_Library": "reference libFLAC 1.2.1 20070917",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.2.1",
+          "Encoded_Library_Date": "UTC 2007-09-17"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/ABBA - GOLD - Greatest Hits 1973-1981 (1992)[FLAC]/ABBA - Gold - Greatest Hits - 16 - One Of Us.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "24953007",
+          "Duration": "238.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "838757",
+          "StreamSize": "0",
+          "Title": "One Of Us",
+          "Album": "Gold - Greatest Hits",
+          "Track": "One Of Us",
+          "Track_Position": "16",
+          "Performer": "ABBA",
+          "Genre": "Dance-pop",
+          "Recorded_Date": "1993",
+          "File_Modified_Date": "UTC 2020-04-01 20:47:55",
+          "File_Modified_Date_Local": "2020-04-01 14:47:55",
+          "Comment": "Music For All The World"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "238.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "838611",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "44100",
+          "SamplingCount": "10495800",
+          "BitDepth": "16",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "24948672",
+          "StreamSize_Proportion": "0.99983",
+          "Encoded_Library": "reference libFLAC 1.2.1 20070917",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.2.1",
+          "Encoded_Library_Date": "UTC 2007-09-17"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/ABBA - GOLD - Greatest Hits 1973-1981 (1992)[FLAC]/ABBA - Gold - Greatest Hits - 17 - The Name Of The Game.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "27198330",
+          "Duration": "240.000",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "906611",
+          "StreamSize": "0",
+          "Title": "The Name Of The Game",
+          "Album": "Gold - Greatest Hits",
+          "Track": "The Name Of The Game",
+          "Track_Position": "17",
+          "Performer": "ABBA",
+          "Genre": "Dance-pop",
+          "Recorded_Date": "1993",
+          "File_Modified_Date": "UTC 2020-04-01 20:47:56",
+          "File_Modified_Date_Local": "2020-04-01 14:47:56",
+          "Comment": "Music For All The World"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "240.000",
+          "BitRate_Mode": "VBR",
+          "BitRate": "906466",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "44100",
+          "SamplingCount": "10584000",
+          "BitDepth": "16",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "27193984",
+          "StreamSize_Proportion": "0.99984",
+          "Encoded_Library": "reference libFLAC 1.2.1 20070917",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.2.1",
+          "Encoded_Library_Date": "UTC 2007-09-17"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/ABBA - GOLD - Greatest Hits 1973-1981 (1992)[FLAC]/ABBA - Gold - Greatest Hits - 18 - Thank You For The Music.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "24611792",
+          "Duration": "231.333",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "851129",
+          "StreamSize": "0",
+          "Title": "Thank You For The Music",
+          "Album": "Gold - Greatest Hits",
+          "Track": "Thank You For The Music",
+          "Track_Position": "18",
+          "Performer": "ABBA",
+          "Genre": "Dance-pop",
+          "Recorded_Date": "1993",
+          "File_Modified_Date": "UTC 2020-04-01 20:47:56",
+          "File_Modified_Date_Local": "2020-04-01 14:47:56",
+          "Comment": "Music For All The World"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "231.333",
+          "BitRate_Mode": "VBR",
+          "BitRate": "850979",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "44100",
+          "SamplingCount": "10201785",
+          "BitDepth": "16",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "24607443",
+          "StreamSize_Proportion": "0.99982",
+          "Encoded_Library": "reference libFLAC 1.2.1 20070917",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.2.1",
+          "Encoded_Library_Date": "UTC 2007-09-17"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/ABBA - GOLD - Greatest Hits 1973-1981 (1992)[FLAC]/ABBA - Gold - Greatest Hits - 19 - Waterloo.flac",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "flac",
+          "Format": "FLAC",
+          "FileSize": "18514659",
+          "Duration": "163.666",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "904997",
+          "StreamSize": "0",
+          "Title": "Waterloo",
+          "Album": "Gold - Greatest Hits",
+          "Track": "Waterloo",
+          "Track_Position": "19",
+          "Performer": "ABBA",
+          "Genre": "Dance-pop",
+          "Recorded_Date": "1993",
+          "File_Modified_Date": "UTC 2020-04-01 20:47:56",
+          "File_Modified_Date_Local": "2020-04-01 14:47:56",
+          "Comment": "Music For All The World"
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "163.666",
+          "BitRate_Mode": "VBR",
+          "BitRate": "904785",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "44100",
+          "SamplingCount": "7217671",
+          "BitDepth": "16",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "18510325",
+          "StreamSize_Proportion": "0.99977",
+          "Encoded_Library": "reference libFLAC 1.2.1 20070917",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.2.1",
+          "Encoded_Library_Date": "UTC 2007-09-17"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/ABBA - GOLD - Greatest Hits 1973-1981 (1992)[FLAC]/ABBA - Gold - Greatest Hits.m3u",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "m3u",
+          "Format": "HLS",
+          "Format_Profile": "Media",
+          "FileSize": "519059533",
+          "Duration": "231.493",
+          "OverallBitRate_Mode": "VBR",
+          "OverallBitRate": "17937805",
+          "StreamSize": "1836",
+          "File_Modified_Date": "UTC 2020-04-01 20:47:56",
+          "File_Modified_Date_Local": "2020-04-01 14:47:56",
+          "extra": {
+            "FileExtension_Invalid": "m3u8"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "FLAC",
+          "Duration": "231.493",
+          "BitRate_Mode": "VBR",
+          "BitRate": "17937591",
+          "Channels": "2",
+          "ChannelPositions": "Front: L R",
+          "ChannelLayout": "L R",
+          "SamplingRate": "44100",
+          "SamplingCount": "10208841",
+          "BitDepth": "16",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "519053358",
+          "StreamSize_Proportion": "0.99999",
+          "Encoded_Library": "reference libFLAC 1.2.1 20070917",
+          "Encoded_Library_Name": "libFLAC",
+          "Encoded_Library_Version": "1.2.1",
+          "Encoded_Library_Date": "UTC 2007-09-17",
+          "extra": {
+            "Source": "ABBA - Gold - Greatest Hits - 01 - Dancing Queen.flac"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/ABBA - GOLD - Greatest Hits 1973-1981 (1992)[FLAC]/ABBA.jpg",
+      "track": [
+        {
+          "@type": "General",
+          "ImageCount": "1",
+          "FileExtension": "jpg",
+          "Format": "JPEG",
+          "FileSize": "53254",
+          "StreamSize": "0",
+          "File_Modified_Date": "UTC 2020-04-01 20:47:56",
+          "File_Modified_Date_Local": "2020-04-01 14:47:56"
+        },
+        {
+          "@type": "Image",
+          "Format": "JPEG",
+          "Width": "450",
+          "Height": "450",
+          "ColorSpace": "YUV",
+          "ChromaSubsampling": "4:4:4",
+          "BitDepth": "8",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "53254"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "ABBA/ABBA - GOLD - Greatest Hits 1973-1981 (1992)[FLAC]/matesio image.png",
+      "track": [
+        {
+          "@type": "General",
+          "ImageCount": "1",
+          "FileExtension": "png",
+          "Format": "PNG",
+          "FileSize": "213884",
+          "StreamSize": "0",
+          "File_Modified_Date": "UTC 2020-04-01 20:47:48",
+          "File_Modified_Date_Local": "2020-04-01 14:47:48"
+        },
+        {
+          "@type": "Image",
+          "Format": "PNG",
+          "Format_Compression": "LZ77",
+          "Width": "585",
+          "Height": "585",
+          "BitDepth": "32",
+          "Compression_Mode": "Lossless",
+          "StreamSize": "213884"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Busca Una Mujer/01 Fria Como El Viento.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "9435492",
+          "Duration": "234.605",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "51263",
+          "Title": "Fria Como El Viento",
+          "Album": "Busca Una Mujer",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "Fria Como El Viento",
+          "Track_Position": "1",
+          "Track_Position_Total": "10",
+          "Performer": "Luis Miguel",
+          "Genre": "Latin",
+          "Recorded_Date": "1988",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:37",
+          "File_Modified_Date_Local": "2020-04-01 16:52:37",
+          "Encoded_Library": "iTunes 9.2.0.61",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "234.605",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "10346112",
+          "FrameRate": "38.281",
+          "FrameCount": "8981",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "9384229",
+          "StreamSize_Proportion": "0.99457"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Busca Una Mujer/02 Esa Niña.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "9919280",
+          "Duration": "246.700",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "51263",
+          "Title": "Esa Niña",
+          "Album": "Busca Una Mujer",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "Esa Niña",
+          "Track_Position": "2",
+          "Track_Position_Total": "10",
+          "Performer": "Luis Miguel",
+          "Genre": "Latin",
+          "Recorded_Date": "1988",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:38",
+          "File_Modified_Date_Local": "2020-04-01 16:52:38",
+          "Encoded_Library": "iTunes 9.2.0.61",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "246.700",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "10879488",
+          "FrameRate": "38.281",
+          "FrameCount": "9444",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "9868017",
+          "StreamSize_Proportion": "0.99483"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Busca Una Mujer/03 Culpable O No (Mienteme Como Siempre).mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "9663298",
+          "Duration": "240.300",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "51281",
+          "Title": "Culpable O No (Mienteme Como Siempre)",
+          "Album": "Busca Una Mujer",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "Culpable O No (Mienteme Como Siempre)",
+          "Track_Position": "3",
+          "Track_Position_Total": "10",
+          "Performer": "Luis Miguel",
+          "Genre": "Latin",
+          "Recorded_Date": "1988",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:38",
+          "File_Modified_Date_Local": "2020-04-01 16:52:38",
+          "Encoded_Library": "iTunes 9.2.0.61",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "240.300",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "10597248",
+          "FrameRate": "38.281",
+          "FrameCount": "9199",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "9612017",
+          "StreamSize_Proportion": "0.99469"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Busca Una Mujer/04 Un Hombre Busca Una Mujer.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "8641374",
+          "Duration": "214.752",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "51268",
+          "Title": "Un Hombre Busca Una Mujer",
+          "Album": "Busca Una Mujer",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "Un Hombre Busca Una Mujer",
+          "Track_Position": "4",
+          "Track_Position_Total": "10",
+          "Performer": "Luis Miguel",
+          "Genre": "Latin",
+          "Recorded_Date": "1988",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:38",
+          "File_Modified_Date_Local": "2020-04-01 16:52:38",
+          "Encoded_Library": "iTunes 9.2.0.61",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "214.752",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "9470592",
+          "FrameRate": "38.281",
+          "FrameCount": "8221",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "8590106",
+          "StreamSize_Proportion": "0.99407"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Busca Una Mujer/05 La Incondicional.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "10610999",
+          "Duration": "263.993",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "51260",
+          "Title": "La Incondicional",
+          "Album": "Busca Una Mujer",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "La Incondicional",
+          "Track_Position": "5",
+          "Track_Position_Total": "10",
+          "Performer": "Luis Miguel",
+          "Genre": "Latin",
+          "Recorded_Date": "1988",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:38",
+          "File_Modified_Date_Local": "2020-04-01 16:52:38",
+          "Encoded_Library": "iTunes 9.2.0.61",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "263.993",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "11642112",
+          "FrameRate": "38.281",
+          "FrameCount": "10106",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "10559739",
+          "StreamSize_Proportion": "0.99517"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Busca Una Mujer/06 Separados.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "8682109",
+          "Duration": "215.771",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "51252",
+          "Title": "Separados",
+          "Album": "Busca Una Mujer",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "Separados",
+          "Track_Position": "6",
+          "Track_Position_Total": "10",
+          "Performer": "Luis Miguel",
+          "Genre": "Latin",
+          "Recorded_Date": "1988",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:38",
+          "File_Modified_Date_Local": "2020-04-01 16:52:38",
+          "Encoded_Library": "iTunes 9.2.0.61",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "215.771",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "9515520",
+          "FrameRate": "38.281",
+          "FrameCount": "8260",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "8630857",
+          "StreamSize_Proportion": "0.99410"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Busca Una Mujer/07 Por Favor Señora.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "9645531",
+          "Duration": "239.856",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "51278",
+          "Title": "Por Favor Señora",
+          "Album": "Busca Una Mujer",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "Por Favor Señora",
+          "Track_Position": "7",
+          "Track_Position_Total": "10",
+          "Performer": "Luis Miguel",
+          "Genre": "Latin",
+          "Recorded_Date": "1988",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:38",
+          "File_Modified_Date_Local": "2020-04-01 16:52:38",
+          "Encoded_Library": "iTunes 9.2.0.61",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "239.856",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "10577664",
+          "FrameRate": "38.281",
+          "FrameCount": "9182",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "9594253",
+          "StreamSize_Proportion": "0.99468"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Busca Una Mujer/08 Pupilas De Gato.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "9521169",
+          "Duration": "236.747",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "51258",
+          "Title": "Pupilas De Gato",
+          "Album": "Busca Una Mujer",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "Pupilas De Gato",
+          "Track_Position": "8",
+          "Track_Position_Total": "10",
+          "Performer": "Luis Miguel",
+          "Genre": "Latin",
+          "Recorded_Date": "1988",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:38",
+          "File_Modified_Date_Local": "2020-04-01 16:52:38",
+          "Encoded_Library": "iTunes 9.2.0.61",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "236.747",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "10440576",
+          "FrameRate": "38.281",
+          "FrameCount": "9063",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "9469911",
+          "StreamSize_Proportion": "0.99462"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Busca Una Mujer/09 El Primero.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "7809622",
+          "Duration": "193.959",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "51254",
+          "Title": "El Primero",
+          "Album": "Busca Una Mujer",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "El Primero",
+          "Track_Position": "9",
+          "Track_Position_Total": "10",
+          "Performer": "Luis Miguel",
+          "Genre": "Latin",
+          "Recorded_Date": "1988",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:39",
+          "File_Modified_Date_Local": "2020-04-01 16:52:39",
+          "Encoded_Library": "iTunes 9.2.0.61",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "193.959",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "8553600",
+          "FrameRate": "38.281",
+          "FrameCount": "7425",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "7758368",
+          "StreamSize_Proportion": "0.99344"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Busca Una Mujer/10 Soy Un Perdedor.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "10072876",
+          "Duration": "250.540",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "51259",
+          "Title": "Soy Un Perdedor",
+          "Album": "Busca Una Mujer",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "Soy Un Perdedor",
+          "Track_Position": "10",
+          "Track_Position_Total": "10",
+          "Performer": "Luis Miguel",
+          "Genre": "Latin",
+          "Recorded_Date": "1988",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:39",
+          "File_Modified_Date_Local": "2020-04-01 16:52:39",
+          "Encoded_Library": "iTunes 9.2.0.61",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "250.540",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "11048832",
+          "FrameRate": "38.281",
+          "FrameCount": "9591",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "10021617",
+          "StreamSize_Proportion": "0.99491"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Nada Es Igual/03 Dame.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "11960053",
+          "Duration": "298.004",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "39857",
+          "Title": "Dame",
+          "Album": "Nada Es Igual",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "Dame",
+          "Track_Position": "3",
+          "Track_Position_Total": "10",
+          "Performer": "Luis Miguel",
+          "Composer": "Francisco Céspedes",
+          "Genre": "Latin",
+          "Recorded_Date": "1996",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:39",
+          "File_Modified_Date_Local": "2020-04-01 16:52:39",
+          "Encoded_Library": "iTunes 9.2.0.61",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "298.004",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "13142016",
+          "FrameRate": "38.281",
+          "FrameCount": "11408",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "11920196",
+          "StreamSize_Proportion": "0.99667"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Nada Es Igual/08 Como Es Posible Que A Mi Lado.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "10287195",
+          "Duration": "256.182",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "39880",
+          "Title": "Como Es Posible Que A Mi Lado",
+          "Album": "Nada Es Igual",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "Como Es Posible Que A Mi Lado",
+          "Track_Position": "8",
+          "Track_Position_Total": "10",
+          "Performer": "Luis Miguel",
+          "Composer": "Francisco Céspedes",
+          "Genre": "Latin",
+          "Recorded_Date": "1996",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:39",
+          "File_Modified_Date_Local": "2020-04-01 16:52:39",
+          "Encoded_Library": "iTunes 9.2.0.61",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "256.182",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "11297664",
+          "FrameRate": "38.281",
+          "FrameCount": "9807",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "10247315",
+          "StreamSize_Proportion": "0.99612"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Romance/01 No Me Platiques Más.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "8830354",
+          "Duration": "211.826",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "357276",
+          "Title": "No Me Platiques Más",
+          "Album": "Romance",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "No Me Platiques Más",
+          "Track_Position": "1",
+          "Track_Position_Total": "12",
+          "Performer": "Luis Miguel",
+          "Composer": "Álvaro Carrillo",
+          "Genre": "Latin",
+          "Recorded_Date": "1991",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:39",
+          "File_Modified_Date_Local": "2020-04-01 16:52:39",
+          "Encoded_Library": "iTunes 9.0.1.8",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "Lyrics": "http://leyzaola.net",
+          "Comment": "http://leyzaola.net",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "211.826",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "9341568",
+          "FrameRate": "38.281",
+          "FrameCount": "8109",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "8473078",
+          "StreamSize_Proportion": "0.95954"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Romance/02 Inolvidable.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "10635266",
+          "Duration": "256.940",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "357649",
+          "Title": "Inolvidable",
+          "Album": "Romance",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "Inolvidable",
+          "Track_Position": "2",
+          "Track_Position_Total": "12",
+          "Performer": "Luis Miguel",
+          "Composer": "Álvaro Carrillo",
+          "Genre": "Latin",
+          "Recorded_Date": "1991",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:39",
+          "File_Modified_Date_Local": "2020-04-01 16:52:39",
+          "Encoded_Library": "iTunes 9.0.1.8",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "Lyrics": "En la vida hay amores /  Que nunca pueden olvidarse /  Imborrables momentos /  Que siempre guarda el corazn /   /  Pero aquello que un da /  Nos hizo temblar de alegra /  Es mentira que hoy pueda olvidarse /  Con un nuevo amor /   /  He besado otras bocas /  Buscando nuevas ansiedades /  Y otros brazos extraos me estrechan /  Llenos de emocin /   /  Pero slo consiguen hacerme /  Recordar los tuyos /  Que inolvidablemente vivirn en mi",
+          "Comment": "http://leyzaola.net",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "256.940",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "11331072",
+          "FrameRate": "38.281",
+          "FrameCount": "9836",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "10277617",
+          "StreamSize_Proportion": "0.96637"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Romance/03 La Puerta.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "8330306",
+          "Duration": "199.314",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "357734",
+          "Title": "La Puerta",
+          "Album": "Romance",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "La Puerta",
+          "Track_Position": "3",
+          "Track_Position_Total": "12",
+          "Performer": "Luis Miguel",
+          "Composer": "Demetrio, Luis",
+          "Genre": "Latin",
+          "Recorded_Date": "1991",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:40",
+          "File_Modified_Date_Local": "2020-04-01 16:52:40",
+          "Encoded_Library": "iTunes 9.0.1.8",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "Lyrics": "La puerta se cerr detrs de ti /  Y nunca ms volviste a aparecer /  Dejaste abandonada la ilusin, /  Que haba en mi corazn por ti  /  La puerta se cerr detrs de ti /  Y as detrs de ti se fue mi amor /  Creyendo que podra convencer a tu alma de mi padecer /  Pero es que no supiste soportar /  Las penas que nos dio /  La misma adversidad, as como tambin /  Nos dio felicidad, nos vino a castigar con el dolor /  La puerta se cerr detrs de ti /  Y nunca ms volviste a aparecer /  Dejaste abandonada la ilusin, /  Que haba en mi corazn por ti",
+          "Comment": "http://leyzaola.net",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "199.314",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "8789760",
+          "FrameRate": "38.281",
+          "FrameCount": "7630",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "7972572",
+          "StreamSize_Proportion": "0.95706"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Romance/04 La Barca.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "8704427",
+          "Duration": "208.666",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "357782",
+          "Title": "La Barca",
+          "Album": "Romance",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "La Barca",
+          "Track_Position": "4",
+          "Track_Position_Total": "12",
+          "Performer": "Luis Miguel",
+          "Composer": "Álvaro Carrillo",
+          "Genre": "Latin",
+          "Recorded_Date": "1991",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:40",
+          "File_Modified_Date_Local": "2020-04-01 16:52:40",
+          "Encoded_Library": "iTunes 9.0.1.8",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "Lyrics": "Dicen que la distancia es el olvido /  Pero yo no concibo esa razn /  Porque yo seguir siendo el cautivo /  De los caprichos de tu corazn /  Supiste esclarecer mis pensamientos /  Me diste la verdad que yo so /  Ahuyentaste de mi los sufrimientos /  En la primera noche que te am /  Hoy mi playa se viste de amargura /  Porque tu barca tiene que partir /  A cruzar otros mares de locura /  Cuida que no naufrague en tu vivir /  Cuando la luz del sol se est apagando /  Y te sientas cansada de vagar /  Piensa que yo por ti estar esperando /  Hasta que t decidas regresar",
+          "Comment": "http://leyzaola.net",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "208.666",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "9202176",
+          "FrameRate": "38.281",
+          "FrameCount": "7988",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "8346645",
+          "StreamSize_Proportion": "0.95890"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Romance/05 Te Extraño.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "10912802",
+          "Duration": "263.888",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "357243",
+          "Title": "Te Extraño",
+          "Album": "Romance",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "Te Extraño",
+          "Track_Position": "5",
+          "Track_Position_Total": "12",
+          "Performer": "Luis Miguel",
+          "Composer": "Manzanero, Armando",
+          "Genre": "Latin",
+          "Recorded_Date": "1991",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:40",
+          "File_Modified_Date_Local": "2020-04-01 16:52:40",
+          "Encoded_Library": "iTunes 9.0.1.8",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "Lyrics": "http://leyzaola.net",
+          "Comment": "http://leyzaola.net",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "263.888",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "11637504",
+          "FrameRate": "38.281",
+          "FrameCount": "10102",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "10555559",
+          "StreamSize_Proportion": "0.96726"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Romance/06 Usted.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "9279104",
+          "Duration": "223.033",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "357765",
+          "Title": "Usted",
+          "Album": "Romance",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "Usted",
+          "Track_Position": "6",
+          "Track_Position_Total": "12",
+          "Performer": "Luis Miguel",
+          "Composer": "Álvaro Carrillo",
+          "Genre": "Latin",
+          "Recorded_Date": "1991",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:40",
+          "File_Modified_Date_Local": "2020-04-01 16:52:40",
+          "Encoded_Library": "iTunes 9.0.1.8",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "Lyrics": "Usted es la culpable  /  De todas mis angustias y todos mis quebrantos /  Usted llen mi vida  /  De dulces inquietudes y amargos desencantos /  Su amor es como un grito  /  Que llevo aqu en mi alma y aqu en mi corazn /  Y soy aunque no quiera,  /  Esclavo de sus ojos, juguete de su amor /  No juegue con mis penas, ni con mis sentimientos  /  Que es lo nico que tengo /  Usted es mi esperanza, mi ltima esperanza  /  Comprenda de una vez /  Usted me desespera,  /  Me mata, me enloquece /  Y hasta la vida diera por vencer el miedo  /  De besarla a Usted",
+          "Comment": "http://leyzaola.net",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "223.033",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "9835776",
+          "FrameRate": "38.281",
+          "FrameCount": "8538",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "8921339",
+          "StreamSize_Proportion": "0.96144"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Romance/07 Contigo.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "8513022",
+          "Duration": "203.885",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "357593",
+          "Title": "Contigo",
+          "Album": "Romance",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "Contigo",
+          "Track_Position": "7",
+          "Track_Position_Total": "12",
+          "Performer": "Luis Miguel",
+          "Composer": "Portillo de la Luz, Cesar",
+          "Genre": "Latin",
+          "Recorded_Date": "1991",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:40",
+          "File_Modified_Date_Local": "2020-04-01 16:52:40",
+          "Encoded_Library": "iTunes 9.0.1.8",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "Lyrics": "No existe un momento del da / En que pueda apartarme de ti / El mundo parece distinto / Cuando no ests junto a mi / No hay bella meloda / En que no surjas t / Ni yo quiero escucharla / Si no la escuchas t / Es que te has convertido / En parte de mi alma / Ya nada me consuela / Si no ests t tambin / Ms all de tus labios / Del sol y las estrellas / Contigo en la distancia / Amada ma, estoy",
+          "Comment": "http://leyzaola.net",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "203.885",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "8991360",
+          "FrameRate": "38.281",
+          "FrameCount": "7805",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "8155429",
+          "StreamSize_Proportion": "0.95799"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Romance/08 Mucho Corazón.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "8509559",
+          "Duration": "203.807",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "357265",
+          "Title": "Mucho Corazón",
+          "Album": "Romance",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "Mucho Corazón",
+          "Track_Position": "8",
+          "Track_Position_Total": "12",
+          "Performer": "Luis Miguel",
+          "Composer": "Álvaro Carrillo",
+          "Genre": "Latin",
+          "Recorded_Date": "1991",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:40",
+          "File_Modified_Date_Local": "2020-04-01 16:52:40",
+          "Encoded_Library": "iTunes 9.0.1.8",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "Lyrics": "http://leyzaola.net",
+          "Comment": "http://leyzaola.net",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "203.807",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "8987904",
+          "FrameRate": "38.281",
+          "FrameCount": "7802",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "8152294",
+          "StreamSize_Proportion": "0.95802"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Romance/09 La Mentira.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "9421161",
+          "Duration": "226.586",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "357716",
+          "Title": "La Mentira",
+          "Album": "Romance",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "La Mentira",
+          "Track_Position": "9",
+          "Track_Position_Total": "12",
+          "Performer": "Luis Miguel",
+          "Composer": "Álvaro Carrillo",
+          "Genre": "Latin",
+          "Recorded_Date": "1991",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:40",
+          "File_Modified_Date_Local": "2020-04-01 16:52:40",
+          "Encoded_Library": "iTunes 9.0.1.8",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "Lyrics": "Se te olvida /  Que me quieres a pesar de lo que dices /  Pues llevamos en el alma cicatrices /  Imposibles de borrar /  Se te olvida /  Que hasta puedo hacerte mal si me decido /  Pues tu amor lo tengo muy comprometido /  Pero a fuerzas no ser /  Y hoy resulta /  Que no soy de la estatura de tu vida /  Y al dejarme casi, casi, se te olvida /  Que hay un pacto entre los dos /  Por mi parte /  Te devuelvo tu promesa de adorarme /  Ni siquiera sientas pena por dejarme /  Que ese pacto /  No es con Dios",
+          "Comment": "http://leyzaola.net",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "226.586",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "9992448",
+          "FrameRate": "38.281",
+          "FrameCount": "8674",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "9063445",
+          "StreamSize_Proportion": "0.96203"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Romance/10 Cuando Vuelva A Tu Lado.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "9509895",
+          "Duration": "228.806",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "357633",
+          "Title": "Cuando Vuelva A Tu Lado",
+          "Album": "Romance",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "Cuando Vuelva A Tu Lado",
+          "Track_Position": "10",
+          "Track_Position_Total": "12",
+          "Performer": "Luis Miguel",
+          "Composer": "Greever, María",
+          "Genre": "Latin",
+          "Recorded_Date": "1991",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:41",
+          "File_Modified_Date_Local": "2020-04-01 16:52:41",
+          "Encoded_Library": "iTunes 9.0.1.8",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "Lyrics": "Cuando vuelva a tu lado /  No me niegues tus besos /  Que el amor que te he dado /  No podrs olvidar /  No me preguntes nada /  Que nada he de explicarte /  Que el beso que negaste /  Ya no lo puedes dar /  Cuando vuelva a tu lado /  Y ests sola conmigo /  Las cosas que te digo /  No repitas jams, por compasin /  Une tu labio al mo /  Y estrchame en tus brazos /  Y cuenta a los latidos /  De nuestro corazn",
+          "Comment": "http://leyzaola.net",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "228.806",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "10090368",
+          "FrameRate": "38.281",
+          "FrameCount": "8759",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "9152262",
+          "StreamSize_Proportion": "0.96239"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Romance/11 No Se Tú.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "9509517",
+          "Duration": "228.806",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "357255",
+          "Title": "No Se Tú",
+          "Album": "Romance",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "No Se Tú",
+          "Track_Position": "11",
+          "Track_Position_Total": "12",
+          "Performer": "Luis Miguel",
+          "Composer": "Álvaro Carrillo",
+          "Genre": "Latin",
+          "Recorded_Date": "1991",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:41",
+          "File_Modified_Date_Local": "2020-04-01 16:52:41",
+          "Encoded_Library": "iTunes 9.0.1.8",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "Lyrics": "http://leyzaola.net",
+          "Comment": "http://leyzaola.net",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "228.806",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "10090368",
+          "FrameRate": "38.281",
+          "FrameCount": "8759",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "9152262",
+          "StreamSize_Proportion": "0.96243"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Romance/12 Como.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "8090138",
+          "Duration": "193.306",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "357893",
+          "Title": "Como",
+          "Album": "Romance",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "Como",
+          "Track_Position": "12",
+          "Track_Position_Total": "12",
+          "Performer": "Luis Miguel",
+          "Composer": "Novarro, Chico",
+          "Genre": "Latin",
+          "Recorded_Date": "1991",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:41",
+          "File_Modified_Date_Local": "2020-04-01 16:52:41",
+          "Encoded_Library": "iTunes 9.0.1.8",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "Lyrics": "Ca�mo imaginar que la vida sigue igual? / ¿Ca�mo si tus pasos ya no cruzan el portal? / ¿Ca�mo pretender esta realidad? / ¿Ca�mo si hasta ayer brillaba el cielo en tu mirar? / ¿Ca�mo consolar a la rosa y al jazma�n? / ¿Ca�mo si tu risa ya no se oye en el jarda�n? / ¿Ca�mo he de mentirles que maa�ana volvera�s? / ¿Ca�mo despertar si ta� no esta�s",
+          "Comment": "http://leyzaola.net",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "193.306",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "8524800",
+          "FrameRate": "38.281",
+          "FrameCount": "7400",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "7732245",
+          "StreamSize_Proportion": "0.95576"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Segundo Romance/01 El Dia Que Me Quieras.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "9871378",
+          "Duration": "240.222",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "262496",
+          "Title": "El Dia Que Me Quieras",
+          "Album": "Segundo Romance",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "El Dia Que Me Quieras",
+          "Track_Position": "1",
+          "Track_Position_Total": "11",
+          "Performer": "Luis Miguel",
+          "Composer": "Agustín Lara/Wea",
+          "Genre": "Bolero",
+          "Recorded_Date": "1994",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:41",
+          "File_Modified_Date_Local": "2020-04-01 16:52:41",
+          "Encoded_Library": "iTunes 9.0.1.8",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "Lyrics": "Acaricia mi sueao / El suave murmullo / De tu suspirar / Como rae la vida / Si tus ojos negros / Me quieren mirar / Y si es mao el amparo / De tu risa leve / Que es como un cantar / Ella aquieta mi herida / Todo, todo se olvida / El daa que me quieras, la rosa que engalana / Se vestira de fiesta con su mejor color / Y al viento las campanas diran que ya eres maa / Y locas las fontanas se contaran su amor / La noche que me quieras desde el azul del cielo / Las estrellas celosas nos miraran pasar / Y un rayo misterioso hara nido en tu pelo / Luciarnaga curiosa que vera / Que eres mi...consuelo",
+          "Comment": "http://leyzaola.net",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "240.222",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "10593792",
+          "FrameRate": "38.281",
+          "FrameCount": "9196",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "9608882",
+          "StreamSize_Proportion": "0.97341"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Segundo Romance/02 Sin Ti.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "7592169",
+          "Duration": "183.249",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "262209",
+          "Title": "Sin Ti",
+          "Album": "Segundo Romance",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "Sin Ti",
+          "Track_Position": "2",
+          "Track_Position_Total": "11",
+          "Performer": "Luis Miguel",
+          "Composer": "Agustín Lara/Wea",
+          "Genre": "Bolero",
+          "Recorded_Date": "1994",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:41",
+          "File_Modified_Date_Local": "2020-04-01 16:52:41",
+          "Encoded_Library": "iTunes 9.0.1.8",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "Lyrics": "Sin ti /  No podr vivir jams /  Y pensar que nunca ms /  Estars junto a mi /  Sin ti /  Que me puede ya importar /  Si lo que me hace llorar /  Est lejos de aqu /  Sin ti /  No hay clemencia en mi dolor /  La esperanza de mi amor /  Te la llevas al fin /  Sin ti /  Es intil vivir /  Como intil ser /  El quererte olvidar",
+          "Comment": "http://leyzaola.net",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "183.248",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "8081280",
+          "FrameRate": "38.281",
+          "FrameCount": "7015",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "7329960",
+          "StreamSize_Proportion": "0.96546"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Segundo Romance/03 Somos Novios.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "7886983",
+          "Duration": "190.615",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "262362",
+          "Title": "Somos Novios",
+          "Album": "Segundo Romance",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "Somos Novios",
+          "Track_Position": "3",
+          "Track_Position_Total": "11",
+          "Performer": "Luis Miguel",
+          "Composer": "Agustín Lara/Wea",
+          "Genre": "Bolero",
+          "Recorded_Date": "1994",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:41",
+          "File_Modified_Date_Local": "2020-04-01 16:52:41",
+          "Encoded_Library": "iTunes 9.0.1.8",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "Lyrics": "Somos novios /  Pues los dos sentimos mutuo amor profundo /  Y con eso ya ganamos lo ms grande /  De este mundo /  Nos amamos, nos besamos /  Como novios /  Nos deseamos y hasta a veces sin motivo y /  Sin razn, nos enojamos /  Somos novios /  Mantenemos un cario limpio y puro /  Como todos /  Procuramos el momento ms obscuro /  Para hablarnos /  Para darnos el ms dulce de los besos /  Recordar de qu color son los cerezos /  Sin hacer mas comentarios, somos novios",
+          "Comment": "http://leyzaola.net",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "190.615",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "8406144",
+          "FrameRate": "38.281",
+          "FrameCount": "7297",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "7624621",
+          "StreamSize_Proportion": "0.96673"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Segundo Romance/04 La Media Vuelta.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "6706302",
+          "Duration": "161.097",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "262416",
+          "Title": "La Media Vuelta",
+          "Album": "Segundo Romance",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "La Media Vuelta",
+          "Track_Position": "4",
+          "Track_Position_Total": "11",
+          "Performer": "Luis Miguel",
+          "Composer": "Agustín Lara/Wea",
+          "Genre": "Bolero",
+          "Recorded_Date": "1994",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:42",
+          "File_Modified_Date_Local": "2020-04-01 16:52:42",
+          "Encoded_Library": "iTunes 9.0.1.8",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "Lyrics": "Te vas porque yo quiero que te vayas /  A la hora que yo quiera te detengo, /  Yo s que mi cario te hace falta /  Porque quieras o no /  Yo soy tu dueo /  Yo quiero que te vayas por el mundo /  Y quiero que conozcas mucha gente /  Yo quiero que te besen otros labios /  Para que me compares /  Hoy, como siempre /  Si encuentras un amor que te comprenda /  Y sientas que te quiera ms que nadie /  Entonces yo dar la media vuelta /  Y me ir con el sol /  Cuando muera la tarde /  Te vas porque yo quiero que te vayas....",
+          "Comment": "http://leyzaola.net",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "161.097",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "7104384",
+          "FrameRate": "38.281",
+          "FrameCount": "6167",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "6443886",
+          "StreamSize_Proportion": "0.96087"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Segundo Romance/05 Solamente Una Vez.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "7473109",
+          "Duration": "180.271",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "262268",
+          "Title": "Solamente Una Vez",
+          "Album": "Segundo Romance",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "Solamente Una Vez",
+          "Track_Position": "5",
+          "Track_Position_Total": "11",
+          "Performer": "Luis Miguel",
+          "Composer": "Agustín Lara/Wea",
+          "Genre": "Bolero",
+          "Recorded_Date": "1994",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:42",
+          "File_Modified_Date_Local": "2020-04-01 16:52:42",
+          "Encoded_Library": "iTunes 9.0.1.8",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "Lyrics": "Solamente una vez /  Am en la vida /  Solamente una vez /  Y nada ms /  Una vez nada ms /  En mi huerto /  Brill la esperanza /  La esperanza que alumbra el camino /  De mi soledad /  Una vez nada ms /  Se entrega el alma /  Con la dulce y total /  Renunciacin /  Y cuando ese milagro realiza /  El prodigio de amarse /  Hay campanas de fiesta /  Que cantan en el corazn",
+          "Comment": "http://leyzaola.net",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "180.271",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "7949952",
+          "FrameRate": "38.281",
+          "FrameCount": "6901",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "7210841",
+          "StreamSize_Proportion": "0.96491"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Segundo Romance/06 Todo Y Nada.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "9039343",
+          "Duration": "219.428",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "262200",
+          "Title": "Todo Y Nada",
+          "Album": "Segundo Romance",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "Todo Y Nada",
+          "Track_Position": "6",
+          "Track_Position_Total": "11",
+          "Performer": "Luis Miguel",
+          "Composer": "Agustín Lara/Wea",
+          "Genre": "Bolero",
+          "Recorded_Date": "1994",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:42",
+          "File_Modified_Date_Local": "2020-04-01 16:52:42",
+          "Encoded_Library": "iTunes 9.0.1.8",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "Lyrics": "Todo lo que tengo en la vida /  Mi ternura escondida /  Mi ilusin de vivir /  Todo te lo diera contento /  Porque tu pensamiento /  No apartaras de mi /  Pero como no me has querido /  Y lo que te he ofrecido /  No te puede importar /  Muere la esperanza que aoro /  Pues tenindolo todo, nada te puedo dar",
+          "Comment": "http://leyzaola.net",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "219.428",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "9676800",
+          "FrameRate": "38.281",
+          "FrameCount": "8400",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "8777143",
+          "StreamSize_Proportion": "0.97099"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Segundo Romance/07 Historia De Un Amor.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "9561420",
+          "Duration": "232.463",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "262873",
+          "Title": "Historia De Un Amor",
+          "Album": "Segundo Romance",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "Historia De Un Amor",
+          "Track_Position": "7",
+          "Track_Position_Total": "11",
+          "Performer": "Luis Miguel",
+          "Composer": "Agustín Lara/Wea",
+          "Genre": "Bolero",
+          "Recorded_Date": "1994",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:42",
+          "File_Modified_Date_Local": "2020-04-01 16:52:42",
+          "Encoded_Library": "iTunes 9.0.1.8",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "Lyrics": "Ya no estas mas a mi lado corazn / en el alma slo tengo soledad / y si ya no puedo verte / por qu Dios me hizo quererte / para hacerme sufrir mas. / Siempre fuiste la razn de mi existir / adorarte para mi fue religin / en tus besos yo encontraba / el calor que me brindaba / el amor y la pasin. / Es la historia de un amor / como no hay otro igual / que me hizo comprender / todo el bien, todo el mal / que le dio luz a mi vida / apagndola despus / hay que vida tan obscura / sin tu amor no vivir. / Siempre fuiste la razn de mi existir / adorarte para mi fue religin / en tus besos yo encontraba / el calor que me brindaba / el amor y la pasin. / Es la historia de un amor / como no hay otro igual / que me hizo comprender / todo el bien, todo el mal / que le dio luz a mi vida / apagndola despus / hay que vida tan obscura / sin tu amor no vivir. / Siempre fuiste la razn de mi existir / adorarte para mi fue religin / en tus besos yo encontraba / el calor que me brindaba / el amor y la pasin",
+          "Comment": "http://leyzaola.net",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "232.463",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "10251648",
+          "FrameRate": "38.281",
+          "FrameCount": "8899",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "9298547",
+          "StreamSize_Proportion": "0.97251"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Segundo Romance/08 Como Yo Te Ame.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "8846615",
+          "Duration": "214.595",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "262778",
+          "Title": "Como Yo Te Ame",
+          "Album": "Segundo Romance",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "Como Yo Te Ame",
+          "Track_Position": "8",
+          "Track_Position_Total": "11",
+          "Performer": "Luis Miguel",
+          "Composer": "Agustín Lara/Wea",
+          "Genre": "Bolero",
+          "Recorded_Date": "1994",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:42",
+          "File_Modified_Date_Local": "2020-04-01 16:52:42",
+          "Encoded_Library": "iTunes 9.0.1.8",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "Lyrics": "como yo te ame jamas te lo podras imaginar / pues fue una hermosa forma de sentir / de vivir, de morir y a tu sombra seguir / asi yo te ame / como yo te ame  ni en sueos lo podras imaginar / pues todo el tiempo te pertenci / ilusion no senti que no fuera por ti / asi es como te ame / como yo te ame por poco u mucho tiempo que me quede por vivir / es algo que jamas podre volver a repetir / comprendo que fue una exageracion lo que yo te ame / como yo te ame no creo que algun dia me lo quieras entender / tendrias que enamorarte como lo hice yo de ti / para asi saber como yo te ame  / como yo te ame por poco u mucho tiempo que me quede por vivir / es algo que jamas podre volver a repetir / comprendo que fue una exageracion lo que yo te ame / como yo te ame no creo que algun dia me lo quieras entender / tendrias que enamorarte como lo hice yo de ti / para asi saber cuanto yo te ame",
+          "Comment": "http://leyzaola.net",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "214.595",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "9463680",
+          "FrameRate": "38.281",
+          "FrameCount": "8215",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "8583837",
+          "StreamSize_Proportion": "0.97030"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Segundo Romance/09 Nosotros.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "9569318",
+          "Duration": "232.672",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "262412",
+          "Title": "Nosotros",
+          "Album": "Segundo Romance",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "Nosotros",
+          "Track_Position": "9",
+          "Track_Position_Total": "11",
+          "Performer": "Luis Miguel",
+          "Composer": "Agustín Lara/Wea",
+          "Genre": "Bolero",
+          "Recorded_Date": "1994",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:42",
+          "File_Modified_Date_Local": "2020-04-01 16:52:42",
+          "Encoded_Library": "iTunes 9.0.1.8",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "Lyrics": "Atindeme /  Quiero decirte algo /  Que quiz no esperes /  Doloroso tal vez /  Escchame /  Que aunque me duela el alma /  Yo necesito hablarte /  Y as lo har /  Nosotros /  Que fuimos tan sinceros /  Que desde que nos vimos /  Amndonos estamos /  Nosotros /  Que del amor hicimos /  Un sol maravilloso /  Romance tan divino /  Nosotros que nos queremos tanto /  Debemos separarnos /  No me preguntes ms /  No es falta de cario /  Te quiero con el alma /  Te juro que te adoro /  Y en nombre de este amor /  Y por tu bien te digo adis",
+          "Comment": "http://leyzaola.net",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "232.672",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "10260864",
+          "FrameRate": "38.281",
+          "FrameCount": "8907",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "9306906",
+          "StreamSize_Proportion": "0.97258"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Segundo Romance/10 Yo Se Que Volveras.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "8964328",
+          "Duration": "217.521",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "263462",
+          "Title": "Yo Se Que Volveras",
+          "Album": "Segundo Romance",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "Yo Se Que Volveras",
+          "Track_Position": "10",
+          "Track_Position_Total": "11",
+          "Performer": "Luis Miguel",
+          "Composer": "Agustín Lara/Wea",
+          "Genre": "Bolero",
+          "Recorded_Date": "1994",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:42",
+          "File_Modified_Date_Local": "2020-04-01 16:52:42",
+          "Encoded_Library": "iTunes 9.0.1.8",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "Lyrics": "Yo s� que volver�s / cuando amanezca, / a�n cuando los dem�s / ya se hayan ido, / la cita no ha cambiado / aunque parezca / que todo ha naufragado / en el olvido. / Yo s� que volver�s / muy vigilante, / aqui te esperar� / lo he prometido, / la espera ser�a in�til / y asfixiante / si no supiera / cuanto me has querido / Yo s� que volver�s cuando amanezca / y escucho el despertar de ruise�ores, / en medio de esta prisa cotidiana / te espero regresar y me parece / que nada destruir� nuestros amores / mientras vuelvas junto a m� / siempre a m�, cada ma�ana. / Yo s� que volver�s cuando amanezca / y escucho el despertar de ruise�ores, / en medio de esta prisa cotidiana / te espero regresar y me parece / que nada destruir� nuestros amores / mientras vuelvas junto a m� / siempre a m�, cada ma�ana",
+          "Comment": "http://leyzaola.net",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "217.521",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "9592704",
+          "FrameRate": "38.281",
+          "FrameCount": "8327",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "8700866",
+          "StreamSize_Proportion": "0.97061"
+        }
+      ]
+    }
+  },
+  {
+    "media": {
+      "@ref": "Luis Miguel/Segundo Romance/11 Delirio.mp3",
+      "track": [
+        {
+          "@type": "General",
+          "AudioCount": "1",
+          "FileExtension": "mp3",
+          "Format": "MPEG Audio",
+          "FileSize": "11181511",
+          "Duration": "272.979",
+          "OverallBitRate_Mode": "CBR",
+          "OverallBitRate": "320000",
+          "StreamSize": "262327",
+          "Title": "Delirio",
+          "Album": "Segundo Romance",
+          "Part_Position": "1",
+          "Part_Position_Total": "1",
+          "Track": "Delirio",
+          "Track_Position": "11",
+          "Track_Position_Total": "11",
+          "Performer": "Luis Miguel",
+          "Composer": "Agustín Lara/Wea",
+          "Genre": "Bolero",
+          "Recorded_Date": "1994",
+          "File_Modified_Date": "UTC 2020-04-01 22:52:43",
+          "File_Modified_Date_Local": "2020-04-01 16:52:43",
+          "Encoded_Library": "iTunes 9.0.1.8",
+          "Cover": "Yes",
+          "Cover_Mime": "image/jpeg",
+          "Lyrics": "Si pudiera expresarte /  Cmo es de inmenso /  En el fondo de mi corazn /  Mi amor por ti /  Este amor delirante /  Que abraza a mi alma /  Es pasin que atormenta /  A mi corazn /  Siempre t ests conmigo /  En mi tristeza, ests en mi alegra /  Y en mi sufrir /  Porque en ti se encierra toda mi vida /  Si no estoy contigo mi bien /  No soy feliz /  Es pasin, delirio de estar contigo /  Y yo soy dichoso mi bien /  Porque me quieres tambin",
+          "Comment": "http://leyzaola.net",
+          "extra": {
+            "iTunPGAP": "0"
+          }
+        },
+        {
+          "@type": "Audio",
+          "Format": "MPEG Audio",
+          "Format_Version": "1",
+          "Format_Profile": "Layer 3",
+          "Duration": "272.979",
+          "BitRate_Mode": "CBR",
+          "BitRate": "320000",
+          "Channels": "2",
+          "SamplesPerFrame": "1152",
+          "SamplingRate": "44100",
+          "SamplingCount": "12038400",
+          "FrameRate": "38.281",
+          "FrameCount": "10450",
+          "Compression_Mode": "Lossy",
+          "StreamSize": "10919184",
+          "StreamSize_Proportion": "0.97654"
+        }
+      ]
+    }
+  }
+]
