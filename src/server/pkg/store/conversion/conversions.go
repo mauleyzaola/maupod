@@ -34,7 +34,6 @@ func MediaToORM(v *domain.Media) *orm.Medium {
 		EncodedLibrary:        v.EncodedLibrary,
 		EncodedLibraryName:    v.EncodedLibraryName,
 		EncodedLibraryVersion: v.EncodedLibraryVersion,
-		EncodedLibraryDate:    v.EncodedLibraryDate,
 		BitRateMode:           v.BitRateMode,
 		BitRate:               v.BitRate,
 	}
@@ -69,7 +68,6 @@ func MediaFromORM(v *orm.Medium) *domain.Media {
 		EncodedLibrary:        v.EncodedLibrary,
 		EncodedLibraryName:    v.EncodedLibraryName,
 		EncodedLibraryVersion: v.EncodedLibraryVersion,
-		EncodedLibraryDate:    v.EncodedLibraryDate,
 		BitRateMode:           v.BitRateMode,
 		BitRate:               v.BitRate,
 	}
