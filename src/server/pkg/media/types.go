@@ -1,4 +1,4 @@
-package files
+package media
 
 type MediaInfo struct {
 	Media Media `json:"media"`
