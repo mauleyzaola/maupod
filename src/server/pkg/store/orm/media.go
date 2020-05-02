@@ -51,7 +51,6 @@ type Medium struct {
 	EncodedLibrary        string    `boil:"encoded_library" json:"encoded_library" toml:"encoded_library" yaml:"encoded_library"`
 	EncodedLibraryName    string    `boil:"encoded_library_name" json:"encoded_library_name" toml:"encoded_library_name" yaml:"encoded_library_name"`
 	EncodedLibraryVersion string    `boil:"encoded_library_version" json:"encoded_library_version" toml:"encoded_library_version" yaml:"encoded_library_version"`
-	EncodedLibraryDate    time.Time `boil:"encoded_library_date" json:"encoded_library_date" toml:"encoded_library_date" yaml:"encoded_library_date"`
 	BitRateMode           string    `boil:"bit_rate_mode" json:"bit_rate_mode" toml:"bit_rate_mode" yaml:"bit_rate_mode"`
 	BitRate               int64     `boil:"bit_rate" json:"bit_rate" toml:"bit_rate" yaml:"bit_rate"`
 
@@ -88,7 +87,6 @@ var MediumColumns = struct {
 	EncodedLibrary        string
 	EncodedLibraryName    string
 	EncodedLibraryVersion string
-	EncodedLibraryDate    string
 	BitRateMode           string
 	BitRate               string
 }{
@@ -120,7 +118,6 @@ var MediumColumns = struct {
 	EncodedLibrary:        "encoded_library",
 	EncodedLibraryName:    "encoded_library_name",
 	EncodedLibraryVersion: "encoded_library_version",
-	EncodedLibraryDate:    "encoded_library_date",
 	BitRateMode:           "bit_rate_mode",
 	BitRate:               "bit_rate",
 }
@@ -231,7 +228,6 @@ var MediumWhere = struct {
 	EncodedLibrary        whereHelperstring
 	EncodedLibraryName    whereHelperstring
 	EncodedLibraryVersion whereHelperstring
-	EncodedLibraryDate    whereHelpertime_Time
 	BitRateMode           whereHelperstring
 	BitRate               whereHelperint64
 }{
@@ -263,7 +259,6 @@ var MediumWhere = struct {
 	EncodedLibrary:        whereHelperstring{field: "\"media\".\"encoded_library\""},
 	EncodedLibraryName:    whereHelperstring{field: "\"media\".\"encoded_library_name\""},
 	EncodedLibraryVersion: whereHelperstring{field: "\"media\".\"encoded_library_version\""},
-	EncodedLibraryDate:    whereHelpertime_Time{field: "\"media\".\"encoded_library_date\""},
 	BitRateMode:           whereHelperstring{field: "\"media\".\"bit_rate_mode\""},
 	BitRate:               whereHelperint64{field: "\"media\".\"bit_rate\""},
 }
@@ -285,8 +280,8 @@ func (*mediumR) NewStruct() *mediumR {
 type mediumL struct{}
 
 var (
-	mediumAllColumns            = []string{"id", "location", "file_extension", "format", "file_size", "duration", "overall_bit_rate_mode", "overall_bit_rate", "stream_size", "album", "track", "title", "track_position", "performer", "genre", "recorded_date", "file_modified_date", "comment", "channels", "channel_positions", "channel_layout", "sampling_rate", "sampling_count", "bit_depth", "compression_mode", "encoded_library", "encoded_library_name", "encoded_library_version", "encoded_library_date", "bit_rate_mode", "bit_rate"}
-	mediumColumnsWithoutDefault = []string{"id", "location", "file_extension", "format", "file_size", "duration", "overall_bit_rate_mode", "overall_bit_rate", "stream_size", "album", "track", "title", "track_position", "performer", "genre", "recorded_date", "file_modified_date", "comment", "channels", "channel_positions", "channel_layout", "sampling_rate", "sampling_count", "bit_depth", "compression_mode", "encoded_library", "encoded_library_name", "encoded_library_version", "encoded_library_date", "bit_rate_mode", "bit_rate"}
+	mediumAllColumns            = []string{"id", "location", "file_extension", "format", "file_size", "duration", "overall_bit_rate_mode", "overall_bit_rate", "stream_size", "album", "track", "title", "track_position", "performer", "genre", "recorded_date", "file_modified_date", "comment", "channels", "channel_positions", "channel_layout", "sampling_rate", "sampling_count", "bit_depth", "compression_mode", "encoded_library", "encoded_library_name", "encoded_library_version", "bit_rate_mode", "bit_rate"}
+	mediumColumnsWithoutDefault = []string{"id", "location", "file_extension", "format", "file_size", "duration", "overall_bit_rate_mode", "overall_bit_rate", "stream_size", "album", "track", "title", "track_position", "performer", "genre", "recorded_date", "file_modified_date", "comment", "channels", "channel_positions", "channel_layout", "sampling_rate", "sampling_count", "bit_depth", "compression_mode", "encoded_library", "encoded_library_name", "encoded_library_version", "bit_rate_mode", "bit_rate"}
 	mediumColumnsWithDefault    = []string{}
 	mediumPrimaryKeyColumns     = []string{"id"}
 )
