@@ -56,6 +56,7 @@ type Track struct {
 	EncodedLibraryName    string `json:"Encoded_Library_Name,omitempty"`
 	EncodedLibraryVersion string `json:"Encoded_Library_Version,omitempty"`
 	EncodedLibraryDate    string `json:"Encoded_Library_Date,omitempty"`
+	CompressionMode       string `json:"Compression_Mode,omitempty"`
 }
 
 type Extra struct {
