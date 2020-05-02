@@ -1,0 +1,9 @@
+[psql]
+  dbname = "maupod"
+  host   = "127.0.0.1"
+  port   = 5432
+  user   = "postgres"
+  pass   = "nevermind"
+  schema = "public"
+  sslmode = "disable"
+  blacklist = ["migrations"]

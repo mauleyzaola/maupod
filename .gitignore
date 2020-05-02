@@ -1,3 +1,5 @@
 # ide files
 .idea
 
+# environment files
+.env

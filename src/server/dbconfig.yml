@@ -1,0 +1,5 @@
+development:
+    dialect: postgres
+    datasource: user=postgres dbname=maupod sslmode=disable host=127.0.0.1 password=nevermind
+    dir: assets/db-migrations
+    table: migrations
