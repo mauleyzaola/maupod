@@ -31,7 +31,6 @@ type Media struct {
 	EncodedLibrary        string    `json:"encoded_library,omitempty"`
 	EncodedLibraryName    string    `json:"encoded_library_name,omitempty"`
 	EncodedLibraryVersion string    `json:"encoded_library_version,omitempty"`
-	EncodedLibraryDate    time.Time `json:"encoded_library_date,omitempty"`
 	BitRateMode           string    `json:"bit_rate_mode"`
 	BitRate               int64     `json:"bit_rate"`
 }

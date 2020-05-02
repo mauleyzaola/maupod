@@ -30,7 +30,6 @@ create table media (
     encoded_library text not null,
     encoded_library_name text not null,
     encoded_library_version text not null,
-    encoded_library_date time not null,
     bit_rate_mode text not null,
     bit_rate bigint not null
 );

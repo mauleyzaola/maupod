@@ -14,7 +14,6 @@ import (
 
 const (
 	mediaInfoDateFormat = "UTC 2006-01-02 15:04:05"
-	libraryDateFormat   = "UTC 2007-09-17"
 )
 
 // Mediainfo returns a MediaInfo slice
@@ -86,7 +85,6 @@ func (m *MediaInfo) ToDomain() *domain.Media {
 		res.EncodedLibrary = a.EncodedLibrary
 		res.EncodedLibraryName = a.EncodedLibraryName
 		res.EncodedLibraryVersion = a.EncodedLibraryVersion
-		res.EncodedLibraryDate, _ = time.Parse(libraryDateFormat, a.EncodedLibraryDate)
 	}
 
 	if g := m.findTrack("general"); g != nil {
