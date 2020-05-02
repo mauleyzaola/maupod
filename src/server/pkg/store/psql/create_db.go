@@ -2,7 +2,7 @@ package psql
 
 import "database/sql"
 
-//  ConnectDb should connect with or without a db schema
+//  ConnectPostgres should connect with or without a db schema
 func ConnectPostgres(connStr string) (*sql.DB, error) {
 	return sql.Open("postgres", connStr)
 }
@@ -18,12 +18,14 @@ func DatabaseExists(db *sql.DB, name string) (bool, error) {
 	return count == 1, nil
 }
 
+// CreateDb requires a connection without the dbname on it
 func CreateDb(db *sql.DB, name string) error {
 	var query = `create database ` + name
 	_, err := db.Exec(query)
 	return err
 }
 
+// CreateDbIfNotExists requires a connection without the dbname on it
 func CreateDbIfNotExists(db *sql.DB, name string) error {
 	ok, err := DatabaseExists(db, name)
 	if err != nil {
