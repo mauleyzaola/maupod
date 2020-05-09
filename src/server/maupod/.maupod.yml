@@ -1,0 +1,4 @@
+pgconn: user=postgres host=localhost password=nevermind sslmode=disable
+max-retries: 10
+delay: 2s
+port: :1881

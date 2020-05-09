@@ -5,6 +5,9 @@ go 1.14
 require (
 	github.com/friendsofgo/errors v0.9.2
 	github.com/google/uuid v1.1.1
+	github.com/gorilla/Schema v1.1.0
+	github.com/gorilla/handlers v1.4.2
+	github.com/gorilla/mux v1.7.4
 	github.com/lib/pq v1.4.0
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/spf13/cast v1.3.1 // indirect

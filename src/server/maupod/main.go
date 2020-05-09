@@ -15,8 +15,32 @@ limitations under the License.
 */
 package main
 
-import "github.com/mauleyzaola/maupod/src/server/maupod/cmd"
+import (
+	"log"
+
+	"github.com/mauleyzaola/maupod/src/server/maupod/cmd"
+	"github.com/spf13/viper"
+)
 
 func main() {
+	err := initConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
 	cmd.Execute()
+}
+
+func initConfig() error {
+	log.Println("initializing configuration...")
+	viper.AddConfigPath(".")
+	viper.SetConfigType("yaml")
+	viper.SetConfigName(".maupod")
+
+	if err := viper.ReadInConfig(); err != nil {
+		return err
+	}
+
+	viper.AutomaticEnv()
+
+	return nil
 }

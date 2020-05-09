@@ -16,36 +16,108 @@ limitations under the License.
 package cmd
 
 import (
-	"fmt"
+	"context"
+	"io"
+	"log"
+	"net/http"
+	"os"
+	"os/signal"
 
+	"github.com/spf13/viper"
+
+	"github.com/mauleyzaola/maupod/src/server/maupod/pkg/api"
+	"github.com/mauleyzaola/maupod/src/server/maupod/pkg/helpers"
+	"github.com/mauleyzaola/maupod/src/server/pkg/store/psql"
 	"github.com/spf13/cobra"
 )
+
+const maupodDbName = "maupod"
 
 // restapiCmd represents the restapi command
 var restapiCmd = &cobra.Command{
 	Use:   "restapi",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "Starts the restful application",
+	Long:  `restapi will start a web server which is listening to requests`,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		// configuration settings.
+		pgConn := viper.GetString("pgconn")
+		dbConn := pgConn + " dbname=" + maupodDbName
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("restapi called")
+		var output io.Writer
+		db, err := helpers.ConnectPostgres(pgConn)
+		if err != nil {
+			return err
+		}
+
+		// create database if not exist
+		log.Println("creating database if not exists")
+		if err = psql.CreateDbIfNotExists(db, maupodDbName); err != nil {
+			return err
+		}
+		if err = db.Close(); err != nil {
+			return err
+		}
+
+		// create the connection with the actual database
+		log.Println("trying to connect to named database")
+		if db, err = helpers.ConnectPostgres(dbConn); err != nil {
+			return err
+		}
+
+		// TODO: create instance of the api server based on the real parameters
+		apiServer, err := api.NewApiServer(db)
+		if err != nil {
+			return err
+		}
+
+		// TODO: allow more options, for now stdout is ok
+		output = os.Stdout
+
+		signalChan := make(chan os.Signal, 1)
+		server := http.Server{
+			Addr:    viper.GetString("port"),
+			Handler: api.SetupRoutes(apiServer, output),
+			//ReadTimeout:  params.readTimeout,
+			//WriteTimeout: params.writeTimeout,
+		}
+
+		go func() {
+			log.Println("api serving from ", server.Addr)
+			log.Fatal(server.ListenAndServe())
+		}()
+
+		ctx := context.Background()
+		cleanupDone := make(chan bool)
+		signal.Notify(signalChan, os.Interrupt)
+		go func() {
+			cleanup := func() {
+				log.Println("received an interrupt signal, cleaning resources...")
+				if err = server.Shutdown(ctx); err != nil {
+					log.Println(err)
+				}
+				if err = db.Close(); err != nil {
+					log.Println(err)
+				}
+				log.Println("completed cleaning up resources")
+				cleanupDone <- true
+			}
+		loop:
+			for {
+				select {
+				case <-signalChan:
+					break loop
+				}
+			}
+			cleanup()
+		}()
+
+		<-cleanupDone
+		log.Println("app will exit now")
+
+		return nil
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(restapiCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// restapiCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// restapiCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
