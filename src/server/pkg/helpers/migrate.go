@@ -1,15 +1,14 @@
-package data
+package helpers
 
 import (
 	"database/sql"
 	"path/filepath"
 
-	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	migrate "github.com/rubenv/sql-migrate"
 )
 
 func MigrateDbFromPath(db *sql.DB, driver, dir string) (int, error) {
-	dirPath := filepath.Join(helpers.PathBackend(), dir)
+	dirPath := filepath.Join(PathBackend(), dir)
 	migrations := &migrate.FileMigrationSource{
 		Dir: dirPath,
 	}

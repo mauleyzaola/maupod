@@ -2,32 +2,27 @@ package cmd
 
 import (
 	"context"
+	"database/sql"
 	"io"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
-	"path/filepath"
 
-	"github.com/mauleyzaola/maupod/src/server/pkg/data"
-
-	_ "github.com/lib/pq"
 	"github.com/mauleyzaola/maupod/src/server/maupod/pkg/api"
-	"github.com/mauleyzaola/maupod/src/server/pkg/data/psql"
+	"github.com/mauleyzaola/maupod/src/server/pkg/domain"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
-const maupodDbName = "maupod"
-
-// restapiCmd represents the restapi command
+// scannerCmd represents the restapi command
 var restapiCmd = &cobra.Command{
-	Use:   "restapi",
+	Use:   "scanner",
 	Short: "Starts the restful application",
 	Long:  `restapi will start a web server which is listening to requests`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		config, err := api.ParseConfiguration()
+		config, err := domain.ParseConfiguration()
 		if err != nil {
 			return err
 		}
@@ -36,27 +31,8 @@ var restapiCmd = &cobra.Command{
 			return err
 		}
 
-		pgConn := config.PgConn
-		dbConn := pgConn + " dbname=" + maupodDbName
-
-		var output io.Writer
-		db, err := helpers.ConnectPostgres(pgConn, config.Retries, config.Delay)
-		if err != nil {
-			return err
-		}
-
-		// create database if not exist
-		log.Println("creating database if not exists")
-		if err = psql.CreateDbIfNotExists(db, maupodDbName); err != nil {
-			return err
-		}
-		if err = db.Close(); err != nil {
-			return err
-		}
-
-		// create the connection with the actual database
-		log.Println("trying to connect to named database")
-		if db, err = helpers.ConnectPostgres(dbConn, config.Retries, config.Delay); err != nil {
+		var db *sql.DB
+		if db, err = helpers.DbBootstrap(config); err != nil {
 			return err
 		}
 		defer func() {
@@ -65,15 +41,7 @@ var restapiCmd = &cobra.Command{
 			}
 		}()
 
-		// run sql migrations
-		count, err := data.MigrateDbFromPath(db, "postgres", filepath.Join("assets", "db-migrations"))
-		if err != nil {
-			log.Println(err)
-			return err
-		}
-		if count != 0 {
-			log.Printf("executed: %v migrations", count)
-		}
+		var output io.Writer
 
 		// TODO: create instance of the api server based on the real parameters
 		apiServer, err := api.NewApiServer(config, db)

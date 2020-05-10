@@ -9,3 +9,7 @@ stores:
   - name: music bucket
     type: s3
     location: my-music-bucket
+extensions:
+  - .mp3
+  - .flac
+  - .m4a
