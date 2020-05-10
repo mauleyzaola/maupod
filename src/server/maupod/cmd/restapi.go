@@ -39,16 +39,20 @@ var restapiCmd = &cobra.Command{
 	Short: "Starts the restful application",
 	Long:  `restapi will start a web server which is listening to requests`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		c, err := api.ParseConfiguration()
+		config, err := api.ParseConfiguration()
 		if err != nil {
 			return err
 		}
 
-		pgConn := c.PgConn
+		if err = config.Validate(); err != nil {
+			return err
+		}
+
+		pgConn := config.PgConn
 		dbConn := pgConn + " dbname=" + maupodDbName
 
 		var output io.Writer
-		db, err := helpers.ConnectPostgres(pgConn, c.Retries, c.Delay)
+		db, err := helpers.ConnectPostgres(pgConn, config.Retries, config.Delay)
 		if err != nil {
 			return err
 		}
@@ -64,12 +68,12 @@ var restapiCmd = &cobra.Command{
 
 		// create the connection with the actual database
 		log.Println("trying to connect to named database")
-		if db, err = helpers.ConnectPostgres(dbConn, c.Retries, c.Delay); err != nil {
+		if db, err = helpers.ConnectPostgres(dbConn, config.Retries, config.Delay); err != nil {
 			return err
 		}
 
 		// TODO: create instance of the api server based on the real parameters
-		apiServer, err := api.NewApiServer(db)
+		apiServer, err := api.NewApiServer(config, db)
 		if err != nil {
 			return err
 		}

@@ -50,13 +50,13 @@ func TestMediainfo(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := Mediainfo(tt.args.filename...)
+			got, err := MediaInfoFromFiles(tt.args.filename...)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("Mediainfo() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("MediaInfoFromFiles() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if length := len(got); tt.wantLength != length {
-				t.Errorf("Mediainfo() length = %v, wantLength %v", length, tt.wantLength)
+				t.Errorf("MediaInfoFromFiles() length = %v, wantLength %v", length, tt.wantLength)
 				return
 			}
 		})

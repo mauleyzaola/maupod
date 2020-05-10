@@ -25,6 +25,8 @@ func SetupRoutes(a *ApiServer, output io.Writer) http.Handler {
 		_, _ = fmt.Fprintln(w, "pong")
 	}).Methods(http.MethodOptions, http.MethodGet)
 
+	publicRouter.HandleFunc("/audio/upload", a.GlueHandler(a.AudioFileUpload)).Methods(http.MethodOptions, http.MethodPost)
+
 	if output != nil {
 		return handlers.CombinedLoggingHandler(output, baseRouter)
 	}

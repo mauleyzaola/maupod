@@ -1,11 +1,12 @@
 package api
 
 import (
+	"github.com/mauleyzaola/maupod/src/server/pkg/domain"
 	"github.com/spf13/viper"
 )
 
-func ParseConfiguration() (*Configuration, error) {
-	var c Configuration
+func ParseConfiguration() (*domain.Configuration, error) {
+	var c domain.Configuration
 	if err := viper.Unmarshal(&c); err != nil {
 		return nil, err
 	}
