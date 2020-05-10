@@ -44,3 +44,7 @@ func initConfig() error {
 
 	return nil
 }
+
+func init() {
+	log.SetFlags(log.Lshortfile | log.Ltime | log.Ldate)
+}

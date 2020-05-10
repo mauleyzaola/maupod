@@ -3,18 +3,21 @@ package api
 import (
 	"database/sql"
 	"errors"
+	"log"
 	"net/http"
 
-	"github.com/golang/glog"
 	schema "github.com/gorilla/Schema"
-	"github.com/mauleyzaola/maupod/src/server/maupod/pkg/helpers"
+	"github.com/mauleyzaola/maupod/src/server/pkg/data/psql"
+	"github.com/mauleyzaola/maupod/src/server/pkg/datamgmt"
 	"github.com/mauleyzaola/maupod/src/server/pkg/domain"
+	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 )
 
 type ApiServer struct {
 	config  *domain.Configuration
 	decoder *schema.Decoder
 	db      *sql.DB
+	dm      datamgmt.Media
 }
 
 func NewApiServer(config *domain.Configuration, db *sql.DB) (*ApiServer, error) {
@@ -23,6 +26,9 @@ func NewApiServer(config *domain.Configuration, db *sql.DB) (*ApiServer, error) 
 		db:      db,
 		decoder: schema.NewDecoder(),
 	}
+
+	s.dm = &psql.MediaStore{}
+
 	return s, nil
 }
 
@@ -64,7 +70,7 @@ func (a *ApiServer) JSONHandler(w http.ResponseWriter, r *http.Request, fn Trans
 			}
 		}
 		if localErr != nil {
-			glog.Error(err)
+			log.Println(localErr)
 		}
 	}()
 

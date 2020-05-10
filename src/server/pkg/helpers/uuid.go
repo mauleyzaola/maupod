@@ -4,10 +4,10 @@ import (
 	"github.com/google/uuid"
 )
 
-func NewUUID()(string,error){
-	val,err:= uuid.NewUUID()
-	if err!=nil{
-		return "", err
+func NewUUID() string {
+	val, err := uuid.NewUUID()
+	if err != nil {
+		return ""
 	}
-	return val.String(),nil
+	return val.String()
 }

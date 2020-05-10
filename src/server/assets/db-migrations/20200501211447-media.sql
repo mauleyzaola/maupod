@@ -18,7 +18,7 @@ create table media (
     performer text not null,
     genre text not null,
     recorded_date bigint not null,
-    file_modified_date time not null,
+    file_modified_date timestamp not null,
     comment text not null,
     channels text not null,
     channel_positions text not null,

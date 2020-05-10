@@ -5,8 +5,6 @@ import (
 	"errors"
 	"log"
 	"time"
-
-	_ "github.com/lib/pq"
 )
 
 func ConnectPostgres(dbConn string, retries int, delay time.Duration) (*sql.DB, error) {

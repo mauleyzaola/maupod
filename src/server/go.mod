@@ -11,6 +11,7 @@ require (
 	github.com/gorilla/mux v1.7.4
 	github.com/lib/pq v1.4.0
 	github.com/mitchellh/go-homedir v1.1.0
+	github.com/rubenv/sql-migrate v0.0.0-20200429072036-ae26b214fa43
 	github.com/spf13/cast v1.3.1 // indirect
 	github.com/spf13/cobra v1.0.0
 	github.com/spf13/viper v1.6.3

@@ -7,8 +7,6 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
-
 	"github.com/gorilla/mux"
 )
 
@@ -71,7 +69,7 @@ func WriteJson(w http.ResponseWriter, err error, code int, v interface{}) {
 	}
 }
 
-func DecodeBody(r io.Reader, v interface{}) (fieldNames helpers.StringSlice, err error) {
+func DecodeBody(r io.Reader, v interface{}) (fieldNames StringSlice, err error) {
 	data, err := ioutil.ReadAll(r)
 	if err != nil {
 		return

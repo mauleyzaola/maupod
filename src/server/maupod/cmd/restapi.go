@@ -1,18 +1,3 @@
-/*
-Copyright © 2020 NAME HERE <EMAIL ADDRESS>
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
 package cmd
 
 import (
@@ -22,13 +7,16 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"path/filepath"
 
-	"github.com/mauleyzaola/maupod/src/server/maupod/pkg/helpers"
-	"github.com/mauleyzaola/maupod/src/server/pkg/data/psql"
-	"github.com/spf13/viper"
+	"github.com/mauleyzaola/maupod/src/server/pkg/data"
 
+	_ "github.com/lib/pq"
 	"github.com/mauleyzaola/maupod/src/server/maupod/pkg/api"
+	"github.com/mauleyzaola/maupod/src/server/pkg/data/psql"
+	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 const maupodDbName = "maupod"
@@ -71,6 +59,21 @@ var restapiCmd = &cobra.Command{
 		if db, err = helpers.ConnectPostgres(dbConn, config.Retries, config.Delay); err != nil {
 			return err
 		}
+		defer func() {
+			if err = db.Close(); err != nil {
+				log.Println(err)
+			}
+		}()
+
+		// run sql migrations
+		count, err := data.MigrateDbFromPath(db, "postgres", filepath.Join("assets", "db-migrations"))
+		if err != nil {
+			log.Println(err)
+			return err
+		}
+		if count != 0 {
+			log.Printf("executed: %v migrations", count)
+		}
 
 		// TODO: create instance of the api server based on the real parameters
 		apiServer, err := api.NewApiServer(config, db)
@@ -101,9 +104,6 @@ var restapiCmd = &cobra.Command{
 			cleanup := func() {
 				log.Println("received an interrupt signal, cleaning resources...")
 				if err = server.Shutdown(ctx); err != nil {
-					log.Println(err)
-				}
-				if err = db.Close(); err != nil {
 					log.Println(err)
 				}
 				log.Println("completed cleaning up resources")
