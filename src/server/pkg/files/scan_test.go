@@ -14,12 +14,11 @@ import (
 func TestScanFiles(t *testing.T) {
 	var mode = os.ModePerm
 	// create file structure
-	uid, err := helpers.NewUUID()
-	require.NoError(t, err)
+	uid := helpers.NewUUID()
 	assert.NotEmpty(t, uid)
 
 	root := filepath.Join(os.TempDir(), uid)
-	err = os.MkdirAll(root, mode)
+	err := os.MkdirAll(root, mode)
 	require.NoError(t, err)
 
 	defer func() {

@@ -1,4 +1,4 @@
-package psql
+package data
 
 import (
 	"github.com/mauleyzaola/maupod/src/server/pkg/filters"

@@ -16,10 +16,10 @@ const (
 	mediaInfoDateFormat = "UTC 2006-01-02 15:04:05"
 )
 
-// Mediainfo returns a MediaInfo slice
+// MediaInfoFromFiles returns a MediaInfo slice
 // params can be either one file, many files or even many paths, not necessary
 // pointing to specific audio files, but directories that contain audio files within
-func Mediainfo(params ...string) ([]MediaInfo, error) {
+func MediaInfoFromFiles(params ...string) ([]MediaInfo, error) {
 	const mediaInfoProgram = "mediainfo"
 	if !programExists(mediaInfoProgram) {
 		return nil, fmt.Errorf("could not find program: %s in path", mediaInfoProgram)

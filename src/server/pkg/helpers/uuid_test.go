@@ -5,10 +5,7 @@ import "testing"
 func generateUUID(n int) {
 	keys := make(map[string]struct{})
 	for i := 0; i < n; i++ {
-		val, err := NewUUID()
-		if err != nil {
-			panic(err)
-		}
+		val := NewUUID()
 		if _, ok := keys[val]; ok {
 			panic("duplicated uuid entry")
 		}
