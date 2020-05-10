@@ -1,8 +1,10 @@
 package api
 
 import (
+	"bytes"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -19,10 +21,23 @@ func (a *ApiServer) AudioFileUpload(p TransactionExecutorParams) (status int, re
 		return
 	}
 
-	//log.Printf("received file: %s", header.Filename)
-	//log.Printf("file size: %v", header.Size)
+	// generate the hash from the file itself, which will be the id in db and path
+	fileData, err := ioutil.ReadAll(file)
+	if err != nil {
+		status = http.StatusInternalServerError
+		return
+	}
+	buffer := bytes.NewBuffer(fileData)
+	hash, err := helpers.SHA(buffer)
+	if err != nil {
+		status = http.StatusInternalServerError
+		return
+	}
+	id := fmt.Sprintf("%x", string(hash))
 
-	id := helpers.NewUUID()
+	log.Println("hash: ", id)
+
+	// TODO: move to the real location in s3
 	targetDir := os.TempDir()
 	ext := filepath.Ext(header.Filename)
 	filename := id + ext
@@ -33,16 +48,20 @@ func (a *ApiServer) AudioFileUpload(p TransactionExecutorParams) (status int, re
 		return
 	}
 	defer func() {
-		if err = dest.Close(); err != nil {
-			log.Println(err)
+		var localErr error
+		if localErr = dest.Close(); localErr != nil {
+			log.Println(localErr)
+		}
+		if localErr = os.RemoveAll(filename); localErr != nil {
+			log.Println(localErr)
 		}
 	}()
 
-	if _, err = io.Copy(dest, file); err != nil {
+	buffer = bytes.NewBuffer(fileData)
+	if _, err = io.Copy(dest, buffer); err != nil {
 		status = http.StatusInternalServerError
 		return
 	}
-	//log.Println("wrote destination file to: ", filename)
 
 	// extract mediainfo from destination
 	infos, err := media.MediaInfoFromFiles(filename)
@@ -57,8 +76,6 @@ func (a *ApiServer) AudioFileUpload(p TransactionExecutorParams) (status int, re
 	}
 	info := infos[0]
 
-	// TODO: check for duplicated files, based on the mediainfo they contain, not on the path to the file
-	// TODO: set location to be something else
 	// store in db
 	mi := info.ToDomain()
 	mi.ID = id
