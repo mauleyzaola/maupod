@@ -4,11 +4,12 @@ import (
 	"database/sql"
 	"errors"
 	"log"
+	"time"
 
 	_ "github.com/lib/pq"
 )
 
-func ConnectPostgres(dbConn string) (*sql.DB, error) {
+func ConnectPostgres(dbConn string, retries int, delay time.Duration) (*sql.DB, error) {
 	var db *sql.DB
 	var err error
 
@@ -24,7 +25,7 @@ func ConnectPostgres(dbConn string) (*sql.DB, error) {
 		return true
 	}
 	log.Println("trying to establish connection with database using connection:", dbConn)
-	ok, err := RetryFunc("connecting to postgres", fn)
+	ok, err := RetryFunc("connecting to postgres", retries, delay, fn)
 	if err != nil {
 		return nil, err
 	}

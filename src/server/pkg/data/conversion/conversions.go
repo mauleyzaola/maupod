@@ -1,8 +1,8 @@
 package conversion
 
 import (
+	"github.com/mauleyzaola/maupod/src/server/pkg/data/orm"
 	"github.com/mauleyzaola/maupod/src/server/pkg/domain"
-	"github.com/mauleyzaola/maupod/src/server/pkg/store/orm"
 )
 
 func MediaToORM(v *domain.Media) *orm.Medium {

@@ -23,11 +23,11 @@ import (
 	"os"
 	"os/signal"
 
+	"github.com/mauleyzaola/maupod/src/server/maupod/pkg/helpers"
+	"github.com/mauleyzaola/maupod/src/server/pkg/data/psql"
 	"github.com/spf13/viper"
 
 	"github.com/mauleyzaola/maupod/src/server/maupod/pkg/api"
-	"github.com/mauleyzaola/maupod/src/server/maupod/pkg/helpers"
-	"github.com/mauleyzaola/maupod/src/server/pkg/store/psql"
 	"github.com/spf13/cobra"
 )
 
@@ -39,12 +39,16 @@ var restapiCmd = &cobra.Command{
 	Short: "Starts the restful application",
 	Long:  `restapi will start a web server which is listening to requests`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		// configuration settings.
-		pgConn := viper.GetString("pgconn")
+		c, err := api.ParseConfiguration()
+		if err != nil {
+			return err
+		}
+
+		pgConn := c.PgConn
 		dbConn := pgConn + " dbname=" + maupodDbName
 
 		var output io.Writer
-		db, err := helpers.ConnectPostgres(pgConn)
+		db, err := helpers.ConnectPostgres(pgConn, c.Retries, c.Delay)
 		if err != nil {
 			return err
 		}
@@ -60,7 +64,7 @@ var restapiCmd = &cobra.Command{
 
 		// create the connection with the actual database
 		log.Println("trying to connect to named database")
-		if db, err = helpers.ConnectPostgres(dbConn); err != nil {
+		if db, err = helpers.ConnectPostgres(dbConn, c.Retries, c.Delay); err != nil {
 			return err
 		}
 
@@ -77,8 +81,8 @@ var restapiCmd = &cobra.Command{
 		server := http.Server{
 			Addr:    viper.GetString("port"),
 			Handler: api.SetupRoutes(apiServer, output),
-			//ReadTimeout:  params.readTimeout,
-			//WriteTimeout: params.writeTimeout,
+			//ReadTimeout:  TODO,
+			//WriteTimeout: TODO,
 		}
 
 		go func() {
