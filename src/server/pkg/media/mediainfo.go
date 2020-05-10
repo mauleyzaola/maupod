@@ -4,10 +4,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"os/exec"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 
 	"github.com/mauleyzaola/maupod/src/server/pkg/domain"
 )
@@ -111,4 +114,28 @@ func (m *MediaInfo) ToDomain() *domain.Media {
 	}
 
 	return res
+}
+
+func MediaInfoWithId(filename string, fn func(info *MediaInfo, id string)) error {
+	infos, err := MediaInfoFromFiles(filename)
+	if err != nil {
+		return err
+	}
+	if len(infos) != 1 {
+		return fmt.Errorf("expected media files to be: 1 instead got: %v", len(infos))
+	}
+	if fn != nil {
+		var info = infos[0]
+		var data []byte
+		var hash []byte
+		if data, err = ioutil.ReadFile(filename); err != nil {
+			return err
+		}
+		buffer := bytes.NewBuffer(data)
+		if hash, err = helpers.SHA(buffer); err != nil {
+			return err
+		}
+		fn(&info, fmt.Sprintf("%x", string(hash)))
+	}
+	return nil
 }
