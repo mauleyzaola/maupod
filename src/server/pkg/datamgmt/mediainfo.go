@@ -12,5 +12,5 @@ type Media interface {
 	Insert(ctx context.Context, conn boil.ContextExecutor, media *domain.Media) error
 	Update(ctx context.Context, conn boil.ContextExecutor, media *domain.Media, fields []string) error
 	Delete(ctx context.Context, conn boil.ContextExecutor, id string) error
-	List(ctx context.Context, conn boil.ContextExecutor, filter filters.MediaFilter) ([]*domain.Media, error)
+	List(ctx context.Context, conn boil.ContextExecutor, filter filters.MediaFilter, fn func(int64)) ([]*domain.Media, error)
 }

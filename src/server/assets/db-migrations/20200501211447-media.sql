@@ -31,7 +31,9 @@ create table media (
     encoded_library_name text not null,
     encoded_library_version text not null,
     bit_rate_mode text not null,
-    bit_rate bigint not null
+    bit_rate bigint not null,
+    last_scan timestamp without time zone not null,
+    modified_date timestamp without time zone not null
 );
 
 -- +migrate Down

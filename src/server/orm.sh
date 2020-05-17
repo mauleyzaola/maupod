@@ -30,4 +30,4 @@ if [[ ! $(which sql-migrate) ]]; then
 fi
 
 echo "[INFO] re-generating orm files"
-sqlboiler --wipe --no-tests --output ./pkg/store/orm --pkgname orm --no-auto-timestamps --no-hooks --struct-tag-casing snake psql
+sqlboiler --wipe --no-tests --output ./pkg/data/orm --pkgname orm --no-auto-timestamps --no-hooks --struct-tag-casing snake psql

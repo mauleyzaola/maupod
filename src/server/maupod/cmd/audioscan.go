@@ -4,9 +4,12 @@ import (
 	"context"
 	"database/sql"
 	"log"
+	"os"
 	"path/filepath"
 	"sync"
 	"time"
+
+	"github.com/mauleyzaola/maupod/src/server/pkg/filters"
 
 	"github.com/mauleyzaola/maupod/src/server/pkg/filemgmt"
 
@@ -32,8 +35,13 @@ var scannerCmd = &cobra.Command{
 			return err
 		}
 
+		root := os.Args[len(os.Args)-1]
+		if _, err = os.Stat(root); err != nil {
+			return err
+		}
+		scanDate := time.Now()
+
 		var db *sql.DB
-		//var conn *sql.Tx
 		if db, err = helpers.DbBootstrap(config); err != nil {
 			return err
 		}
@@ -42,32 +50,19 @@ var scannerCmd = &cobra.Command{
 				log.Println(err)
 			}
 		}()
-		//defer func() {
-		//	if conn != nil {
-		//		if err != nil {
-		//			err = conn.Rollback()
-		//		} else {
-		//			err = conn.Commit()
-		//		}
-		//		if err != nil {
-		//			log.Println(err)
-		//		}
-		//	}
-		//	if err = db.Close(); err != nil {
-		//		log.Println(err)
-		//	}
-		//}()
-		//if conn, err = db.Begin(); err != nil {
-		//	return err
-		//}
 
-		// buffer all the existing hashes in db
 		store := &psql.MediaStore{}
 		ctx := context.Background()
 		conn := db
 
-		insertFn := func(ctx context.Context, ID, filename string, info *media.MediaInfo) error {
-			// check if the same file exists
+		var filter = filters.MediaFilter{}
+		var allMedia []*domain.Media
+		if allMedia, err = store.List(ctx, conn, filter, nil); err != nil {
+			return err
+		}
+
+		insertFn := func(ctx context.Context, ID, filename string, info *media.MediaInfo, fileInfo os.FileInfo) error {
+			// check if the same file exists based on the ID = sha256
 			ok, err := store.Exists(ctx, conn, ID)
 			if err != nil {
 				return err
@@ -76,22 +71,18 @@ var scannerCmd = &cobra.Command{
 				// file already is stored in db
 				return nil
 			}
+
 			m := info.ToDomain()
-			m.FileExtension = filepath.Ext(filename)
 			m.ID = ID
-			m.Location = m.ID + m.FileExtension
+			m.FileExtension = filepath.Ext(filename)
+			m.Location = filename
+			m.LastScan = scanDate
+			m.ModifiedDate = fileInfo.ModTime()
+
 			return store.Insert(ctx, conn, m)
 		}
 
-		var root string
-		root = "/media/mau/music-library/music"
-		//root = "/Volumes/Backup-Music-Library/music"
-		//root = "/media/mau/music-library/music/Rush"
-		//root = "/media/mau/music-library/music/Eric Clapton"
-		//root = "/media/mau/music-library/music/Black Sabbath"
-		// TODO: use a channel process to speed this up, reading files and sha takes too long
-
-		if err = ScanFiles(ctx, root, config, insertFn); err != nil {
+		if err = ScanFiles(ctx, root, config, allMedia, insertFn); err != nil {
 			return err
 		}
 
@@ -103,18 +94,23 @@ func init() {
 	rootCmd.AddCommand(scannerCmd)
 }
 
+// MediaInfoID consolidates the data that flows through the channels
 type MediaInfoID struct {
 	ID        string
-	MediaInfo *media.MediaInfo
 	Filename  string
+	MediaInfo *media.MediaInfo
+	FileInfo  os.FileInfo
 }
 
 func ScanFiles(ctx context.Context, root string, config *domain.Configuration,
-	insertFn func(ctx context.Context, ID, filename string, info *media.MediaInfo) error) error {
+	allMedia domain.Medias,
+	insertFn func(ctx context.Context, ID, filename string, info *media.MediaInfo, fileInfo os.FileInfo) error) error {
 	var err error
 	var files []string
 	const concurrentProcess = 10
 	start := time.Now()
+
+	mediaLocationKeys := allMedia.ToMap()
 
 	walker := func(filename string, isDir bool) bool {
 		if isDir {
@@ -123,6 +119,20 @@ func ScanFiles(ctx context.Context, root string, config *domain.Configuration,
 		if !config.FileIsValidExtension(filename) {
 			return false
 		}
+
+		// a bit of speed improvement, avoid a second time scanning the same file unless it has been changed in the file system
+		if val, ok := mediaLocationKeys[filename]; ok {
+			// TODO: avoid a second file scan?
+			info, err := os.Stat(filename)
+			if err != nil {
+				log.Println("[ERROR] ", err)
+				return false
+			}
+			if val.ModifiedDate.Before(info.ModTime()) {
+				return false
+			}
+		}
+
 		files = append(files, filename)
 		return false
 	}
@@ -141,7 +151,7 @@ func ScanFiles(ctx context.Context, root string, config *domain.Configuration,
 	wg.Add(len(files))
 	go func() {
 		for r := range results {
-			if err := insertFn(ctx, r.ID, r.Filename, r.MediaInfo); err != nil {
+			if err := insertFn(ctx, r.ID, r.Filename, r.MediaInfo, r.FileInfo); err != nil {
 				log.Println("[ERROR] ", err)
 			}
 			log.Printf("[SUCCESS] %s\n", filepath.Base(r.Filename))
@@ -153,6 +163,7 @@ func ScanFiles(ctx context.Context, root string, config *domain.Configuration,
 		if i%concurrentProcess == 0 {
 			go ReadMediaInfoAsync(tasks, results)
 		}
+
 		tasks <- f
 	}
 	close(tasks)
@@ -167,11 +178,18 @@ func ScanFiles(ctx context.Context, root string, config *domain.Configuration,
 func ReadMediaInfoAsync(files <-chan string, medias chan<- MediaInfoID) {
 	for f := range files {
 		log.Printf("[DEBUG] received file: %s\n", filepath.Base(f))
+		info, err := os.Stat(f)
+		if err != nil {
+			log.Println("[ERROR] ", err)
+			continue
+		}
+
 		_ = media.MediaInfoWithId(f, func(mi *media.MediaInfo, id string) {
 			medias <- MediaInfoID{
 				ID:        id,
 				MediaInfo: mi,
 				Filename:  f,
+				FileInfo:  info,
 			}
 		})
 	}

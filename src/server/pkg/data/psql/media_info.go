@@ -2,7 +2,9 @@ package psql
 
 import (
 	"context"
-	"errors"
+
+	"github.com/mauleyzaola/maupod/src/server/pkg/data"
+	"github.com/volatiletech/sqlboiler/queries/qm"
 
 	"github.com/mauleyzaola/maupod/src/server/pkg/data/conversion"
 	"github.com/mauleyzaola/maupod/src/server/pkg/data/orm"
@@ -33,8 +35,22 @@ func (s *MediaStore) Delete(ctx context.Context, conn boil.ContextExecutor, id s
 	return err
 }
 
-func (s *MediaStore) List(ctx context.Context, conn boil.ContextExecutor, filter filters.MediaFilter) ([]*domain.Media, error) {
-	return nil, errors.New("not implemented")
+func (s *MediaStore) List(ctx context.Context, conn boil.ContextExecutor, filter filters.MediaFilter, fn func(int64)) ([]*domain.Media, error) {
+	var mods []qm.QueryMod
+	// TODO: implement the actual filters
+	if fn != nil {
+		total, err := orm.Media(mods...).Count(ctx, conn)
+		if err != nil {
+			return nil, err
+		}
+		fn(total)
+	}
+	mods = append(mods, data.Mods(&filter.QueryFilter)...)
+	rows, err := orm.Media(mods...).All(ctx, conn)
+	if err != nil {
+		return nil, err
+	}
+	return conversion.MediasFromORM(rows...), nil
 }
 
 func (s *MediaStore) Select(ctx context.Context, conn boil.ContextExecutor, id string) (*domain.Media, error) {
