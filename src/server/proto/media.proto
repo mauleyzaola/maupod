@@ -1,9 +1,8 @@
 syntax = "proto3";
-package tutorial;
+package pb;
+option go_package = "github.com/mauleyzaola/maupod/src/server/pb";
 
 import "google/protobuf/timestamp.proto";
-
-option go_package = "github.com/mauleyzaola/maupod/src/server/pb";
 
 message Person {
     string name = 1;

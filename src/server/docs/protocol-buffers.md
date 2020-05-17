@@ -33,13 +33,16 @@ sudo ldconfig
 
 ### Mac OS
 
-TODO
+```
+brew update && brew install protobuf
+```
 
 ### Go Plugin
 
 As for the go plugin we can install it directly in the `$GOBIN` path
 
 ```
+cd
 go get -v google.golang.org/protobuf
 cd $GOPATH/src/google.golang.org/protobuf/cmd/protoc-gen-go/
 go install
