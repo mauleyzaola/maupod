@@ -85,7 +85,6 @@ func (m *MediaInfo) ToDomain() *domain.Media {
 		res.BitDepth, _ = strconv.ParseInt(a.BitDepth, 10, 64)
 		res.CompressionMode = a.CompressionMode
 		res.StreamSize, _ = strconv.ParseInt(a.StreamSize, 10, 64)
-		res.EncodedLibrary = a.EncodedLibrary
 		res.EncodedLibraryName = a.EncodedLibraryName
 		res.EncodedLibraryVersion = a.EncodedLibraryVersion
 	}

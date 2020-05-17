@@ -3,6 +3,7 @@
 
 create table media (
     id text primary key,
+    sha text not null,
     location text not null unique,
     file_extension text not null ,
     format text not null ,
@@ -33,7 +34,7 @@ create table media (
     bit_rate_mode text not null,
     bit_rate bigint not null,
     last_scan timestamp without time zone not null,
-    modified_date timestamp without time zone not null
+    modified_date timestamp with time zone not null
 );
 
 -- +migrate Down

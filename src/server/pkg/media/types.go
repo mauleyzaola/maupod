@@ -52,7 +52,6 @@ type Track struct {
 	SamplingRate          string `json:"SamplingRate,omitempty"`
 	SamplingCount         string `json:"SamplingCount,omitempty"`
 	BitDepth              string `json:"BitDepth,omitempty"`
-	EncodedLibrary        string `json:"Encoded_Library,omitempty"`
 	EncodedLibraryName    string `json:"Encoded_Library_Name,omitempty"`
 	EncodedLibraryVersion string `json:"Encoded_Library_Version,omitempty"`
 	EncodedLibraryDate    string `json:"Encoded_Library_Date,omitempty"`

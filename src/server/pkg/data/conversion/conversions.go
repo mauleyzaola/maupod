@@ -38,6 +38,7 @@ func MediaToORM(v *domain.Media) *orm.Medium {
 		BitRate:               v.BitRate,
 		LastScan:              v.LastScan,
 		ModifiedDate:          v.ModifiedDate,
+		Sha:                   v.Sha,
 	}
 }
 
@@ -74,6 +75,7 @@ func MediaFromORM(v *orm.Medium) *domain.Media {
 		BitRate:               v.BitRate,
 		LastScan:              v.LastScan,
 		ModifiedDate:          v.ModifiedDate,
+		Sha:                   v.Sha,
 	}
 }
 

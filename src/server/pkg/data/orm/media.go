@@ -24,6 +24,7 @@ import (
 // Medium is an object representing the database table.
 type Medium struct {
 	ID                    string    `boil:"id" json:"id" toml:"id" yaml:"id"`
+	Sha                   string    `boil:"sha" json:"sha" toml:"sha" yaml:"sha"`
 	Location              string    `boil:"location" json:"location" toml:"location" yaml:"location"`
 	FileExtension         string    `boil:"file_extension" json:"file_extension" toml:"file_extension" yaml:"file_extension"`
 	Format                string    `boil:"format" json:"format" toml:"format" yaml:"format"`
@@ -62,6 +63,7 @@ type Medium struct {
 
 var MediumColumns = struct {
 	ID                    string
+	Sha                   string
 	Location              string
 	FileExtension         string
 	Format                string
@@ -95,6 +97,7 @@ var MediumColumns = struct {
 	ModifiedDate          string
 }{
 	ID:                    "id",
+	Sha:                   "sha",
 	Location:              "location",
 	FileExtension:         "file_extension",
 	Format:                "format",
@@ -207,6 +210,7 @@ func (w whereHelpertime_Time) GTE(x time.Time) qm.QueryMod {
 
 var MediumWhere = struct {
 	ID                    whereHelperstring
+	Sha                   whereHelperstring
 	Location              whereHelperstring
 	FileExtension         whereHelperstring
 	Format                whereHelperstring
@@ -240,6 +244,7 @@ var MediumWhere = struct {
 	ModifiedDate          whereHelpertime_Time
 }{
 	ID:                    whereHelperstring{field: "\"media\".\"id\""},
+	Sha:                   whereHelperstring{field: "\"media\".\"sha\""},
 	Location:              whereHelperstring{field: "\"media\".\"location\""},
 	FileExtension:         whereHelperstring{field: "\"media\".\"file_extension\""},
 	Format:                whereHelperstring{field: "\"media\".\"format\""},
@@ -290,8 +295,8 @@ func (*mediumR) NewStruct() *mediumR {
 type mediumL struct{}
 
 var (
-	mediumAllColumns            = []string{"id", "location", "file_extension", "format", "file_size", "duration", "overall_bit_rate_mode", "overall_bit_rate", "stream_size", "album", "track", "title", "track_position", "performer", "genre", "recorded_date", "file_modified_date", "comment", "channels", "channel_positions", "channel_layout", "sampling_rate", "sampling_count", "bit_depth", "compression_mode", "encoded_library", "encoded_library_name", "encoded_library_version", "bit_rate_mode", "bit_rate", "last_scan", "modified_date"}
-	mediumColumnsWithoutDefault = []string{"id", "location", "file_extension", "format", "file_size", "duration", "overall_bit_rate_mode", "overall_bit_rate", "stream_size", "album", "track", "title", "track_position", "performer", "genre", "recorded_date", "file_modified_date", "comment", "channels", "channel_positions", "channel_layout", "sampling_rate", "sampling_count", "bit_depth", "compression_mode", "encoded_library", "encoded_library_name", "encoded_library_version", "bit_rate_mode", "bit_rate", "last_scan", "modified_date"}
+	mediumAllColumns            = []string{"id", "sha", "location", "file_extension", "format", "file_size", "duration", "overall_bit_rate_mode", "overall_bit_rate", "stream_size", "album", "track", "title", "track_position", "performer", "genre", "recorded_date", "file_modified_date", "comment", "channels", "channel_positions", "channel_layout", "sampling_rate", "sampling_count", "bit_depth", "compression_mode", "encoded_library", "encoded_library_name", "encoded_library_version", "bit_rate_mode", "bit_rate", "last_scan", "modified_date"}
+	mediumColumnsWithoutDefault = []string{"id", "sha", "location", "file_extension", "format", "file_size", "duration", "overall_bit_rate_mode", "overall_bit_rate", "stream_size", "album", "track", "title", "track_position", "performer", "genre", "recorded_date", "file_modified_date", "comment", "channels", "channel_positions", "channel_layout", "sampling_rate", "sampling_count", "bit_depth", "compression_mode", "encoded_library", "encoded_library_name", "encoded_library_version", "bit_rate_mode", "bit_rate", "last_scan", "modified_date"}
 	mediumColumnsWithDefault    = []string{}
 	mediumPrimaryKeyColumns     = []string{"id"}
 )

@@ -10,6 +10,6 @@ stores:
     type: s3
     location: my-music-bucket
 extensions:
-  - .flac
   - .mp3
+  - .flac
   - .m4a

@@ -4,19 +4,18 @@ import (
 	"context"
 	"database/sql"
 	"log"
+	"math"
 	"os"
-	"path/filepath"
-	"sync"
 	"time"
 
-	"github.com/mauleyzaola/maupod/src/server/pkg/filters"
-
-	"github.com/mauleyzaola/maupod/src/server/pkg/filemgmt"
-
+	"github.com/mauleyzaola/maupod/src/server/pkg/data/orm"
 	"github.com/mauleyzaola/maupod/src/server/pkg/data/psql"
 	"github.com/mauleyzaola/maupod/src/server/pkg/domain"
+	"github.com/mauleyzaola/maupod/src/server/pkg/filemgmt"
+	"github.com/mauleyzaola/maupod/src/server/pkg/filters"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/media"
+	"github.com/mauleyzaola/maupod/src/server/pkg/rule"
 	"github.com/spf13/cobra"
 )
 
@@ -56,33 +55,37 @@ var scannerCmd = &cobra.Command{
 		conn := db
 
 		var filter = filters.MediaFilter{}
-		var allMedia []*domain.Media
+		var allMedia domain.Medias
 		if allMedia, err = store.List(ctx, conn, filter, nil); err != nil {
 			return err
 		}
 
-		insertFn := func(ctx context.Context, ID, filename string, info *media.MediaInfo, fileInfo os.FileInfo) error {
-			// check if the same file exists based on the ID = sha256
-			ok, err := store.Exists(ctx, conn, ID)
+		mediaLocationKeys := allMedia.ToMap()
+		var cols = orm.MediumColumns
+		var fields = []string{cols.ModifiedDate, cols.LastScan, cols.Sha, cols.FileExtension, cols.Duration,
+			cols.BitRate, cols.BitRateMode, cols.EncodedLibraryVersion, cols.EncodedLibrary, cols.EncodedLibraryName,
+			cols.Format, cols.FileSize, cols.OverallBitRateMode, cols.OverallBitRate, cols.StreamSize, cols.Album, cols.Track,
+			cols.Title, cols.TrackPosition, cols.Performer, cols.Genre, cols.RecordedDate, cols.FileModifiedDate, cols.Comment,
+			cols.Channels, cols.ChannelPositions, cols.ChannelLayout, cols.SamplingRate, cols.SamplingCount, cols.BitDepth,
+			cols.CompressionMode}
+
+		insertFn := func(ctx context.Context, filename string, info *media.MediaInfo) error {
+			fileInfo, err := os.Stat(filename)
 			if err != nil {
 				return err
 			}
-			if ok {
-				// file already is stored in db
-				return nil
+			m := rule.NewMediaFile(info, filename, scanDate, fileInfo)
+
+			// if the location is the same and we made it here, that means we need to update the row
+			if val, ok := mediaLocationKeys[filename]; ok {
+				m.ID = val.ID
+				return store.Update(ctx, conn, m, fields)
+			} else {
+				return store.Insert(ctx, conn, m)
 			}
-
-			m := info.ToDomain()
-			m.ID = ID
-			m.FileExtension = filepath.Ext(filename)
-			m.Location = filename
-			m.LastScan = scanDate
-			m.ModifiedDate = fileInfo.ModTime()
-
-			return store.Insert(ctx, conn, m)
 		}
 
-		if err = ScanFiles(ctx, root, config, allMedia, insertFn); err != nil {
+		if err = ScanFiles(ctx, root, config, mediaLocationKeys, insertFn); err != nil {
 			return err
 		}
 
@@ -94,23 +97,12 @@ func init() {
 	rootCmd.AddCommand(scannerCmd)
 }
 
-// MediaInfoID consolidates the data that flows through the channels
-type MediaInfoID struct {
-	ID        string
-	Filename  string
-	MediaInfo *media.MediaInfo
-	FileInfo  os.FileInfo
-}
-
 func ScanFiles(ctx context.Context, root string, config *domain.Configuration,
-	allMedia domain.Medias,
-	insertFn func(ctx context.Context, ID, filename string, info *media.MediaInfo, fileInfo os.FileInfo) error) error {
+	mediaLocationKeys map[string]*domain.Media,
+	insertFn func(ctx context.Context, filename string, info *media.MediaInfo) error) error {
 	var err error
 	var files []string
-	const concurrentProcess = 10
 	start := time.Now()
-
-	mediaLocationKeys := allMedia.ToMap()
 
 	walker := func(filename string, isDir bool) bool {
 		if isDir {
@@ -128,7 +120,12 @@ func ScanFiles(ctx context.Context, root string, config *domain.Configuration,
 				log.Println("[ERROR] ", err)
 				return false
 			}
-			if val.ModifiedDate.Before(info.ModTime()) {
+
+			lastUpdateDb, lastUpdateFileSystem := val.ModifiedDate.Unix(), info.ModTime().Unix()
+			diffSeconds := math.Abs(float64(lastUpdateFileSystem - lastUpdateDb))
+
+			// less than 10 seconds should not be considered as a change
+			if diffSeconds < 10 {
 				return false
 			}
 		}
@@ -144,53 +141,25 @@ func ScanFiles(ctx context.Context, root string, config *domain.Configuration,
 	}
 	log.Printf("[DEBUG] finished scanning %d files\n", len(files))
 
-	tasks := make(chan string, concurrentProcess)
-	results := make(chan MediaInfoID, concurrentProcess)
-
-	var wg sync.WaitGroup
-	wg.Add(len(files))
-	go func() {
-		for r := range results {
-			if err := insertFn(ctx, r.ID, r.Filename, r.MediaInfo, r.FileInfo); err != nil {
-				log.Println("[ERROR] ", err)
-			}
-			log.Printf("[SUCCESS] %s\n", filepath.Base(r.Filename))
-			wg.Done()
+	for _, f := range files {
+		infos, err := media.MediaInfoFromFiles(f)
+		if err != nil {
+			log.Printf("[ERROR] cannot get mediainfo from file: %s %s\n", f, err)
+			continue
 		}
-	}()
-
-	for i, f := range files {
-		if i%concurrentProcess == 0 {
-			go ReadMediaInfoAsync(tasks, results)
+		if len(infos) != 1 {
+			log.Println("[ERROR] infos is more than one:", f)
+			continue
 		}
+		info := &infos[0]
 
-		tasks <- f
+		if err := insertFn(ctx, f, info); err != nil {
+			log.Println("[ERROR] ", err)
+		}
+		//log.Printf("[SUCCESS] %s\n", filepath.Base(f))
 	}
-	close(tasks)
-	wg.Wait()
 
 	log.Printf("[INFO] files: %d  elapsed: %s\n", len(files), time.Since(start))
 
 	return nil
-}
-
-// files only reads and medias only writes
-func ReadMediaInfoAsync(files <-chan string, medias chan<- MediaInfoID) {
-	for f := range files {
-		log.Printf("[DEBUG] received file: %s\n", filepath.Base(f))
-		info, err := os.Stat(f)
-		if err != nil {
-			log.Println("[ERROR] ", err)
-			continue
-		}
-
-		_ = media.MediaInfoWithId(f, func(mi *media.MediaInfo, id string) {
-			medias <- MediaInfoID{
-				ID:        id,
-				MediaInfo: mi,
-				Filename:  f,
-				FileInfo:  info,
-			}
-		})
-	}
 }

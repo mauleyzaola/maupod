@@ -3,8 +3,22 @@ package domain
 import "time"
 
 type Media struct {
-	ID                    string    `json:"id"`
-	Location              string    `json:"location,omitempty"`
+	// uuid
+	ID string `json:"id"`
+
+	// the sha 256 to uniquely identify a file (dup cleanup)
+	Sha string `json:"sha"`
+
+	// the full path to the file on the file store
+	Location string `json:"location,omitempty"`
+
+	// date the media file was scanned
+	LastScan time.Time `json:"last_scan"`
+
+	// file system modified date
+	ModifiedDate time.Time `json:"modified_date"`
+
+	// media info stuff
 	FileExtension         string    `json:"file_extension,omitempty"`
 	Format                string    `json:"format,omitempty"`
 	FileSize              int64     `json:"file_size"`
@@ -33,6 +47,4 @@ type Media struct {
 	EncodedLibraryVersion string    `json:"encoded_library_version,omitempty"`
 	BitRateMode           string    `json:"bit_rate_mode"`
 	BitRate               int64     `json:"bit_rate"`
-	LastScan              time.Time `json:"last_scan"`
-	ModifiedDate          time.Time `json:"modified_date"`
 }
