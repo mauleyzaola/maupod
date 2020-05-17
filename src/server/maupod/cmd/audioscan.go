@@ -3,6 +3,7 @@ package cmd
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"log"
 	"math"
 	"os"
@@ -23,7 +24,7 @@ import (
 var scannerCmd = &cobra.Command{
 	Use:   "audioscan",
 	Short: "Scans for new audio files",
-	Long:  "",
+	Long:  "Parameters should be directories where the audio files live. Edit config file to enable the file extensions as needed",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		config, err := domain.ParseConfiguration()
 		if err != nil {
@@ -34,10 +35,17 @@ var scannerCmd = &cobra.Command{
 			return err
 		}
 
-		root := os.Args[len(os.Args)-1]
-		if _, err = os.Stat(root); err != nil {
-			return err
+		if len(os.Args) < 3 {
+			return errors.New("missing path for file scan")
 		}
+
+		roots := os.Args[2:]
+		for _, root := range roots {
+			if _, err = os.Stat(root); err != nil {
+				return err
+			}
+		}
+
 		scanDate := time.Now()
 
 		var db *sql.DB
@@ -85,8 +93,10 @@ var scannerCmd = &cobra.Command{
 			}
 		}
 
-		if err = ScanFiles(ctx, root, config, mediaLocationKeys, insertFn); err != nil {
-			return err
+		for _, root := range roots {
+			if err = ScanFiles(ctx, root, config, mediaLocationKeys, insertFn); err != nil {
+				return err
+			}
 		}
 
 		return nil
@@ -124,8 +134,8 @@ func ScanFiles(ctx context.Context, root string, config *domain.Configuration,
 			lastUpdateDb, lastUpdateFileSystem := val.ModifiedDate.Unix(), info.ModTime().Unix()
 			diffSeconds := math.Abs(float64(lastUpdateFileSystem - lastUpdateDb))
 
-			// less than 10 seconds should not be considered as a change
-			if diffSeconds < 10 {
+			// less than 5 seconds should not be considered as a change
+			if diffSeconds < 5 {
 				return false
 			}
 		}
