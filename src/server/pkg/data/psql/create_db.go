@@ -2,11 +2,6 @@ package psql
 
 import "database/sql"
 
-//  ConnectPostgres should connect with or without a db schema
-func ConnectPostgres(connStr string) (*sql.DB, error) {
-	return sql.Open("postgres", connStr)
-}
-
 func DatabaseExists(db *sql.DB, name string) (bool, error) {
 	var query = `select count(*) from pg_database  where datname= $1`
 	row := db.QueryRow(query, name)

@@ -1,4 +1,4 @@
-package files
+package filemgmt
 
 import (
 	"io/ioutil"
@@ -56,7 +56,7 @@ func TestWalkFiles(t *testing.T) {
 
 	files := make(map[string]*myfile)
 
-	var fn WalkerFunc = func(name string, isDir bool) {
+	var fn WalkerFunc = func(name string, isDir bool) bool {
 		t.Logf("walking file: %s isDir: %v", name, isDir)
 		myfile := &myfile{
 			base:     filepath.Base(name),
@@ -66,6 +66,7 @@ func TestWalkFiles(t *testing.T) {
 		_, ok := files[myfile.fullpath]
 		assert.False(t, ok, "we should not walk two times the same file")
 		files[myfile.fullpath] = myfile
+		return false
 	}
 
 	err = WalkFiles(root, fn)

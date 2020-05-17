@@ -4,7 +4,6 @@ go 1.14
 
 require (
 	github.com/friendsofgo/errors v0.9.2
-	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
 	github.com/google/uuid v1.1.1
 	github.com/gorilla/Schema v1.1.0
 	github.com/gorilla/handlers v1.4.2

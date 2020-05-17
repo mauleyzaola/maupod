@@ -1,4 +1,4 @@
-package files
+package filemgmt
 
 import (
 	"errors"
@@ -19,22 +19,23 @@ func ScanFiles(extensions []string, directories ...string) ([]string, error) {
 	}
 	var result []string
 	keys := make(map[string]struct{})
-	var fn WalkerFunc = func(name string, isDir bool) {
+	var fn WalkerFunc = func(name string, isDir bool) bool {
 		// ignore directories
 		if isDir {
-			return
+			return false
 		}
 		// consider only the allowed extensions
 		ext := strings.ToLower(filepath.Ext(name))
 		if _, ok := validExt[ext]; !ok {
-			return
+			return false
 		}
 		// ignore duplicate files
 		if _, ok := keys[name]; ok {
-			return
+			return false
 		}
 		keys[name] = struct{}{}
 		result = append(result, name)
+		return false
 	}
 	for _, dir := range directories {
 		if err := WalkFiles(dir, fn); err != nil {
