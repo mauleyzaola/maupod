@@ -18,7 +18,7 @@ import (
 
 // scannerCmd represents the restapi command
 var restapiCmd = &cobra.Command{
-	Use:   "scanner",
+	Use:   "restapi",
 	Short: "Starts the restful application",
 	Long:  `restapi will start a web server which is listening to requests`,
 	RunE: func(cmd *cobra.Command, args []string) error {

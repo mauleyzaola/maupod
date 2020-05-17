@@ -6,15 +6,12 @@ import (
 	"log"
 	"path/filepath"
 
-	"github.com/mauleyzaola/maupod/src/server/pkg/data/psql"
-
 	"github.com/mauleyzaola/maupod/src/server/pkg/data/orm"
-
-	"github.com/mauleyzaola/maupod/src/server/pkg/media"
-
+	"github.com/mauleyzaola/maupod/src/server/pkg/data/psql"
 	"github.com/mauleyzaola/maupod/src/server/pkg/domain"
 	"github.com/mauleyzaola/maupod/src/server/pkg/files"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
+	"github.com/mauleyzaola/maupod/src/server/pkg/media"
 	"github.com/spf13/cobra"
 )
 
@@ -71,10 +68,13 @@ var scannerCmd = &cobra.Command{
 		}
 		log.Println("completed reading hashes")
 
-		root := "/media/mau/music-library/music/"
+		//root := "/media/mau/music-library/music/"
+		root := "/Volumes/Backup-Music-Library/music/"
+		var count int
+		// TODO: use a channel process to speed this up, reading files and sha takes too long
 		walker := func(filename string, isDir bool) bool {
 			// debug
-			if len(hashes) > 10 {
+			if count > 100 {
 				return true
 			}
 			// debug
@@ -108,6 +108,7 @@ var scannerCmd = &cobra.Command{
 			}
 			log.Println(filename)
 			hashes[ID] = struct{}{}
+			count++
 			return false
 		}
 		if err = files.WalkFiles(root, walker); err != nil {

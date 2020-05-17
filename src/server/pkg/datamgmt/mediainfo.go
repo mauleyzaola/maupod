@@ -4,9 +4,7 @@ import (
 	"context"
 
 	"github.com/mauleyzaola/maupod/src/server/pkg/domain"
-
 	"github.com/mauleyzaola/maupod/src/server/pkg/filters"
-
 	"github.com/volatiletech/sqlboiler/boil"
 )
 
