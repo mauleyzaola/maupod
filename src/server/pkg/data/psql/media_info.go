@@ -36,3 +36,15 @@ func (s *MediaStore) Delete(ctx context.Context, conn boil.ContextExecutor, id s
 func (s *MediaStore) List(ctx context.Context, conn boil.ContextExecutor, filter filters.MediaFilter) ([]*domain.Media, error) {
 	return nil, errors.New("not implemented")
 }
+
+func (s *MediaStore) Select(ctx context.Context, conn boil.ContextExecutor, id string) (*domain.Media, error) {
+	row, err := orm.FindMedium(ctx, conn, id)
+	if err != nil {
+		return nil, err
+	}
+	return conversion.MediaFromORM(row), nil
+}
+
+func (s *MediaStore) Exists(ctx context.Context, conn boil.ContextExecutor, id string) (bool, error) {
+	return orm.MediumExists(ctx, conn, id)
+}
