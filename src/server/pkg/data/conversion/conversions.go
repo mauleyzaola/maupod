@@ -2,12 +2,13 @@ package conversion
 
 import (
 	"github.com/mauleyzaola/maupod/src/server/pkg/data/orm"
-	"github.com/mauleyzaola/maupod/src/server/pkg/domain"
+	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
+	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 )
 
-func MediaToORM(v *domain.Media) *orm.Medium {
+func MediaToORM(v *pb.Media) *orm.Medium {
 	return &orm.Medium{
-		ID:                    v.ID,
+		ID:                    v.Id,
 		Location:              v.Location,
 		FileExtension:         v.FileExtension,
 		Format:                v.Format,
@@ -22,7 +23,7 @@ func MediaToORM(v *domain.Media) *orm.Medium {
 		Performer:             v.Performer,
 		Genre:                 v.Genre,
 		RecordedDate:          v.RecordedDate,
-		FileModifiedDate:      v.FileModifiedDate,
+		FileModifiedDate:      helpers.TsToTime2(v.FileModifiedDate),
 		Comment:               v.Comment,
 		Channels:              v.Channels,
 		ChannelPositions:      v.ChannelPositions,
@@ -36,15 +37,15 @@ func MediaToORM(v *domain.Media) *orm.Medium {
 		EncodedLibraryVersion: v.EncodedLibraryVersion,
 		BitRateMode:           v.BitRateMode,
 		BitRate:               v.BitRate,
-		LastScan:              v.LastScan,
-		ModifiedDate:          v.ModifiedDate,
+		LastScan:              helpers.TsToTime2(v.LastScan),
+		ModifiedDate:          helpers.TsToTime2(v.ModifiedDate),
 		Sha:                   v.Sha,
 	}
 }
 
-func MediaFromORM(v *orm.Medium) *domain.Media {
-	return &domain.Media{
-		ID:                    v.ID,
+func MediaFromORM(v *orm.Medium) *pb.Media {
+	return &pb.Media{
+		Id:                    v.ID,
 		Location:              v.Location,
 		FileExtension:         v.FileExtension,
 		Format:                v.Format,
@@ -59,7 +60,7 @@ func MediaFromORM(v *orm.Medium) *domain.Media {
 		Performer:             v.Performer,
 		Genre:                 v.Genre,
 		RecordedDate:          v.RecordedDate,
-		FileModifiedDate:      v.FileModifiedDate,
+		FileModifiedDate:      helpers.TimeToTs(&v.FileModifiedDate),
 		Comment:               v.Comment,
 		Channels:              v.Channels,
 		ChannelPositions:      v.ChannelPositions,
@@ -73,14 +74,14 @@ func MediaFromORM(v *orm.Medium) *domain.Media {
 		EncodedLibraryVersion: v.EncodedLibraryVersion,
 		BitRateMode:           v.BitRateMode,
 		BitRate:               v.BitRate,
-		LastScan:              v.LastScan,
-		ModifiedDate:          v.ModifiedDate,
+		LastScan:              helpers.TimeToTs(&v.LastScan),
+		ModifiedDate:          helpers.TimeToTs(&v.ModifiedDate),
 		Sha:                   v.Sha,
 	}
 }
 
-func MediasFromORM(a ...*orm.Medium) []*domain.Media {
-	var result []*domain.Media
+func MediasFromORM(a ...*orm.Medium) []*pb.Media {
+	var result []*pb.Media
 	for _, v := range a {
 		result = append(result, MediaFromORM(v))
 	}

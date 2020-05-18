@@ -9,13 +9,12 @@ import (
 	"os"
 	"time"
 
+	"github.com/mauleyzaola/maupod/src/server/pkg/data"
 	"github.com/mauleyzaola/maupod/src/server/pkg/data/orm"
-	"github.com/mauleyzaola/maupod/src/server/pkg/data/psql"
-	"github.com/mauleyzaola/maupod/src/server/pkg/domain"
 	"github.com/mauleyzaola/maupod/src/server/pkg/filemgmt"
 	"github.com/mauleyzaola/maupod/src/server/pkg/filters"
-	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/media"
+	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 	"github.com/mauleyzaola/maupod/src/server/pkg/rule"
 	"github.com/spf13/cobra"
 )
@@ -26,12 +25,12 @@ var scannerCmd = &cobra.Command{
 	Short: "Scans for new audio files",
 	Long:  "Parameters should be directories where the audio files live. Edit config file to enable the file extensions as needed",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		config, err := domain.ParseConfiguration()
+		config, err := rule.ConfigurationParse()
 		if err != nil {
 			return err
 		}
 
-		if err = config.Validate(); err != nil {
+		if err = rule.ConfigurationValidate(config); err != nil {
 			return err
 		}
 
@@ -49,7 +48,7 @@ var scannerCmd = &cobra.Command{
 		scanDate := time.Now()
 
 		var db *sql.DB
-		if db, err = helpers.DbBootstrap(config); err != nil {
+		if db, err = data.DbBootstrap(config); err != nil {
 			return err
 		}
 		defer func() {
@@ -58,12 +57,12 @@ var scannerCmd = &cobra.Command{
 			}
 		}()
 
-		store := &psql.MediaStore{}
+		store := &data.MediaStore{}
 		ctx := context.Background()
 		conn := db
 
 		var filter = filters.MediaFilter{}
-		var allMedia domain.Medias
+		var allMedia data.Medias
 		if allMedia, err = store.List(ctx, conn, filter, nil); err != nil {
 			return err
 		}
@@ -86,7 +85,7 @@ var scannerCmd = &cobra.Command{
 
 			// if the location is the same and we made it here, that means we need to update the row
 			if val, ok := mediaLocationKeys[filename]; ok {
-				m.ID = val.ID
+				m.Id = val.Id
 				return store.Update(ctx, conn, m, fields)
 			} else {
 				return store.Insert(ctx, conn, m)
@@ -107,8 +106,8 @@ func init() {
 	rootCmd.AddCommand(scannerCmd)
 }
 
-func ScanFiles(ctx context.Context, root string, config *domain.Configuration,
-	mediaLocationKeys map[string]*domain.Media,
+func ScanFiles(ctx context.Context, root string, config *pb.Configuration,
+	mediaLocationKeys map[string]*pb.Media,
 	insertFn func(ctx context.Context, filename string, info *media.MediaInfo) error) error {
 	var err error
 	var files []string
@@ -118,7 +117,7 @@ func ScanFiles(ctx context.Context, root string, config *domain.Configuration,
 		if isDir {
 			return false
 		}
-		if !config.FileIsValidExtension(filename) {
+		if !rule.FileIsValidExtension(config, filename) {
 			return false
 		}
 
@@ -131,7 +130,7 @@ func ScanFiles(ctx context.Context, root string, config *domain.Configuration,
 				return false
 			}
 
-			lastUpdateDb, lastUpdateFileSystem := val.ModifiedDate.Unix(), info.ModTime().Unix()
+			lastUpdateDb, lastUpdateFileSystem := val.ModifiedDate.Seconds, info.ModTime().Unix()
 			diffSeconds := math.Abs(float64(lastUpdateFileSystem - lastUpdateDb))
 
 			// less than 5 seconds should not be considered as a change

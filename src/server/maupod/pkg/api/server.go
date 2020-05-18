@@ -7,27 +7,27 @@ import (
 	"net/http"
 
 	schema "github.com/gorilla/Schema"
-	"github.com/mauleyzaola/maupod/src/server/pkg/data/psql"
+	"github.com/mauleyzaola/maupod/src/server/pkg/data"
 	"github.com/mauleyzaola/maupod/src/server/pkg/datamgmt"
-	"github.com/mauleyzaola/maupod/src/server/pkg/domain"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
+	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 )
 
 type ApiServer struct {
-	config  *domain.Configuration
+	config  *pb.Configuration
 	decoder *schema.Decoder
 	db      *sql.DB
 	dm      datamgmt.Media
 }
 
-func NewApiServer(config *domain.Configuration, db *sql.DB) (*ApiServer, error) {
+func NewApiServer(config *pb.Configuration, db *sql.DB) (*ApiServer, error) {
 	s := &ApiServer{
 		config:  config,
 		db:      db,
 		decoder: schema.NewDecoder(),
 	}
 
-	s.dm = &psql.MediaStore{}
+	s.dm = &data.MediaStore{}
 
 	return s, nil
 }

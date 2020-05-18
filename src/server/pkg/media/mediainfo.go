@@ -11,8 +11,7 @@ import (
 	"time"
 
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
-
-	"github.com/mauleyzaola/maupod/src/server/pkg/domain"
+	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 )
 
 const (
@@ -69,8 +68,8 @@ func (m *MediaInfo) findTrack(trackType string) *Track {
 	return nil
 }
 
-func (m *MediaInfo) ToDomain() *domain.Media {
-	res := &domain.Media{}
+func (m *MediaInfo) ToProto() *pb.Media {
+	res := &pb.Media{}
 
 	if a := m.findTrack("audio"); a != nil {
 		res.Format = a.Format
@@ -109,7 +108,12 @@ func (m *MediaInfo) ToDomain() *domain.Media {
 		res.Genre = g.Genre
 		res.RecordedDate, _ = strconv.ParseInt(g.RecordedDate, 10, 64)
 		res.Comment = g.Comment
-		res.FileModifiedDate, _ = time.Parse(mediaInfoDateFormat, g.FileModifiedDate)
+		if val, err := time.Parse(mediaInfoDateFormat, g.FileModifiedDate); err == nil {
+			res.FileModifiedDate = helpers.TimeToTs(&val)
+		}
+		if val, err := time.Parse(mediaInfoDateFormat, g.FileModifiedDate); err == nil {
+			res.FileModifiedDate = helpers.TimeToTs(&val)
+		}
 	}
 
 	return res

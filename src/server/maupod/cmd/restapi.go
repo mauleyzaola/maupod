@@ -10,8 +10,8 @@ import (
 	"os/signal"
 
 	"github.com/mauleyzaola/maupod/src/server/maupod/pkg/api"
-	"github.com/mauleyzaola/maupod/src/server/pkg/domain"
-	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
+	"github.com/mauleyzaola/maupod/src/server/pkg/data"
+	"github.com/mauleyzaola/maupod/src/server/pkg/rule"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -22,17 +22,17 @@ var restapiCmd = &cobra.Command{
 	Short: "Starts the restful application",
 	Long:  `restapi will start a web server which is listening to requests`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		config, err := domain.ParseConfiguration()
+		config, err := rule.ConfigurationParse()
 		if err != nil {
 			return err
 		}
 
-		if err = config.Validate(); err != nil {
+		if err = rule.ConfigurationValidate(config); err != nil {
 			return err
 		}
 
 		var db *sql.DB
-		if db, err = helpers.DbBootstrap(config); err != nil {
+		if db, err = data.DbBootstrap(config); err != nil {
 			return err
 		}
 		defer func() {

@@ -4,28 +4,49 @@ option go_package = "github.com/mauleyzaola/maupod/src/server/pb";
 
 import "google/protobuf/timestamp.proto";
 
-message Person {
-    string name = 1;
-    int32 id = 2;  // Unique ID number for this person.
-    string email = 3;
+// Media is a direct map between a mediainfo result and additional fields
+message Media {
+    // uuid
+    string id = 1;
 
-    enum PhoneType {
-        MOBILE = 0;
-        HOME = 1;
-        WORK = 2;
-    }
+    // the sha 256 to uniquely identify a file (dup cleanup)
+    string sha = 2;
 
-    message PhoneNumber {
-        string number = 1;
-        PhoneType type = 2;
-    }
+    // the full path to the file on the file store
+    string location = 3;
 
-    repeated PhoneNumber phones = 4;
+    // date the media file was scanned
+    google.protobuf.Timestamp last_scan = 4;
 
-    google.protobuf.Timestamp last_updated = 5;
-}
+    // file system modified date
+    google.protobuf.Timestamp modified_date = 5;
 
-// Our address book file is just one of these.
-message AddressBook {
-    repeated Person people = 1;
+    string file_extension = 6;
+    string format = 7;
+    int64 file_size = 8;
+    double duration = 9;
+    string overall_bit_rate_mode = 10;
+    int64 overall_bit_rate = 11;
+    int64 stream_size = 12;
+    string album = 13;
+    string title = 14;
+    string track = 15;
+    int64 track_position = 16;
+    string performer = 17;
+    string genre = 18;
+    int64 recorded_date = 19;
+    google.protobuf.Timestamp file_modified_date = 20;
+    string comment = 21;
+    string channels = 22;
+    string channel_positions = 23;
+    string channel_layout = 24;
+    int64 sampling_rate = 25;
+    int64 sampling_count = 26;
+    int64 bit_depth = 27;
+    string compression_mode = 28;
+    string encoded_library = 29;
+    string encoded_library_name = 30;
+    string encoded_library_version = 31;
+    string bit_rate_mode = 32;
+    int64 bit_rate = 33;
 }

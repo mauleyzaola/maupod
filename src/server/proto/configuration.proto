@@ -1,0 +1,15 @@
+syntax = "proto3";
+package pb;
+option go_package = "github.com/mauleyzaola/maupod/src/server/pb";
+
+import "file_store.proto";
+import "google/protobuf/timestamp.proto";
+
+message Configuration {
+    repeated FileStore stores = 1;
+    string pg_conn = 2;
+    int32 retries = 3;
+    int64 delay = 4;
+    string port = 5;
+    repeated string extensions = 6;
+}
