@@ -1,0 +1,13 @@
+syntax = "proto3";
+package pb;
+option go_package = "github.com/mauleyzaola/maupod/src/server/pb";
+
+message FileStore {
+    string name = 1;
+    enum StoreType {
+        FILE_SYSTEM = 0;
+        S3 = 1;
+    }
+    StoreType type = 2;
+    string location = 3;
+}

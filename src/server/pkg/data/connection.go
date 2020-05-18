@@ -1,0 +1,77 @@
+package data
+
+import (
+	"database/sql"
+	"errors"
+	"log"
+	"path/filepath"
+	"time"
+
+	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
+	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
+)
+
+const maupodDbName = "maupod"
+
+func DbBootstrap(config *pb.Configuration) (*sql.DB, error) {
+	pgConn := config.PgConn
+	dbConn := pgConn + " dbname=" + maupodDbName
+
+	db, err := ConnectPostgres(pgConn, int(config.Retries), time.Duration(config.Delay))
+	if err != nil {
+		return nil, err
+	}
+
+	// create database if not exist
+	log.Println("creating database if not exists")
+	if err = CreateDbIfNotExists(db, maupodDbName); err != nil {
+		return nil, err
+	}
+	if err = db.Close(); err != nil {
+		return nil, err
+	}
+
+	// create the connection with the actual database
+	log.Println("trying to connect to named database")
+	if db, err = ConnectPostgres(dbConn, int(config.Retries), time.Duration(config.Delay)); err != nil {
+		return nil, err
+	}
+
+	// run sql migrations
+	count, err := MigrateDbFromPath(db, "postgres", filepath.Join("assets", "db-migrations"))
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	if count != 0 {
+		log.Printf("executed: %v migrations", count)
+	}
+	return db, nil
+}
+
+func ConnectPostgres(dbConn string, retries int, delay time.Duration) (*sql.DB, error) {
+	var db *sql.DB
+	var err error
+
+	if db, err = sql.Open("postgres", dbConn); err != nil {
+		return nil, err
+	}
+
+	fn := func(retry int) bool {
+		if err := db.Ping(); err != nil {
+			return false
+		}
+
+		return true
+	}
+	log.Println("trying to establish connection with database using connection:", dbConn)
+	ok, err := helpers.RetryFunc("connecting to postgres", retries, delay, fn)
+	if err != nil {
+		return nil, err
+	}
+	if !ok {
+		return nil, errors.New("could not connect to postgres")
+	}
+	log.Println("successfully connected to postgres")
+	return db, nil
+}

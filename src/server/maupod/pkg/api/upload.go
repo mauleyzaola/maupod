@@ -51,10 +51,11 @@ func (a *ApiServer) AudioFileUpload(p TransactionExecutorParams) (status int, re
 	}
 
 	// store in db
-	mi := info.ToDomain()
-	mi.ID = ID
+	mi := info.ToProto()
+	mi.Id = ID
 	mi.FileExtension = strings.ToLower(filepath.Ext(header.Filename))
-	mi.Location = mi.ID + mi.FileExtension
+	// TODO: use the same logic as the audioscan
+	mi.Location = mi.Id + mi.FileExtension
 	if err = a.dm.Insert(p.ctx, p.conn, mi); err != nil {
 		status = http.StatusInternalServerError
 		return

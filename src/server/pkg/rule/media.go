@@ -5,17 +5,17 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/mauleyzaola/maupod/src/server/pkg/domain"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/media"
+	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 )
 
-func NewMediaFile(info *media.MediaInfo, filename string, scanDate time.Time, fileInfo os.FileInfo) *domain.Media {
-	media := info.ToDomain()
-	media.ID = helpers.NewUUID()
+func NewMediaFile(info *media.MediaInfo, filename string, scanDate time.Time, fileInfo os.FileInfo) *pb.Media {
+	media := info.ToProto()
+	media.Id = helpers.NewUUID()
 	//media.Sha = "" // needs to be defined in another process
-	media.LastScan = scanDate
-	media.ModifiedDate = fileInfo.ModTime()
+	media.LastScan = helpers.TimeToTs(&scanDate)
+	media.ModifiedDate = helpers.TimeToTs2(fileInfo.ModTime())
 	media.Location = filename
 	media.FileExtension = filepath.Ext(fileInfo.Name())
 
