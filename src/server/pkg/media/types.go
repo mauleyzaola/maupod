@@ -1,63 +1,47 @@
 package media
 
+// MediaInfo represents the output from `mediainfo` program
 type MediaInfo struct {
-	Media Media `json:"media"`
-}
-
-type Media struct {
-	Ref   string  `json:"@ref"`
-	Track []Track `json:"track"`
-}
-
-type Track struct {
-	Type                  string `json:"@type"`
-	AudioCount            string `json:"AudioCount,omitempty"`
-	FileExtension         string `json:"FileExtension,omitempty"`
-	Format                string `json:"Format"`
-	FileSize              string `json:"FileSize,omitempty"`
-	Duration              string `json:"Duration"`
-	OverallBitRateMode    string `json:"OverallBitRate_Mode,omitempty"`
-	OverallBitRate        string `json:"OverallBitRate,omitempty"`
-	StreamSize            string `json:"StreamSize"`
-	Title                 string `json:"Title,omitempty"`
-	Album                 string `json:"Album,omitempty"`
-	PartPosition          string `json:"Part_Position,omitempty"`
-	Composer              string `json:"Composer,omitempty"`
-	Cover                 string `json:"Cover,omitempty"`
-	CoverMime             string `json:"Cover_Mime,omitempty"`
-	Lyrics                string `json:"Lyrics,omitempty"`
-	Comment               string `json:"Comment,omitempty"`
-	Extra                 Extra  `json:"extra,omitempty"`
-	FormatVersion         string `json:"Format_Version,omitempty"`
-	FormatProfile         string `json:"Format_Profile,omitempty"`
-	SamplesPerFrame       string `json:"SamplesPerFrame,omitempty"`
-	FrameRate             string `json:"FrameRate,omitempty"`
-	FrameCount            string `json:"FrameCount,omitempty"`
-	AlbumPerformer        string `json:"Album_Performer,omitempty"`
-	Part                  string `json:"Part,omitempty"`
-	PartPositionTotal     string `json:"Part_Position_Total,omitempty"`
-	Track                 string `json:"Track,omitempty"`
-	TrackPosition         string `json:"Track_Position,omitempty"`
-	TrackPositionTotal    string `json:"Track_Position_Total,omitempty"`
-	Performer             string `json:"Performer,omitempty"`
-	Genre                 string `json:"Genre,omitempty"`
-	RecordedDate          string `json:"Recorded_Date,omitempty"`
-	FileModifiedDate      string `json:"File_Modified_Date,omitempty"`
-	FileModifiedDateLocal string `json:"File_Modified_Date_Local,omitempty"`
-	BitRateMode           string `json:"BitRate_Mode,omitempty"`
-	BitRate               string `json:"BitRate,omitempty"`
-	Channels              string `json:"Channels,omitempty"`
-	ChannelPositions      string `json:"ChannelPositions,omitempty"`
-	ChannelLayout         string `json:"ChannelLayout,omitempty"`
-	SamplingRate          string `json:"SamplingRate,omitempty"`
-	SamplingCount         string `json:"SamplingCount,omitempty"`
-	BitDepth              string `json:"BitDepth,omitempty"`
-	EncodedLibraryName    string `json:"Encoded_Library_Name,omitempty"`
-	EncodedLibraryVersion string `json:"Encoded_Library_Version,omitempty"`
-	EncodedLibraryDate    string `json:"Encoded_Library_Date,omitempty"`
-	CompressionMode       string `json:"Compression_Mode,omitempty"`
-}
-
-type Extra struct {
-	ITunPGAP string `json:"iTunPGAP"`
+	KindOfStream          string
+	StreamIdentifier      int64
+	CountOfAudioStreams   int64
+	AudioFormatList       string
+	CompleteName          string
+	FolderName            string
+	FileName              string
+	FileExtension         string
+	Format                string
+	FormatInfo            string
+	FormatURL             string
+	CommercialName        string
+	InternetMediaType     string
+	FileSize              int64
+	Duration              int64
+	OverallBitRate        string
+	OverallBitRateMode    string
+	StreamSize            int64
+	Title                 string
+	Album                 string
+	AlbumPerformer        string
+	Part                  int64
+	PartTotal             int64
+	TrackName             string
+	TrackNamePosition     int64
+	TrackNameTotal        int64
+	Performer             string
+	Gener                 string
+	RecordedDate          int64
+	AudioCount            int64
+	Channels              int64
+	ChannelsPosition      string
+	ChannelsLayout        string
+	SamplingRate          int64
+	SamplesCount          int64
+	BitDepth              int64
+	BitDepthString        string
+	Compression           string
+	WritingLibrary        string
+	EncodedLibraryName    string
+	EncodedLibraryVersion string
+	EncodedLibraryDate    string
 }
