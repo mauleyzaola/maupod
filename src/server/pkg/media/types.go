@@ -2,46 +2,47 @@ package media
 
 // MediaInfo represents the output from `mediainfo` program
 type MediaInfo struct {
-	KindOfStream          string
-	StreamIdentifier      int64
-	CountOfAudioStreams   int64
-	AudioFormatList       string
-	CompleteName          string
-	FolderName            string
-	FileName              string
-	FileExtension         string
-	Format                string
-	FormatInfo            string
-	FormatURL             string
-	CommercialName        string
-	InternetMediaType     string
-	FileSize              int64
-	Duration              int64
-	OverallBitRate        string
-	OverallBitRateMode    string
-	StreamSize            int64
-	Title                 string
-	Album                 string
 	AlbumPerformer        string
-	Part                  int64
-	PartTotal             int64
-	TrackName             string
-	TrackNamePosition     int64
-	TrackNameTotal        int64
-	Performer             string
-	Gener                 string
-	RecordedDate          int64
+	Album                 string
 	AudioCount            int64
-	Channels              int64
-	ChannelsPosition      string
-	ChannelsLayout        string
-	SamplingRate          int64
-	SamplesCount          int64
+	AudioFormatList       string
 	BitDepth              int64
 	BitDepthString        string
+	Channels              int64
+	ChannelsLayout        string
+	ChannelsPosition      string
+	Comment               string
+	CommercialName        string
+	CompleteName          string
 	Compression           string
-	WritingLibrary        string
+	CountOfAudioStreams   int64
+	Duration              float64
+	EncodedLibraryDate    string
 	EncodedLibraryName    string
 	EncodedLibraryVersion string
-	EncodedLibraryDate    string
+	FileExtension         string
+	FileName              string
+	FileSize              int64
+	FolderName            string
+	FormatInfo            string
+	Format                string
+	FormatURL             string
+	Genre                 string
+	InternetMediaType     string
+	KindOfStream          string
+	OverallBitRate        int64
+	OverallBitRateMode    string
+	Part                  int64
+	PartTotal             int64
+	Performer             string
+	RecordedDate          int64
+	SamplesCount          int64
+	SamplingRate          int64
+	StreamIdentifier      int64
+	StreamSize            int64
+	Title                 string
+	TrackNamePosition     int64
+	TrackName             string
+	TrackNameTotal        int64
+	WritingLibrary        string
 }

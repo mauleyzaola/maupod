@@ -151,7 +151,7 @@ func ScanFiles(ctx context.Context, root string, config *pb.Configuration,
 	log.Printf("[DEBUG] finished scanning %d files\n", len(files))
 
 	for _, f := range files {
-		infos, err := media.MediaInfoFromFiles(f)
+		infos, err := media.MediaInfoFromFile(f)
 		if err != nil {
 			log.Printf("[ERROR] cannot get mediainfo from file: %s %s\n", f, err)
 			continue
