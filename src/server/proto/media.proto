@@ -40,7 +40,6 @@ message Media {
     int64 sampling_count = 26;
     int64 bit_depth = 27;
     string compression_mode = 28;
-    string encoded_library = 29;
     string encoded_library_name = 30;
     string encoded_library_version = 31;
     string bit_rate_mode = 32;

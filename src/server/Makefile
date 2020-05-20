@@ -1,4 +1,5 @@
-prepare-proto:
+force:
+prepare-proto: force
 	rm -rf ./pkg/pb
 	mkdir -p ./pkg/pb
 

@@ -40,7 +40,6 @@ var sampleMedium = &orm.Medium{
 	SamplingCount:         23,
 	BitDepth:              24,
 	CompressionMode:       "25",
-	EncodedLibrary:        "26",
 	EncodedLibraryName:    "27",
 	EncodedLibraryVersion: "28",
 	BitRateMode:           "29",
@@ -92,7 +91,6 @@ var sampleMedia = &pb.Media{
 	SamplingCount:         23,
 	BitDepth:              24,
 	CompressionMode:       "25",
-	EncodedLibrary:        "26",
 	EncodedLibraryName:    "27",
 	EncodedLibraryVersion: "28",
 	BitRateMode:           "29",
@@ -163,7 +161,6 @@ func TestMediaToORM(t *testing.T) {
 			assert.EqualValues(t, w.SamplingCount, g.SamplingCount)
 			assert.EqualValues(t, w.BitDepth, g.BitDepth)
 			assert.EqualValues(t, w.CompressionMode, g.CompressionMode)
-			assert.EqualValues(t, w.EncodedLibrary, g.EncodedLibrary)
 			assert.EqualValues(t, w.EncodedLibraryName, g.EncodedLibraryName)
 			assert.EqualValues(t, w.EncodedLibraryVersion, g.EncodedLibraryVersion)
 			assert.EqualValues(t, w.BitRateMode, g.BitRateMode)
@@ -236,7 +233,6 @@ func TestMediaFromORM(t *testing.T) {
 			assert.EqualValues(t, w.SamplingCount, g.SamplingCount)
 			assert.EqualValues(t, w.BitDepth, g.BitDepth)
 			assert.EqualValues(t, w.CompressionMode, g.CompressionMode)
-			assert.EqualValues(t, w.EncodedLibrary, g.EncodedLibrary)
 			assert.EqualValues(t, w.EncodedLibraryName, g.EncodedLibraryName)
 			assert.EqualValues(t, w.EncodedLibraryVersion, g.EncodedLibraryVersion)
 			assert.EqualValues(t, w.BitRateMode, g.BitRateMode)

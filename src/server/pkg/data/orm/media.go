@@ -48,7 +48,6 @@ type Medium struct {
 	SamplingCount         int64     `boil:"sampling_count" json:"sampling_count" toml:"sampling_count" yaml:"sampling_count"`
 	BitDepth              int64     `boil:"bit_depth" json:"bit_depth" toml:"bit_depth" yaml:"bit_depth"`
 	CompressionMode       string    `boil:"compression_mode" json:"compression_mode" toml:"compression_mode" yaml:"compression_mode"`
-	EncodedLibrary        string    `boil:"encoded_library" json:"encoded_library" toml:"encoded_library" yaml:"encoded_library"`
 	EncodedLibraryName    string    `boil:"encoded_library_name" json:"encoded_library_name" toml:"encoded_library_name" yaml:"encoded_library_name"`
 	EncodedLibraryVersion string    `boil:"encoded_library_version" json:"encoded_library_version" toml:"encoded_library_version" yaml:"encoded_library_version"`
 	BitRateMode           string    `boil:"bit_rate_mode" json:"bit_rate_mode" toml:"bit_rate_mode" yaml:"bit_rate_mode"`
