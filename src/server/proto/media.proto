@@ -18,9 +18,6 @@ message Media {
     // date the media file was scanned
     google.protobuf.Timestamp last_scan = 4;
 
-    // file system modified date
-    google.protobuf.Timestamp modified_date = 5;
-
     string file_extension = 6;
     string format = 7;
     int64 file_size = 8;
@@ -35,7 +32,6 @@ message Media {
     string performer = 17;
     string genre = 18;
     int64 recorded_date = 19;
-    google.protobuf.Timestamp file_modified_date = 20;
     string comment = 21;
     string channels = 22;
     string channel_positions = 23;
@@ -49,4 +45,24 @@ message Media {
     string encoded_library_version = 31;
     string bit_rate_mode = 32;
     int64 bit_rate = 33;
+    int64 track_name_total = 34;
+    string album_performer = 35;
+    int64 audio_count = 36;
+    string bit_depth_string = 37;
+    string commercial_name = 38;
+    string complete_name = 39;
+    int64 count_of_audio_streams = 40;
+    string encoded_library_date = 41;
+    string file_name = 42;
+    string folder_name = 43;
+    string format_info = 44;
+    string format_url = 45;
+    string internet_media_type = 46;
+    string kind_of_stream = 47;
+    int64 part = 48;
+    int64 part_total = 49;
+    int64 stream_identifier = 50;
+    string writing_library = 51;
+    google.protobuf.Timestamp modified_date = 52;
 }
+

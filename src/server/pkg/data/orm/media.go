@@ -40,7 +40,6 @@ type Medium struct {
 	Performer             string    `boil:"performer" json:"performer" toml:"performer" yaml:"performer"`
 	Genre                 string    `boil:"genre" json:"genre" toml:"genre" yaml:"genre"`
 	RecordedDate          int64     `boil:"recorded_date" json:"recorded_date" toml:"recorded_date" yaml:"recorded_date"`
-	FileModifiedDate      time.Time `boil:"file_modified_date" json:"file_modified_date" toml:"file_modified_date" yaml:"file_modified_date"`
 	Comment               string    `boil:"comment" json:"comment" toml:"comment" yaml:"comment"`
 	Channels              string    `boil:"channels" json:"channels" toml:"channels" yaml:"channels"`
 	ChannelPositions      string    `boil:"channel_positions" json:"channel_positions" toml:"channel_positions" yaml:"channel_positions"`
@@ -58,11 +57,11 @@ type Medium struct {
 	ModifiedDate          time.Time `boil:"modified_date" json:"modified_date" toml:"modified_date" yaml:"modified_date"`
 	TrackNameTotal        int64     `boil:"track_name_total" json:"track_name_total" toml:"track_name_total" yaml:"track_name_total"`
 	AlbumPerformer        string    `boil:"album_performer" json:"album_performer" toml:"album_performer" yaml:"album_performer"`
-	AudioCount            int       `boil:"audio_count" json:"audio_count" toml:"audio_count" yaml:"audio_count"`
+	AudioCount            int64     `boil:"audio_count" json:"audio_count" toml:"audio_count" yaml:"audio_count"`
 	BitDepthString        string    `boil:"bit_depth_string" json:"bit_depth_string" toml:"bit_depth_string" yaml:"bit_depth_string"`
 	CommercialName        string    `boil:"commercial_name" json:"commercial_name" toml:"commercial_name" yaml:"commercial_name"`
 	CompleteName          string    `boil:"complete_name" json:"complete_name" toml:"complete_name" yaml:"complete_name"`
-	CountOfAudioStreams   int       `boil:"count_of_audio_streams" json:"count_of_audio_streams" toml:"count_of_audio_streams" yaml:"count_of_audio_streams"`
+	CountOfAudioStreams   int64     `boil:"count_of_audio_streams" json:"count_of_audio_streams" toml:"count_of_audio_streams" yaml:"count_of_audio_streams"`
 	EncodedLibraryDate    string    `boil:"encoded_library_date" json:"encoded_library_date" toml:"encoded_library_date" yaml:"encoded_library_date"`
 	FileName              string    `boil:"file_name" json:"file_name" toml:"file_name" yaml:"file_name"`
 	FolderName            string    `boil:"folder_name" json:"folder_name" toml:"folder_name" yaml:"folder_name"`
@@ -70,7 +69,7 @@ type Medium struct {
 	FormatURL             string    `boil:"format_url" json:"format_url" toml:"format_url" yaml:"format_url"`
 	InternetMediaType     string    `boil:"internet_media_type" json:"internet_media_type" toml:"internet_media_type" yaml:"internet_media_type"`
 	KindOfStream          string    `boil:"kind_of_stream" json:"kind_of_stream" toml:"kind_of_stream" yaml:"kind_of_stream"`
-	Part                  int       `boil:"part" json:"part" toml:"part" yaml:"part"`
+	Part                  int64     `boil:"part" json:"part" toml:"part" yaml:"part"`
 	PartTotal             int64     `boil:"part_total" json:"part_total" toml:"part_total" yaml:"part_total"`
 	StreamIdentifier      int64     `boil:"stream_identifier" json:"stream_identifier" toml:"stream_identifier" yaml:"stream_identifier"`
 	WritingLibrary        string    `boil:"writing_library" json:"writing_library" toml:"writing_library" yaml:"writing_library"`
@@ -97,7 +96,6 @@ var MediumColumns = struct {
 	Performer             string
 	Genre                 string
 	RecordedDate          string
-	FileModifiedDate      string
 	Comment               string
 	Channels              string
 	ChannelPositions      string
@@ -149,7 +147,6 @@ var MediumColumns = struct {
 	Performer:             "performer",
 	Genre:                 "genre",
 	RecordedDate:          "recorded_date",
-	FileModifiedDate:      "file_modified_date",
 	Comment:               "comment",
 	Channels:              "channels",
 	ChannelPositions:      "channel_positions",
@@ -262,22 +259,6 @@ func (w whereHelpertime_Time) GTE(x time.Time) qm.QueryMod {
 	return qmhelper.Where(w.field, qmhelper.GTE, x)
 }
 
-type whereHelperint struct{ field string }
-
-func (w whereHelperint) EQ(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.EQ, x) }
-func (w whereHelperint) NEQ(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.NEQ, x) }
-func (w whereHelperint) LT(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.LT, x) }
-func (w whereHelperint) LTE(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.LTE, x) }
-func (w whereHelperint) GT(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.GT, x) }
-func (w whereHelperint) GTE(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.GTE, x) }
-func (w whereHelperint) IN(slice []int) qm.QueryMod {
-	values := make([]interface{}, 0, len(slice))
-	for _, value := range slice {
-		values = append(values, value)
-	}
-	return qm.WhereIn(fmt.Sprintf("%s IN ?", w.field), values...)
-}
-
 var MediumWhere = struct {
 	ID                    whereHelperstring
 	Sha                   whereHelperstring
@@ -296,7 +277,6 @@ var MediumWhere = struct {
 	Performer             whereHelperstring
 	Genre                 whereHelperstring
 	RecordedDate          whereHelperint64
-	FileModifiedDate      whereHelpertime_Time
 	Comment               whereHelperstring
 	Channels              whereHelperstring
 	ChannelPositions      whereHelperstring
@@ -314,11 +294,11 @@ var MediumWhere = struct {
 	ModifiedDate          whereHelpertime_Time
 	TrackNameTotal        whereHelperint64
 	AlbumPerformer        whereHelperstring
-	AudioCount            whereHelperint
+	AudioCount            whereHelperint64
 	BitDepthString        whereHelperstring
 	CommercialName        whereHelperstring
 	CompleteName          whereHelperstring
-	CountOfAudioStreams   whereHelperint
+	CountOfAudioStreams   whereHelperint64
 	EncodedLibraryDate    whereHelperstring
 	FileName              whereHelperstring
 	FolderName            whereHelperstring
@@ -326,7 +306,7 @@ var MediumWhere = struct {
 	FormatURL             whereHelperstring
 	InternetMediaType     whereHelperstring
 	KindOfStream          whereHelperstring
-	Part                  whereHelperint
+	Part                  whereHelperint64
 	PartTotal             whereHelperint64
 	StreamIdentifier      whereHelperint64
 	WritingLibrary        whereHelperstring
@@ -348,7 +328,6 @@ var MediumWhere = struct {
 	Performer:             whereHelperstring{field: "\"media\".\"performer\""},
 	Genre:                 whereHelperstring{field: "\"media\".\"genre\""},
 	RecordedDate:          whereHelperint64{field: "\"media\".\"recorded_date\""},
-	FileModifiedDate:      whereHelpertime_Time{field: "\"media\".\"file_modified_date\""},
 	Comment:               whereHelperstring{field: "\"media\".\"comment\""},
 	Channels:              whereHelperstring{field: "\"media\".\"channels\""},
 	ChannelPositions:      whereHelperstring{field: "\"media\".\"channel_positions\""},
@@ -366,11 +345,11 @@ var MediumWhere = struct {
 	ModifiedDate:          whereHelpertime_Time{field: "\"media\".\"modified_date\""},
 	TrackNameTotal:        whereHelperint64{field: "\"media\".\"track_name_total\""},
 	AlbumPerformer:        whereHelperstring{field: "\"media\".\"album_performer\""},
-	AudioCount:            whereHelperint{field: "\"media\".\"audio_count\""},
+	AudioCount:            whereHelperint64{field: "\"media\".\"audio_count\""},
 	BitDepthString:        whereHelperstring{field: "\"media\".\"bit_depth_string\""},
 	CommercialName:        whereHelperstring{field: "\"media\".\"commercial_name\""},
 	CompleteName:          whereHelperstring{field: "\"media\".\"complete_name\""},
-	CountOfAudioStreams:   whereHelperint{field: "\"media\".\"count_of_audio_streams\""},
+	CountOfAudioStreams:   whereHelperint64{field: "\"media\".\"count_of_audio_streams\""},
 	EncodedLibraryDate:    whereHelperstring{field: "\"media\".\"encoded_library_date\""},
 	FileName:              whereHelperstring{field: "\"media\".\"file_name\""},
 	FolderName:            whereHelperstring{field: "\"media\".\"folder_name\""},
@@ -378,7 +357,7 @@ var MediumWhere = struct {
 	FormatURL:             whereHelperstring{field: "\"media\".\"format_url\""},
 	InternetMediaType:     whereHelperstring{field: "\"media\".\"internet_media_type\""},
 	KindOfStream:          whereHelperstring{field: "\"media\".\"kind_of_stream\""},
-	Part:                  whereHelperint{field: "\"media\".\"part\""},
+	Part:                  whereHelperint64{field: "\"media\".\"part\""},
 	PartTotal:             whereHelperint64{field: "\"media\".\"part_total\""},
 	StreamIdentifier:      whereHelperint64{field: "\"media\".\"stream_identifier\""},
 	WritingLibrary:        whereHelperstring{field: "\"media\".\"writing_library\""},
@@ -401,8 +380,8 @@ func (*mediumR) NewStruct() *mediumR {
 type mediumL struct{}
 
 var (
-	mediumAllColumns            = []string{"id", "sha", "location", "file_extension", "format", "file_size", "duration", "overall_bit_rate_mode", "overall_bit_rate", "stream_size", "album", "track", "title", "track_position", "performer", "genre", "recorded_date", "file_modified_date", "comment", "channels", "channel_positions", "channel_layout", "sampling_rate", "sampling_count", "bit_depth", "compression_mode", "encoded_library", "encoded_library_name", "encoded_library_version", "bit_rate_mode", "bit_rate", "last_scan", "modified_date", "track_name_total", "album_performer", "audio_count", "bit_depth_string", "commercial_name", "complete_name", "count_of_audio_streams", "encoded_library_date", "file_name", "folder_name", "format_info", "format_url", "internet_media_type", "kind_of_stream", "part", "part_total", "stream_identifier", "writing_library"}
-	mediumColumnsWithoutDefault = []string{"id", "sha", "location", "file_extension", "format", "file_size", "duration", "overall_bit_rate_mode", "overall_bit_rate", "stream_size", "album", "track", "title", "track_position", "performer", "genre", "recorded_date", "file_modified_date", "comment", "channels", "channel_positions", "channel_layout", "sampling_rate", "sampling_count", "bit_depth", "compression_mode", "encoded_library", "encoded_library_name", "encoded_library_version", "bit_rate_mode", "bit_rate", "last_scan", "modified_date", "track_name_total", "album_performer", "audio_count", "bit_depth_string", "commercial_name", "complete_name", "count_of_audio_streams", "encoded_library_date", "file_name", "folder_name", "format_info", "format_url", "internet_media_type", "kind_of_stream", "part", "part_total", "stream_identifier", "writing_library"}
+	mediumAllColumns            = []string{"id", "sha", "location", "file_extension", "format", "file_size", "duration", "overall_bit_rate_mode", "overall_bit_rate", "stream_size", "album", "track", "title", "track_position", "performer", "genre", "recorded_date", "comment", "channels", "channel_positions", "channel_layout", "sampling_rate", "sampling_count", "bit_depth", "compression_mode", "encoded_library", "encoded_library_name", "encoded_library_version", "bit_rate_mode", "bit_rate", "last_scan", "modified_date", "track_name_total", "album_performer", "audio_count", "bit_depth_string", "commercial_name", "complete_name", "count_of_audio_streams", "encoded_library_date", "file_name", "folder_name", "format_info", "format_url", "internet_media_type", "kind_of_stream", "part", "part_total", "stream_identifier", "writing_library"}
+	mediumColumnsWithoutDefault = []string{"id", "sha", "location", "file_extension", "format", "file_size", "duration", "overall_bit_rate_mode", "overall_bit_rate", "stream_size", "album", "track", "title", "track_position", "performer", "genre", "recorded_date", "comment", "channels", "channel_positions", "channel_layout", "sampling_rate", "sampling_count", "bit_depth", "compression_mode", "encoded_library", "encoded_library_name", "encoded_library_version", "bit_rate_mode", "bit_rate", "last_scan", "modified_date", "track_name_total", "album_performer", "audio_count", "bit_depth_string", "commercial_name", "complete_name", "count_of_audio_streams", "encoded_library_date", "file_name", "folder_name", "format_info", "format_url", "internet_media_type", "kind_of_stream", "part", "part_total", "stream_identifier", "writing_library"}
 	mediumColumnsWithDefault    = []string{}
 	mediumPrimaryKeyColumns     = []string{"id"}
 )

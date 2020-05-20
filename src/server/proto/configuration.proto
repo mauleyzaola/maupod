@@ -3,7 +3,6 @@ package pb;
 option go_package = "github.com/mauleyzaola/maupod/src/server/pb";
 
 import "file_store.proto";
-import "google/protobuf/timestamp.proto";
 
 message Configuration {
     repeated FileStore stores = 1;

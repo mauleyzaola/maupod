@@ -6,56 +6,51 @@ import (
 
 func (m *MediaInfo) ToProto() *pb.Media {
 	res := &pb.Media{
-		Format:             m.Format,
-		FileSize:           m.FileSize,
-		Duration:           m.Duration,
-		OverallBitRate:     m.OverallBitRate,
-		OverallBitRateMode: m.OverallBitRateMode,
-		StreamSize:         m.StreamSize,
-		Album:              m.Album,
-		Title:              m.Title,
-		Track:              m.TrackName,
-		TrackPosition:      m.TrackNamePosition,
-		Performer:          m.Performer,
-		Genre:              m.Genre,
-		RecordedDate:       m.RecordedDate,
-		Comment:            m.Comment,
-		Channels:           m.Channels,
-		ChannelLayout:      m.ChannelsLayout,
-		ChannelPositions:   m.ChannelsPosition,
-		SamplingRate:       m.SamplingRate,
-		SamplingCount:      m.SamplesCount,
-		BitDepth:           m.BitDepth,
-		BitRateMode:        m.BitRateMode,
-		CompressionMode:    m.Compression,
-		EncodedLibrary:     m.EncodedLibraryVersion,
-		EncodedLibraryName: m.EncodedLibraryName,
-		BitRate:            m.BitRate,
+		Format:              m.Format,
+		FileSize:            m.FileSize,
+		Duration:            m.Duration,
+		OverallBitRate:      m.OverallBitRate,
+		OverallBitRateMode:  m.OverallBitRateMode,
+		StreamSize:          m.StreamSize,
+		Album:               m.Album,
+		Title:               m.Title,
+		Track:               m.TrackName,
+		TrackPosition:       m.TrackNamePosition,
+		Performer:           m.Performer,
+		Genre:               m.Genre,
+		RecordedDate:        m.RecordedDate,
+		Comment:             m.Comment,
+		Channels:            m.Channels,
+		ChannelLayout:       m.ChannelsLayout,
+		ChannelPositions:    m.ChannelsPosition,
+		SamplingRate:        m.SamplingRate,
+		SamplingCount:       m.SamplesCount,
+		BitDepth:            m.BitDepth,
+		BitRateMode:         m.BitRateMode,
+		CompressionMode:     m.Compression,
+		EncodedLibrary:      m.EncodedLibraryVersion,
+		EncodedLibraryName:  m.EncodedLibraryName,
+		BitRate:             m.BitRate,
+		TrackNameTotal:      m.TrackNameTotal,
+		AlbumPerformer:      m.AlbumPerformer,
+		AudioCount:          m.AudioCount,
+		BitDepthString:      m.BitDepthString,
+		CommercialName:      m.CommercialName,
+		CompleteName:        m.CompleteName,
+		CountOfAudioStreams: m.CountOfAudioStreams,
+		EncodedLibraryDate:  m.EncodedLibraryDate,
+		FileExtension:       m.FileExtension,
+		FileName:            m.FileName,
+		FolderName:          m.FolderName,
+		FormatInfo:          m.FormatInfo,
+		FormatUrl:           m.FormatURL,
+		InternetMediaType:   m.InternetMediaType,
+		KindOfStream:        m.KindOfStream,
+		Part:                m.Part,
+		PartTotal:           m.PartTotal,
+		StreamIdentifier:    m.StreamIdentifier,
+		WritingLibrary:      m.WritingLibrary,
 	}
 
 	return res
 }
-
-/*
-TODO: include these fields in proto.Media
-TrackNameTotal        int64
-AlbumPerformer        string
-AudioCount            int64
-BitDepthString        string
-CommercialName        string
-CompleteName          string
-CountOfAudioStreams   int64
-EncodedLibraryDate    string
-FileExtension         string
-FileName              string
-FolderName            string
-FormatInfo            string
-Format                string
-FormatURL             string
-InternetMediaType     string
-KindOfStream          string
-Part                  int64
-PartTotal             int64
-StreamIdentifier      int64
-WritingLibrary        string
-*/
