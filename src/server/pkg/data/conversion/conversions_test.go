@@ -146,6 +146,7 @@ func TestMediaFromORM(t *testing.T) {
 				PartTotal:             46,
 				StreamIdentifier:      47,
 				WritingLibrary:        "48",
+				ModifiedDate:          helpers.TimeToTs2(year2000),
 			},
 		},
 	}
@@ -157,56 +158,52 @@ func TestMediaFromORM(t *testing.T) {
 			assert.EqualValues(t, w.Id, g.Id)
 			assert.EqualValues(t, w.Sha, g.Sha)
 			assert.EqualValues(t, w.LastScan, g.LastScan)
+			assert.EqualValues(t, w.FileExtension, g.FileExtension)
+			assert.EqualValues(t, w.Format, g.Format)
+			assert.EqualValues(t, w.FileSize, g.FileSize)
+			assert.EqualValues(t, w.Duration, g.Duration)
+			assert.EqualValues(t, w.OverallBitRateMode, g.OverallBitRateMode)
+			assert.EqualValues(t, w.OverallBitRate, g.OverallBitRate)
+			assert.EqualValues(t, w.StreamSize, g.StreamSize)
+			assert.EqualValues(t, w.Album, g.Album)
+			assert.EqualValues(t, w.Title, g.Title)
+			assert.EqualValues(t, w.Track, g.Track)
+			assert.EqualValues(t, w.TrackPosition, g.TrackPosition)
+			assert.EqualValues(t, w.Performer, g.Performer)
+			assert.EqualValues(t, w.Genre, g.Genre)
+			assert.EqualValues(t, w.RecordedDate, g.RecordedDate)
+			assert.EqualValues(t, w.Comment, g.Comment)
+			assert.EqualValues(t, w.Channels, g.Channels)
+			assert.EqualValues(t, w.ChannelPositions, g.ChannelPositions)
+			assert.EqualValues(t, w.ChannelLayout, g.ChannelLayout)
+			assert.EqualValues(t, w.SamplingRate, g.SamplingRate)
+			assert.EqualValues(t, w.SamplingCount, g.SamplingCount)
+			assert.EqualValues(t, w.BitDepth, g.BitDepth)
+			assert.EqualValues(t, w.CompressionMode, g.CompressionMode)
+			assert.EqualValues(t, w.EncodedLibrary, g.EncodedLibrary)
+			assert.EqualValues(t, w.EncodedLibraryName, g.EncodedLibraryName)
+			assert.EqualValues(t, w.EncodedLibraryVersion, g.EncodedLibraryVersion)
+			assert.EqualValues(t, w.BitRateMode, g.BitRateMode)
+			assert.EqualValues(t, w.BitRate, g.BitRate)
+			assert.EqualValues(t, w.TrackNameTotal, g.TrackNameTotal)
+			assert.EqualValues(t, w.AlbumPerformer, g.AlbumPerformer)
+			assert.EqualValues(t, w.AudioCount, g.AudioCount)
+			assert.EqualValues(t, w.BitDepthString, g.BitDepthString)
+			assert.EqualValues(t, w.CommercialName, g.CommercialName)
+			assert.EqualValues(t, w.CompleteName, g.CompleteName)
+			assert.EqualValues(t, w.CountOfAudioStreams, g.CountOfAudioStreams)
+			assert.EqualValues(t, w.EncodedLibraryDate, g.EncodedLibraryDate)
+			assert.EqualValues(t, w.FileName, g.FileName)
+			assert.EqualValues(t, w.FolderName, g.FolderName)
+			assert.EqualValues(t, w.FormatInfo, g.FormatInfo)
+			assert.EqualValues(t, w.FormatUrl, g.FormatUrl)
+			assert.EqualValues(t, w.InternetMediaType, g.InternetMediaType)
+			assert.EqualValues(t, w.KindOfStream, g.KindOfStream)
+			assert.EqualValues(t, w.Part, g.Part)
+			assert.EqualValues(t, w.PartTotal, g.PartTotal)
+			assert.EqualValues(t, w.StreamIdentifier, g.StreamIdentifier)
+			assert.EqualValues(t, w.WritingLibrary, g.WritingLibrary)
+			assert.EqualValues(t, w.ModifiedDate, g.ModifiedDate)
 		})
 	}
 }
-
-/*
-   string file_extension = 6;
-   string format = 7;
-   int64 file_size = 8;
-   double duration = 9;
-   string overall_bit_rate_mode = 10;
-   int64 overall_bit_rate = 11;
-   int64 stream_size = 12;
-   string album = 13;
-   string title = 14;
-   string track = 15;
-   int64 track_position = 16;
-   string performer = 17;
-   string genre = 18;
-   int64 recorded_date = 19;
-   string comment = 21;
-   string channels = 22;
-   string channel_positions = 23;
-   string channel_layout = 24;
-   int64 sampling_rate = 25;
-   int64 sampling_count = 26;
-   int64 bit_depth = 27;
-   string compression_mode = 28;
-   string encoded_library = 29;
-   string encoded_library_name = 30;
-   string encoded_library_version = 31;
-   string bit_rate_mode = 32;
-   int64 bit_rate = 33;
-   int64 track_name_total = 34;
-   string album_performer = 35;
-   int64 audio_count = 36;
-   string bit_depth_string = 37;
-   string commercial_name = 38;
-   string complete_name = 39;
-   int64 count_of_audio_streams = 40;
-   string encoded_library_date = 41;
-   string file_name = 42;
-   string folder_name = 43;
-   string format_info = 44;
-   string format_url = 45;
-   string internet_media_type = 46;
-   string kind_of_stream = 47;
-   int64 part = 48;
-   int64 part_total = 49;
-   int64 stream_identifier = 50;
-   string writing_library = 51;
-   google.protobuf.Timestamp modified_date = 52;
-
-*/

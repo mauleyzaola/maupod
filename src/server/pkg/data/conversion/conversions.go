@@ -82,6 +82,17 @@ func MediaFromORM(v *orm.Medium) *pb.Media {
 		Track:                 v.Track,
 		TrackNameTotal:        v.TrackNameTotal,
 		TrackPosition:         v.TrackPosition,
+		FileName:              v.FileName,
+		FolderName:            v.FolderName,
+		FormatInfo:            v.FormatInfo,
+		FormatUrl:             v.FormatURL,
+		InternetMediaType:     v.InternetMediaType,
+		KindOfStream:          v.KindOfStream,
+		Part:                  v.Part,
+		PartTotal:             v.PartTotal,
+		StreamIdentifier:      v.StreamIdentifier,
+		WritingLibrary:        v.WritingLibrary,
+		ModifiedDate:          helpers.TimeToTs2(v.ModifiedDate),
 	}
 }
 
