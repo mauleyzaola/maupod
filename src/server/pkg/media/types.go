@@ -8,7 +8,9 @@ type MediaInfo struct {
 	AudioFormatList       string
 	BitDepth              int64
 	BitDepthString        string
-	Channels              int64
+	BitRate               int64
+	BitRateMode           string
+	Channels              string
 	ChannelsLayout        string
 	ChannelsPosition      string
 	Comment               string
