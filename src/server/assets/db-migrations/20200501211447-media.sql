@@ -34,7 +34,25 @@ create table media (
     bit_rate_mode text not null,
     bit_rate bigint not null,
     last_scan timestamp without time zone not null,
-    modified_date timestamp with time zone not null
+    modified_date timestamp with time zone not null,
+    track_name_total bigint not null,
+    album_performer text not null,
+    audio_count int not null,
+    bit_depth_string text not null,
+    commercial_name text not null,
+    complete_name text not null,
+    count_of_audio_streams int not null,
+    encoded_library_date text not null,
+    file_name text not null,
+    folder_name text not null,
+    format_info text not null,
+    format_url text not null,
+    internet_media_type text not null,
+    kind_of_stream text not null,
+    part int not null,
+    part_total bigint not null,
+    stream_identifier bigint not null,
+    writing_library text not null
 );
 
 -- +migrate Down
