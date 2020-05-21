@@ -36,7 +36,7 @@ func MediaInfoFromFile(filename string) (*MediaInfo, error) {
 		return nil, err
 	}
 
-	return MediaParser(output.Bytes())
+	return MediaParser(output)
 }
 
 func programExists(programName string) bool {
