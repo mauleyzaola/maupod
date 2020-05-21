@@ -69,12 +69,57 @@ var scannerCmd = &cobra.Command{
 
 		mediaLocationKeys := allMedia.ToMap()
 		var cols = orm.MediumColumns
-		var fields = []string{cols.ModifiedDate, cols.LastScan, cols.Sha, cols.FileExtension, cols.Duration,
-			cols.BitRate, cols.BitRateMode, cols.EncodedLibraryVersion, cols.EncodedLibrary, cols.EncodedLibraryName,
-			cols.Format, cols.FileSize, cols.OverallBitRateMode, cols.OverallBitRate, cols.StreamSize, cols.Album, cols.Track,
-			cols.Title, cols.TrackPosition, cols.Performer, cols.Genre, cols.RecordedDate, cols.FileModifiedDate, cols.Comment,
-			cols.Channels, cols.ChannelPositions, cols.ChannelLayout, cols.SamplingRate, cols.SamplingCount, cols.BitDepth,
-			cols.CompressionMode}
+		var fields = []string{
+			cols.Sha,
+			cols.FileExtension,
+			cols.Format,
+			cols.FileSize,
+			cols.Duration,
+			cols.OverallBitRateMode,
+			cols.OverallBitRate,
+			cols.StreamSize,
+			cols.Album,
+			cols.Track,
+			cols.Title,
+			cols.TrackPosition,
+			cols.Performer,
+			cols.Genre,
+			cols.RecordedDate,
+			cols.Comment,
+			cols.Channels,
+			cols.ChannelPositions,
+			cols.ChannelLayout,
+			cols.SamplingRate,
+			cols.SamplingCount,
+			cols.BitDepth,
+			cols.CompressionMode,
+			cols.EncodedLibrary,
+			cols.EncodedLibraryName,
+			cols.EncodedLibraryVersion,
+			cols.BitRateMode,
+			cols.BitRate,
+			cols.LastScan,
+			cols.ModifiedDate,
+			cols.TrackNameTotal,
+			cols.AlbumPerformer,
+			cols.AudioCount,
+			cols.BitDepthString,
+			cols.CommercialName,
+			cols.CompleteName,
+			cols.CountOfAudioStreams,
+			cols.EncodedLibraryDate,
+			cols.FileName,
+			cols.FolderName,
+			cols.FormatInfo,
+			cols.FormatURL,
+			cols.InternetMediaType,
+			cols.KindOfStream,
+			cols.Part,
+			cols.PartTotal,
+			cols.StreamIdentifier,
+			cols.WritingLibrary,
+			cols.Composer,
+		}
 
 		insertFn := func(ctx context.Context, filename string, info *media.MediaInfo) error {
 			fileInfo, err := os.Stat(filename)
@@ -151,17 +196,11 @@ func ScanFiles(ctx context.Context, root string, config *pb.Configuration,
 	log.Printf("[DEBUG] finished scanning %d files\n", len(files))
 
 	for _, f := range files {
-		infos, err := media.MediaInfoFromFiles(f)
+		info, err := media.InfoFromFile(f)
 		if err != nil {
 			log.Printf("[ERROR] cannot get mediainfo from file: %s %s\n", f, err)
 			continue
 		}
-		if len(infos) != 1 {
-			log.Println("[ERROR] infos is more than one:", f)
-			continue
-		}
-		info := &infos[0]
-
 		if err := insertFn(ctx, f, info); err != nil {
 			log.Println("[ERROR] ", err)
 		}

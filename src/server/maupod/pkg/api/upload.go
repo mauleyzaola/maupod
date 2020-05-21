@@ -42,7 +42,7 @@ func (a *ApiServer) AudioFileUpload(p TransactionExecutorParams) (status int, re
 
 	var info *media.MediaInfo
 	var ID string
-	if err = media.MediaInfoWithId(filename, func(mi *media.MediaInfo, id string) {
+	if err = media.MediaInfoWithSHA(filename, func(mi *media.MediaInfo, id string) {
 		info = mi
 		ID = id
 	}); err != nil {
