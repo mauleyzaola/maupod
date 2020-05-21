@@ -48,6 +48,7 @@ type Medium struct {
 	SamplingCount         int64     `boil:"sampling_count" json:"sampling_count" toml:"sampling_count" yaml:"sampling_count"`
 	BitDepth              int64     `boil:"bit_depth" json:"bit_depth" toml:"bit_depth" yaml:"bit_depth"`
 	CompressionMode       string    `boil:"compression_mode" json:"compression_mode" toml:"compression_mode" yaml:"compression_mode"`
+	EncodedLibrary        string    `boil:"encoded_library" json:"encoded_library" toml:"encoded_library" yaml:"encoded_library"`
 	EncodedLibraryName    string    `boil:"encoded_library_name" json:"encoded_library_name" toml:"encoded_library_name" yaml:"encoded_library_name"`
 	EncodedLibraryVersion string    `boil:"encoded_library_version" json:"encoded_library_version" toml:"encoded_library_version" yaml:"encoded_library_version"`
 	BitRateMode           string    `boil:"bit_rate_mode" json:"bit_rate_mode" toml:"bit_rate_mode" yaml:"bit_rate_mode"`
@@ -72,6 +73,7 @@ type Medium struct {
 	PartTotal             int64     `boil:"part_total" json:"part_total" toml:"part_total" yaml:"part_total"`
 	StreamIdentifier      int64     `boil:"stream_identifier" json:"stream_identifier" toml:"stream_identifier" yaml:"stream_identifier"`
 	WritingLibrary        string    `boil:"writing_library" json:"writing_library" toml:"writing_library" yaml:"writing_library"`
+	Composer              string    `boil:"composer" json:"composer" toml:"composer" yaml:"composer"`
 
 	R *mediumR `boil:"-" json:"-" toml:"-" yaml:"-"`
 	L mediumL  `boil:"-" json:"-" toml:"-" yaml:"-"`
@@ -128,6 +130,7 @@ var MediumColumns = struct {
 	PartTotal             string
 	StreamIdentifier      string
 	WritingLibrary        string
+	Composer              string
 }{
 	ID:                    "id",
 	Sha:                   "sha",
@@ -179,6 +182,7 @@ var MediumColumns = struct {
 	PartTotal:             "part_total",
 	StreamIdentifier:      "stream_identifier",
 	WritingLibrary:        "writing_library",
+	Composer:              "composer",
 }
 
 // Generated where
@@ -309,6 +313,7 @@ var MediumWhere = struct {
 	PartTotal             whereHelperint64
 	StreamIdentifier      whereHelperint64
 	WritingLibrary        whereHelperstring
+	Composer              whereHelperstring
 }{
 	ID:                    whereHelperstring{field: "\"media\".\"id\""},
 	Sha:                   whereHelperstring{field: "\"media\".\"sha\""},
@@ -360,6 +365,7 @@ var MediumWhere = struct {
 	PartTotal:             whereHelperint64{field: "\"media\".\"part_total\""},
 	StreamIdentifier:      whereHelperint64{field: "\"media\".\"stream_identifier\""},
 	WritingLibrary:        whereHelperstring{field: "\"media\".\"writing_library\""},
+	Composer:              whereHelperstring{field: "\"media\".\"composer\""},
 }
 
 // MediumRels is where relationship names are stored.
@@ -379,8 +385,8 @@ func (*mediumR) NewStruct() *mediumR {
 type mediumL struct{}
 
 var (
-	mediumAllColumns            = []string{"id", "sha", "location", "file_extension", "format", "file_size", "duration", "overall_bit_rate_mode", "overall_bit_rate", "stream_size", "album", "track", "title", "track_position", "performer", "genre", "recorded_date", "comment", "channels", "channel_positions", "channel_layout", "sampling_rate", "sampling_count", "bit_depth", "compression_mode", "encoded_library", "encoded_library_name", "encoded_library_version", "bit_rate_mode", "bit_rate", "last_scan", "modified_date", "track_name_total", "album_performer", "audio_count", "bit_depth_string", "commercial_name", "complete_name", "count_of_audio_streams", "encoded_library_date", "file_name", "folder_name", "format_info", "format_url", "internet_media_type", "kind_of_stream", "part", "part_total", "stream_identifier", "writing_library"}
-	mediumColumnsWithoutDefault = []string{"id", "sha", "location", "file_extension", "format", "file_size", "duration", "overall_bit_rate_mode", "overall_bit_rate", "stream_size", "album", "track", "title", "track_position", "performer", "genre", "recorded_date", "comment", "channels", "channel_positions", "channel_layout", "sampling_rate", "sampling_count", "bit_depth", "compression_mode", "encoded_library", "encoded_library_name", "encoded_library_version", "bit_rate_mode", "bit_rate", "last_scan", "modified_date", "track_name_total", "album_performer", "audio_count", "bit_depth_string", "commercial_name", "complete_name", "count_of_audio_streams", "encoded_library_date", "file_name", "folder_name", "format_info", "format_url", "internet_media_type", "kind_of_stream", "part", "part_total", "stream_identifier", "writing_library"}
+	mediumAllColumns            = []string{"id", "sha", "location", "file_extension", "format", "file_size", "duration", "overall_bit_rate_mode", "overall_bit_rate", "stream_size", "album", "track", "title", "track_position", "performer", "genre", "recorded_date", "comment", "channels", "channel_positions", "channel_layout", "sampling_rate", "sampling_count", "bit_depth", "compression_mode", "encoded_library", "encoded_library_name", "encoded_library_version", "bit_rate_mode", "bit_rate", "last_scan", "modified_date", "track_name_total", "album_performer", "audio_count", "bit_depth_string", "commercial_name", "complete_name", "count_of_audio_streams", "encoded_library_date", "file_name", "folder_name", "format_info", "format_url", "internet_media_type", "kind_of_stream", "part", "part_total", "stream_identifier", "writing_library", "composer"}
+	mediumColumnsWithoutDefault = []string{"id", "sha", "location", "file_extension", "format", "file_size", "duration", "overall_bit_rate_mode", "overall_bit_rate", "stream_size", "album", "track", "title", "track_position", "performer", "genre", "recorded_date", "comment", "channels", "channel_positions", "channel_layout", "sampling_rate", "sampling_count", "bit_depth", "compression_mode", "encoded_library", "encoded_library_name", "encoded_library_version", "bit_rate_mode", "bit_rate", "last_scan", "modified_date", "track_name_total", "album_performer", "audio_count", "bit_depth_string", "commercial_name", "complete_name", "count_of_audio_streams", "encoded_library_date", "file_name", "folder_name", "format_info", "format_url", "internet_media_type", "kind_of_stream", "part", "part_total", "stream_identifier", "writing_library", "composer"}
 	mediumColumnsWithDefault    = []string{}
 	mediumPrimaryKeyColumns     = []string{"id"}
 )

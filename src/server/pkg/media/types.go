@@ -16,6 +16,7 @@ type MediaInfo struct {
 	Comment               string
 	CommercialName        string
 	CompleteName          string
+	Composer              string
 	Compression           string
 	CountOfAudioStreams   int64
 	Duration              float64

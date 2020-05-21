@@ -118,6 +118,7 @@ var scannerCmd = &cobra.Command{
 			cols.PartTotal,
 			cols.StreamIdentifier,
 			cols.WritingLibrary,
+			cols.Composer,
 		}
 
 		insertFn := func(ctx context.Context, filename string, info *media.MediaInfo) error {
@@ -195,7 +196,7 @@ func ScanFiles(ctx context.Context, root string, config *pb.Configuration,
 	log.Printf("[DEBUG] finished scanning %d files\n", len(files))
 
 	for _, f := range files {
-		info, err := media.MediaInfoFromFile(f)
+		info, err := media.InfoFromFile(f)
 		if err != nil {
 			log.Printf("[ERROR] cannot get mediainfo from file: %s %s\n", f, err)
 			continue

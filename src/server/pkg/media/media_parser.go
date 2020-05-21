@@ -18,6 +18,11 @@ func MediaParser(r io.Reader) (*MediaInfo, error) {
 		return val
 	}
 
+	toFloat := func(v string) float64 {
+		val, _ := strconv.ParseFloat(v, 64)
+		return val
+	}
+
 	infoData := ToInfoData(r)
 	var mi = &MediaInfo{}
 	for key, value := range infoData {
@@ -54,6 +59,122 @@ func MediaParser(r io.Reader) (*MediaInfo, error) {
 			mi.ChannelsLayout = defaultValue
 		case strings.ToLower("Channel positions"):
 			mi.ChannelsPosition = defaultValue
+		case strings.ToLower("Comment"):
+			mi.Comment = defaultValue
+		case strings.ToLower("Commercial name"):
+			mi.CommercialName = defaultValue
+		case strings.ToLower("Complete name"):
+			mi.CompleteName = defaultValue
+		case strings.ToLower("Compression mode"):
+			mi.Compression = defaultValue
+		case strings.ToLower("Count of stream of this kind"):
+			mi.CountOfAudioStreams = toInt(defaultValue)
+		case strings.ToLower("Duration"):
+			mi.Duration = toFloat(defaultValue)
+		case strings.ToLower("Encoded_Library_Date"):
+			mi.EncodedLibraryDate = defaultValue
+		case strings.ToLower("Encoded_Library_Name"):
+			mi.EncodedLibraryName = defaultValue
+		case strings.ToLower("Encoded_Library_Version"):
+			mi.EncodedLibraryVersion = defaultValue
+		case strings.ToLower("File extension"):
+			mi.FileExtension = defaultValue
+		case strings.ToLower("File name extension"):
+			mi.FileName = defaultValue
+		case strings.ToLower("File size"):
+			for _, v := range value {
+				if val := toInt(v); val != 0 {
+					mi.FileSize = val
+					break
+				}
+			}
+		case strings.ToLower("Folder name"):
+			mi.FolderName = defaultValue
+		case strings.ToLower("Format/Info"):
+			mi.FormatInfo = defaultValue
+		case strings.ToLower("Format"):
+			mi.Format = defaultValue
+		case strings.ToLower("Format/Url"):
+			mi.FormatURL = defaultValue
+		case strings.ToLower("Genre"):
+			mi.Genre = defaultValue
+		case strings.ToLower("Internet media type"):
+			mi.InternetMediaType = defaultValue
+		case strings.ToLower("Kind of stream"):
+			for _, v := range value {
+				if strings.ToLower(v) == strings.ToLower("General") {
+					continue
+				}
+				mi.KindOfStream = v
+				break
+			}
+		case strings.ToLower("Overall bit rate"):
+			for _, v := range value {
+				if val := toInt(v); val != 0 {
+					mi.OverallBitRate = val
+					break
+				}
+			}
+		case strings.ToLower("Overall bit rate mode"):
+			mi.OverallBitRateMode = defaultValue
+		case strings.ToLower("Part"):
+			mi.Part = toInt(defaultValue)
+		case strings.ToLower("Part/Total"):
+			mi.PartTotal = toInt(defaultValue)
+		case strings.ToLower("Performer"):
+			mi.Performer = defaultValue
+		case strings.ToLower("Recorded date"):
+			mi.RecordedDate = toInt(defaultValue)
+		case strings.ToLower("Samples count"):
+			for _, v := range value {
+				if val := toInt(v); val != 0 {
+					mi.SamplesCount = val
+					break
+				}
+			}
+		case strings.ToLower("Sampling rate"):
+			for _, v := range value {
+				if val := toInt(v); val != 0 {
+					mi.SamplingRate = val
+					break
+				}
+			}
+		case strings.ToLower("Stream identifier"):
+			for _, v := range value {
+				if val := toInt(v); val != 0 {
+					mi.StreamIdentifier = val
+					break
+				}
+			}
+		case strings.ToLower("Stream size"):
+			for _, v := range value {
+				if val := toInt(v); val != 0 {
+					mi.StreamSize = val
+					break
+				}
+			}
+		case strings.ToLower("Title"):
+			mi.Title = defaultValue
+		case strings.ToLower("Track name/Position"):
+			for _, v := range value {
+				if val := toInt(v); val != 0 {
+					mi.TrackNamePosition = val
+					break
+				}
+			}
+		case strings.ToLower("Track name/Total"):
+			for _, v := range value {
+				if val := toInt(v); val != 0 {
+					mi.TrackNameTotal = val
+					break
+				}
+			}
+		case strings.ToLower("Track name"):
+			mi.TrackName = defaultValue
+		case strings.ToLower("Writing library"):
+			mi.WritingLibrary = defaultValue
+		case strings.ToLower("Composer"):
+			mi.Composer = defaultValue
 		}
 	}
 	return mi, nil

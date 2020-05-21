@@ -14,10 +14,10 @@ const (
 	mediaInfoDateFormat = "UTC 2006-01-02 15:04:05"
 )
 
-// MediaInfoFromFile returns a MediaInfo slice
+// InfoFromFile returns a MediaInfo slice
 // params can be either one file, many files or even many paths, not necessary
 // pointing to specific audio files, but directories that contain audio files within
-func MediaInfoFromFile(filename string) (*MediaInfo, error) {
+func InfoFromFile(filename string) (*MediaInfo, error) {
 	const mediaInfoProgram = "mediainfo"
 	if !programExists(mediaInfoProgram) {
 		return nil, fmt.Errorf("could not find program: %s in path", mediaInfoProgram)
@@ -45,7 +45,7 @@ func programExists(programName string) bool {
 }
 
 func MediaInfoWithSHA(filename string, fn func(info *MediaInfo, id string)) error {
-	info, err := MediaInfoFromFile(filename)
+	info, err := InfoFromFile(filename)
 	if err != nil {
 		return err
 	}

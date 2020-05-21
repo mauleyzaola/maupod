@@ -63,5 +63,6 @@ message Media {
     int64 stream_identifier = 50;
     string writing_library = 51;
     google.protobuf.Timestamp modified_date = 52;
+    string composer = 53;
 }
 

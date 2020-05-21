@@ -51,7 +51,8 @@ create table media (
     part bigint not null,
     part_total bigint not null,
     stream_identifier bigint not null,
-    writing_library text not null
+    writing_library text not null,
+    composer text not null
 );
 
 -- +migrate Down

@@ -165,12 +165,12 @@ func TestMediaParser(t *testing.T) {
 				SamplesCount:          35251200,
 				SamplingRate:          96000,
 				StreamIdentifier:      0,
-				StreamSize:            0,
+				StreamSize:            137705073,
 				Title:                 "Right in the night (Fall in love with music) (feat. Plavka)",
 				TrackNamePosition:     1,
 				TrackName:             "Right in the night (Fall in love with music) (feat. Plavka)",
 				TrackNameTotal:        3,
-				WritingLibrary:        "libFLAC 1.3.3 (UTC 2019-08-04)",
+				WritingLibrary:        "reference libFLAC 1.3.3 20190804",
 			},
 		},
 	}
@@ -193,40 +193,40 @@ func TestMediaParser(t *testing.T) {
 				assert.EqualValues(t, w.Channels, g.Channels)
 				assert.EqualValues(t, w.ChannelsLayout, g.ChannelsLayout)
 				assert.EqualValues(t, w.ChannelsPosition, g.ChannelsPosition)
-				//assert.EqualValues(t, w.Comment, g.Comment)
-				//assert.EqualValues(t, w.CommercialName, g.CommercialName)
-				//assert.EqualValues(t, w.CompleteName, g.CompleteName)
-				//assert.EqualValues(t, w.Compression, g.Compression)
-				//assert.EqualValues(t, w.CountOfAudioStreams, g.CountOfAudioStreams)
-				//assert.EqualValues(t, w.Duration, g.Duration)
-				//assert.EqualValues(t, w.EncodedLibraryDate, g.EncodedLibraryDate)
-				//assert.EqualValues(t, w.EncodedLibraryName, g.EncodedLibraryName)
-				//assert.EqualValues(t, w.EncodedLibraryVersion, g.EncodedLibraryVersion)
-				//assert.EqualValues(t, w.FileExtension, g.FileExtension)
-				//assert.EqualValues(t, w.FileName, g.FileName)
-				//assert.EqualValues(t, w.FileSize, g.FileSize)
-				//assert.EqualValues(t, w.FolderName, g.FolderName)
-				//assert.EqualValues(t, w.FormatInfo, g.FormatInfo)
-				//assert.EqualValues(t, w.Format, g.Format)
-				//assert.EqualValues(t, w.FormatURL, g.FormatURL)
-				//assert.EqualValues(t, w.Genre, g.Genre)
-				//assert.EqualValues(t, w.InternetMediaType, g.InternetMediaType)
-				//assert.EqualValues(t, w.KindOfStream, g.KindOfStream)
-				//assert.EqualValues(t, w.OverallBitRate, g.OverallBitRate)
-				//assert.EqualValues(t, w.OverallBitRateMode, g.OverallBitRateMode)
-				//assert.EqualValues(t, w.Part, g.Part)
-				//assert.EqualValues(t, w.PartTotal, g.PartTotal)
-				//assert.EqualValues(t, w.Performer, g.Performer)
-				//assert.EqualValues(t, w.RecordedDate, g.RecordedDate)
-				//assert.EqualValues(t, w.SamplesCount, g.SamplesCount)
-				//assert.EqualValues(t, w.SamplingRate, g.SamplingRate)
-				//assert.EqualValues(t, w.StreamIdentifier, g.StreamIdentifier)
-				//assert.EqualValues(t, w.StreamSize, g.StreamSize)
-				//assert.EqualValues(t, w.Title, g.Title)
-				//assert.EqualValues(t, w.TrackNamePosition, g.TrackNamePosition)
-				//assert.EqualValues(t, w.TrackName, g.TrackName)
-				//assert.EqualValues(t, w.TrackNameTotal, g.TrackNameTotal)
-				//assert.EqualValues(t, w.WritingLibrary, g.WritingLibrary)
+				assert.EqualValues(t, w.Comment, g.Comment)
+				assert.EqualValues(t, w.CommercialName, g.CommercialName)
+				assert.EqualValues(t, w.CompleteName, g.CompleteName)
+				assert.EqualValues(t, w.Compression, g.Compression)
+				assert.EqualValues(t, w.CountOfAudioStreams, g.CountOfAudioStreams)
+				assert.EqualValues(t, w.Duration, g.Duration)
+				assert.EqualValues(t, w.EncodedLibraryDate, g.EncodedLibraryDate)
+				assert.EqualValues(t, w.EncodedLibraryName, g.EncodedLibraryName)
+				assert.EqualValues(t, w.EncodedLibraryVersion, g.EncodedLibraryVersion)
+				assert.EqualValues(t, w.FileExtension, g.FileExtension)
+				assert.EqualValues(t, w.FileName, g.FileName)
+				assert.EqualValues(t, w.FileSize, g.FileSize)
+				assert.EqualValues(t, w.FolderName, g.FolderName)
+				assert.EqualValues(t, w.FormatInfo, g.FormatInfo)
+				assert.EqualValues(t, w.Format, g.Format)
+				assert.EqualValues(t, w.FormatURL, g.FormatURL)
+				assert.EqualValues(t, w.Genre, g.Genre)
+				assert.EqualValues(t, w.InternetMediaType, g.InternetMediaType)
+				assert.EqualValues(t, w.KindOfStream, g.KindOfStream)
+				assert.EqualValues(t, w.OverallBitRate, g.OverallBitRate)
+				assert.EqualValues(t, w.OverallBitRateMode, g.OverallBitRateMode)
+				assert.EqualValues(t, w.Part, g.Part)
+				assert.EqualValues(t, w.PartTotal, g.PartTotal)
+				assert.EqualValues(t, w.Performer, g.Performer)
+				assert.EqualValues(t, w.RecordedDate, g.RecordedDate)
+				assert.EqualValues(t, w.SamplesCount, g.SamplesCount)
+				assert.EqualValues(t, w.SamplingRate, g.SamplingRate)
+				assert.EqualValues(t, w.StreamIdentifier, g.StreamIdentifier)
+				assert.EqualValues(t, w.StreamSize, g.StreamSize)
+				assert.EqualValues(t, w.Title, g.Title)
+				assert.EqualValues(t, w.TrackNamePosition, g.TrackNamePosition)
+				assert.EqualValues(t, w.TrackName, g.TrackName)
+				assert.EqualValues(t, w.TrackNameTotal, g.TrackNameTotal)
+				assert.EqualValues(t, w.WritingLibrary, g.WritingLibrary)
 			}
 		})
 	}

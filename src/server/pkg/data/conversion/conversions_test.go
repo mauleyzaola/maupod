@@ -63,6 +63,7 @@ var sampleMedium = &orm.Medium{
 	PartTotal:             46,
 	StreamIdentifier:      47,
 	WritingLibrary:        "48",
+	Composer:              "49",
 }
 var sampleMedia = &pb.Media{
 	Id:                    "1",
@@ -114,6 +115,7 @@ var sampleMedia = &pb.Media{
 	StreamIdentifier:      47,
 	WritingLibrary:        "48",
 	ModifiedDate:          helpers.TimeToTs2(year2001),
+	Composer:              "49",
 }
 
 func TestMediaToORM(t *testing.T) {
@@ -184,6 +186,7 @@ func TestMediaToORM(t *testing.T) {
 			assert.EqualValues(t, w.StreamIdentifier, g.StreamIdentifier)
 			assert.EqualValues(t, w.WritingLibrary, g.WritingLibrary)
 			assert.EqualValues(t, w.ModifiedDate, g.ModifiedDate)
+			assert.EqualValues(t, w.Composer, g.Composer)
 		})
 	}
 }
@@ -256,6 +259,7 @@ func TestMediaFromORM(t *testing.T) {
 			assert.EqualValues(t, w.StreamIdentifier, g.StreamIdentifier)
 			assert.EqualValues(t, w.WritingLibrary, g.WritingLibrary)
 			assert.EqualValues(t, w.ModifiedDate, g.ModifiedDate)
+			assert.EqualValues(t, w.Composer, g.Composer)
 		})
 	}
 }

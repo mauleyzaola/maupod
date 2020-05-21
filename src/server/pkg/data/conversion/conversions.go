@@ -57,6 +57,7 @@ func MediaToORM(v *pb.Media) *orm.Medium {
 		StreamIdentifier:      v.StreamIdentifier,
 		WritingLibrary:        v.WritingLibrary,
 		ModifiedDate:          helpers.TsToTime2(v.ModifiedDate),
+		Composer:              v.Composer,
 	}
 }
 
@@ -111,6 +112,7 @@ func MediaFromORM(v *orm.Medium) *pb.Media {
 		StreamIdentifier:      v.StreamIdentifier,
 		WritingLibrary:        v.WritingLibrary,
 		ModifiedDate:          helpers.TimeToTs2(v.ModifiedDate),
+		Composer:              v.Composer,
 	}
 }
 

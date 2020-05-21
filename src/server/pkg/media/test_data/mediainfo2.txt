@@ -8,55 +8,56 @@ Count of audio streams                   : 1
 Audio_Format_List                        : MPEG Audio
 Audio_Format_WithHint_List               : MPEG Audio
 Audio codecs                             : MPEG Audio
-Complete name                            : /media/mau/music-library/music/Al Stewart/Year of the Cat/01 Lord Grenville.mp3
-Folder name                              : /media/mau/music-library/music/Al Stewart/Year of the Cat
-File name extension                      : 01 Lord Grenville.mp3
-File name                                : 01 Lord Grenville
+Complete name                            : /media/mau/music-library/music/Alphaville/First Harvest 1984 - 92/01 Big in Japan.mp3
+Folder name                              : /media/mau/music-library/music/Alphaville/First Harvest 1984 - 92
+File name extension                      : 01 Big in Japan.mp3
+File name                                : 01 Big in Japan
 File extension                           : mp3
 Format                                   : MPEG Audio
 Format                                   : MPEG Audio
 Format/Extensions usually used           : m1a mpa mpa1 mp1 m2a mpa2 mp2 mp3
 Commercial name                          : MPEG Audio
 Internet media type                      : audio/mpeg
-File size                                : 12240160
-File size                                : 11.7 MiB
-File size                                : 12 MiB
-File size                                : 12 MiB
-File size                                : 11.7 MiB
-File size                                : 11.67 MiB
-Duration                                 : 305892
-Duration                                 : 5 min 5 s
-Duration                                 : 5 min 5 s 892 ms
-Duration                                 : 5 min 5 s
-Duration                                 : 00:05:05.892
-Duration                                 : 00:05:05.892
+File size                                : 7548831
+File size                                : 7.20 MiB
+File size                                : 7 MiB
+File size                                : 7.2 MiB
+File size                                : 7.20 MiB
+File size                                : 7.199 MiB
+Duration                                 : 234710
+Duration                                 : 3 min 54 s
+Duration                                 : 3 min 54 s 710 ms
+Duration                                 : 3 min 54 s
+Duration                                 : 00:03:54.710
+Duration                                 : 00:03:54.710
 Overall bit rate mode                    : CBR
 Overall bit rate mode                    : Constant
-Overall bit rate                         : 320000
-Overall bit rate                         : 320 kb/s
-Stream size                              : 4480
-Stream size                              : 4.38 KiB (0%)
-Stream size                              : 4 KiB
-Stream size                              : 4.4 KiB
-Stream size                              : 4.38 KiB
-Stream size                              : 4.375 KiB
-Stream size                              : 4.38 KiB (0%)
-Proportion of this stream                : 0.00037
-Title                                    : Lord Grenville
-Album                                    : Year of the Cat
-Album/Sorted by                          : Year of the Cat
-Album/Performer                          : Al Stewart
-Track name                               : Lord Grenville
+Overall bit rate                         : 256000
+Overall bit rate                         : 256 kb/s
+Stream size                              : 38105
+Stream size                              : 37.2 KiB (1%)
+Stream size                              : 37 KiB
+Stream size                              : 37 KiB
+Stream size                              : 37.2 KiB
+Stream size                              : 37.21 KiB
+Stream size                              : 37.2 KiB (1%)
+Proportion of this stream                : 0.00505
+Title                                    : Big in Japan
+Album                                    : First Harvest 1984 - 92
+Album/Performer                          : Alphaville
+Track name                               : Big in Japan
 Track name/Position                      : 1
-Track name/Total                         : 9
-Performer                                : Al Stewart
-Composer                                 : Al Stewart
-Composer/Sorted by                       : Al Stewart
-Publisher                                : Rhino
-Genre                                    : Pop
-Recorded date                            : 1976
-File last modification date              : UTC 2020-04-26 18:34:04
-File last modification date (local)      : 2020-04-26 13:34:04
+Performer                                : Alphaville
+Genre                                    : Synthpop
+Recorded date                            : 1984
+File last modification date              : UTC 2020-05-21 03:55:44
+File last modification date (local)      : 2020-05-20 22:55:44
+Writing library                          : LAME3.97.1
+Writing library                          : LAME3.97.1
+Cover                                    : Yes
+Cover MIME                               : image/jpeg
+Lyrics                                   : winter´s cityside / crystal bits of snowflakes all around my head and in the wind / i had no illusions / that i´d ever find a glimps of summer´s heatwaves in your eyes / you did what you did to me, now it´s history i see / here´s my comeback on the road again / things will happen while they can / i will wait here for my man tonight, it´s easy when your big in japan / when your big in japan, tonight / big in japan, be tight, big in japan where the eastern sea´s so blue / big in japan, alright, pay, then i´ll sleep by your side / things are easy when you´re big in japan, when you´re big in japan / neon on my naked skin / passing silhouettes of strange illuminated mannequins / shall i stay here at the zoo / or shall i go and change my point of view for other ugly scenes / you did what you did to me, now it´s history i see... / things will happen while they can / i will wait here for my man tonight, it´s easy when you´re big in japan
+Comment                                  : http://leyzaola.net
 
 Audio
 Count                                    : 280
@@ -72,35 +73,37 @@ Format profile                           : Layer 3
 Format settings                          : Joint stereo
 Mode                                     : Joint stereo
 Internet media type                      : audio/mpeg
-Duration                                 : 305893
-Duration                                 : 5 min 5 s
-Duration                                 : 5 min 5 s 893 ms
-Duration                                 : 5 min 5 s
-Duration                                 : 00:05:05.893
-Duration                                 : 00:05:08:06
-Duration                                 : 00:05:05.893 (00:05:08:06)
+Duration                                 : 234710
+Duration                                 : 3 min 54 s
+Duration                                 : 3 min 54 s 710 ms
+Duration                                 : 3 min 54 s
+Duration                                 : 00:03:54.710
+Duration                                 : 00:03:56:17
+Duration                                 : 00:03:54.710 (00:03:56:17)
 Bit rate mode                            : CBR
 Bit rate mode                            : Constant
-Bit rate                                 : 320000
-Bit rate                                 : 320 kb/s
+Bit rate                                 : 256000
+Bit rate                                 : 256 kb/s
 Channel(s)                               : 2
 Channel(s)                               : 2 channels
 Samples per frame                        : 1152
 Sampling rate                            : 44100
 Sampling rate                            : 44.1 kHz
-Samples count                            : 13489920
+Samples count                            : 10350720
 Frame rate                               : 38.281
 Frame rate                               : 38.281 FPS (1152 SPF)
-Frame count                              : 11710
+Frame count                              : 8985
 Compression mode                         : Lossy
 Compression mode                         : Lossy
-Stream size                              : 12235680
-Stream size                              : 11.7 MiB (100%)
-Stream size                              : 12 MiB
-Stream size                              : 12 MiB
-Stream size                              : 11.7 MiB
-Stream size                              : 11.67 MiB
-Stream size                              : 11.7 MiB (100%)
-Proportion of this stream                : 0.99963
+Stream size                              : 7510726
+Stream size                              : 7.16 MiB (99%)
+Stream size                              : 7 MiB
+Stream size                              : 7.2 MiB
+Stream size                              : 7.16 MiB
+Stream size                              : 7.163 MiB
+Stream size                              : 7.16 MiB (99%)
+Proportion of this stream                : 0.99495
+Writing library                          : LAME3.97.1
+Writing library                          : LAME3.97.1
 
 
