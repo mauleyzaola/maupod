@@ -41,13 +41,6 @@ func ExtractImageFromMedia(w io.Writer, filename string) error {
 			log.Println(err)
 		}
 	}()
-	info, err := file.Stat()
-	if err != nil {
-		return err
-	}
-	if info.Size() == 0 {
-		return errors.New("file is empty")
-	}
 	if _, err = io.Copy(w, file); err != nil {
 		return err
 	}

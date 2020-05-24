@@ -166,8 +166,7 @@ func ScanFiles(ctx context.Context, root string, config *pb.Configuration,
 
 		// a bit of speed improvement, avoid a second time scanning the same file unless it has been changed in the file system
 		if val, ok := mediaLocationKeys[filename]; ok {
-			me := rule.Media(*val)
-			if !me.NeedsUpdate() {
+			if !rule.NeedsUpdate(val) {
 				return false
 			}
 		}
@@ -189,10 +188,9 @@ func ScanFiles(ctx context.Context, root string, config *pb.Configuration,
 			log.Printf("[ERROR] cannot get mediainfo from file: %s %s\n", f, err)
 			continue
 		}
-		if err := insertFn(ctx, f, info); err != nil {
-			log.Println("[ERROR] ", err)
+		if err = insertFn(ctx, f, info); err != nil {
+			return err
 		}
-		//log.Printf("[SUCCESS] %s\n", filepath.Base(f))
 	}
 
 	log.Printf("[INFO] files: %d  elapsed: %s\n", len(files), time.Since(start))

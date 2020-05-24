@@ -2,7 +2,6 @@ package rule
 
 import (
 	"errors"
-	"math"
 	"os"
 	"path/filepath"
 	"time"
@@ -25,45 +24,37 @@ func NewMediaFile(info *media.MediaInfo, filename string, scanDate time.Time, fi
 }
 
 // FileInfo returns the information from the file system about a media item
-func (m *Media) FileInfo() (os.FileInfo, error) {
+func FileInfo(m *pb.Media) (os.FileInfo, error) {
 	if m.Location == "" {
 		return nil, errors.New("missing location")
 	}
 	return os.Stat(m.Location)
 }
 
-func (m *Media) FileIsValidExtension(c *pb.Configuration) bool {
-	return FileIsValidExtension(c, m.Location)
-}
-
 // Needs update compares the file system modified date vs database value
-func (m *Media) NeedsUpdate() bool {
-	info, err := m.FileInfo()
+func NeedsUpdate(m *pb.Media) bool {
+	info, err := FileInfo(m)
 	if err != nil {
 		return false
 	}
-	lastUpdateDb, lastUpdateFileSystem := m.ModifiedDate.Seconds, info.ModTime().Unix()
-	diffSeconds := math.Abs(float64(lastUpdateFileSystem - lastUpdateDb))
-	// less than 1 second should not be considered as a change
-	return diffSeconds > 1
+	diffSeconds := m.ModifiedDate.Seconds - info.ModTime().Unix()
+	return diffSeconds < 0
 }
 
 // Needs update compares the file system modified date vs database value
-func (m *Media) NeedsImageUpdate() bool {
-	info, err := m.FileInfo()
+func NeedsImageUpdate(m *pb.Media) bool {
+	info, err := FileInfo(m)
 	if err != nil {
 		return false
 	}
 	if m.LastImageScan == nil {
 		return true
 	}
-	lastUpdateDb, lastUpdateFileSystem := m.LastImageScan.Seconds, info.ModTime().Unix()
-	diffSeconds := math.Abs(float64(lastUpdateFileSystem - lastUpdateDb))
-	// less than 1 second should not be considered as a change
-	return diffSeconds > 1
+	diffSeconds := m.LastImageScan.Seconds - info.ModTime().Unix()
+	return diffSeconds < 0
 }
 
-func (m *Media) HasImage() bool {
+func HasImage(m *pb.Media) bool {
 	return m.ShaImage != ""
 }
 
@@ -75,7 +66,7 @@ func ImageFileName(m *pb.Media, store *pb.FileStore) (string, error) {
 		return "", errors.New("missing parameter: store")
 	}
 	if m.ShaImage == "" {
-		return "", errors.New("missing sha image")
+		return "", errors.New("missing sha image: " + m.Location)
 	}
 	// TODO: allow to configure the image format, png is assumed for now
 	filename := m.ShaImage + ".png"

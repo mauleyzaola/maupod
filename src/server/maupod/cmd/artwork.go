@@ -21,8 +21,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var albumimageCmd = &cobra.Command{
-	Use:   "albumimage",
+var artworkCmd = &cobra.Command{
+	Use:   "artwork",
 	Short: "extract image from audio file",
 	Long:  ``,
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -105,7 +105,7 @@ var albumimageCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(albumimageCmd)
+	rootCmd.AddCommand(artworkCmd)
 }
 
 func ScanArtwork(ctx context.Context,
@@ -118,7 +118,6 @@ func ScanArtwork(ctx context.Context,
 
 	var err error
 	var files []string
-	start := time.Now()
 
 	// create directory if not exists
 	if err = os.MkdirAll(imageStore.Location, os.ModePerm); err != nil {
@@ -142,9 +141,8 @@ func ScanArtwork(ctx context.Context,
 			// if the file has not yet been scanned, we cannot process its image
 			return false
 		}
-		me := rule.Media(*val)
 
-		if me.HasImage() {
+		if rule.HasImage(val) {
 			// if the file has already sha for the image, don't add it to the files
 			// however we add it to the scanned images, so we don't extract the image a second time
 			if _, ok = shaImageKeys[val.ShaImage]; !ok {
@@ -162,7 +160,6 @@ func ScanArtwork(ctx context.Context,
 		log.Println(err)
 		return err
 	}
-	log.Printf("[DEBUG] finished scanning %d files\n", len(files))
 
 	// extract the images from each file
 	for _, f := range files {
@@ -175,44 +172,47 @@ func ScanArtwork(ctx context.Context,
 			// this should not happen, as we have already skipped these cases in the walker
 			continue
 		}
-		me := rule.Media(*val)
-		if !me.NeedsImageUpdate() {
+		if !rule.NeedsImageUpdate(val) {
 			continue
 		}
 
 		// extract the image from the file
 		val.LastImageScan = helpers.TimeToTs(&scanDate)
 		w := &bytes.Buffer{}
-		if err = images.ExtractImageFromMedia(w, me.Location); err == nil {
-			imageData = w.Bytes()
-			log.Println("[DEBUG] found image data for file: ", me.FileName)
-
-			// calculate the sha of the image
-			if shaData, err = helpers.SHA(bytes.NewBuffer(imageData)); err != nil {
-				// we should not allow this, simply ignore for now
-			} else {
-				val.ShaImage = helpers.HashFromSHA(shaData)
-				log.Println("[DEBUG] hash ok for file length: ", len(val.ShaImage))
-				if _, ok = shaImageKeys[val.ShaImage]; !ok {
-					shaImageKeys[val.ShaImage] = struct{}{}
-					// flag for later
-					saveImage = true
-				}
+		if err = images.ExtractImageFromMedia(w, val.Location); err != nil {
+			// no image in audio file, update scan in db and continue
+			if err = updateFn(ctx, val); err != nil {
+				return err
 			}
+			continue
+		}
+
+		imageData = w.Bytes()
+
+		// calculate the sha of the image
+		if shaData, err = helpers.SHA(bytes.NewBuffer(imageData)); err != nil {
+			return err
+		}
+
+		val.ShaImage = helpers.HashFromSHA(shaData)
+		if _, ok = shaImageKeys[val.ShaImage]; !ok {
+			shaImageKeys[val.ShaImage] = struct{}{}
+			// flag for later
+			saveImage = true
 		}
 
 		// update database
-		val.ImageLocation = filename
 		if filename, err = rule.ImageFileName(val, imageStore); err != nil {
 			return err
 		}
+		val.ImageLocation = filename
 		if err = updateFn(ctx, val); err != nil {
 			return err
 		}
 
 		// if hash doesn't exist save to image store
 		if saveImage {
-			log.Println("[DEBUG] storing artwork at: ", filename)
+			log.Println("[DEBUG] sha artwork: ", val.ShaImage)
 			// TODO: resize image, for now store the original
 			if err = ioutil.WriteFile(filename, imageData, os.ModePerm); err != nil {
 				return err
@@ -220,7 +220,7 @@ func ScanArtwork(ctx context.Context,
 		}
 	}
 
-	log.Printf("[INFO] files: %d  elapsed: %s\n", len(files), time.Since(start))
+	log.Printf("[INFO] files: %d  elapsed: %s\n", len(files), time.Since(scanDate))
 
 	return nil
 }
