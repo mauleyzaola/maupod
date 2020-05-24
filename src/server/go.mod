@@ -4,6 +4,7 @@ go 1.14
 
 require (
 	github.com/DATA-DOG/go-sqlmock v1.4.1 // indirect
+	github.com/disintegration/imaging v1.6.2
 	github.com/friendsofgo/errors v0.9.2
 	github.com/gofrs/uuid v3.3.0+incompatible // indirect
 	github.com/golang/protobuf v1.4.0
