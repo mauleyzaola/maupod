@@ -64,5 +64,12 @@ message Media {
     string writing_library = 51;
     google.protobuf.Timestamp modified_date = 52;
     string composer = 53;
+
+    // the sha 256 to uniquely identify an album cover image
+    string sha_image = 54;
+
+    google.protobuf.Timestamp last_image_scan = 55;
+
+    string image_location = 56;
 }
 

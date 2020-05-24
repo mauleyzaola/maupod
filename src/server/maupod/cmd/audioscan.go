@@ -3,9 +3,7 @@ package cmd
 import (
 	"context"
 	"database/sql"
-	"errors"
 	"log"
-	"math"
 	"os"
 	"time"
 
@@ -34,11 +32,11 @@ var scannerCmd = &cobra.Command{
 			return err
 		}
 
-		if len(os.Args) < 3 {
-			return errors.New("missing path for file scan")
+		var roots []string
+		var fileSystemStores = rule.ConfigurationFileSystemStores(config)
+		for _, v := range fileSystemStores {
+			roots = append(roots, v.Location)
 		}
-
-		roots := os.Args[2:]
 		for _, root := range roots {
 			if _, err = os.Stat(root); err != nil {
 				return err
@@ -168,18 +166,7 @@ func ScanFiles(ctx context.Context, root string, config *pb.Configuration,
 
 		// a bit of speed improvement, avoid a second time scanning the same file unless it has been changed in the file system
 		if val, ok := mediaLocationKeys[filename]; ok {
-			// TODO: avoid a second file scan?
-			info, err := os.Stat(filename)
-			if err != nil {
-				log.Println("[ERROR] ", err)
-				return false
-			}
-
-			lastUpdateDb, lastUpdateFileSystem := val.ModifiedDate.Seconds, info.ModTime().Unix()
-			diffSeconds := math.Abs(float64(lastUpdateFileSystem - lastUpdateDb))
-
-			// less than 5 seconds should not be considered as a change
-			if diffSeconds < 5 {
+			if !rule.NeedsUpdate(val) {
 				return false
 			}
 		}
@@ -201,10 +188,9 @@ func ScanFiles(ctx context.Context, root string, config *pb.Configuration,
 			log.Printf("[ERROR] cannot get mediainfo from file: %s %s\n", f, err)
 			continue
 		}
-		if err := insertFn(ctx, f, info); err != nil {
-			log.Println("[ERROR] ", err)
+		if err = insertFn(ctx, f, info); err != nil {
+			return err
 		}
-		//log.Printf("[SUCCESS] %s\n", filepath.Base(f))
 	}
 
 	log.Printf("[INFO] files: %d  elapsed: %s\n", len(files), time.Since(start))

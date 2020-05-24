@@ -19,7 +19,7 @@ const (
 // pointing to specific audio files, but directories that contain audio files within
 func InfoFromFile(filename string) (*MediaInfo, error) {
 	const mediaInfoProgram = "mediainfo"
-	if !programExists(mediaInfoProgram) {
+	if !helpers.ProgramExists(mediaInfoProgram) {
 		return nil, fmt.Errorf("could not find program: %s in path", mediaInfoProgram)
 	}
 	var p = []string{
@@ -39,11 +39,6 @@ func InfoFromFile(filename string) (*MediaInfo, error) {
 	return MediaParser(output)
 }
 
-func programExists(programName string) bool {
-	_, err := exec.LookPath(programName)
-	return err == nil
-}
-
 func MediaInfoWithSHA(filename string, fn func(info *MediaInfo, id string)) error {
 	info, err := InfoFromFile(filename)
 	if err != nil {
@@ -59,7 +54,7 @@ func MediaInfoWithSHA(filename string, fn func(info *MediaInfo, id string)) erro
 		if hash, err = helpers.SHA(buffer); err != nil {
 			return err
 		}
-		fn(info, fmt.Sprintf("%x", string(hash)))
+		fn(info, helpers.HashFromSHA(hash))
 	}
 	return nil
 }
