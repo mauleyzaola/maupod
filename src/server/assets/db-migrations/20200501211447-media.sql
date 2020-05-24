@@ -6,6 +6,7 @@ create table media (
     sha text not null,
     location text not null unique,
     sha_image text not null,
+    last_image_scan timestamp without time zone null,
 
     file_extension text not null ,
     format text not null ,

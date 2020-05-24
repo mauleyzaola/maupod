@@ -113,6 +113,8 @@ func MediaFromORM(v *orm.Medium) *pb.Media {
 		WritingLibrary:        v.WritingLibrary,
 		ModifiedDate:          helpers.TimeToTs2(v.ModifiedDate),
 		Composer:              v.Composer,
+		LastImageScan:         helpers.TimeToTs(v.LastImageScan.Ptr()),
+		ShaImage:              v.ShaImage,
 	}
 }
 

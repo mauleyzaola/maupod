@@ -5,6 +5,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/volatiletech/null"
+
 	"github.com/mauleyzaola/maupod/src/server/pkg/data/orm"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
@@ -64,6 +66,8 @@ var sampleMedium = &orm.Medium{
 	StreamIdentifier:      47,
 	WritingLibrary:        "48",
 	Composer:              "49",
+	ShaImage:              "50",
+	LastImageScan:         null.TimeFrom(year2000),
 }
 var sampleMedia = &pb.Media{
 	Id:                    "1",
@@ -116,6 +120,8 @@ var sampleMedia = &pb.Media{
 	WritingLibrary:        "48",
 	ModifiedDate:          helpers.TimeToTs2(year2001),
 	Composer:              "49",
+	ShaImage:              "50",
+	LastImageScan:         helpers.TimeToTs(&year2000),
 }
 
 func TestMediaToORM(t *testing.T) {
@@ -187,6 +193,8 @@ func TestMediaToORM(t *testing.T) {
 			assert.EqualValues(t, w.WritingLibrary, g.WritingLibrary)
 			assert.EqualValues(t, w.ModifiedDate, g.ModifiedDate)
 			assert.EqualValues(t, w.Composer, g.Composer)
+			assert.EqualValues(t, w.ShaImage, g.ShaImage)
+			assert.EqualValues(t, w.LastImageScan, g.LastImageScan)
 		})
 	}
 }
@@ -260,6 +268,8 @@ func TestMediaFromORM(t *testing.T) {
 			assert.EqualValues(t, w.WritingLibrary, g.WritingLibrary)
 			assert.EqualValues(t, w.ModifiedDate, g.ModifiedDate)
 			assert.EqualValues(t, w.Composer, g.Composer)
+			assert.EqualValues(t, w.ShaImage, g.ShaImage)
+			assert.EqualValues(t, w.LastImageScan, g.LastImageScan)
 		})
 	}
 }
