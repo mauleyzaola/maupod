@@ -34,3 +34,28 @@ func FileIsValidExtension(c *pb.Configuration, filename string) bool {
 	}
 	return false
 }
+
+func ConfigurationFirstImageStore(c *pb.Configuration) *pb.FileStore {
+	for _, v := range c.Stores {
+		switch v.Type {
+		case pb.FileStore_IMAGE:
+			return v
+		default:
+			continue
+		}
+	}
+	return nil
+}
+
+func ConfigurationFileSystemStores(c *pb.Configuration) []*pb.FileStore {
+	var roots []*pb.FileStore
+	for _, v := range c.Stores {
+		switch v.Type {
+		case pb.FileStore_FILE_SYSTEM:
+			roots = append(roots, v)
+		default:
+			continue
+		}
+	}
+	return roots
+}

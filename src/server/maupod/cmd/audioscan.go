@@ -3,7 +3,6 @@ package cmd
 import (
 	"context"
 	"database/sql"
-	"errors"
 	"log"
 	"math"
 	"os"
@@ -34,11 +33,11 @@ var scannerCmd = &cobra.Command{
 			return err
 		}
 
-		if len(os.Args) < 3 {
-			return errors.New("missing path for file scan")
+		var roots []string
+		var fileSystemStores = rule.ConfigurationFileSystemStores(config)
+		for _, v := range fileSystemStores {
+			roots = append(roots, v.Location)
 		}
-
-		roots := os.Args[2:]
 		for _, root := range roots {
 			if _, err = os.Stat(root); err != nil {
 				return err

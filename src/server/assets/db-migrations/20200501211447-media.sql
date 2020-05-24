@@ -5,6 +5,8 @@ create table media (
     id text primary key,
     sha text not null,
     location text not null unique,
+    sha_image text not null,
+
     file_extension text not null ,
     format text not null ,
     file_size bigint not null ,

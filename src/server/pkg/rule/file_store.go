@@ -14,6 +14,7 @@ func FileStoreValidate(store *pb.FileStore) error {
 	switch store.Type {
 	case pb.FileStore_FILE_SYSTEM:
 	case pb.FileStore_S3:
+	case pb.FileStore_IMAGE:
 	default:
 		return fmt.Errorf("unsupported file store: %s", store.Type)
 	}
