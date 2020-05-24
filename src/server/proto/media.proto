@@ -69,5 +69,7 @@ message Media {
     string sha_image = 54;
 
     google.protobuf.Timestamp last_image_scan = 55;
+
+    string image_location = 56;
 }
 

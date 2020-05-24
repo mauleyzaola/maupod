@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"log"
-	"math"
 	"os"
 	"time"
 
@@ -167,18 +166,8 @@ func ScanFiles(ctx context.Context, root string, config *pb.Configuration,
 
 		// a bit of speed improvement, avoid a second time scanning the same file unless it has been changed in the file system
 		if val, ok := mediaLocationKeys[filename]; ok {
-			// TODO: avoid a second file scan?
-			info, err := os.Stat(filename)
-			if err != nil {
-				log.Println("[ERROR] ", err)
-				return false
-			}
-
-			lastUpdateDb, lastUpdateFileSystem := val.ModifiedDate.Seconds, info.ModTime().Unix()
-			diffSeconds := math.Abs(float64(lastUpdateFileSystem - lastUpdateDb))
-
-			// less than 5 seconds should not be considered as a change
-			if diffSeconds < 5 {
+			me := rule.Media(*val)
+			if !me.NeedsUpdate() {
 				return false
 			}
 		}

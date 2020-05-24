@@ -2,6 +2,7 @@ package helpers
 
 import (
 	"crypto/sha512"
+	"fmt"
 	"io"
 )
 
@@ -11,4 +12,8 @@ func SHA(r io.Reader) ([]byte, error) {
 		return nil, err
 	}
 	return h.Sum(nil), nil
+}
+
+func HashFromSHA(data []byte) string {
+	return fmt.Sprintf("%x", string(data))
 }

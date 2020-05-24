@@ -7,7 +7,7 @@ stores:
 #    file-system
     type: 0
 #    location: /media/mau/music-library/music
-    location: /Users/mau/Downloads/music
+    location: /Users/mau/Downloads/music/Héroes Del Silencio/1990 - Senderos De Traición
   - name: local-hd-image
     type: 2
 #    location: /media/mau/music-library/album-covers

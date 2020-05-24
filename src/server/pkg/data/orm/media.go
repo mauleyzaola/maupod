@@ -77,6 +77,7 @@ type Medium struct {
 	StreamIdentifier      int64     `boil:"stream_identifier" json:"stream_identifier" toml:"stream_identifier" yaml:"stream_identifier"`
 	WritingLibrary        string    `boil:"writing_library" json:"writing_library" toml:"writing_library" yaml:"writing_library"`
 	Composer              string    `boil:"composer" json:"composer" toml:"composer" yaml:"composer"`
+	ImageLocation         string    `boil:"image_location" json:"image_location" toml:"image_location" yaml:"image_location"`
 
 	R *mediumR `boil:"-" json:"-" toml:"-" yaml:"-"`
 	L mediumL  `boil:"-" json:"-" toml:"-" yaml:"-"`
@@ -136,6 +137,7 @@ var MediumColumns = struct {
 	StreamIdentifier      string
 	WritingLibrary        string
 	Composer              string
+	ImageLocation         string
 }{
 	ID:                    "id",
 	Sha:                   "sha",
@@ -190,6 +192,7 @@ var MediumColumns = struct {
 	StreamIdentifier:      "stream_identifier",
 	WritingLibrary:        "writing_library",
 	Composer:              "composer",
+	ImageLocation:         "image_location",
 }
 
 // Generated where
@@ -346,6 +349,7 @@ var MediumWhere = struct {
 	StreamIdentifier      whereHelperint64
 	WritingLibrary        whereHelperstring
 	Composer              whereHelperstring
+	ImageLocation         whereHelperstring
 }{
 	ID:                    whereHelperstring{field: "\"media\".\"id\""},
 	Sha:                   whereHelperstring{field: "\"media\".\"sha\""},
@@ -400,6 +404,7 @@ var MediumWhere = struct {
 	StreamIdentifier:      whereHelperint64{field: "\"media\".\"stream_identifier\""},
 	WritingLibrary:        whereHelperstring{field: "\"media\".\"writing_library\""},
 	Composer:              whereHelperstring{field: "\"media\".\"composer\""},
+	ImageLocation:         whereHelperstring{field: "\"media\".\"image_location\""},
 }
 
 // MediumRels is where relationship names are stored.
@@ -419,9 +424,9 @@ func (*mediumR) NewStruct() *mediumR {
 type mediumL struct{}
 
 var (
-	mediumAllColumns            = []string{"id", "sha", "location", "sha_image", "last_image_scan", "file_extension", "format", "file_size", "duration", "overall_bit_rate_mode", "overall_bit_rate", "stream_size", "album", "track", "title", "track_position", "performer", "genre", "recorded_date", "comment", "channels", "channel_positions", "channel_layout", "sampling_rate", "sampling_count", "bit_depth", "compression_mode", "encoded_library", "encoded_library_name", "encoded_library_version", "bit_rate_mode", "bit_rate", "last_scan", "modified_date", "track_name_total", "album_performer", "audio_count", "bit_depth_string", "commercial_name", "complete_name", "count_of_audio_streams", "encoded_library_date", "file_name", "folder_name", "format_info", "format_url", "internet_media_type", "kind_of_stream", "part", "part_total", "stream_identifier", "writing_library", "composer"}
+	mediumAllColumns            = []string{"id", "sha", "location", "sha_image", "last_image_scan", "file_extension", "format", "file_size", "duration", "overall_bit_rate_mode", "overall_bit_rate", "stream_size", "album", "track", "title", "track_position", "performer", "genre", "recorded_date", "comment", "channels", "channel_positions", "channel_layout", "sampling_rate", "sampling_count", "bit_depth", "compression_mode", "encoded_library", "encoded_library_name", "encoded_library_version", "bit_rate_mode", "bit_rate", "last_scan", "modified_date", "track_name_total", "album_performer", "audio_count", "bit_depth_string", "commercial_name", "complete_name", "count_of_audio_streams", "encoded_library_date", "file_name", "folder_name", "format_info", "format_url", "internet_media_type", "kind_of_stream", "part", "part_total", "stream_identifier", "writing_library", "composer", "image_location"}
 	mediumColumnsWithoutDefault = []string{"id", "sha", "location", "sha_image", "last_image_scan", "file_extension", "format", "file_size", "duration", "overall_bit_rate_mode", "overall_bit_rate", "stream_size", "album", "track", "title", "track_position", "performer", "genre", "recorded_date", "comment", "channels", "channel_positions", "channel_layout", "sampling_rate", "sampling_count", "bit_depth", "compression_mode", "encoded_library", "encoded_library_name", "encoded_library_version", "bit_rate_mode", "bit_rate", "last_scan", "modified_date", "track_name_total", "album_performer", "audio_count", "bit_depth_string", "commercial_name", "complete_name", "count_of_audio_streams", "encoded_library_date", "file_name", "folder_name", "format_info", "format_url", "internet_media_type", "kind_of_stream", "part", "part_total", "stream_identifier", "writing_library", "composer"}
-	mediumColumnsWithDefault    = []string{}
+	mediumColumnsWithDefault    = []string{"image_location"}
 	mediumPrimaryKeyColumns     = []string{"id"}
 )
 

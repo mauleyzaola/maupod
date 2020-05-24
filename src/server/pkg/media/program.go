@@ -54,7 +54,7 @@ func MediaInfoWithSHA(filename string, fn func(info *MediaInfo, id string)) erro
 		if hash, err = helpers.SHA(buffer); err != nil {
 			return err
 		}
-		fn(info, fmt.Sprintf("%x", string(hash)))
+		fn(info, helpers.HashFromSHA(hash))
 	}
 	return nil
 }

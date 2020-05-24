@@ -28,11 +28,6 @@ func ExtractImageFromMedia(w io.Writer, filename string) error {
 	if err != nil {
 		return errors.New(string(data) + " : " + err.Error())
 	}
-	defer func() {
-		if err = os.Remove(outputFile); err != nil {
-			log.Println(err)
-		}
-	}()
 
 	file, err := os.Open(outputFile)
 	if err != nil {
@@ -42,7 +37,17 @@ func ExtractImageFromMedia(w io.Writer, filename string) error {
 		if err = file.Close(); err != nil {
 			log.Println(err)
 		}
+		if err = os.Remove(outputFile); err != nil {
+			log.Println(err)
+		}
 	}()
+	info, err := file.Stat()
+	if err != nil {
+		return err
+	}
+	if info.Size() == 0 {
+		return errors.New("file is empty")
+	}
 	if _, err = io.Copy(w, file); err != nil {
 		return err
 	}
