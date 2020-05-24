@@ -59,10 +59,18 @@ var albumimageCmd = &cobra.Command{
 			return err
 		}
 
+		if err = ScanArtwork(); err != nil {
+			return err
+		}
+
 		return nil
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(albumimageCmd)
+}
+
+func ScanArtwork() error {
+	return errors.New("not implemented")
 }

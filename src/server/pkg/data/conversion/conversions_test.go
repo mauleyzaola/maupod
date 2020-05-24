@@ -269,7 +269,7 @@ func TestMediaFromORM(t *testing.T) {
 			assert.EqualValues(t, w.ModifiedDate, g.ModifiedDate)
 			assert.EqualValues(t, w.Composer, g.Composer)
 			assert.EqualValues(t, w.ShaImage, g.ShaImage)
-			assert.EqualValues(t, w.LastImageScan, g.LastImageScan)
+			assert.EqualValues(t, w.LastImageScan.Nanos, g.LastImageScan.Nanos)
 		})
 	}
 }

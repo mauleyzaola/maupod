@@ -6,10 +6,12 @@ stores:
   - name: local-hd
 #    file-system
     type: 0
-    location: /media/mau/music-library/music
+#    location: /media/mau/music-library/music
+    location: /Users/mau/Downloads/music
   - name: local-hd-image
     type: 2
-    location: /media/mau/music-library/album-covers
+#    location: /media/mau/music-library/album-covers
+    location: /Users/mau/Downloads/artwork
 #  - name: music bucket
 #    s3
 #    type: 1

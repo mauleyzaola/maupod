@@ -4,6 +4,7 @@ import (
 	"github.com/mauleyzaola/maupod/src/server/pkg/data/orm"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
+	"github.com/volatiletech/null"
 )
 
 func MediaToORM(v *pb.Media) *orm.Medium {
@@ -58,6 +59,8 @@ func MediaToORM(v *pb.Media) *orm.Medium {
 		WritingLibrary:        v.WritingLibrary,
 		ModifiedDate:          helpers.TsToTime2(v.ModifiedDate),
 		Composer:              v.Composer,
+		ShaImage:              v.ShaImage,
+		LastImageScan:         null.TimeFromPtr(helpers.TsToTime(v.LastImageScan)),
 	}
 }
 

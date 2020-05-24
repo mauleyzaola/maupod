@@ -27,6 +27,8 @@ type Medium struct {
 	ID                    string    `boil:"id" json:"id" toml:"id" yaml:"id"`
 	Sha                   string    `boil:"sha" json:"sha" toml:"sha" yaml:"sha"`
 	Location              string    `boil:"location" json:"location" toml:"location" yaml:"location"`
+	ShaImage              string    `boil:"sha_image" json:"sha_image" toml:"sha_image" yaml:"sha_image"`
+	LastImageScan         null.Time `boil:"last_image_scan" json:"last_image_scan,omitempty" toml:"last_image_scan" yaml:"last_image_scan,omitempty"`
 	FileExtension         string    `boil:"file_extension" json:"file_extension" toml:"file_extension" yaml:"file_extension"`
 	Format                string    `boil:"format" json:"format" toml:"format" yaml:"format"`
 	FileSize              int64     `boil:"file_size" json:"file_size" toml:"file_size" yaml:"file_size"`
@@ -75,8 +77,6 @@ type Medium struct {
 	StreamIdentifier      int64     `boil:"stream_identifier" json:"stream_identifier" toml:"stream_identifier" yaml:"stream_identifier"`
 	WritingLibrary        string    `boil:"writing_library" json:"writing_library" toml:"writing_library" yaml:"writing_library"`
 	Composer              string    `boil:"composer" json:"composer" toml:"composer" yaml:"composer"`
-	ShaImage              string    `boil:"sha_image" json:"sha_image" toml:"sha_image" yaml:"sha_image"`
-	LastImageScan         null.Time `boil:"last_image_scan" json:"last_image_scan,omitempty" toml:"last_image_scan" yaml:"last_image_scan,omitempty"`
 
 	R *mediumR `boil:"-" json:"-" toml:"-" yaml:"-"`
 	L mediumL  `boil:"-" json:"-" toml:"-" yaml:"-"`
@@ -86,6 +86,8 @@ var MediumColumns = struct {
 	ID                    string
 	Sha                   string
 	Location              string
+	ShaImage              string
+	LastImageScan         string
 	FileExtension         string
 	Format                string
 	FileSize              string
@@ -134,12 +136,12 @@ var MediumColumns = struct {
 	StreamIdentifier      string
 	WritingLibrary        string
 	Composer              string
-	ShaImage              string
-	LastImageScan         string
 }{
 	ID:                    "id",
 	Sha:                   "sha",
 	Location:              "location",
+	ShaImage:              "sha_image",
+	LastImageScan:         "last_image_scan",
 	FileExtension:         "file_extension",
 	Format:                "format",
 	FileSize:              "file_size",
@@ -188,8 +190,6 @@ var MediumColumns = struct {
 	StreamIdentifier:      "stream_identifier",
 	WritingLibrary:        "writing_library",
 	Composer:              "composer",
-	ShaImage:              "sha_image",
-	LastImageScan:         "last_image_scan",
 }
 
 // Generated where
@@ -208,6 +208,29 @@ func (w whereHelperstring) IN(slice []string) qm.QueryMod {
 		values = append(values, value)
 	}
 	return qm.WhereIn(fmt.Sprintf("%s IN ?", w.field), values...)
+}
+
+type whereHelpernull_Time struct{ field string }
+
+func (w whereHelpernull_Time) EQ(x null.Time) qm.QueryMod {
+	return qmhelper.WhereNullEQ(w.field, false, x)
+}
+func (w whereHelpernull_Time) NEQ(x null.Time) qm.QueryMod {
+	return qmhelper.WhereNullEQ(w.field, true, x)
+}
+func (w whereHelpernull_Time) IsNull() qm.QueryMod    { return qmhelper.WhereIsNull(w.field) }
+func (w whereHelpernull_Time) IsNotNull() qm.QueryMod { return qmhelper.WhereIsNotNull(w.field) }
+func (w whereHelpernull_Time) LT(x null.Time) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.LT, x)
+}
+func (w whereHelpernull_Time) LTE(x null.Time) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.LTE, x)
+}
+func (w whereHelpernull_Time) GT(x null.Time) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.GT, x)
+}
+func (w whereHelpernull_Time) GTE(x null.Time) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.GTE, x)
 }
 
 type whereHelperint64 struct{ field string }
@@ -240,6 +263,13 @@ func (w whereHelperfloat64) GT(x float64) qm.QueryMod { return qmhelper.Where(w.
 func (w whereHelperfloat64) GTE(x float64) qm.QueryMod {
 	return qmhelper.Where(w.field, qmhelper.GTE, x)
 }
+func (w whereHelperfloat64) IN(slice []float64) qm.QueryMod {
+	values := make([]interface{}, 0, len(slice))
+	for _, value := range slice {
+		values = append(values, value)
+	}
+	return qm.WhereIn(fmt.Sprintf("%s IN ?", w.field), values...)
+}
 
 type whereHelpertime_Time struct{ field string }
 
@@ -262,33 +292,12 @@ func (w whereHelpertime_Time) GTE(x time.Time) qm.QueryMod {
 	return qmhelper.Where(w.field, qmhelper.GTE, x)
 }
 
-type whereHelpernull_Time struct{ field string }
-
-func (w whereHelpernull_Time) EQ(x null.Time) qm.QueryMod {
-	return qmhelper.WhereNullEQ(w.field, false, x)
-}
-func (w whereHelpernull_Time) NEQ(x null.Time) qm.QueryMod {
-	return qmhelper.WhereNullEQ(w.field, true, x)
-}
-func (w whereHelpernull_Time) IsNull() qm.QueryMod    { return qmhelper.WhereIsNull(w.field) }
-func (w whereHelpernull_Time) IsNotNull() qm.QueryMod { return qmhelper.WhereIsNotNull(w.field) }
-func (w whereHelpernull_Time) LT(x null.Time) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.LT, x)
-}
-func (w whereHelpernull_Time) LTE(x null.Time) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.LTE, x)
-}
-func (w whereHelpernull_Time) GT(x null.Time) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.GT, x)
-}
-func (w whereHelpernull_Time) GTE(x null.Time) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.GTE, x)
-}
-
 var MediumWhere = struct {
 	ID                    whereHelperstring
 	Sha                   whereHelperstring
 	Location              whereHelperstring
+	ShaImage              whereHelperstring
+	LastImageScan         whereHelpernull_Time
 	FileExtension         whereHelperstring
 	Format                whereHelperstring
 	FileSize              whereHelperint64
@@ -337,12 +346,12 @@ var MediumWhere = struct {
 	StreamIdentifier      whereHelperint64
 	WritingLibrary        whereHelperstring
 	Composer              whereHelperstring
-	ShaImage              whereHelperstring
-	LastImageScan         whereHelpernull_Time
 }{
 	ID:                    whereHelperstring{field: "\"media\".\"id\""},
 	Sha:                   whereHelperstring{field: "\"media\".\"sha\""},
 	Location:              whereHelperstring{field: "\"media\".\"location\""},
+	ShaImage:              whereHelperstring{field: "\"media\".\"sha_image\""},
+	LastImageScan:         whereHelpernull_Time{field: "\"media\".\"last_image_scan\""},
 	FileExtension:         whereHelperstring{field: "\"media\".\"file_extension\""},
 	Format:                whereHelperstring{field: "\"media\".\"format\""},
 	FileSize:              whereHelperint64{field: "\"media\".\"file_size\""},
@@ -391,8 +400,6 @@ var MediumWhere = struct {
 	StreamIdentifier:      whereHelperint64{field: "\"media\".\"stream_identifier\""},
 	WritingLibrary:        whereHelperstring{field: "\"media\".\"writing_library\""},
 	Composer:              whereHelperstring{field: "\"media\".\"composer\""},
-	ShaImage:              whereHelperstring{field: "\"media\".\"sha_image\""},
-	LastImageScan:         whereHelpernull_Time{field: "\"media\".\"last_image_scan\""},
 }
 
 // MediumRels is where relationship names are stored.
@@ -412,9 +419,9 @@ func (*mediumR) NewStruct() *mediumR {
 type mediumL struct{}
 
 var (
-	mediumAllColumns            = []string{"id", "sha", "location", "file_extension", "format", "file_size", "duration", "overall_bit_rate_mode", "overall_bit_rate", "stream_size", "album", "track", "title", "track_position", "performer", "genre", "recorded_date", "comment", "channels", "channel_positions", "channel_layout", "sampling_rate", "sampling_count", "bit_depth", "compression_mode", "encoded_library", "encoded_library_name", "encoded_library_version", "bit_rate_mode", "bit_rate", "last_scan", "modified_date", "track_name_total", "album_performer", "audio_count", "bit_depth_string", "commercial_name", "complete_name", "count_of_audio_streams", "encoded_library_date", "file_name", "folder_name", "format_info", "format_url", "internet_media_type", "kind_of_stream", "part", "part_total", "stream_identifier", "writing_library", "composer", "sha_image", "last_image_scan"}
-	mediumColumnsWithoutDefault = []string{"id", "sha", "location", "file_extension", "format", "file_size", "duration", "overall_bit_rate_mode", "overall_bit_rate", "stream_size", "album", "track", "title", "track_position", "performer", "genre", "recorded_date", "comment", "channels", "channel_positions", "channel_layout", "sampling_rate", "sampling_count", "bit_depth", "compression_mode", "encoded_library", "encoded_library_name", "encoded_library_version", "bit_rate_mode", "bit_rate", "last_scan", "modified_date", "track_name_total", "album_performer", "audio_count", "bit_depth_string", "commercial_name", "complete_name", "count_of_audio_streams", "encoded_library_date", "file_name", "folder_name", "format_info", "format_url", "internet_media_type", "kind_of_stream", "part", "part_total", "stream_identifier", "writing_library", "composer", "last_image_scan"}
-	mediumColumnsWithDefault    = []string{"sha_image"}
+	mediumAllColumns            = []string{"id", "sha", "location", "sha_image", "last_image_scan", "file_extension", "format", "file_size", "duration", "overall_bit_rate_mode", "overall_bit_rate", "stream_size", "album", "track", "title", "track_position", "performer", "genre", "recorded_date", "comment", "channels", "channel_positions", "channel_layout", "sampling_rate", "sampling_count", "bit_depth", "compression_mode", "encoded_library", "encoded_library_name", "encoded_library_version", "bit_rate_mode", "bit_rate", "last_scan", "modified_date", "track_name_total", "album_performer", "audio_count", "bit_depth_string", "commercial_name", "complete_name", "count_of_audio_streams", "encoded_library_date", "file_name", "folder_name", "format_info", "format_url", "internet_media_type", "kind_of_stream", "part", "part_total", "stream_identifier", "writing_library", "composer"}
+	mediumColumnsWithoutDefault = []string{"id", "sha", "location", "sha_image", "last_image_scan", "file_extension", "format", "file_size", "duration", "overall_bit_rate_mode", "overall_bit_rate", "stream_size", "album", "track", "title", "track_position", "performer", "genre", "recorded_date", "comment", "channels", "channel_positions", "channel_layout", "sampling_rate", "sampling_count", "bit_depth", "compression_mode", "encoded_library", "encoded_library_name", "encoded_library_version", "bit_rate_mode", "bit_rate", "last_scan", "modified_date", "track_name_total", "album_performer", "audio_count", "bit_depth_string", "commercial_name", "complete_name", "count_of_audio_streams", "encoded_library_date", "file_name", "folder_name", "format_info", "format_url", "internet_media_type", "kind_of_stream", "part", "part_total", "stream_identifier", "writing_library", "composer"}
+	mediumColumnsWithDefault    = []string{}
 	mediumPrimaryKeyColumns     = []string{"id"}
 )
 
