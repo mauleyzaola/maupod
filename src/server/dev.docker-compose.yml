@@ -9,10 +9,9 @@ services:
     ports:
       - 4222:4222
 
-  maupod-api:
-    image: maupod:latest
+  maupod-artwork:
+    image: maupod-artwork:latest
     volumes:
-      - $HOME/data/files:/files
       - ./:/go/src/github.com/mauleyzaola/maupod/src/server
       - $GOPATH/pkg:/go/pkg
     expose:

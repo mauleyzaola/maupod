@@ -1,4 +1,4 @@
-package cmd
+package main
 
 import (
 	"bytes"
@@ -18,94 +18,103 @@ import (
 	"github.com/mauleyzaola/maupod/src/server/pkg/images"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 	"github.com/mauleyzaola/maupod/src/server/pkg/rule"
-	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
-var artworkCmd = &cobra.Command{
-	Use:   "artwork",
-	Short: "extract image from audio file",
-	Long:  ``,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		config, err := rule.ConfigurationParse()
-		if err != nil {
-			return err
-		}
-
-		if err = rule.ConfigurationValidate(config); err != nil {
-			return err
-		}
-
-		// read first image store in the configuration and all the stores where to look up for audio files
-		var imageStore = rule.ConfigurationFirstImageStore(config)
-		if imageStore == nil {
-			return errors.New("could not find any image store in configuration, exiting now")
-		}
-
-		var fileSystemStores = rule.ConfigurationFileSystemStores(config)
-		var roots []string
-		for _, v := range fileSystemStores {
-			roots = append(roots, v.Location)
-		}
-		for _, root := range roots {
-			if _, err = os.Stat(root); err != nil {
-				return err
-			}
-		}
-
-		scanDate := time.Now()
-		var db *sql.DB
-		if db, err = data.DbBootstrap(config); err != nil {
-			return err
-		}
-		defer func() {
-			if err = db.Close(); err != nil {
-				log.Println(err)
-			}
-		}()
-
-		store := &data.MediaStore{}
-		ctx := context.Background()
-
-		// for image handling, we need to consider db transactions to avoid wrong/incomplete data to be stored
-		conn, err := db.Begin()
-		if err != nil {
-			return err
-		}
-		defer func() {
-			if err != nil {
-				err = conn.Rollback()
-			} else {
-				err = conn.Commit()
-			}
-			if err != nil {
-				log.Fatal(err)
-			}
-		}()
-		var filter = filters.MediaFilter{}
-		var allMedia data.Medias
-		if allMedia, err = store.List(ctx, conn, filter, nil); err != nil {
-			return err
-		}
-
-		mediaLocationKeys := allMedia.ToMap()
-		var cols = orm.MediumColumns
-		var fields = []string{cols.LastImageScan, cols.ShaImage, cols.ImageLocation}
-		updateFn := func(ctx context.Context, media *pb.Media) error {
-			return store.Update(ctx, conn, media, fields)
-		}
-
-		for _, root := range roots {
-			if err = ScanArtwork(ctx, scanDate, root, config, imageStore, mediaLocationKeys, updateFn); err != nil {
-				return err
-			}
-		}
-
-		return nil
-	},
+func main() {
+	if err := run(); err != nil {
+		log.Println(err)
+		os.Exit(1)
+	}
+	os.Exit(0)
 }
 
 func init() {
-	rootCmd.AddCommand(artworkCmd)
+	log.SetFlags(log.Lshortfile | log.Ltime | log.Ldate)
+	viper.AddConfigPath(".")
+	viper.SetConfigType("yaml")
+	viper.SetConfigName(".maupod")
+
+	_ = viper.ReadInConfig()
+	viper.AutomaticEnv()
+}
+
+func run() error {
+	config, err := rule.ConfigurationParse()
+	if err != nil {
+		return err
+	}
+
+	if err = rule.ConfigurationValidate(config); err != nil {
+		return err
+	}
+
+	// read first image store in the configuration and all the stores where to look up for audio files
+	var imageStore = rule.ConfigurationFirstImageStore(config)
+	if imageStore == nil {
+		return errors.New("could not find any image store in configuration, exiting now")
+	}
+
+	var fileSystemStores = rule.ConfigurationFileSystemStores(config)
+	var roots []string
+	for _, v := range fileSystemStores {
+		roots = append(roots, v.Location)
+	}
+	for _, root := range roots {
+		if _, err = os.Stat(root); err != nil {
+			return err
+		}
+	}
+
+	scanDate := time.Now()
+	var db *sql.DB
+	if db, err = data.DbBootstrap(config); err != nil {
+		return err
+	}
+	defer func() {
+		if err = db.Close(); err != nil {
+			log.Println(err)
+		}
+	}()
+
+	store := &data.MediaStore{}
+	ctx := context.Background()
+
+	// for image handling, we need to consider db transactions to avoid wrong/incomplete data to be stored
+	conn, err := db.Begin()
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err != nil {
+			err = conn.Rollback()
+		} else {
+			err = conn.Commit()
+		}
+		if err != nil {
+			log.Fatal(err)
+		}
+	}()
+	var filter = filters.MediaFilter{}
+	var allMedia data.Medias
+	if allMedia, err = store.List(ctx, conn, filter, nil); err != nil {
+		return err
+	}
+
+	mediaLocationKeys := allMedia.ToMap()
+	var cols = orm.MediumColumns
+	var fields = []string{cols.LastImageScan, cols.ShaImage, cols.ImageLocation}
+	updateFn := func(ctx context.Context, media *pb.Media) error {
+		return store.Update(ctx, conn, media, fields)
+	}
+
+	for _, root := range roots {
+		if err = ScanArtwork(ctx, scanDate, root, config, imageStore, mediaLocationKeys, updateFn); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func ScanArtwork(ctx context.Context,

@@ -31,7 +31,6 @@ func main() {
 }
 
 func initConfig() error {
-	log.Println("initializing configuration...")
 	viper.AddConfigPath(".")
 	viper.SetConfigType("yaml")
 	viper.SetConfigName(".maupod")

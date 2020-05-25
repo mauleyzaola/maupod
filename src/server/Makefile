@@ -1,6 +1,6 @@
 build-dev:
 	@echo "[INFO] building micro services in development mode"
-	docker build -t maupod .
+	docker build -f ./artwork.Dockerfile -t maupod-artwork .
 	cp ./maupod/.maupod.yml .
 
 clean: down
@@ -9,8 +9,8 @@ clean: down
 dev: build-dev up logs
 
 down:
-	docker-compose stop
-	docker-compose down
+	docker-compose stop -f ./dev.docker-compose.yml
+	docker-compose down -f ./dev.docker-compose.yml
 
 logs:
 	docker-compose logs -f
@@ -28,4 +28,4 @@ test:
 
 up:
 	@echo "[INFO] starting docker-compose micro services"
-	docker-compose up -d
+	docker-compose up -f ./dev.docker-compose.yml -d
