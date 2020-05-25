@@ -4,4 +4,4 @@ RUN ["go", "get", "-v", "github.com/githubnemo/CompileDaemon"]
 
 FROM golang-dev
 WORKDIR /go/src/github.com/mauleyzaola/maupod/src/server
-ENTRYPOINT CompileDaemon -directory=. -log-prefix=false -build="go build  -o app ./maupod/"
+ENTRYPOINT CompileDaemon -directory=. -log-prefix=false -build="go build -o app ./maupod" -command="./app restapi"

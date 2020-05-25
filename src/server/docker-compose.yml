@@ -11,9 +11,6 @@ services:
 
   maupod-api:
     image: maupod:latest
-    env_file:
-      - .env
-    command: "app restapi"
     volumes:
       - $HOME/data/files:/files
       - ./:/go/src/github.com/mauleyzaola/maupod/src/server
