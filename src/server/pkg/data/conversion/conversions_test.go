@@ -5,12 +5,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/volatiletech/null"
-
 	"github.com/mauleyzaola/maupod/src/server/pkg/data/orm"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 	"github.com/stretchr/testify/assert"
+	"github.com/volatiletech/null/v8"
 )
 
 var year2000 = time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC)

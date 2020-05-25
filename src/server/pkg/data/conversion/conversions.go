@@ -4,7 +4,7 @@ import (
 	"github.com/mauleyzaola/maupod/src/server/pkg/data/orm"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
-	"github.com/volatiletech/null"
+	"github.com/volatiletech/null/v8"
 )
 
 func MediaToORM(v *pb.Media) *orm.Medium {

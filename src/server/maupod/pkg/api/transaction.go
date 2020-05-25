@@ -8,7 +8,7 @@ import (
 
 	schema "github.com/gorilla/Schema"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
-	"github.com/volatiletech/sqlboiler/boil"
+	"github.com/volatiletech/sqlboiler/v4/boil"
 )
 
 type Validator interface {
