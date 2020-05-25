@@ -5,7 +5,7 @@ import (
 
 	"github.com/mauleyzaola/maupod/src/server/pkg/filters"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
-	"github.com/volatiletech/sqlboiler/v4/boil"
+	"github.com/volatiletech/sqlboiler/boil"
 )
 
 type Media interface {

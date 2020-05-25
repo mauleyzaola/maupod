@@ -15,6 +15,8 @@ require (
 	github.com/rubenv/sql-migrate v0.0.0-20200429072036-ae26b214fa43
 	github.com/spf13/cobra v1.0.0
 	github.com/spf13/viper v1.7.0
+	github.com/stretchr/testify v1.4.0
+	github.com/volatiletech/null v8.0.0+incompatible
 	github.com/volatiletech/null/v8 v8.1.0
 	github.com/volatiletech/sqlboiler v3.7.1+incompatible
 	github.com/volatiletech/sqlboiler/v4 v4.1.2

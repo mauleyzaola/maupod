@@ -2,7 +2,7 @@ package data
 
 import (
 	"github.com/mauleyzaola/maupod/src/server/pkg/filters"
-	"github.com/volatiletech/sqlboiler/v4/queries/qm"
+	"github.com/volatiletech/sqlboiler/queries/qm"
 )
 
 func Mods(f *filters.QueryFilter) []qm.QueryMod {
