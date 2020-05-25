@@ -1,0 +1,45 @@
+version: "3.7"
+
+services:
+  nats-server:
+    image: nats:2.1
+    restart: always
+    expose:
+      - 4222
+    ports:
+      - 4222:4222
+
+  maupod-api:
+    image: maupod:latest
+    env_file:
+      - .env
+    command: "app restapi"
+    volumes:
+      - $HOME/data/files:/files
+      - ./:/go/src/github.com/mauleyzaola/maupod/src/server
+      - $GOPATH/pkg:/go/pkg
+    expose:
+      - 8000
+    ports:
+      - 8000:8000
+
+  redis:
+    image: redis:5-alpine
+    env_file:
+      - .env
+    command: "redis-server --appendonly yes"
+    volumes:
+      - $HOME/data/redis/data:/data
+    ports:
+      - 6379:6379
+
+  pg:
+    image: postgres:9.5
+    env_file:
+      - .env
+    volumes:
+      - $HOME/data/pg/data:/var/lib/postgresql/data
+    expose:
+      - 5432
+    ports:
+      - 5432:5432

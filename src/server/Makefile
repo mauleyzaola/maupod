@@ -1,3 +1,19 @@
+build-dev:
+	@echo "[INFO] building micro services in development mode"
+	docker build -t maupod .
+
+clean: down
+	rm -f ./app
+
+dev: build-dev up logs
+
+down:
+	docker-compose stop
+	docker-compose down
+
+logs:
+	docker-compose logs -f
+
 force:
 prepare-proto: force
 	rm -rf ./pkg/pb
@@ -8,3 +24,7 @@ proto: prepare-proto
 
 test:
 	go test -cover ./...
+
+up:
+	@echo "[INFO] starting docker-compose micro services"
+	docker-compose up -d

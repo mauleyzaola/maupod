@@ -2,7 +2,7 @@
 .idea
 
 # environment files
-.env
+#.env
 
 # mac os
 .DS_Store
