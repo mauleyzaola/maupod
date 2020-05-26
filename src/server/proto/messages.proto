@@ -1,0 +1,21 @@
+syntax = "proto3";
+package pb;
+option go_package = "github.com/mauleyzaola/maupod/src/server/pb";
+import "google/protobuf/timestamp.proto";
+import "media.proto";
+
+enum Message {
+    MESSAGE_ARTWORK_SCAN = 0;
+    MESSAGE_AUDIO_SCAN = 1;
+}
+
+
+message ArtworkExtractInput {
+    Media media = 1;
+    google.protobuf.Timestamp scan_date = 2;
+}
+
+message ScanDirectoryAudioFilesInput {
+    string root = 1;
+    google.protobuf.Timestamp scan_date = 2;
+}

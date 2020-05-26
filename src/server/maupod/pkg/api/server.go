@@ -6,9 +6,10 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/nats-io/nats.go"
+
 	schema "github.com/gorilla/Schema"
 	"github.com/mauleyzaola/maupod/src/server/pkg/data"
-	"github.com/mauleyzaola/maupod/src/server/pkg/datamgmt"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 )
@@ -17,14 +18,17 @@ type ApiServer struct {
 	config  *pb.Configuration
 	decoder *schema.Decoder
 	db      *sql.DB
-	dm      datamgmt.Media
+	dm      *data.MediaStore
+	nc      *nats.Conn
 }
 
-func NewApiServer(config *pb.Configuration, db *sql.DB) (*ApiServer, error) {
+func NewApiServer(config *pb.Configuration, db *sql.DB, nc *nats.Conn) (*ApiServer, error) {
 	s := &ApiServer{
 		config:  config,
 		db:      db,
 		decoder: schema.NewDecoder(),
+		dm:      &data.MediaStore{},
+		nc:      nc,
 	}
 
 	s.dm = &data.MediaStore{}

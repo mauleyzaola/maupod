@@ -13,9 +13,10 @@ import (
 
 const maupodDbName = "maupod"
 
+// DbBootstrap creates the db if it doesn't exists and executes migrations
 func DbBootstrap(config *pb.Configuration) (*sql.DB, error) {
 	pgConn := config.PgConn
-	dbConn := pgConn + " dbname=" + maupodDbName
+	dbConn := config.DbConn
 
 	db, err := ConnectPostgres(pgConn, int(config.Retries), time.Duration(config.Delay))
 	if err != nil {

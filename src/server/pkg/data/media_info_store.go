@@ -2,6 +2,7 @@ package data
 
 import (
 	"context"
+	"errors"
 
 	"github.com/mauleyzaola/maupod/src/server/pkg/data/conversion"
 	"github.com/mauleyzaola/maupod/src/server/pkg/data/orm"
@@ -18,7 +19,7 @@ func (s *MediaStore) Insert(ctx context.Context, conn boil.ContextExecutor, medi
 	return row.Insert(ctx, conn, boil.Infer())
 }
 
-func (s *MediaStore) Update(ctx context.Context, conn boil.ContextExecutor, media *pb.Media, fields []string) error {
+func (s *MediaStore) Update(ctx context.Context, conn boil.ContextExecutor, media *pb.Media, fields ...string) error {
 	row := conversion.MediaToORM(media)
 	_, err := row.Update(ctx, conn, boil.Whitelist(fields...))
 	return err
@@ -61,4 +62,48 @@ func (s *MediaStore) Select(ctx context.Context, conn boil.ContextExecutor, id s
 
 func (s *MediaStore) Exists(ctx context.Context, conn boil.ContextExecutor, id string) (bool, error) {
 	return orm.MediumExists(ctx, conn, id)
+}
+
+func (s *MediaStore) ModsFind(media *pb.Media) ([]qm.QueryMod, error) {
+	var mods []qm.QueryMod
+	var where = orm.MediumWhere
+	if media.Location != "" {
+		mods = append(mods, where.Location.EQ(media.Location))
+	} else if media.Id != "" {
+		mods = append(mods, where.ID.EQ(media.Id))
+	} else if media.Sha != "" {
+		mods = append(mods, where.Sha.EQ(media.Sha))
+	} else if media.ShaImage != "" {
+		mods = append(mods, where.ShaImage.EQ(media.ShaImage))
+	} else {
+		return nil, errors.New("could not find any criteria for finding media")
+	}
+	return mods, nil
+}
+
+func (s *MediaStore) FindMedia(ctx context.Context, conn boil.ContextExecutor, media *pb.Media) (*pb.Media, error) {
+	mods, err := s.ModsFind(media)
+	if err != nil {
+		return nil, err
+	}
+	row, err := orm.Media(mods...).One(ctx, conn)
+	if err != nil {
+		return nil, err
+	}
+	return conversion.MediaFromORM(row), nil
+}
+
+func (s *MediaStore) FindMedias(ctx context.Context, conn boil.ContextExecutor, media *pb.Media, limit int) ([]*pb.Media, error) {
+	mods, err := s.ModsFind(media)
+	if err != nil {
+		return nil, err
+	}
+	if limit != 0 {
+		mods = append(mods, qm.Limit(limit))
+	}
+	rows, err := orm.Media(mods...).All(ctx, conn)
+	if err != nil {
+		return nil, err
+	}
+	return conversion.MediasFromORM(rows...), nil
 }
