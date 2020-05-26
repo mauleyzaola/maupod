@@ -11,6 +11,8 @@ services:
 
   maupod-artwork:
     image: maupod-artwork:latest
+    env_file:
+      - .env
     volumes:
       - ./:/go/src/github.com/mauleyzaola/maupod/src/server
       - $GOPATH/pkg:/go/pkg

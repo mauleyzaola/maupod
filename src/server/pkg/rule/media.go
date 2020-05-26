@@ -37,25 +37,23 @@ func NeedsUpdate(m *pb.Media) bool {
 	if err != nil {
 		return false
 	}
+	if m.ModifiedDate == nil {
+		return true
+	}
 	diffSeconds := m.ModifiedDate.Seconds - info.ModTime().Unix()
 	return diffSeconds < 0
 }
 
 // Needs update compares the file system modified date vs database value
 func NeedsImageUpdate(m *pb.Media) bool {
-	info, err := FileInfo(m)
-	if err != nil {
-		return false
-	}
 	if m.LastImageScan == nil {
 		return true
 	}
-	diffSeconds := m.LastImageScan.Seconds - info.ModTime().Unix()
+	if m.ModifiedDate == nil {
+		return true
+	}
+	diffSeconds := m.LastImageScan.Seconds - m.ModifiedDate.Seconds
 	return diffSeconds < 0
-}
-
-func HasImage(m *pb.Media) bool {
-	return m.ShaImage != ""
 }
 
 func ImageFileName(m *pb.Media, store *pb.FileStore) (string, error) {

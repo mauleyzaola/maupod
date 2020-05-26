@@ -1,22 +1,19 @@
 package main
 
 import (
-	"bytes"
-	"context"
-	"database/sql"
 	"errors"
-	"io/ioutil"
 	"log"
 	"os"
-	"time"
+	"os/signal"
+
+	"github.com/golang/glog"
 
 	"github.com/mauleyzaola/maupod/src/server/pkg/data"
-	"github.com/mauleyzaola/maupod/src/server/pkg/data/orm"
-	"github.com/mauleyzaola/maupod/src/server/pkg/filemgmt"
-	"github.com/mauleyzaola/maupod/src/server/pkg/filters"
+
+	"github.com/mauleyzaola/maupod/src/server/pkg/simplelog"
+	"github.com/mauleyzaola/maupod/src/server/pkg/types"
+
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
-	"github.com/mauleyzaola/maupod/src/server/pkg/images"
-	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 	"github.com/mauleyzaola/maupod/src/server/pkg/rule"
 	"github.com/spf13/viper"
 )
@@ -30,7 +27,6 @@ func main() {
 }
 
 func init() {
-	log.SetFlags(log.Lshortfile | log.Ltime | log.Ldate)
 	viper.AddConfigPath(".")
 	viper.SetConfigType("yaml")
 	viper.SetConfigName(".maupod")
@@ -49,187 +45,60 @@ func run() error {
 		return err
 	}
 
-	// read first image store in the configuration and all the stores where to look up for audio files
-	var imageStore = rule.ConfigurationFirstImageStore(config)
-	if imageStore == nil {
-		return errors.New("could not find any image store in configuration, exiting now")
-	}
-
-	var fileSystemStores = rule.ConfigurationFileSystemStores(config)
-	var roots []string
-	for _, v := range fileSystemStores {
-		roots = append(roots, v.Location)
-	}
-	for _, root := range roots {
-		if _, err = os.Stat(root); err != nil {
+	// create directory if not exists
+	imageStore := rule.ConfigurationFirstImageStore(config)
+	if imageStore != nil {
+		if err = os.MkdirAll(imageStore.Location, os.ModePerm); err != nil {
 			return err
 		}
+	} else {
+		return errors.New("could not find any image store in configuration")
 	}
 
-	scanDate := time.Now()
-	var db *sql.DB
-	if db, err = data.DbBootstrap(config); err != nil {
-		return err
-	}
-	defer func() {
-		if err = db.Close(); err != nil {
-			log.Println(err)
-		}
-	}()
-
-	store := &data.MediaStore{}
-	ctx := context.Background()
-
-	// for image handling, we need to consider db transactions to avoid wrong/incomplete data to be stored
-	conn, err := db.Begin()
+	nc, err := helpers.ConnectNATS()
 	if err != nil {
 		return err
 	}
-	defer func() {
-		if err != nil {
-			err = conn.Rollback()
-		} else {
-			err = conn.Commit()
+
+	var logger types.Logger
+	logger = &simplelog.Log{}
+	logger.Init()
+
+	db, err := data.DbBootstrap(config)
+	if err != nil {
+		return err
+	}
+
+	var hnd types.Broker
+	hnd = NewMsgHandler(db, imageStore, logger, nc)
+	if err = hnd.Register(); err != nil {
+		return err
+	}
+
+	// handle interruptions and cleanup resources
+	signalChan := make(chan os.Signal, 1)
+	cleanupDone := make(chan bool)
+	signal.Notify(signalChan, os.Interrupt)
+	glog.Infof("%s application started", os.Args[0])
+	go func() {
+		cleanup := func() {
+			glog.V(1).Infof("received an interrupt signal, cleaning resources...")
+			hnd.Close()
+
+			glog.V(1).Infof("completed cleaning up resources")
+			cleanupDone <- true
 		}
-		if err != nil {
-			log.Fatal(err)
+	loop:
+		for {
+			select {
+			case <-signalChan:
+				break loop
+			}
 		}
+		cleanup()
 	}()
-	var filter = filters.MediaFilter{}
-	var allMedia data.Medias
-	if allMedia, err = store.List(ctx, conn, filter, nil); err != nil {
-		return err
-	}
 
-	mediaLocationKeys := allMedia.ToMap()
-	var cols = orm.MediumColumns
-	var fields = []string{cols.LastImageScan, cols.ShaImage, cols.ImageLocation}
-	updateFn := func(ctx context.Context, media *pb.Media) error {
-		return store.Update(ctx, conn, media, fields)
-	}
-
-	for _, root := range roots {
-		if err = ScanArtwork(ctx, scanDate, root, config, imageStore, mediaLocationKeys, updateFn); err != nil {
-			return err
-		}
-	}
-
-	return nil
-}
-
-func ScanArtwork(ctx context.Context,
-	scanDate time.Time,
-	root string,
-	config *pb.Configuration,
-	imageStore *pb.FileStore,
-	mediaLocationKeys map[string]*pb.Media,
-	updateFn func(ctx context.Context, info *pb.Media) error) error {
-
-	var err error
-	var files []string
-
-	// create directory if not exists
-	if err = os.MkdirAll(imageStore.Location, os.ModePerm); err != nil {
-		return err
-	}
-
-	// only consider files which don't have sha image yet
-	shaImageKeys := make(map[string]struct{})
-
-	// add which files we will extract the image from
-	walker := func(filename string, isDir bool) bool {
-		if isDir {
-			return false
-		}
-		if !rule.FileIsValidExtension(config, filename) {
-			return false
-		}
-
-		val, ok := mediaLocationKeys[filename]
-		if !ok {
-			// if the file has not yet been scanned, we cannot process its image
-			return false
-		}
-
-		if rule.HasImage(val) {
-			// if the file has already sha for the image, don't add it to the files
-			// however we add it to the scanned images, so we don't extract the image a second time
-			if _, ok = shaImageKeys[val.ShaImage]; !ok {
-				shaImageKeys[val.ShaImage] = struct{}{}
-			}
-			return false
-		}
-
-		files = append(files, filename)
-		return false
-	}
-
-	log.Println("[DEBUG] started scanning")
-	if err = filemgmt.WalkFiles(root, walker); err != nil {
-		log.Println(err)
-		return err
-	}
-
-	// extract the images from each file
-	for _, f := range files {
-		var shaData []byte
-		var imageData []byte
-		var saveImage bool
-		var filename string
-		val, ok := mediaLocationKeys[f]
-		if !ok {
-			// this should not happen, as we have already skipped these cases in the walker
-			continue
-		}
-		if !rule.NeedsImageUpdate(val) {
-			continue
-		}
-
-		// extract the image from the file
-		val.LastImageScan = helpers.TimeToTs(&scanDate)
-		w := &bytes.Buffer{}
-		if err = images.ExtractImageFromMedia(w, val.Location); err != nil {
-			// no image in audio file, update scan in db and continue
-			if err = updateFn(ctx, val); err != nil {
-				return err
-			}
-			continue
-		}
-
-		imageData = w.Bytes()
-
-		// calculate the sha of the image
-		if shaData, err = helpers.SHA(bytes.NewBuffer(imageData)); err != nil {
-			return err
-		}
-
-		val.ShaImage = helpers.HashFromSHA(shaData)
-		if _, ok = shaImageKeys[val.ShaImage]; !ok {
-			shaImageKeys[val.ShaImage] = struct{}{}
-			// flag for later
-			saveImage = true
-		}
-
-		// update database
-		if filename, err = rule.ImageFileName(val, imageStore); err != nil {
-			return err
-		}
-		val.ImageLocation = filename
-		if err = updateFn(ctx, val); err != nil {
-			return err
-		}
-
-		// if hash doesn't exist save to image store
-		if saveImage {
-			log.Println("[DEBUG] sha artwork: ", val.ShaImage)
-			// TODO: resize image, for now store the original
-			if err = ioutil.WriteFile(filename, imageData, os.ModePerm); err != nil {
-				return err
-			}
-		}
-	}
-
-	log.Printf("[INFO] files: %d  elapsed: %s\n", len(files), time.Since(scanDate))
+	<-cleanupDone
 
 	return nil
 }

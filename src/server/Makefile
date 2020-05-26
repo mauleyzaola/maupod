@@ -1,8 +1,6 @@
 build-dev:
 	@echo "[INFO] building micro services in development mode"
 	docker build -f ./artwork.Dockerfile -t maupod-artwork .
-	# cp ./maupod/.maupod.yml .
-	docker build -t maupod .
 
 clean: down
 	rm -f ./app

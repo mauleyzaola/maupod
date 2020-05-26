@@ -8,7 +8,6 @@ import (
 
 	schema "github.com/gorilla/Schema"
 	"github.com/mauleyzaola/maupod/src/server/pkg/data"
-	"github.com/mauleyzaola/maupod/src/server/pkg/datamgmt"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 )
@@ -17,7 +16,7 @@ type ApiServer struct {
 	config  *pb.Configuration
 	decoder *schema.Decoder
 	db      *sql.DB
-	dm      datamgmt.Media
+	dm      *data.MediaStore
 }
 
 func NewApiServer(config *pb.Configuration, db *sql.DB) (*ApiServer, error) {
@@ -25,6 +24,7 @@ func NewApiServer(config *pb.Configuration, db *sql.DB) (*ApiServer, error) {
 		config:  config,
 		db:      db,
 		decoder: schema.NewDecoder(),
+		dm:      &data.MediaStore{},
 	}
 
 	s.dm = &data.MediaStore{}

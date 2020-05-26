@@ -143,7 +143,7 @@ func run() error {
 		// if the location is the same and we made it here, that means we need to update the row
 		if val, ok := mediaLocationKeys[filename]; ok {
 			m.Id = val.Id
-			return store.Update(ctx, conn, m, fields)
+			return store.Update(ctx, conn, m, fields...)
 		} else {
 			return store.Insert(ctx, conn, m)
 		}

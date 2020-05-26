@@ -5,6 +5,7 @@ go 1.14
 require (
 	github.com/disintegration/imaging v1.6.2
 	github.com/friendsofgo/errors v0.9.2
+	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
 	github.com/golang/protobuf v1.4.2
 	github.com/google/uuid v1.1.1
 	github.com/gorilla/Schema v1.1.0
@@ -12,6 +13,7 @@ require (
 	github.com/gorilla/mux v1.7.4
 	github.com/lib/pq v1.5.2
 	github.com/mitchellh/go-homedir v1.1.0
+	github.com/nats-io/nats.go v1.9.1
 	github.com/rubenv/sql-migrate v0.0.0-20200429072036-ae26b214fa43
 	github.com/spf13/cobra v1.0.0
 	github.com/spf13/viper v1.7.0
