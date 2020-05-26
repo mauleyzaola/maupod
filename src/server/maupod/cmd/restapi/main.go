@@ -8,10 +8,15 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"time"
+
+	"github.com/mauleyzaola/maupod/src/server/pkg/simplelog"
+	"github.com/mauleyzaola/maupod/src/server/pkg/types"
 
 	_ "github.com/lib/pq"
 	"github.com/mauleyzaola/maupod/src/server/maupod/pkg/api"
 	"github.com/mauleyzaola/maupod/src/server/pkg/data"
+	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/rule"
 	"github.com/spf13/viper"
 )
@@ -35,6 +40,11 @@ func init() {
 }
 
 func run() error {
+
+	var logger types.Logger
+	logger = &simplelog.Log{}
+	logger.Init()
+
 	config, err := rule.ConfigurationParse()
 	if err != nil {
 		return err
@@ -44,20 +54,26 @@ func run() error {
 		return err
 	}
 
+	nc, err := helpers.ConnectNATS(int(config.Retries), time.Second*time.Duration(config.Delay))
+	if err != nil {
+		return err
+	}
+	logger.Info("successfully connected to NATS")
+
 	var db *sql.DB
 	if db, err = data.DbBootstrap(config); err != nil {
 		return err
 	}
 	defer func() {
 		if err = db.Close(); err != nil {
-			log.Println(err)
+			logger.Error(err)
 		}
 	}()
 
 	var output io.Writer
 
 	// TODO: create instance of the api server based on the real parameters
-	apiServer, err := api.NewApiServer(config, db)
+	apiServer, err := api.NewApiServer(config, db, nc)
 	if err != nil {
 		return err
 	}
@@ -83,11 +99,11 @@ func run() error {
 	signal.Notify(signalChan, os.Interrupt)
 	go func() {
 		cleanup := func() {
-			log.Println("received an interrupt signal, cleaning resources...")
+			logger.Info("received an interrupt signal, cleaning resources...")
 			if err = server.Shutdown(ctx); err != nil {
 				log.Println(err)
 			}
-			log.Println("completed cleaning up resources")
+			logger.Info("completed cleaning up resources")
 			cleanupDone <- true
 		}
 	loop:

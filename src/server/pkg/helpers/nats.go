@@ -2,12 +2,13 @@ package helpers
 
 import (
 	"errors"
+	"time"
 
 	"github.com/nats-io/nats.go"
 	"github.com/spf13/viper"
 )
 
-func ConnectNATS() (*nats.Conn, error) {
+func ConnectNATS(retries int, delay time.Duration) (*nats.Conn, error) {
 	natsURL := viper.GetString("NATS_URL")
 	if natsURL == "" {
 		return nil, errors.New("cannot resolve variable: NATS_URL")
@@ -20,8 +21,6 @@ func ConnectNATS() (*nats.Conn, error) {
 		}
 		return conn != nil
 	}
-	retries := viper.GetInt("MAX_RETRIES")
-	delay := viper.GetDuration("DELAY")
 	ok, err := RetryFunc("connecting to NATS", retries, delay, fn)
 	if err != nil {
 		return nil, err

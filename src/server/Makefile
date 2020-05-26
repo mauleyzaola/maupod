@@ -1,6 +1,8 @@
 build-dev:
 	@echo "[INFO] building micro services in development mode"
 	docker build -f ./artwork.Dockerfile -t maupod-artwork .
+	docker build -f ./audioscan.Dockerfile -t maupod-audioscan .
+	docker build -f ./restapi.Dockerfile -t maupod-restapi .
 
 clean: down
 	rm -f ./app
@@ -8,11 +10,11 @@ clean: down
 dev: build-dev up logs
 
 down:
-	docker-compose stop -f ./dev.docker-compose.yml
-	docker-compose down -f ./dev.docker-compose.yml
+	docker-compose -f ./dev.docker-compose.yml stop
+	docker-compose -f ./dev.docker-compose.yml down
 
 logs:
-	docker-compose logs -f
+	docker-compose -f ./dev.docker-compose.yml logs -f
 
 force:
 prepare-proto: force
@@ -27,4 +29,4 @@ test:
 
 up:
 	@echo "[INFO] starting docker-compose micro services"
-	docker-compose up -f ./dev.docker-compose.yml -d
+	docker-compose -f ./dev.docker-compose.yml up -d

@@ -6,8 +6,6 @@ services:
     restart: always
     expose:
       - 4222
-    ports:
-      - 4222:4222
 
   maupod-artwork:
     image: maupod-artwork:latest
@@ -16,8 +14,22 @@ services:
     volumes:
       - ./:/go/src/github.com/mauleyzaola/maupod/src/server
       - $GOPATH/pkg:/go/pkg
-    expose:
-      - 8000
+
+  maupod-audioscan:
+    image: maupod-audioscan:latest
+    env_file:
+      - .env
+    volumes:
+      - ./:/go/src/github.com/mauleyzaola/maupod/src/server
+      - $GOPATH/pkg:/go/pkg
+
+  maupod-restapi:
+    image: maupod-restapi:latest
+    env_file:
+      - .env
+    volumes:
+      - ./:/go/src/github.com/mauleyzaola/maupod/src/server
+      - $GOPATH/pkg:/go/pkg
     ports:
       - 8000:8000
 

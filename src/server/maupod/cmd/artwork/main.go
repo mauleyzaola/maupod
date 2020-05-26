@@ -5,16 +5,14 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"time"
 
-	"github.com/golang/glog"
-
+	_ "github.com/lib/pq"
 	"github.com/mauleyzaola/maupod/src/server/pkg/data"
-
-	"github.com/mauleyzaola/maupod/src/server/pkg/simplelog"
-	"github.com/mauleyzaola/maupod/src/server/pkg/types"
-
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/rule"
+	"github.com/mauleyzaola/maupod/src/server/pkg/simplelog"
+	"github.com/mauleyzaola/maupod/src/server/pkg/types"
 	"github.com/spf13/viper"
 )
 
@@ -36,6 +34,11 @@ func init() {
 }
 
 func run() error {
+
+	var logger types.Logger
+	logger = &simplelog.Log{}
+	logger.Init()
+
 	config, err := rule.ConfigurationParse()
 	if err != nil {
 		return err
@@ -55,16 +58,13 @@ func run() error {
 		return errors.New("could not find any image store in configuration")
 	}
 
-	nc, err := helpers.ConnectNATS()
+	nc, err := helpers.ConnectNATS(int(config.Retries), time.Second*time.Duration(config.Delay))
 	if err != nil {
 		return err
 	}
+	logger.Info("successfully connected to NATS")
 
-	var logger types.Logger
-	logger = &simplelog.Log{}
-	logger.Init()
-
-	db, err := data.DbBootstrap(config)
+	db, err := data.ConnectPostgres(config.PgConn, int(config.Retries), time.Second*time.Duration(config.Delay))
 	if err != nil {
 		return err
 	}
@@ -81,10 +81,10 @@ func run() error {
 	signal.Notify(signalChan, os.Interrupt)
 	go func() {
 		cleanup := func() {
-			glog.V(1).Infof("received an interrupt signal, cleaning resources...")
+			logger.Info("received an interrupt signal, cleaning resources...")
 			hnd.Close()
 
-			glog.V(1).Infof("completed cleaning up resources")
+			logger.Info("completed cleaning up resources")
 			cleanupDone <- true
 		}
 	loop:

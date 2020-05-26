@@ -5,7 +5,9 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"time"
 
+	_ "github.com/lib/pq"
 	"github.com/mauleyzaola/maupod/src/server/pkg/data"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/rule"
@@ -32,6 +34,11 @@ func init() {
 }
 
 func run() error {
+
+	var logger types.Logger
+	logger = &simplelog.Log{}
+	logger.Init()
+
 	config, err := rule.ConfigurationParse()
 	if err != nil {
 		return err
@@ -51,16 +58,13 @@ func run() error {
 		return errors.New("could not find any image store in configuration")
 	}
 
-	nc, err := helpers.ConnectNATS()
+	nc, err := helpers.ConnectNATS(int(config.Retries), time.Second*time.Duration(config.Delay))
 	if err != nil {
 		return err
 	}
+	logger.Info("successfully connected to NATS")
 
-	var logger types.Logger
-	logger = &simplelog.Log{}
-	logger.Init()
-
-	db, err := data.DbBootstrap(config)
+	db, err := data.ConnectPostgres(config.PgConn, int(config.Retries), time.Second*time.Duration(config.Delay))
 	if err != nil {
 		return err
 	}
