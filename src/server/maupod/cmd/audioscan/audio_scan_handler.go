@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"time"
 
 	"github.com/golang/protobuf/proto"
 	"github.com/mauleyzaola/maupod/src/server/pkg/data"
@@ -11,12 +12,18 @@ import (
 )
 
 func (m *MsgHandler) handlerAudioScan(msg *nats.Msg) {
+	start := time.Now()
 	var input pb.ScanDirectoryAudioFilesInput
 	err := proto.Unmarshal(msg.Data, &input)
 	if err != nil {
 		m.base.Logger().Error(err)
 		return
 	}
+
+	defer func() {
+		m.base.Logger().Info("[INFO] elapsed time: " + time.Since(start).String())
+	}()
+
 	m.base.Logger().Info("received artwork extract message: " + input.String())
 
 	ctx := context.Background()

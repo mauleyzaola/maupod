@@ -2,16 +2,15 @@ package main
 
 import (
 	"context"
-	"errors"
-	"fmt"
 	"log"
 	"os"
 	"path/filepath"
 	"time"
 
+	"github.com/mauleyzaola/maupod/src/server/pkg/media"
+
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 
-	"github.com/mauleyzaola/maupod/src/server/pkg/broker"
 	"github.com/nats-io/nats.go"
 
 	"github.com/mauleyzaola/maupod/src/server/pkg/data"
@@ -125,38 +124,37 @@ func ScanDirectoryAudioFiles(
 		cols.Composer,
 	}
 
-	var response *pb.MediaInfoOutput
-	var timeout = time.Second * time.Duration(config.Delay)
 	for _, f := range files {
-		input := &pb.MediaInfoInput{FileName: f}
-		response, err = broker.MediaInfoRequest(nc, input, timeout)
+		mi, err := media.RunMediaInfo(f)
 		if err != nil {
-			log.Printf("[ERROR] cannot get mediainfo from file: %s %s\n", f, err)
-			continue
-		} else if response == nil {
-			return fmt.Errorf("response was nil with file: %s", f)
-		} else if !response.Response.Ok {
-			return errors.New(response.Response.Error)
+			// TODO: send the files with errors to another listener and store in db
+			logger.Info("error using mediainfo with file: " + f)
+			return err
+			//continue
 		}
 
-		media := response.Media
+		m := mi.ToProto()
 		fileInfo, err := os.Stat(f)
 		if err != nil {
 			return err
 		}
-		media.Id = helpers.NewUUID()
-		// TODO: media.Sha  needs to be defined in another process
-		media.LastScan = helpers.TimeToTs(&scanDate)
-		media.ModifiedDate = helpers.TimeToTs2(fileInfo.ModTime())
-		media.Location = f
-		media.FileExtension = filepath.Ext(fileInfo.Name())
+		m.Id = helpers.NewUUID()
+		// TODO: m.Sha  needs to be defined in another process
+		m.LastScan = helpers.TimeToTs(&scanDate)
+		m.ModifiedDate = helpers.TimeToTs2(fileInfo.ModTime())
+		m.Location = f
+		m.FileExtension = filepath.Ext(fileInfo.Name())
 
 		// if the location is the same and we made it here, that means we need to update the row
 		if val, ok := mediaLocationKeys[f]; ok {
-			media.Id = val.Id
-			return store.Update(ctx, conn, media, fields...)
+			m.Id = val.Id
+			if err = store.Update(ctx, conn, m, fields...); err != nil {
+				return err
+			}
 		} else {
-			return store.Insert(ctx, conn, media)
+			if err = store.Insert(ctx, conn, m); err != nil {
+				return err
+			}
 		}
 	}
 

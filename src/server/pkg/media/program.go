@@ -27,7 +27,7 @@ func RunMediaInfo(filename string) (*MediaInfo, error) {
 	cmd.Stderr = errOutput
 	err := cmd.Run()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("%s %s : %v", output.String(), errOutput.String(), err)
 	}
 
 	return MediaParser(output)

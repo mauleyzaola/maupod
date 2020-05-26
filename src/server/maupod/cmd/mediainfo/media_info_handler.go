@@ -11,13 +11,19 @@ func (m *MsgHandler) handlerMediaInfo(msg *nats.Msg) {
 
 	var err error
 	var input pb.MediaInfoInput
-	var output pb.MediaInfoOutput
+
+	output := &pb.MediaInfoOutput{
+		Response: &pb.Response{
+			Ok:    false,
+			Error: "",
+		},
+	}
 
 	defer func() {
 		var localErr error
 		var data []byte
 
-		if data, localErr = proto.Marshal(&output); localErr != nil {
+		if data, localErr = proto.Marshal(output); localErr != nil {
 			m.base.Logger().Error(localErr)
 			return
 		}
