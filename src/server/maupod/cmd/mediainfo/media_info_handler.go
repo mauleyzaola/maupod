@@ -35,7 +35,7 @@ func (m *MsgHandler) handlerMediaInfo(msg *nats.Msg) {
 	}
 	m.base.Logger().Info("received media info message: " + input.String())
 
-	result, err := media.InfoFromFile(input.FileName)
+	result, err := media.RunMediaInfo(input.FileName)
 	if err != nil {
 		m.base.Logger().Error(err)
 		output.Response.Ok = false
