@@ -14,6 +14,7 @@ services:
     volumes:
       - ./:/go/src/github.com/mauleyzaola/maupod/src/server
       - $GOPATH/pkg:/go/pkg
+      - $HOME/Downloads/music-store:/music-store
 
   maupod-audioscan:
     image: maupod-audioscan:latest
@@ -22,6 +23,7 @@ services:
     volumes:
       - ./:/go/src/github.com/mauleyzaola/maupod/src/server
       - $GOPATH/pkg:/go/pkg
+      - $HOME/Downloads/music-store:/music-store
 
   maupod-restapi:
     image: maupod-restapi:latest

@@ -64,7 +64,7 @@ func run() error {
 	}
 	logger.Info("successfully connected to NATS")
 
-	db, err := data.ConnectPostgres(config.PgConn, int(config.Retries), time.Second*time.Duration(config.Delay))
+	db, err := data.ConnectPostgres(config.DbConn, int(config.Retries), time.Second*time.Duration(config.Delay))
 	if err != nil {
 		return err
 	}
