@@ -7,8 +7,6 @@ import (
 	"os"
 	"time"
 
-	"github.com/mauleyzaola/maupod/src/server/pkg/types"
-
 	"github.com/golang/protobuf/proto"
 	"github.com/mauleyzaola/maupod/src/server/pkg/data"
 	"github.com/mauleyzaola/maupod/src/server/pkg/data/orm"
@@ -16,6 +14,7 @@ import (
 	"github.com/mauleyzaola/maupod/src/server/pkg/images"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 	"github.com/mauleyzaola/maupod/src/server/pkg/rule"
+	"github.com/mauleyzaola/maupod/src/server/pkg/types"
 	"github.com/nats-io/nats.go"
 	"github.com/volatiletech/sqlboiler/boil"
 )
@@ -61,6 +60,11 @@ func ScanArtwork(
 		return nil
 	}
 
+	// we should not process the image a second time here, this is just a file scan
+	if rule.MediaHasImage(media) {
+		return nil
+	}
+
 	var shaData []byte
 	var imageData []byte
 	var saveImage bool
@@ -70,17 +74,15 @@ func ScanArtwork(
 	// extract the image from the file
 	media.LastImageScan = helpers.TimeToTs(&scanDate)
 
-	if !rule.MediaHasImage(media) {
-		w := &bytes.Buffer{}
-		if err = images.ExtractImageFromMedia(w, media.Location); err != nil {
-			// no image in audio file, update scan in db and continue
-			if err = store.Update(ctx, conn, media, cols.LastImageScan); err != nil {
-				logger.Error(err)
-			}
-			return err
-		} else {
-			imageData = w.Bytes()
+	w := &bytes.Buffer{}
+	if err = images.ExtractImageFromMedia(w, media.Location); err != nil {
+		// no image in audio file, update scan in db and continue
+		if err = store.Update(ctx, conn, media, cols.LastImageScan); err != nil {
+			logger.Error(err)
 		}
+		return err
+	} else {
+		imageData = w.Bytes()
 	}
 
 	if imageData != nil {

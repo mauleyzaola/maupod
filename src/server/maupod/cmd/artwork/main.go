@@ -79,7 +79,6 @@ func run() error {
 	signalChan := make(chan os.Signal, 1)
 	cleanupDone := make(chan bool)
 	signal.Notify(signalChan, os.Interrupt)
-	glog.Infof("%s application started", os.Args[0])
 	go func() {
 		cleanup := func() {
 			glog.V(1).Infof("received an interrupt signal, cleaning resources...")

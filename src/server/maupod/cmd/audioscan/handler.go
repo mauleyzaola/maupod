@@ -11,24 +11,24 @@ import (
 )
 
 type MsgHandler struct {
-	base       *handler.MsgHandler
-	db         *sql.DB
-	imageStore *pb.FileStore
+	base   *handler.MsgHandler
+	config *pb.Configuration
+	db     *sql.DB
 }
 
-func NewMsgHandler(db *sql.DB, imageStore *pb.FileStore, logger types.Logger, nc *nats.Conn) *MsgHandler {
+func NewMsgHandler(config *pb.Configuration, db *sql.DB, logger types.Logger, nc *nats.Conn) *MsgHandler {
 	return &MsgHandler{
-		base:       handler.NewMsgHandler(logger, nc),
-		db:         db,
-		imageStore: imageStore,
+		base:   handler.NewMsgHandler(logger, nc),
+		config: config,
+		db:     db,
 	}
 }
 
 func (m *MsgHandler) Register() error {
 	return m.base.Register(
 		handler.Subscription{
-			Subject: strconv.Itoa(int(pb.Message_MESSAGE_ARTWORK_SCAN)),
-			Handler: m.handlerArtworkExtract,
+			Subject: strconv.Itoa(int(pb.Message_MESSAGE_AUDIO_SCAN)),
+			Handler: m.handlerAudioScan,
 		},
 	)
 }
