@@ -69,15 +69,19 @@ func ScanArtwork(
 
 	// extract the image from the file
 	media.LastImageScan = helpers.TimeToTs(&scanDate)
-	w := &bytes.Buffer{}
-	if err = images.ExtractImageFromMedia(w, media.Location); err != nil {
-		// no image in audio file, update scan in db and continue
-		if err = store.Update(ctx, conn, media, cols.LastImageScan); err != nil {
-			logger.Error(err)
+
+	// if the image already has an image, skip this step
+	if media.ShaImage != "" {
+		w := &bytes.Buffer{}
+		if err = images.ExtractImageFromMedia(w, media.Location); err != nil {
+			// no image in audio file, update scan in db and continue
+			if err = store.Update(ctx, conn, media, cols.LastImageScan); err != nil {
+				logger.Error(err)
+			}
+			return err
+		} else {
+			imageData = w.Bytes()
 		}
-		return err
-	} else {
-		imageData = w.Bytes()
 	}
 
 	if imageData != nil {
