@@ -1,8 +1,9 @@
 build-dev:
 	@echo "[INFO] building micro services in development mode"
-	docker build -f ./artwork.Dockerfile -t maupod-artwork .
-	docker build -f ./audioscan.Dockerfile -t maupod-audioscan .
-	docker build -f ./restapi.Dockerfile -t maupod-restapi .
+	docker build -f ./dockerfiles/artwork.Dockerfile -t maupod-artwork .
+	docker build -f ./dockerfiles/audioscan.Dockerfile -t maupod-audioscan .
+	docker build -f ./dockerfiles/mediainfo.Dockerfile -t maupod-mediainfo .
+	docker build -f ./dockerfiles/restapi.Dockerfile -t maupod-restapi .
 
 clean: down
 	rm -f ./app
@@ -25,7 +26,7 @@ proto: prepare-proto
 	protoc --proto_path=proto --go_out=pkg/pb --go_opt=paths=source_relative ./proto/*
 
 test:
-	go test -cover ./...
+	go test -cover -count 1 ./...
 
 up:
 	@echo "[INFO] starting docker-compose micro services"

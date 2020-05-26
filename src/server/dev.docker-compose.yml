@@ -25,6 +25,15 @@ services:
       - $GOPATH/pkg:/go/pkg
       - $HOME/Downloads/music-store:/music-store
 
+  maupod-mediainfo:
+    image: maupod-mediainfo:latest
+    env_file:
+      - .env
+    volumes:
+      - ./:/go/src/github.com/mauleyzaola/maupod/src/server
+      - $GOPATH/pkg:/go/pkg
+      - $HOME/Downloads/music-store:/music-store
+
   maupod-restapi:
     image: maupod-restapi:latest
     env_file:

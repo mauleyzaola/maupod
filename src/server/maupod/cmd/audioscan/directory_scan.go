@@ -2,15 +2,22 @@ package main
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 	"time"
+
+	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
+
+	"github.com/mauleyzaola/maupod/src/server/pkg/broker"
+	"github.com/nats-io/nats.go"
 
 	"github.com/mauleyzaola/maupod/src/server/pkg/data"
 	"github.com/mauleyzaola/maupod/src/server/pkg/data/orm"
 	"github.com/mauleyzaola/maupod/src/server/pkg/filemgmt"
 	"github.com/mauleyzaola/maupod/src/server/pkg/filters"
-	"github.com/mauleyzaola/maupod/src/server/pkg/media"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 	"github.com/mauleyzaola/maupod/src/server/pkg/rule"
 	"github.com/mauleyzaola/maupod/src/server/pkg/types"
@@ -20,6 +27,7 @@ import (
 func ScanDirectoryAudioFiles(
 	ctx context.Context,
 	conn boil.ContextExecutor,
+	nc *nats.Conn,
 	logger types.Logger,
 	scanDate time.Time,
 	store *data.MediaStore,
@@ -67,7 +75,6 @@ func ScanDirectoryAudioFiles(
 
 	var cols = orm.MediumColumns
 	var fields = []string{
-		cols.Sha,
 		cols.FileExtension,
 		cols.Format,
 		cols.FileSize,
@@ -118,24 +125,38 @@ func ScanDirectoryAudioFiles(
 		cols.Composer,
 	}
 
+	var response *pb.MediaInfoOutput
+	var timeout = time.Second * time.Duration(config.Delay)
 	for _, f := range files {
-		info, err := media.InfoFromFile(f)
+		input := &pb.MediaInfoInput{FileName: f}
+		response, err = broker.MediaInfoRequest(nc, input, timeout)
 		if err != nil {
 			log.Printf("[ERROR] cannot get mediainfo from file: %s %s\n", f, err)
 			continue
+		} else if response == nil {
+			return fmt.Errorf("response was nil with file: %s", f)
+		} else if !response.Response.Ok {
+			return errors.New(response.Response.Error)
 		}
+
+		media := response.Media
 		fileInfo, err := os.Stat(f)
 		if err != nil {
 			return err
 		}
-		m := rule.NewMediaFile(info, f, scanDate, fileInfo)
+		media.Id = helpers.NewUUID()
+		// TODO: media.Sha  needs to be defined in another process
+		media.LastScan = helpers.TimeToTs(&scanDate)
+		media.ModifiedDate = helpers.TimeToTs2(fileInfo.ModTime())
+		media.Location = f
+		media.FileExtension = filepath.Ext(fileInfo.Name())
 
 		// if the location is the same and we made it here, that means we need to update the row
 		if val, ok := mediaLocationKeys[f]; ok {
-			m.Id = val.Id
-			return store.Update(ctx, conn, m, fields...)
+			media.Id = val.Id
+			return store.Update(ctx, conn, media, fields...)
 		} else {
-			return store.Insert(ctx, conn, m)
+			return store.Insert(ctx, conn, media)
 		}
 	}
 

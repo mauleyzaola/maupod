@@ -25,6 +25,7 @@ func (m *MsgHandler) handlerAudioScan(msg *nats.Msg) {
 	if err = ScanDirectoryAudioFiles(
 		ctx,
 		conn,
+		m.base.NATS(),
 		m.base.Logger(),
 		helpers.TsToTime2(input.ScanDate),
 		&data.MediaStore{},
