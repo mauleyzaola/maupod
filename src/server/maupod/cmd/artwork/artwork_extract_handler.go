@@ -70,8 +70,7 @@ func ScanArtwork(
 	// extract the image from the file
 	media.LastImageScan = helpers.TimeToTs(&scanDate)
 
-	// if the image already has an image, skip this step
-	if media.ShaImage != "" {
+	if !rule.MediaHasImage(media) {
 		w := &bytes.Buffer{}
 		if err = images.ExtractImageFromMedia(w, media.Location); err != nil {
 			// no image in audio file, update scan in db and continue

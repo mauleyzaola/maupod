@@ -70,3 +70,7 @@ func ImageFileName(m *pb.Media, store *pb.FileStore) (string, error) {
 	filename := m.ShaImage + ".png"
 	return filepath.Join(store.Location, filename), nil
 }
+
+func MediaHasImage(m *pb.Media) bool {
+	return m.ShaImage != "" && m.ImageLocation != ""
+}
