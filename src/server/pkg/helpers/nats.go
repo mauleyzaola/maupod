@@ -5,11 +5,9 @@ import (
 	"time"
 
 	"github.com/nats-io/nats.go"
-	"github.com/spf13/viper"
 )
 
-func ConnectNATS(retries int, delay time.Duration) (*nats.Conn, error) {
-	natsURL := viper.GetString("NATS_URL")
+func ConnectNATS(natsURL string, retries int, delay time.Duration) (*nats.Conn, error) {
 	if natsURL == "" {
 		return nil, errors.New("cannot resolve variable: NATS_URL")
 	}
