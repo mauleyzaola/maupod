@@ -12,4 +12,5 @@ message Configuration {
     string port = 5;
     repeated string extensions = 6;
     string db_conn = 7;
+    string nats_url = 8;
 }

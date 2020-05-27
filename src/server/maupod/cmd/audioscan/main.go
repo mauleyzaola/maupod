@@ -58,7 +58,7 @@ func run() error {
 		return errors.New("could not find any image store in configuration")
 	}
 
-	nc, err := helpers.ConnectNATS(int(config.Retries), time.Second*time.Duration(config.Delay))
+	nc, err := helpers.ConnectNATS(config.NatsUrl, int(config.Retries), time.Second*time.Duration(config.Delay))
 	if err != nil {
 		return err
 	}

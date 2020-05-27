@@ -45,7 +45,7 @@ func run() error {
 		return err
 	}
 
-	nc, err := helpers.ConnectNATS(int(config.Retries), time.Second*time.Duration(config.Delay))
+	nc, err := helpers.ConnectNATS(config.NatsUrl, int(config.Retries), time.Second*time.Duration(config.Delay))
 	if err != nil {
 		return err
 	}

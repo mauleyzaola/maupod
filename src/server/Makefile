@@ -6,7 +6,7 @@ build-dev:
 	docker build -f ./dockerfiles/restapi.Dockerfile -t maupod-restapi .
 
 clean: down
-	rm -f ./app
+	rm -f ./maupod-*
 
 dev: build-dev up logs
 

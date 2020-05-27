@@ -9,35 +9,27 @@ services:
 
   maupod-artwork:
     image: maupod-artwork:latest
-    env_file:
-      - .env
     volumes:
       - ./:/go/src/github.com/mauleyzaola/maupod/src/server
       - $GOPATH/pkg:/go/pkg
-      - /media/mau/music-library/music:/music-store
+      - $HOME/Downloads/music-store:/music-store
 
   maupod-audioscan:
     image: maupod-audioscan:latest
-    env_file:
-      - .env
     volumes:
       - ./:/go/src/github.com/mauleyzaola/maupod/src/server
       - $GOPATH/pkg:/go/pkg
-      - /media/mau/music-library/music:/music-store
+      - $HOME/Downloads/music-store:/music-store
 
   maupod-mediainfo:
     image: maupod-mediainfo:latest
-    env_file:
-      - .env
     volumes:
       - ./:/go/src/github.com/mauleyzaola/maupod/src/server
       - $GOPATH/pkg:/go/pkg
-      - /media/mau/music-library/music:/music-store
+      - $HOME/Downloads/music-store:/music-store
 
   maupod-restapi:
     image: maupod-restapi:latest
-    env_file:
-      - .env
     volumes:
       - ./:/go/src/github.com/mauleyzaola/maupod/src/server
       - $GOPATH/pkg:/go/pkg
@@ -46,8 +38,6 @@ services:
 
   redis:
     image: redis:5-alpine
-    env_file:
-      - .env
     command: "redis-server --appendonly yes"
     volumes:
       - $HOME/data/redis/data:/data
@@ -56,8 +46,6 @@ services:
 
   pg:
     image: postgres:9.5
-    env_file:
-      - .env
     volumes:
       - $HOME/data/pg/data:/var/lib/postgresql/data
     expose:
