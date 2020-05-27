@@ -2,6 +2,7 @@ build-dev:
 	@echo "[INFO] building micro services in development mode"
 	docker build -f ./dockerfiles/artwork.Dockerfile -t maupod-artwork .
 	docker build -f ./dockerfiles/audioscan.Dockerfile -t maupod-audioscan .
+	docker build -f ./dockerfiles/mediainfo.Dockerfile -t maupod-mediainfo .
 	docker build -f ./dockerfiles/restapi.Dockerfile -t maupod-restapi .
 
 clean: down

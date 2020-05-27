@@ -23,6 +23,7 @@ message MediaInfoInput {
 message MediaInfoOutput {
     Media media = 1;
     Response response = 2;
+    google.protobuf.Timestamp last_modified_date = 3;
 }
 
 message Response {

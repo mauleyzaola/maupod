@@ -2,12 +2,12 @@ package main
 
 import (
 	"context"
+	"errors"
 	"log"
-	"os"
 	"path/filepath"
 	"time"
 
-	"github.com/mauleyzaola/maupod/src/server/pkg/media"
+	"github.com/mauleyzaola/maupod/src/server/pkg/broker"
 
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 
@@ -124,26 +124,30 @@ func ScanDirectoryAudioFiles(
 		cols.Composer,
 	}
 
+	var timeout = time.Second * time.Duration(config.Delay)
+	var output *pb.MediaInfoOutput
+
 	for _, f := range files {
-		mi, err := media.RunMediaInfo(f)
-		if err != nil {
+		input := &pb.MediaInfoInput{FileName: f}
+		if output, err = broker.MediaInfoRequest(nc, input, timeout); err != nil {
 			// TODO: send the files with errors to another listener and store in db
-			logger.Info("error using mediainfo with file: " + f)
-			return err
-			//continue
+			logger.Error(err)
+			continue
+		}
+		if output.Response == nil {
+			return errors.New("missing response")
+		}
+		if !output.Response.Ok {
+			return errors.New(output.Response.Error)
 		}
 
-		m := mi.ToProto()
-		fileInfo, err := os.Stat(f)
-		if err != nil {
-			return err
-		}
+		m := output.Media
 		m.Id = helpers.NewUUID()
 		// TODO: m.Sha  needs to be defined in another process
 		m.LastScan = helpers.TimeToTs(&scanDate)
-		m.ModifiedDate = helpers.TimeToTs2(fileInfo.ModTime())
+		m.ModifiedDate = output.LastModifiedDate
 		m.Location = f
-		m.FileExtension = filepath.Ext(fileInfo.Name())
+		m.FileExtension = filepath.Ext(f)
 
 		// if the location is the same and we made it here, that means we need to update the row
 		if val, ok := mediaLocationKeys[f]; ok {
