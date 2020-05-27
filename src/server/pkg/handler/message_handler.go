@@ -50,3 +50,7 @@ func (m *MsgHandler) Close() {
 func (m *MsgHandler) Logger() types.Logger {
 	return m.logger
 }
+
+func (m *MsgHandler) NATS() *nats.Conn {
+	return m.nc
+}
