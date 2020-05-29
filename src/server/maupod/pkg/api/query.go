@@ -12,7 +12,8 @@ func (a *ApiServer) PerformersGet(p TransactionExecutorParams) (status int, resu
 		status = http.StatusBadRequest
 		return
 	}
-	if result, err = a.dm.Performers(p.ctx, p.conn, filter); err != nil {
+	filter.Distinct = p.Param("field")
+	if result, err = a.dm.DistinctList(p.ctx, p.conn, filter); err != nil {
 		status = http.StatusBadRequest
 		return
 	}

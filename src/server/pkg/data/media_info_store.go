@@ -33,13 +33,19 @@ func (s *MediaStore) Delete(ctx context.Context, conn boil.ContextExecutor, id s
 	return err
 }
 
-func (s *MediaStore) List(ctx context.Context, conn boil.ContextExecutor, filter MediaFilter, fn func(int64)) ([]*pb.Media, error) {
+func (s *MediaStore) FilterMods(filter MediaFilter) []qm.QueryMod {
 	var mods []qm.QueryMod
 	var cols = orm.MediumColumns
-
 	if filter.Query != "" {
 		mods = append(mods, filter.ModOr(cols.Performer, cols.AlbumPerformer, cols.Album, cols.Track, cols.Genre))
 	}
+	return mods
+}
+
+func (s *MediaStore) List(ctx context.Context, conn boil.ContextExecutor, filter MediaFilter, fn func(int64)) ([]*pb.Media, error) {
+	var mods []qm.QueryMod
+
+	mods = append(mods, s.FilterMods(filter)...)
 	if fn != nil {
 		total, err := orm.Media(mods...).Count(ctx, conn)
 		if err != nil {
@@ -111,12 +117,16 @@ func (s *MediaStore) FindMedias(ctx context.Context, conn boil.ContextExecutor, 
 	return conversion.MediasFromORM(rows...), nil
 }
 
-func (s *MediaStore) Performers(ctx context.Context, conn boil.ContextExecutor, filter MediaFilter) ([]*pb.Media, error) {
+func (s *MediaStore) DistinctList(ctx context.Context, conn boil.ContextExecutor, filter MediaFilter) ([]*pb.Media, error) {
 	var mods []qm.QueryMod
 
-	var cols = orm.MediumColumns
-	mods = append(mods, qm.Distinct(cols.Performer))
-	mods = append(mods, filter.ModOr(cols.Performer))
+	if filter.Distinct == "" {
+		return nil, errors.New("missing parameter: filter.distinct")
+	}
+
+	mods = append(mods, qm.Distinct(filter.Distinct))
+	mods = append(mods, s.FilterMods(filter)...)
+	mods = append(mods, filter.Mods()...)
 	rows, err := orm.Media(mods...).All(ctx, conn)
 	if err != nil {
 		return nil, err
