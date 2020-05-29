@@ -10,7 +10,7 @@ stores:
     type: 0
 #    location: /media/mau/music-library/music
 #    location: /Users/mau/Downloads/music/Sting - Bring On The Night (1986) [2CD]
-    location: /Users/mau/Downloads/music
+    location: /music-store
   - name: local-hd-image
     type: 2
 #    location: /media/mau/music-library/album-covers

@@ -6,7 +6,6 @@ import (
 
 	"github.com/mauleyzaola/maupod/src/server/pkg/data/conversion"
 	"github.com/mauleyzaola/maupod/src/server/pkg/data/orm"
-	"github.com/mauleyzaola/maupod/src/server/pkg/filters"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 	"github.com/volatiletech/sqlboiler/boil"
 	"github.com/volatiletech/sqlboiler/queries/qm"
@@ -34,9 +33,13 @@ func (s *MediaStore) Delete(ctx context.Context, conn boil.ContextExecutor, id s
 	return err
 }
 
-func (s *MediaStore) List(ctx context.Context, conn boil.ContextExecutor, filter filters.MediaFilter, fn func(int64)) ([]*pb.Media, error) {
+func (s *MediaStore) List(ctx context.Context, conn boil.ContextExecutor, filter MediaFilter, fn func(int64)) ([]*pb.Media, error) {
 	var mods []qm.QueryMod
-	// TODO: implement the actual filters
+	var cols = orm.MediumColumns
+
+	if filter.Query != "" {
+		mods = append(mods, filter.ModOr(cols.Performer, cols.AlbumPerformer, cols.Album, cols.Track, cols.Genre))
+	}
 	if fn != nil {
 		total, err := orm.Media(mods...).Count(ctx, conn)
 		if err != nil {
@@ -101,6 +104,19 @@ func (s *MediaStore) FindMedias(ctx context.Context, conn boil.ContextExecutor, 
 	if limit != 0 {
 		mods = append(mods, qm.Limit(limit))
 	}
+	rows, err := orm.Media(mods...).All(ctx, conn)
+	if err != nil {
+		return nil, err
+	}
+	return conversion.MediasFromORM(rows...), nil
+}
+
+func (s *MediaStore) Performers(ctx context.Context, conn boil.ContextExecutor, filter MediaFilter) ([]*pb.Media, error) {
+	var mods []qm.QueryMod
+
+	var cols = orm.MediumColumns
+	mods = append(mods, qm.Distinct(cols.Performer))
+	mods = append(mods, filter.ModOr(cols.Performer))
 	rows, err := orm.Media(mods...).All(ctx, conn)
 	if err != nil {
 		return nil, err
