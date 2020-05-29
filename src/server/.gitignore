@@ -1,2 +1,5 @@
 # binary files
 maupod-*
+
+# custom local docker-compose files
+/docker-compose.yml

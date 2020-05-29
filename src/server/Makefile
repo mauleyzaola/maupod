@@ -11,11 +11,11 @@ clean: down
 dev: build-dev up logs
 
 down:
-	docker-compose -f ./dev.docker-compose.yml stop
-	docker-compose -f ./dev.docker-compose.yml down
+	docker-compose -f ./docker-compose.yml stop
+	docker-compose -f ./docker-compose.yml down
 
 logs:
-	docker-compose -f ./dev.docker-compose.yml logs -f
+	docker-compose -f ./docker-compose.yml logs -f
 
 force:
 prepare-proto: force
@@ -30,4 +30,4 @@ test:
 
 up:
 	@echo "[INFO] starting docker-compose micro services"
-	docker-compose -f ./dev.docker-compose.yml up -d
+	docker-compose -f ./docker-compose.yml up -d
