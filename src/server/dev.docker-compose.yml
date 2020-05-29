@@ -12,21 +12,24 @@ services:
     volumes:
       - ./:/go/src/github.com/mauleyzaola/maupod/src/server
       - $GOPATH/pkg:/go/pkg
-      - /Volumes/Backup-Music-Library/music:/music-store
+      - /media/mau/music-library/music:/music-store
+#      - /Volumes/Backup-Music-Library/music:/music-store
 
   maupod-audioscan:
     image: maupod-audioscan:latest
     volumes:
       - ./:/go/src/github.com/mauleyzaola/maupod/src/server
       - $GOPATH/pkg:/go/pkg
-      - /Volumes/Backup-Music-Library/music:/music-store
+      - /media/mau/music-library/music:/music-store
+#      - /Volumes/Backup-Music-Library/music:/music-store
 
   maupod-mediainfo:
     image: maupod-mediainfo:latest
     volumes:
       - ./:/go/src/github.com/mauleyzaola/maupod/src/server
       - $GOPATH/pkg:/go/pkg
-      - /Volumes/Backup-Music-Library/music:/music-store
+      - /media/mau/music-library/music:/music-store
+#      - /Volumes/Backup-Music-Library/music:/music-store
 
   maupod-restapi:
     image: maupod-restapi:latest
