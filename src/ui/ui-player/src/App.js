@@ -4,6 +4,7 @@ import Albums from "./Albums";
 import Artists from './Artists'
 import Genres from "./Genres";
 import Dashboard from "./Dashboard";
+import MediaList from "./MediaList";
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
                 <Route exact path='/albums' component={Albums} />
                 <Route exact path='/artists' component={Artists} />
                 <Route exact path='/genres' component={Genres} />
+                <Route path='/media' component={MediaList} />
             </Switch>
         </Router>
     </div>

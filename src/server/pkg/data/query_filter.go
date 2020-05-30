@@ -2,6 +2,7 @@ package data
 
 import (
 	"errors"
+	"strings"
 
 	"github.com/volatiletech/sqlboiler/queries/qm"
 )
@@ -62,4 +63,13 @@ func (f *QueryFilter) ModOr(fields ...string) qm.QueryMod {
 		submods = append(submods, qm.Or("LOWER("+v+") LIKE ?", LikeQuoted(f.Query)))
 	}
 	return qm.Expr(submods...)
+}
+
+type KeyValuePair struct {
+	Key   string
+	Value string
+}
+
+func (f *QueryFilter) ModAnd(v KeyValuePair) qm.QueryMod {
+	return qm.And("LOWER("+v.Key+") = ?", strings.ToLower(v.Value))
 }
