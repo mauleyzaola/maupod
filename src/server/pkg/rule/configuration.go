@@ -9,7 +9,7 @@ import (
 )
 
 func ConfigurationValidate(c *pb.Configuration) error {
-	for _, v := range c.Stores {
+	for _, v := range c.MediaStores {
 		if err := FileStoreValidate(v); err != nil {
 			return err
 		}
@@ -36,25 +36,28 @@ func FileIsValidExtension(c *pb.Configuration, filename string) bool {
 }
 
 func ConfigurationFirstImageStore(c *pb.Configuration) *pb.FileStore {
-	for _, v := range c.Stores {
-		switch v.Type {
-		case pb.FileStore_IMAGE:
-			return v
-		default:
-			continue
-		}
-	}
+	// TODO: implement
 	return nil
 }
 
 func ConfigurationFileSystemStores(c *pb.Configuration) []*pb.FileStore {
 	var roots []*pb.FileStore
-	for _, v := range c.Stores {
+	for _, v := range c.MediaStores {
 		switch v.Type {
 		case pb.FileStore_FILE_SYSTEM:
 			roots = append(roots, v)
 		default:
 			continue
+		}
+	}
+	if len(roots) == 0 {
+		// if no store is available in yaml file, lookup in the environment
+		if val := viper.GetString("MEDIA_STORE"); val != "" {
+			roots = append(roots, &pb.FileStore{
+				Name:     "store",
+				Type:     pb.FileStore_FILE_SYSTEM,
+				Location: val,
+			})
 		}
 	}
 	return roots

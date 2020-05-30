@@ -49,13 +49,9 @@ func run() error {
 	}
 
 	// create directory if not exists
-	imageStore := rule.ConfigurationFirstImageStore(config)
-	if imageStore != nil {
-		if err = os.MkdirAll(imageStore.Location, os.ModePerm); err != nil {
-			return err
-		}
-	} else {
-		return errors.New("could not find any image store in configuration")
+	config.MediaStores = rule.ConfigurationFileSystemStores(config)
+	if len(config.MediaStores) == 0 {
+		return errors.New("could not find any media store in configuration or environment")
 	}
 
 	nc, err := helpers.ConnectNATS(config.NatsUrl, int(config.Retries), time.Second*time.Duration(config.Delay))

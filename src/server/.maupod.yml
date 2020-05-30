@@ -4,17 +4,6 @@ retries: 10
 delay: 2
 port: ':8000'
 natsurl: nats://nats-server:4222
-stores:
-  - name: local-hd
-#    file-system
-    type: 0
-#    location: /media/mau/music-library/music
-#    location: /Users/mau/Downloads/music/Sting - Bring On The Night (1986) [2CD]
-    location: /music-store
-  - name: local-hd-image
-    type: 2
-#    location: /media/mau/music-library/album-covers
-    location: /Users/mau/Downloads/artwork
 extensions:
   - .mp3
   - .flac

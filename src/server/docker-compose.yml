@@ -1,46 +1,44 @@
+# this is a setup based for simple demo purposes
+
 version: "3.7"
 
 services:
-  nats-server:
-    image: nats:2.1
-    restart: always
-    expose:
-      - 4222
-
   maupod-artwork:
     image: maupod-artwork:latest
+    environment:
+      - ARTWORK_STORE
     volumes:
       - ./:/go/src/github.com/mauleyzaola/maupod/src/server
-      - $GOPATH/pkg:/go/pkg
-      - $HOME/Downloads/music-store:/music-store
-#      - /media/mau/music-library/music:/music-store
-#      - /Volumes/Backup-Music-Library/music:/music-store
+      - /media/mau/music-library/music:/music-store
 
   maupod-audioscan:
     image: maupod-audioscan:latest
+    environment:
+      - MEDIA_STORE
     volumes:
       - ./:/go/src/github.com/mauleyzaola/maupod/src/server
-      - $GOPATH/pkg:/go/pkg
-      - $HOME/Downloads/music-store:/music-store
-  #      - /media/mau/music-library/music:/music-store
-  #      - /Volumes/Backup-Music-Library/music:/music-store
+      - /media/mau/music-library/music:/music-store
 
   maupod-mediainfo:
     image: maupod-mediainfo:latest
+    environment:
+      - MEDIA_STORE
     volumes:
       - ./:/go/src/github.com/mauleyzaola/maupod/src/server
-      - $GOPATH/pkg:/go/pkg
-      - $HOME/Downloads/music-store:/music-store
-  #      - /media/mau/music-library/music:/music-store
-  #      - /Volumes/Backup-Music-Library/music:/music-store
+      - /media/mau/music-library/music:/music-store
 
   maupod-restapi:
     image: maupod-restapi:latest
     volumes:
       - ./:/go/src/github.com/mauleyzaola/maupod/src/server
-      - $GOPATH/pkg:/go/pkg
     ports:
       - 8000:8000
+
+  nats-server:
+    image: nats:2.1
+    restart: always
+    expose:
+      - 4222
 
   redis:
     image: redis:5-alpine
