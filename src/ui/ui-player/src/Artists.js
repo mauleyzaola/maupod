@@ -3,9 +3,11 @@ import { distinctListGet } from "./api";
 import uuid from 'uuid4';
 
 const ArtistHeader = () => (
-    <tr>
-        <td>Name</td>
-    </tr>
+    <thead>
+        <tr>
+            <td>Name</td>
+        </tr>
+    </thead>
 )
 
 function ArtistLine({row}){
@@ -41,9 +43,7 @@ class Artists extends React.Component{
         return(
             <div>
                 <table>
-                    <thead>
-                        <ArtistHeader />
-                    </thead>
+                    <ArtistHeader />
                     <tbody>
                         {rows.map(row => <ArtistLine key={uuid()} row={row}  />)}
                     </tbody>
