@@ -18,7 +18,7 @@ function AlbumLine({row}){
         <tr>
             <td>
                 <Link to={`/media?${objectToQueryString({album})}`}>
-                    {row.album}
+                    {album}
                 </Link>
             </td>
         </tr>
