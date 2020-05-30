@@ -21,6 +21,7 @@ func SetupRoutes(a *ApiServer, output io.Writer) http.Handler {
 
 	baseRouter.HandleFunc("/audio/scan", a.GlueHandler(a.AudioScanPost)).Methods(http.MethodOptions, http.MethodPost)
 	baseRouter.HandleFunc("/media/{field}/distinct", a.GlueHandler(a.PerformersGet)).Methods(http.MethodOptions, http.MethodGet)
+	baseRouter.HandleFunc("/media", a.GlueHandler(a.MediaListGet)).Methods(http.MethodOptions, http.MethodGet)
 
 	if output != nil {
 		return handlers.CombinedLoggingHandler(output, baseRouter)
