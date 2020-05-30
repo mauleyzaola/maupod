@@ -6,7 +6,7 @@ import (
 	"github.com/mauleyzaola/maupod/src/server/pkg/data"
 )
 
-func (a *ApiServer) PerformersGet(p TransactionExecutorParams) (status int, result interface{}, err error) {
+func (a *ApiServer) DistinctListGet(p TransactionExecutorParams) (status int, result interface{}, err error) {
 	var filter data.MediaFilter
 	if err = p.DecodeQuery(&filter); err != nil {
 		status = http.StatusBadRequest
