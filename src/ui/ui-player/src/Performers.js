@@ -1,8 +1,9 @@
 import React from 'react';
-import { distinctListGet } from "./api";
+import {distinctListGet, objectToQueryString} from "./api";
 import uuid from 'uuid4';
+import { Link } from "react-router-dom";
 
-const ArtistHeader = () => (
+const PerformerHeader = () => (
     <thead>
         <tr>
             <td>Name</td>
@@ -10,15 +11,20 @@ const ArtistHeader = () => (
     </thead>
 )
 
-function ArtistLine({row}){
+function PerformerLine({row}){
+    const { performer } = row;
     return (
         <tr>
-            <td>{row.performer}</td>
+            <td>
+                <Link to={`/media?${objectToQueryString({performer})}`}>
+                    {performer}
+                </Link>
+            </td>
         </tr>
     )
 }
 
-class Artists extends React.Component{
+class Performers extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
@@ -43,9 +49,9 @@ class Artists extends React.Component{
         return(
             <div>
                 <table>
-                    <ArtistHeader />
+                    <PerformerHeader />
                     <tbody>
-                        {rows.map(row => <ArtistLine key={uuid()} row={row}  />)}
+                        {rows.map(row => <PerformerLine key={uuid()} row={row}  />)}
                     </tbody>
                 </table>
             </div>
@@ -53,4 +59,4 @@ class Artists extends React.Component{
     }
 }
 
-export default Artists;
+export default Performers;

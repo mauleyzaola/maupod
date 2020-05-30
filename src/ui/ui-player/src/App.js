@@ -1,9 +1,10 @@
 import React from 'react';
 import './App.css';
 import Albums from "./Albums";
-import Artists from './Artists'
+import Performers from './Performers'
 import Genres from "./Genres";
 import Dashboard from "./Dashboard";
+import MediaList from "./MediaList";
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 
 function App() {
@@ -13,14 +14,15 @@ function App() {
             <div>
                 <Link to='/'>Home</Link>
                 <Link to='/albums'>Albums</Link>
-                <Link to='/artists'>Artists</Link>
+                <Link to='/performers'>Performers</Link>
                 <Link to='/genres'>Genres</Link>
             </div>
             <Switch>
                 <Route exact path='/' component={Dashboard} />
                 <Route exact path='/albums' component={Albums} />
-                <Route exact path='/artists' component={Artists} />
+                <Route exact path='/performers' component={Performers} />
                 <Route exact path='/genres' component={Genres} />
+                <Route path='/media' component={MediaList} />
             </Switch>
         </Router>
     </div>

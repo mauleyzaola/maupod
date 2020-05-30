@@ -21,11 +21,16 @@ func (a *ApiServer) DistinctListGet(p TransactionExecutorParams) (status int, re
 }
 
 func (a *ApiServer) MediaListGet(p TransactionExecutorParams) (status int, result interface{}, err error) {
+	//boil.DebugMode=true
+	//defer func(){
+	//	boil.DebugMode=false
+	//}()
 	var filter data.MediaFilter
 	if err = p.DecodeQuery(&filter); err != nil {
 		status = http.StatusBadRequest
 		return
 	}
+
 	if result, err = a.dm.List(p.ctx, p.conn, filter, nil); err != nil {
 		status = http.StatusBadRequest
 		return
