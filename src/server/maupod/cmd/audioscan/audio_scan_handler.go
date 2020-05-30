@@ -24,7 +24,7 @@ func (m *MsgHandler) handlerAudioScan(msg *nats.Msg) {
 		m.base.Logger().Info("[INFO] elapsed time: " + time.Since(start).String())
 	}()
 
-	m.base.Logger().Info("received artwork extract message: " + input.String())
+	m.base.Logger().Info("received audio scan message: " + input.String())
 
 	ctx := context.Background()
 	conn := m.db

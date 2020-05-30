@@ -43,6 +43,7 @@ func (p *TransactionExecutorParams) ParamBool(name string) *bool {
 
 func (p *TransactionExecutorParams) DecodeQuery(v interface{}) error {
 	decoder := schema.NewDecoder()
+	decoder.IgnoreUnknownKeys(true)
 	if err := decoder.Decode(v, p.r.URL.Query()); err != nil {
 		return err
 	}

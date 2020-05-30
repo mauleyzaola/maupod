@@ -8,18 +8,14 @@ import (
 	"time"
 
 	"github.com/mauleyzaola/maupod/src/server/pkg/broker"
-
-	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
-
-	"github.com/nats-io/nats.go"
-
 	"github.com/mauleyzaola/maupod/src/server/pkg/data"
 	"github.com/mauleyzaola/maupod/src/server/pkg/data/orm"
 	"github.com/mauleyzaola/maupod/src/server/pkg/filemgmt"
-	"github.com/mauleyzaola/maupod/src/server/pkg/filters"
+	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 	"github.com/mauleyzaola/maupod/src/server/pkg/rule"
 	"github.com/mauleyzaola/maupod/src/server/pkg/types"
+	"github.com/nats-io/nats.go"
 	"github.com/volatiletech/sqlboiler/boil"
 )
 
@@ -40,7 +36,7 @@ func ScanDirectoryAudioFiles(
 
 	// buffer all the media in db
 	var allMedia data.Medias
-	if allMedia, err = store.List(ctx, conn, filters.MediaFilter{}, nil); err != nil {
+	if allMedia, err = store.List(ctx, conn, data.MediaFilter{}, nil); err != nil {
 		logger.Error(err)
 		return err
 	}

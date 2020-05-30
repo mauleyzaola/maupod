@@ -13,6 +13,8 @@ services:
       - ./:/go/src/github.com/mauleyzaola/maupod/src/server
       - $GOPATH/pkg:/go/pkg
       - $HOME/Downloads/music-store:/music-store
+#      - /media/mau/music-library/music:/music-store
+#      - /Volumes/Backup-Music-Library/music:/music-store
 
   maupod-audioscan:
     image: maupod-audioscan:latest
@@ -20,6 +22,8 @@ services:
       - ./:/go/src/github.com/mauleyzaola/maupod/src/server
       - $GOPATH/pkg:/go/pkg
       - $HOME/Downloads/music-store:/music-store
+  #      - /media/mau/music-library/music:/music-store
+  #      - /Volumes/Backup-Music-Library/music:/music-store
 
   maupod-mediainfo:
     image: maupod-mediainfo:latest
@@ -27,6 +31,8 @@ services:
       - ./:/go/src/github.com/mauleyzaola/maupod/src/server
       - $GOPATH/pkg:/go/pkg
       - $HOME/Downloads/music-store:/music-store
+  #      - /media/mau/music-library/music:/music-store
+  #      - /Volumes/Backup-Music-Library/music:/music-store
 
   maupod-restapi:
     image: maupod-restapi:latest

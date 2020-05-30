@@ -12,17 +12,28 @@ import (
 
 func SetupRoutes(a *ApiServer, output io.Writer) http.Handler {
 	baseRouter := mux.NewRouter()
-	baseRouter.Use(helpers.MiddlewareCORS)
+
+	// setup middlewares as pointers to functions
+	var chainFn = helpers.ChainMiddleware
+	var cors = helpers.MiddlewareCORS
+	var chainGlueCors = func(fn TransactionExecutor, promises ...PromiseExecutor) http.HandlerFunc {
+		return chainFn(a.GlueHandler(fn, promises...), cors)
+	}
+
 	http.Handle("/", baseRouter)
 
-	baseRouter.HandleFunc("/system/ping", func(w http.ResponseWriter, r *http.Request) {
-		_, _ = fmt.Fprintln(w, "pong")
-	}).Methods(http.MethodOptions, http.MethodGet)
+	baseRouter.HandleFunc("/system/ping", handlerPing).Methods(http.MethodOptions, http.MethodGet)
 
-	baseRouter.HandleFunc("/audio/scan", a.GlueHandler(a.AudioScanPost)).Methods(http.MethodOptions, http.MethodPost)
+	baseRouter.HandleFunc("/audio/scan", chainGlueCors(a.AudioScanPost)).Methods(http.MethodOptions, http.MethodPost)
+	baseRouter.HandleFunc("/media/{field}/distinct", chainGlueCors(a.DistinctListGet)).Methods(http.MethodOptions, http.MethodGet)
+	baseRouter.HandleFunc("/media", chainGlueCors(a.MediaListGet)).Methods(http.MethodOptions, http.MethodGet)
 
 	if output != nil {
 		return handlers.CombinedLoggingHandler(output, baseRouter)
 	}
 	return baseRouter
+}
+
+func handlerPing(w http.ResponseWriter, r *http.Request) {
+	_, _ = fmt.Fprintln(w, "pong")
 }
