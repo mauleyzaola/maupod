@@ -2,7 +2,7 @@ import React from 'react';
 import {distinctListGet} from "./api";
 import uuid from "uuid4";
 import { Link } from "react-router-dom";
-import { objectToQueryString } from "./api";
+import {linkAlbumList} from "./routes";
 
 const AlbumHeader = () => (
     <thead>
@@ -17,7 +17,7 @@ function AlbumLine({row}){
     return (
         <tr>
             <td>
-                <Link to={`/media?${objectToQueryString({album})}`}>
+                <Link to={linkAlbumList(row)}>
                     {album}
                 </Link>
             </td>

@@ -1,6 +1,8 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import { decodeURL, mediaList } from "./api";
 import { msToString, secondsToDate } from "./helpers";
+import {linkAlbumList, linkGenreList, linkPerformerList} from "./routes";
 
 const MediaHeader = () => (
     <thead>
@@ -25,10 +27,16 @@ const MediaLine = ({row}) => {
         <tr>
             <td>{row.track_position}</td>
             <td>{row.track}</td>
-            <td>{row.performer}</td>
-            <td>{row.genre}</td>
+            <td>
+                <Link to={linkPerformerList(row)}>{row.performer}</Link>
+            </td>
+            <td>
+                <Link to={linkGenreList(row)}>{row.genre}</Link>
+            </td>
             <td>{msToString(row.duration)}</td>
-            <td>{row.album}</td>
+            <td>
+                <Link to={linkAlbumList(row)}>{row.album}</Link>
+            </td>
             <td>{row.sampling_rate}</td>
             <td>{row.recorded_date}</td>
             <td>{modifiedDate}</td>
@@ -45,11 +53,21 @@ class MediaList extends React.Component{
     }
 
     componentDidMount() {
-        const uri = new URL(window.location.href);
-        const search = decodeURL(uri);
+        const uri = decodeURL(window.location.search);
+        this.loadData(uri);
+    }
+
+    loadData = search => {
         mediaList(search)
             .then(res => res.data || [])
             .then(rows => this.setState({rows}))
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if(JSON.stringify(prevProps.location) === JSON.stringify(this.props.location)){
+            return;
+        }
+        this.loadData(decodeURL(this.props.location.search));
     }
 
     render() {

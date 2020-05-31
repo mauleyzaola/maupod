@@ -1,7 +1,8 @@
 import React from 'react';
-import {distinctListGet, objectToQueryString} from "./api";
+import {distinctListGet} from "./api";
 import uuid from "uuid4";
 import {Link} from "react-router-dom";
+import {linkGenreList} from "./routes";
 
 
 const GenreHeader = () => (
@@ -17,7 +18,7 @@ function GenreLine({row}){
     return (
         <tr>
             <td>
-                <Link to={`/media?${objectToQueryString({genre})}`}>
+                <Link to={linkGenreList(row)}>
                     {genre}
                 </Link>
             </td>

@@ -1,7 +1,8 @@
 import React from 'react';
-import {distinctListGet, objectToQueryString} from "./api";
+import {distinctListGet} from "./api";
 import uuid from 'uuid4';
 import { Link } from "react-router-dom";
+import {linkPerformerList} from "./routes";
 
 const PerformerHeader = () => (
     <thead>
@@ -16,7 +17,7 @@ function PerformerLine({row}){
     return (
         <tr>
             <td>
-                <Link to={`/media?${objectToQueryString({performer})}`}>
+                <Link to={linkPerformerList(row)}>
                     {performer}
                 </Link>
             </td>

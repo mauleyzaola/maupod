@@ -11,7 +11,7 @@ const axios = Axios.create({
 
 const audioScan = data => axios.post(`/audio/scan`, data);
 
-const decodeURL = url => querystring.decode(url.search.replace('?',''));
+const decodeURL = search => querystring.decode(search.replace('?',''));
 
 const distinctListGet = ({field, filter}) => axios.get(`/media/${field}/distinct`, {
     params: filter,
