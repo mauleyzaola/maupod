@@ -7,7 +7,6 @@ message FileStore {
     enum StoreType {
         FILE_SYSTEM = 0;
         S3 = 1;
-        IMAGE = 2;
     }
     StoreType type = 2;
     string location = 3;

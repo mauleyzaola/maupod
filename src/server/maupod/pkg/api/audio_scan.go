@@ -23,3 +23,7 @@ func (a *ApiServer) AudioScanPost(p TransactionExecutorParams) (status int, resu
 	}
 	return
 }
+
+func (a *ApiServer) ArtworkScanPost(p TransactionExecutorParams) (status int, result interface{}, err error) {
+	return
+}

@@ -49,8 +49,9 @@ func run() error {
 	}
 
 	// create directory if not exists
-	imageStore := rule.ConfigurationFirstImageStore(config)
+	imageStore := config.ArtworkStore
 	if imageStore != nil {
+		// TODO: probably other store types should not need to create the directory, use an interface instead
 		if err = os.MkdirAll(imageStore.Location, os.ModePerm); err != nil {
 			return err
 		}
