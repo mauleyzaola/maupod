@@ -13,10 +13,6 @@ clean: down
 
 dev: build up logs
 
-demo: build up
-	@echo "[INFO] starting maupod demo mode"
-	cd ../ui/ui-player && make install &
-
 down:
 	docker-compose stop
 	docker-compose down
