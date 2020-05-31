@@ -50,6 +50,8 @@ services:
 
   pg:
     image: postgres:9.5
+    environment:
+      - POSTGRES_PASSWORD=nevermind
     volumes:
       - $HOME/data/pg/data:/var/lib/postgresql/data
     expose:
