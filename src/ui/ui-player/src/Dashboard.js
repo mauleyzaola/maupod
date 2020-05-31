@@ -11,7 +11,7 @@ class Dashboard extends React.Component{
     render() {
         return(
             <div>
-                TODO: dashboard goes here!
+                TODO: dashboard goes here
             </div>
         )
     }

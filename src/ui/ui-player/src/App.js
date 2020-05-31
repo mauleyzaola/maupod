@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import Albums from "./Albums";
+import AudioScan from "./AudioScan";
 import Performers from './Performers'
 import Genres from "./Genres";
 import Dashboard from "./Dashboard";
@@ -13,12 +14,14 @@ function App() {
         <Router>
             <div>
                 <Link to='/'>Home</Link>
+                <Link to='/audio-scan'>Audio Scan</Link>
                 <Link to='/albums'>Albums</Link>
                 <Link to='/performers'>Performers</Link>
                 <Link to='/genres'>Genres</Link>
             </div>
             <Switch>
                 <Route exact path='/' component={Dashboard} />
+                <Route exact path='/audio-scan' component={AudioScan} />
                 <Route exact path='/albums' component={Albums} />
                 <Route exact path='/performers' component={Performers} />
                 <Route exact path='/genres' component={Genres} />
