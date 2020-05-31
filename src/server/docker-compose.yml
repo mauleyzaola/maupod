@@ -1,7 +1,5 @@
 # this is a setup based for simple demo purposes
-
 version: "3.7"
-
 services:
   maupod-artwork:
     image: maupod-artwork:latest
@@ -31,6 +29,8 @@ services:
     image: maupod-restapi:latest
     volumes:
       - ./:/go/src/github.com/mauleyzaola/maupod/src/server
+    expose:
+      - 8000
     ports:
       - 8000:8000
 
