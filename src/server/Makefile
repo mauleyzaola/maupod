@@ -1,4 +1,7 @@
-build-dev:
+# adjust to your environment as needed
+export MEDIA_STORE="/media/mau/music-library/music"
+
+build:
 	@echo "[INFO] building micro services in development mode"
 	docker build -f ./dockerfiles/artwork.Dockerfile -t maupod-artwork .
 	docker build -f ./dockerfiles/audioscan.Dockerfile -t maupod-audioscan .
@@ -8,14 +11,14 @@ build-dev:
 clean: down
 	rm -f ./maupod-*
 
-dev: build-dev up logs
+dev: build up logs
 
 down:
-	docker-compose -f ./docker-compose.yml stop
-	docker-compose -f ./docker-compose.yml down
+	docker-compose stop
+	docker-compose down
 
 logs:
-	docker-compose -f ./docker-compose.yml logs -f
+	docker-compose logs -f
 
 force:
 prepare-proto: force
@@ -30,4 +33,4 @@ test:
 
 up:
 	@echo "[INFO] starting docker-compose micro services"
-	docker-compose -f ./docker-compose.yml up -d
+	docker-compose up -d

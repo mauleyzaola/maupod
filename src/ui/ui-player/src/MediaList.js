@@ -1,6 +1,6 @@
 import React from 'react';
 import { decodeURL, mediaList } from "./api";
-import { secondsToDate } from "./helpers";
+import { msToString, secondsToDate } from "./helpers";
 
 const MediaHeader = () => (
     <thead>
@@ -27,7 +27,7 @@ const MediaLine = ({row}) => {
             <td>{row.track}</td>
             <td>{row.performer}</td>
             <td>{row.genre}</td>
-            <td>{row.duration}</td>
+            <td>{msToString(row.duration)}</td>
             <td>{row.album}</td>
             <td>{row.sampling_rate}</td>
             <td>{row.recorded_date}</td>
