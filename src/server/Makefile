@@ -1,6 +1,3 @@
-# adjust to your environment as needed
-export MEDIA_STORE="/media/mau/music-library/music"
-
 build:
 	@echo "[INFO] building micro services in development mode"
 	docker build -f ./dockerfiles/artwork.Dockerfile -t maupod-artwork .

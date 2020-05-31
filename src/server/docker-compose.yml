@@ -7,7 +7,7 @@ services:
       - ARTWORK_STORE
     volumes:
       - ./:/go/src/github.com/mauleyzaola/maupod/src/server
-      - /media/mau/music-library/music:/music-store
+      - $MEDIA_STORE:/music-store
 
   maupod-audioscan:
     image: maupod-audioscan:latest
@@ -15,7 +15,7 @@ services:
       - MEDIA_STORE
     volumes:
       - ./:/go/src/github.com/mauleyzaola/maupod/src/server
-      - /media/mau/music-library/music:/music-store
+      - $MEDIA_STORE:/music-store
 
   maupod-mediainfo:
     image: maupod-mediainfo:latest
@@ -23,7 +23,7 @@ services:
       - MEDIA_STORE
     volumes:
       - ./:/go/src/github.com/mauleyzaola/maupod/src/server
-      - /media/mau/music-library/music:/music-store
+      - $MEDIA_STORE:/music-store
 
   maupod-restapi:
     image: maupod-restapi:latest
