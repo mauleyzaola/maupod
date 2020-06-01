@@ -35,11 +35,6 @@ func FileIsValidExtension(c *pb.Configuration, filename string) bool {
 	return false
 }
 
-func ConfigurationFirstImageStore(c *pb.Configuration) *pb.FileStore {
-	// TODO: implement
-	return nil
-}
-
 func ConfigurationFileSystemStores(c *pb.Configuration) []*pb.FileStore {
 	var roots []*pb.FileStore
 	for _, v := range c.MediaStores {

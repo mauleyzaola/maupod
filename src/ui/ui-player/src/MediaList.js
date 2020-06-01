@@ -16,6 +16,7 @@ const MediaHeader = () => (
         <th>Sampling Rate</th>
         <th>Year</th>
         <th>Last Modified</th>
+        <th>Format</th>
     </tr>
     </thead>
 )
@@ -40,6 +41,7 @@ const MediaLine = ({row}) => {
             <td>{row.sampling_rate}</td>
             <td>{row.recorded_date}</td>
             <td>{modifiedDate}</td>
+            <td>{row.format}</td>
         </tr>
     )
 }

@@ -8,3 +8,9 @@ extensions:
   - .mp3
   - .flac
   - .m4a
+artworkbigsize: 500
+artworksmallsize: 100
+artworkstore:
+  name: artwork
+  type: 0
+  location: /artwork

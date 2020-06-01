@@ -89,6 +89,16 @@ func run() error {
 		//WriteTimeout: TODO,
 	}
 
+	// file server for artwork files
+	if config.ArtworkStore != nil {
+		fileServer := http.FileServer(http.Dir(config.ArtworkStore.Location))
+		go func() {
+			const port = ":9000"
+			logger.Info("starting file server at " + port + " from: " + config.ArtworkStore.Location)
+			log.Fatal(http.ListenAndServe(port, fileServer))
+		}()
+	}
+
 	go func() {
 		log.Println("api serving from ", server.Addr)
 		log.Fatal(server.ListenAndServe())

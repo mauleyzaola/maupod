@@ -5,7 +5,10 @@ import (
 	"errors"
 	"log"
 	"path/filepath"
+	"strconv"
 	"time"
+
+	"github.com/golang/protobuf/proto"
 
 	"github.com/mauleyzaola/maupod/src/server/pkg/broker"
 	"github.com/mauleyzaola/maupod/src/server/pkg/data"
@@ -154,6 +157,17 @@ func ScanDirectoryAudioFiles(
 		} else {
 			if err = store.Insert(ctx, conn, m); err != nil {
 				return err
+			}
+		}
+
+		// send message for extracting artwork if needed
+		if rule.NeedsImageUpdate(m) {
+			var payload []byte
+			if payload, err = proto.Marshal(&pb.ArtworkExtractInput{Media: m, ScanDate: helpers.TimeToTs2(scanDate)}); err != nil {
+				return err
+			}
+			if err = nc.Publish(strconv.Itoa(int(pb.Message_MESSAGE_ARTWORK_SCAN)), payload); err != nil {
+				logger.Error(err)
 			}
 		}
 	}

@@ -6,11 +6,14 @@ import "file_store.proto";
 
 message Configuration {
     string pg_conn = 2;
-    int32 retries = 3;
+    int64 retries = 3;
     int64 delay = 4;
     string port = 5;
     repeated string extensions = 6;
     string db_conn = 7;
     string nats_url = 8;
     repeated FileStore media_stores = 10;
+    int64 artwork_big_size = 11;
+    int64 artwork_small_size = 12;
+    FileStore artwork_store = 13;
 }

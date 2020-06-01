@@ -38,3 +38,13 @@ make dev
 ```
 
 `ctrl+c` to stop then `make clean` to clean up docker stuff
+
+#### Artwork
+
+If you want to enable this feature, you'll need to configure a valid directory in the `src/server/docker-compose.yml` file in the `maupod-restapi` service
+
+Default is `~/Downloads/artwork`
+
+```
+- $HOME/Downloads/artwork:/artwork
+```

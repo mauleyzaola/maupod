@@ -11,16 +11,16 @@ import (
 )
 
 type MsgHandler struct {
-	base       *handler.MsgHandler
-	db         *sql.DB
-	imageStore *pb.FileStore
+	base   *handler.MsgHandler
+	db     *sql.DB
+	config *pb.Configuration
 }
 
-func NewMsgHandler(db *sql.DB, imageStore *pb.FileStore, logger types.Logger, nc *nats.Conn) *MsgHandler {
+func NewMsgHandler(db *sql.DB, config *pb.Configuration, logger types.Logger, nc *nats.Conn) *MsgHandler {
 	return &MsgHandler{
-		base:       handler.NewMsgHandler(logger, nc),
-		db:         db,
-		imageStore: imageStore,
+		base:   handler.NewMsgHandler(logger, nc),
+		db:     db,
+		config: config,
 	}
 }
 
