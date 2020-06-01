@@ -49,10 +49,9 @@ func run() error {
 	}
 
 	// create directory if not exists
-	imageStore := config.ArtworkStore
-	if imageStore != nil {
+	if config.ArtworkStore != nil {
 		// TODO: probably other store types should not need to create the directory, use an interface instead
-		if err = os.MkdirAll(imageStore.Location, os.ModePerm); err != nil {
+		if err = os.MkdirAll(config.ArtworkStore.Location, os.ModePerm); err != nil {
 			return err
 		}
 	} else {
@@ -71,7 +70,7 @@ func run() error {
 	}
 
 	var hnd types.Broker
-	hnd = NewMsgHandler(db, imageStore, logger, nc)
+	hnd = NewMsgHandler(db, config, logger, nc)
 	if err = hnd.Register(); err != nil {
 		return err
 	}

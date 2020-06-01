@@ -13,4 +13,4 @@ artworksmallsize: 100
 artworkstore:
   name: artwork
   type: 0
-#  location: TODO: bucket name
+  location: /artwork

@@ -8,6 +8,7 @@ services:
     volumes:
       - ./:/go/src/github.com/mauleyzaola/maupod/src/server
       - $MEDIA_STORE:/music-store
+      - $HOME/Downloads/artwork:/artwork
 
   maupod-audioscan:
     image: maupod-audioscan:latest
@@ -29,10 +30,12 @@ services:
     image: maupod-restapi:latest
     volumes:
       - ./:/go/src/github.com/mauleyzaola/maupod/src/server
+      - $HOME/Downloads/artwork:/artwork
     expose:
       - 8000
     ports:
       - 8000:8000
+      - 9000:9000
 
   nats-server:
     image: nats:2.1
