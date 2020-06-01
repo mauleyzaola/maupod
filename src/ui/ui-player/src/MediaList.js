@@ -7,6 +7,7 @@ import {linkAlbumList, linkGenreList, linkPerformerList} from "./routes";
 const MediaHeader = () => (
     <thead>
     <tr>
+        <th></th>
         <th>#</th>
         <th>Track</th>
         <th>Performer</th>
@@ -24,8 +25,17 @@ const MediaHeader = () => (
 const MediaLine = ({row}) => {
     row.recorded_date = row.recorded_date || '';
     const modifiedDate = row.modified_date ? secondsToDate(row.modified_date.seconds).toLocaleDateString() : '';
+    const Thumbnail = () => {
+        if(!row.sha_image){
+            return null;
+        }
+        return <img style={{width: '30px'}}  alt='cover' src={`http://localhost:9000/thumbnail/${row.sha_image}.png`} />;
+    }
     return (
         <tr>
+            <td>
+                <Thumbnail />
+            </td>
             <td>{row.track_position}</td>
             <td>{row.track}</td>
             <td>
