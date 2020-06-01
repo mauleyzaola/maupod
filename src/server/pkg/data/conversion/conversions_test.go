@@ -2,6 +2,7 @@ package conversion
 
 import (
 	"reflect"
+	"strings"
 	"testing"
 	"time"
 
@@ -18,7 +19,7 @@ var sampleMedium = &orm.Medium{
 	ID:                    "1",
 	Sha:                   "2",
 	Location:              "3",
-	FileExtension:         "4",
+	FileExtension:         ".FLAC",
 	Format:                "5",
 	FileSize:              6,
 	Duration:              7,
@@ -73,7 +74,7 @@ var sampleMedia = &pb.Media{
 	Id:                    "1",
 	Sha:                   "2",
 	Location:              "3",
-	FileExtension:         "4",
+	FileExtension:         ".FLAC",
 	Format:                "5",
 	FileSize:              6,
 	Duration:              7,
@@ -148,7 +149,7 @@ func TestMediaToORM(t *testing.T) {
 			assert.EqualValues(t, w.ID, g.ID)
 			assert.EqualValues(t, w.Sha, g.Sha)
 			assert.EqualValues(t, w.LastScan, g.LastScan)
-			assert.EqualValues(t, w.FileExtension, g.FileExtension)
+			assert.EqualValues(t, strings.ToLower(w.FileExtension), g.FileExtension)
 			assert.EqualValues(t, w.Format, g.Format)
 			assert.EqualValues(t, w.FileSize, g.FileSize)
 			assert.EqualValues(t, w.Duration, g.Duration)
