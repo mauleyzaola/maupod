@@ -1,6 +1,8 @@
 package conversion
 
 import (
+	"strings"
+
 	"github.com/mauleyzaola/maupod/src/server/pkg/data/orm"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
@@ -28,7 +30,7 @@ func MediaToORM(v *pb.Media) *orm.Medium {
 		EncodedLibraryDate:    v.EncodedLibraryDate,
 		EncodedLibraryName:    v.EncodedLibraryName,
 		EncodedLibraryVersion: v.EncodedLibraryVersion,
-		FileExtension:         v.FileExtension,
+		FileExtension:         strings.ToLower(v.FileExtension),
 		FileSize:              v.FileSize,
 		Format:                v.Format,
 		Genre:                 v.Genre,
