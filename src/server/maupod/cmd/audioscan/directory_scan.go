@@ -108,7 +108,7 @@ func ScanDirectoryAudioFiles(
 
 		// a bit of speed improvement, avoid a second time scanning the same file unless it has been changed in the file system
 		if val, ok := mediaLocationKeys[filename]; ok {
-			if !rule.NeedsUpdate(val) {
+			if !rule.NeedsMediaUpdate(val) {
 				return false
 			}
 		}

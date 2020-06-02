@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"errors"
-	"fmt"
 	"image"
 	"image/jpeg"
 	"image/png"
@@ -114,13 +113,15 @@ func (m *MsgHandler) handlerArtworkExtract(msg *nats.Msg) {
 	if x != y {
 		input.Media.Location = ""
 		input.Media.ShaImage = ""
-		err = fmt.Errorf("image has invalid shape: %vx%v", x, y)
+		m.base.Logger().Warningf("image has invalid shape: %vx%v\n", x, y)
 		return
 	}
 
 	// if the image is not bigSize enough, exit
 	if x < int(m.config.ArtworkBigSize) {
-		err = fmt.Errorf("image too small for artwork: %vx%v", x, y)
+		input.Media.Location = ""
+		input.Media.ShaImage = ""
+		m.base.Logger().Warningf("image too small for artwork: %vx%v\n", x, y)
 		return
 	}
 
@@ -177,15 +178,12 @@ func ScanArtwork(
 	var shaData []byte
 	var imageData []byte
 
-	w := &bytes.Buffer{}
-	if err = images.ExtractImageFromMedia(w, media.Location); err == nil {
-		//	we ignore this error want to try a second option
-		imageData = w.Bytes()
-	}
-	// try to pick the image from the cover file in the same directory
-	if imageData == nil {
-		// we ignore this error because it is experimental feature yet
-		imageData, _ = FindArtworkInFiles(media.Location)
+	// first attempt is picking the image from the same directory
+	if imageData, _ = FindArtworkInFiles(media.Location, "cover", "folder"); imageData == nil {
+		w := &bytes.Buffer{}
+		if err = images.ExtractImageFromMedia(w, media.Location); err == nil {
+			imageData = w.Bytes()
+		}
 	}
 	if imageData == nil {
 		return nil, nil
@@ -201,8 +199,15 @@ func ScanArtwork(
 	return imageData, nil
 }
 
-// TODO: allow passing valid file names, fixed for now
-func FindArtworkInFiles(filename string) ([]byte, error) {
+func FindArtworkInFiles(filename string, matches ...string) ([]byte, error) {
+	if len(matches) == 0 {
+		return nil, errors.New("missing parameters: matches")
+	}
+	keys := make(map[string]struct{})
+	for _, v := range matches {
+		keys[strings.ToLower(v)] = struct{}{}
+	}
+
 	dir := filepath.Dir(filename)
 	if _, err := os.Stat(dir); err != nil {
 		return nil, err
@@ -217,7 +222,7 @@ func FindArtworkInFiles(filename string) ([]byte, error) {
 		ext = filepath.Ext(f.Name())
 		base := filepath.Base(f.Name())
 		base = strings.TrimSuffix(base, ext)
-		if strings.ToLower(base) == "cover" {
+		if _, ok := keys[strings.ToLower(base)]; ok {
 			coverFileName = f.Name()
 			break
 		}

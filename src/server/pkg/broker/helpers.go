@@ -26,6 +26,7 @@ func RequestScanAudioFile(nc *nats.Conn, logger types.Logger, filename string, t
 	if output.Media == nil {
 		return nil, errors.New("mediainfo returned a nil object")
 	}
+	output.Media.ModifiedDate = output.LastModifiedDate
 
 	return output.Media, nil
 }
