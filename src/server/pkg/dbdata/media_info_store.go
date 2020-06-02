@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 
-	"github.com/mauleyzaola/maupod/src/server/pkg/data/conversion"
-	"github.com/mauleyzaola/maupod/src/server/pkg/data/orm"
+	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata/conversion"
+	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata/orm"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 	"github.com/volatiletech/sqlboiler/boil"
 	"github.com/volatiletech/sqlboiler/queries/qm"

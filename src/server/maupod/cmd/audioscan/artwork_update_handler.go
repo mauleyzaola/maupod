@@ -3,8 +3,8 @@ package main
 import (
 	"context"
 
-	"github.com/mauleyzaola/maupod/src/server/pkg/data"
-	"github.com/mauleyzaola/maupod/src/server/pkg/data/orm"
+	data "github.com/mauleyzaola/maupod/src/server/pkg/dbdata"
+	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata/orm"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 	"github.com/nats-io/nats.go"
 	"github.com/volatiletech/sqlboiler/boil"

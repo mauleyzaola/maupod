@@ -6,10 +6,11 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/golang/protobuf/proto"
+	"google.golang.org/protobuf/proto"
+
 	"github.com/mauleyzaola/maupod/src/server/pkg/broker"
-	"github.com/mauleyzaola/maupod/src/server/pkg/data"
-	"github.com/mauleyzaola/maupod/src/server/pkg/data/orm"
+	data "github.com/mauleyzaola/maupod/src/server/pkg/dbdata"
+	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata/orm"
 	"github.com/mauleyzaola/maupod/src/server/pkg/filemgmt"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
@@ -122,10 +123,12 @@ func ScanDirectoryAudioFiles(
 		logger.Error(err)
 		return err
 	}
+
 	var timeout = time.Second * time.Duration(config.Delay)
 	for _, f := range files {
 		var m *pb.Media
 		if m, err = broker.RequestScanAudioFile(nc, logger, f, timeout); err != nil {
+			logger.Error(err)
 			continue
 		}
 

@@ -1,6 +1,7 @@
 package broker
 
 import (
+	"log"
 	"strconv"
 	"time"
 
@@ -19,9 +20,15 @@ func mediaInfoRequest(nc *nats.Conn, input *pb.MediaInfoInput, timeout time.Dura
 	if err != nil {
 		return nil, err
 	}
+
 	if err = proto.Unmarshal(msg.Data, &output); err != nil {
 		return nil, err
 	}
+
+	if &output != nil {
+		log.Println("xxx:", output.Media.Location)
+	}
+
 	return &output, nil
 }
 
@@ -33,6 +40,7 @@ func PublishMediaInfoDelete(nc *nats.Conn, input *pb.MediaInfoInput) error {
 	return nc.Publish(strconv.Itoa(int(pb.Message_MESSAGE_MEDIA_DELETE)), data)
 }
 
+// TODO: implement the caller
 func PublishMediaSHAUpdate(nc *nats.Conn, input *pb.MediaInfoInput) error {
 	fileData, err := proto.Marshal(input)
 	if err != nil {

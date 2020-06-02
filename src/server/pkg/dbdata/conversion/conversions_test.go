@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/mauleyzaola/maupod/src/server/pkg/data/orm"
+	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata/orm"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 	"github.com/stretchr/testify/assert"

@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/golang/protobuf/proto"
+	"google.golang.org/protobuf/proto"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/media"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"

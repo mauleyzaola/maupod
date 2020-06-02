@@ -14,7 +14,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/mauleyzaola/maupod/src/server/pkg/data"
+	data "github.com/mauleyzaola/maupod/src/server/pkg/dbdata"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/images"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
@@ -43,7 +43,9 @@ func (m *MsgHandler) handlerArtworkExtract(msg *nats.Msg) {
 	}
 
 	if imageData != nil {
-		m.base.Logger().Infof("found image in audio file: %s", input.Media.Location)
+		m.base.Logger().Infof("found image: %s", input.Media.Location)
+	} else {
+		m.base.Logger().Infof("image not found: %s", input.Media.Location)
 	}
 
 	// we need to update the database when this function exits, one way or another

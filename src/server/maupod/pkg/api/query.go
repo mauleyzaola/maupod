@@ -3,7 +3,7 @@ package api
 import (
 	"net/http"
 
-	"github.com/mauleyzaola/maupod/src/server/pkg/data"
+	data "github.com/mauleyzaola/maupod/src/server/pkg/dbdata"
 )
 
 func (a *ApiServer) DistinctListGet(p TransactionExecutorParams) (status int, result interface{}, err error) {
