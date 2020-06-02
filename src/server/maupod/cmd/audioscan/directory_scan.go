@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"path/filepath"
-	"strconv"
 	"time"
 
 	"google.golang.org/protobuf/proto"
@@ -155,7 +154,7 @@ func ScanDirectoryAudioFiles(
 			if payload, err = proto.Marshal(&pb.ArtworkExtractInput{Media: m, ScanDate: helpers.TimeToTs2(scanDate)}); err != nil {
 				return err
 			}
-			if err = nc.Publish(strconv.Itoa(int(pb.Message_MESSAGE_ARTWORK_SCAN)), payload); err != nil {
+			if err = broker.PublishMessage(nc, pb.Message_MESSAGE_ARTWORK_SCAN, payload); err != nil {
 				logger.Error(err)
 			}
 		}
