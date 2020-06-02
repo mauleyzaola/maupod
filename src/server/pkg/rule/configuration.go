@@ -1,6 +1,7 @@
 package rule
 
 import (
+	"errors"
 	"path/filepath"
 	"strings"
 
@@ -21,6 +22,10 @@ func ConfigurationParse() (*pb.Configuration, error) {
 	var c pb.Configuration
 	if err := viper.Unmarshal(&c); err != nil {
 		return nil, err
+	}
+	// check artwork size is not stupid
+	if c.ArtworkBigSize < c.ArtworkSmallSize {
+		return nil, errors.New("ArtworkBigSize cannot be smaller than ArtworkSmallSize")
 	}
 	return &c, nil
 }
