@@ -13,7 +13,7 @@ import (
 	"strconv"
 	"strings"
 
-	data "github.com/mauleyzaola/maupod/src/server/pkg/dbdata"
+	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/images"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
@@ -74,7 +74,7 @@ func (m *MsgHandler) handlerArtworkExtract(msg *nats.Msg) {
 
 	ctx := context.Background()
 	conn := m.db
-	store := &data.MediaStore{}
+	store := &dbdata.MediaStore{}
 
 	var matchedMedias []*pb.Media
 	var matchedMedia *pb.Media

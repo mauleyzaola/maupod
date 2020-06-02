@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	data "github.com/mauleyzaola/maupod/src/server/pkg/dbdata"
+	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 	"github.com/nats-io/nats.go"
@@ -35,7 +35,7 @@ func (m *MsgHandler) handlerAudioScan(msg *nats.Msg) {
 		m.base.NATS(),
 		m.base.Logger(),
 		helpers.TsToTime2(input.ScanDate),
-		&data.MediaStore{},
+		&dbdata.MediaStore{},
 		input.Root,
 		m.config,
 	); err != nil {

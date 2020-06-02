@@ -8,7 +8,7 @@ import (
 	"time"
 
 	_ "github.com/lib/pq"
-	data "github.com/mauleyzaola/maupod/src/server/pkg/dbdata"
+	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/rule"
 	"github.com/mauleyzaola/maupod/src/server/pkg/simplelog"
@@ -64,7 +64,7 @@ func run() error {
 	}
 	logger.Info("successfully connected to NATS")
 
-	db, err := data.ConnectPostgres(config.DbConn, int(config.Retries), time.Second*time.Duration(config.Delay))
+	db, err := dbdata.ConnectPostgres(config.DbConn, int(config.Retries), time.Second*time.Duration(config.Delay))
 	if err != nil {
 		return err
 	}

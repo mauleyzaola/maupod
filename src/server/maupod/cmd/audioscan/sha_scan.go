@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 
 	"github.com/mauleyzaola/maupod/src/server/pkg/broker"
-	data "github.com/mauleyzaola/maupod/src/server/pkg/dbdata"
+	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata"
 	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata/orm"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
@@ -49,7 +49,7 @@ func (m *MsgHandler) handlerSHAScan(msg *nats.Msg) {
 	// update db
 	input.Media.Sha = shaStr
 	var cols = orm.MediumColumns
-	store := &data.MediaStore{}
+	store := &dbdata.MediaStore{}
 	ctx := context.Background()
 	conn := m.db
 	if err = store.Update(ctx, conn, input.Media, cols.Sha); err != nil {

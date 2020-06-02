@@ -8,7 +8,7 @@ import (
 	"google.golang.org/protobuf/proto"
 
 	"github.com/mauleyzaola/maupod/src/server/pkg/broker"
-	data "github.com/mauleyzaola/maupod/src/server/pkg/dbdata"
+	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata"
 	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata/orm"
 	"github.com/mauleyzaola/maupod/src/server/pkg/filemgmt"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
@@ -80,7 +80,7 @@ func ScanDirectoryAudioFiles(
 	nc *nats.Conn,
 	logger types.Logger,
 	scanDate time.Time,
-	store *data.MediaStore,
+	store *dbdata.MediaStore,
 	root string,
 	config *pb.Configuration,
 ) error {
@@ -90,8 +90,8 @@ func ScanDirectoryAudioFiles(
 	start := time.Now()
 
 	// buffer all the media in db
-	var allMedia data.Medias
-	if allMedia, err = store.List(ctx, conn, data.MediaFilter{}, nil); err != nil {
+	var allMedia dbdata.Medias
+	if allMedia, err = store.List(ctx, conn, dbdata.MediaFilter{}, nil); err != nil {
 		logger.Error(err)
 		return err
 	}

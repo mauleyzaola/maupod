@@ -15,7 +15,7 @@ import (
 
 	_ "github.com/lib/pq"
 	"github.com/mauleyzaola/maupod/src/server/maupod/pkg/api"
-	data "github.com/mauleyzaola/maupod/src/server/pkg/dbdata"
+	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/rule"
 	"github.com/spf13/viper"
@@ -61,7 +61,7 @@ func run() error {
 	logger.Info("successfully connected to NATS")
 
 	var db *sql.DB
-	if db, err = data.DbBootstrap(config); err != nil {
+	if db, err = dbdata.DbBootstrap(config); err != nil {
 		return err
 	}
 	defer func() {
