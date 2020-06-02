@@ -34,6 +34,10 @@ func (m *MsgHandler) Register() error {
 			Subject: strconv.Itoa(int(pb.Message_MESSAGE_MEDIA_UPDATE_ARTWORK)),
 			Handler: m.handlerMediaUpdateArtwork,
 		},
+		handler.Subscription{
+			Subject: strconv.Itoa(int(pb.Message_MESSAGE_AUDIO_SHA)),
+			Handler: m.handlerSHAScan,
+		},
 	)
 }
 
