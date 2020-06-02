@@ -3,12 +3,10 @@ package main
 import (
 	"context"
 	"io/ioutil"
-	"time"
-
-	data "github.com/mauleyzaola/maupod/src/server/pkg/dbdata"
-	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata/orm"
 
 	"github.com/mauleyzaola/maupod/src/server/pkg/broker"
+	data "github.com/mauleyzaola/maupod/src/server/pkg/dbdata"
+	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata/orm"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 	"github.com/nats-io/nats.go"
@@ -23,7 +21,6 @@ func (m *MsgHandler) handlerSHAScan(msg *nats.Msg) {
 		return
 	}
 
-	var timeout = time.Second * time.Duration(m.config.Delay)
 	var filename string
 	if input.Media != nil && input.Media.Location != "" {
 		filename = input.Media.Location
@@ -31,11 +28,12 @@ func (m *MsgHandler) handlerSHAScan(msg *nats.Msg) {
 		filename = input.FileName
 	}
 
-	// read info from media in hd
-	media, err := broker.RequestScanAudioFile(m.base.NATS(), m.base.Logger(), filename, timeout)
+	m.base.Logger().Info("xxx: " + filename)
+
+	// read content from file system
+	fileData, err := ioutil.ReadFile(filename)
 	if err != nil {
 		m.base.Logger().Error(err)
-
 		// if file is not readable, we asume we need to remove from db since it is invalid or no longer exists
 		if err = broker.PublishMediaInfoDelete(m.base.NATS(), &input); err != nil {
 			m.base.Logger().Error(err)
@@ -43,27 +41,18 @@ func (m *MsgHandler) handlerSHAScan(msg *nats.Msg) {
 		return
 	}
 
-	// calculate sha in file
-	fileData, err := ioutil.ReadFile(media.Location)
-	if err != nil {
-		m.base.Logger().Error(err)
-		return
-	}
-
 	shaStr := helpers.HashFromSHA(fileData)
-	if shaStr == media.Sha {
+	if shaStr == input.Media.Sha {
 		return
 	}
 
 	// update db
-	media.ModifiedDate = helpers.TimeToTs2(time.Now())
-	media.Sha = shaStr
+	input.Media.Sha = shaStr
 	var cols = orm.MediumColumns
-	var fields = []string{cols.Sha, cols.ModifiedDate}
 	store := &data.MediaStore{}
 	ctx := context.Background()
 	conn := m.db
-	if err = store.Update(ctx, conn, media, fields...); err != nil {
+	if err = store.Update(ctx, conn, input.Media, cols.Sha); err != nil {
 		m.base.Logger().Error(err)
 		return
 	}

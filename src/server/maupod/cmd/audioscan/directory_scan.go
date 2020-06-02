@@ -158,6 +158,12 @@ func ScanDirectoryAudioFiles(
 				logger.Error(err)
 			}
 		}
+
+		// on each case media has probably changed and we need to get the new sha hash
+		if err = broker.PublishMediaSHAUpdate(nc, &pb.MediaInfoInput{Media: m, FileName: f}); err != nil {
+			logger.Error(err)
+			return err
+		}
 	}
 
 	logger.Infof("[INFO] files: %d  elapsed: %s\n", len(files), time.Since(start))
