@@ -2,12 +2,13 @@ package main
 
 import (
 	"os"
+	"path/filepath"
 
-	"google.golang.org/protobuf/proto"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/media"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 	"github.com/nats-io/nats.go"
+	"google.golang.org/protobuf/proto"
 )
 
 func (m *MsgHandler) handlerMediaInfo(msg *nats.Msg) {
@@ -61,6 +62,10 @@ func (m *MsgHandler) handlerMediaInfo(msg *nats.Msg) {
 	}
 	output.LastModifiedDate = helpers.TimeToTs2(info.ModTime())
 	output.Media = result.ToProto()
+	output.Media.FolderName = filepath.Dir(input.FileName)
+	output.Media.FileName = filepath.Base(input.FileName)
+	output.Media.Location = filepath.Join(output.Media.FolderName, output.Media.FileName)
 	output.Response.Ok = true
+
 	return
 }

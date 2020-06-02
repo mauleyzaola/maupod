@@ -1,7 +1,6 @@
 package broker
 
 import (
-	"log"
 	"strconv"
 	"time"
 
@@ -23,10 +22,6 @@ func mediaInfoRequest(nc *nats.Conn, input *pb.MediaInfoInput, timeout time.Dura
 
 	if err = proto.Unmarshal(msg.Data, &output); err != nil {
 		return nil, err
-	}
-
-	if &output != nil {
-		log.Println("xxx:", output.Media.Location)
 	}
 
 	return &output, nil

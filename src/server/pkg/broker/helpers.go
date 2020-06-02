@@ -23,9 +23,9 @@ func RequestScanAudioFile(nc *nats.Conn, logger types.Logger, filename string, t
 	if !output.Response.Ok {
 		return nil, errors.New(output.Response.Error)
 	}
-	if input.Media == nil {
+	if output.Media == nil {
 		return nil, errors.New("mediainfo returned a nil object")
 	}
 
-	return input.Media, nil
+	return output.Media, nil
 }

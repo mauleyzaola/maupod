@@ -10,7 +10,7 @@ class AudioScan extends React.Component{
     handleStartScan = () => {
         audioScan({
             root:'/music-store',
-        }).then(() => alert('Request was successful'))
+        }).then(() => console.log('Request was successful'))
     }
 
     render() {
