@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"io/ioutil"
 
@@ -28,8 +29,6 @@ func (m *MsgHandler) handlerSHAScan(msg *nats.Msg) {
 		filename = input.FileName
 	}
 
-	m.base.Logger().Info("xxx: " + filename)
-
 	// read content from file system
 	fileData, err := ioutil.ReadFile(filename)
 	if err != nil {
@@ -41,7 +40,12 @@ func (m *MsgHandler) handlerSHAScan(msg *nats.Msg) {
 		return
 	}
 
-	shaStr := helpers.HashFromSHA(fileData)
+	sha, err := helpers.SHA(bytes.NewBuffer(fileData))
+	if err != nil {
+		m.base.Logger().Error(err)
+		return
+	}
+	shaStr := helpers.HashFromSHA(sha)
 	if shaStr == input.Media.Sha {
 		return
 	}
