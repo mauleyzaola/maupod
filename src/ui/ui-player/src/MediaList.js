@@ -86,7 +86,7 @@ class MediaList extends React.Component{
         const { rows } = this.state;
         return (
             <div>
-                <table>
+                <table className='table table-bordered table-hover'>
                     <MediaHeader />
                     <tbody>
                     {rows.map(row => <MediaLine key={row.id} row={row} />)}

@@ -4,6 +4,19 @@ import uuid from "uuid4";
 import { Link } from "react-router-dom";
 import {linkAlbumList} from "./routes";
 
+// album specific components
+const AlbumView = r => {
+    /*
+    we need to return these fields grouped by album_identifier when provided or a performer
+    and filter only rows with album_identifier != '' are selected
+    album, bit_depth, duration, bit_rate, performer, genre, recorded_date, sampling_rate, track_name_total
+     */
+    return (
+        <div></div>
+    )
+}
+// album specific components
+
 const AlbumHeader = () => (
     <thead>
     <tr>
@@ -49,7 +62,7 @@ class Albums extends React.Component{
         const { rows } = this.state;
         return(
             <div>
-                <table>
+                <table className='table table-bordered table-hover'>
                     <AlbumHeader />
                     <tbody>
                     {rows.map(row => <AlbumLine key={uuid()} row={row}  />)}
