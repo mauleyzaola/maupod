@@ -71,5 +71,7 @@ message Media {
     google.protobuf.Timestamp last_image_scan = 55;
 
     string image_location = 56;
+    string album_identifier = 57;
+    bool is_compilation = 58;
 }
 

@@ -143,6 +143,14 @@ func ScanDirectoryAudioFiles(
 				return err
 			}
 		} else {
+			// consider assigning album identifier (experimental feature only on new media)
+			var albumIdentifier string
+			var isCompilation bool
+			if albumIdentifier, isCompilation, err = AlbumGroupDetection(ctx, conn, m); err != nil {
+				return err
+			}
+			m.AlbumIdentifier = albumIdentifier
+			m.IsCompilation = isCompilation
 			if err = store.Insert(ctx, conn, m); err != nil {
 				return err
 			}
