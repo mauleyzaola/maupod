@@ -2,17 +2,14 @@ package main
 
 import (
 	"context"
-	"errors"
-	"log"
 	"path/filepath"
-	"strconv"
 	"time"
 
-	"github.com/golang/protobuf/proto"
+	"google.golang.org/protobuf/proto"
 
 	"github.com/mauleyzaola/maupod/src/server/pkg/broker"
-	"github.com/mauleyzaola/maupod/src/server/pkg/data"
-	"github.com/mauleyzaola/maupod/src/server/pkg/data/orm"
+	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata"
+	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata/orm"
 	"github.com/mauleyzaola/maupod/src/server/pkg/filemgmt"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
@@ -22,55 +19,7 @@ import (
 	"github.com/volatiletech/sqlboiler/boil"
 )
 
-func ScanDirectoryAudioFiles(
-	ctx context.Context,
-	conn boil.ContextExecutor,
-	nc *nats.Conn,
-	logger types.Logger,
-	scanDate time.Time,
-	store *data.MediaStore,
-	root string,
-	config *pb.Configuration,
-) error {
-
-	var err error
-	var files []string
-	start := time.Now()
-
-	// buffer all the media in db
-	var allMedia data.Medias
-	if allMedia, err = store.List(ctx, conn, data.MediaFilter{}, nil); err != nil {
-		logger.Error(err)
-		return err
-	}
-
-	mediaLocationKeys := allMedia.ToMap()
-
-	walker := func(filename string, isDir bool) bool {
-		if isDir {
-			return false
-		}
-		if !rule.FileIsValidExtension(config, filename) {
-			return false
-		}
-
-		// a bit of speed improvement, avoid a second time scanning the same file unless it has been changed in the file system
-		if val, ok := mediaLocationKeys[filename]; ok {
-			if !rule.NeedsUpdate(val) {
-				return false
-			}
-		}
-
-		files = append(files, filename)
-		return false
-	}
-
-	log.Println("[DEBUG] started scanning")
-	if err = filemgmt.WalkFiles(root, walker); err != nil {
-		log.Println(err)
-		return err
-	}
-
+func updatableFields() []string {
 	var cols = orm.MediumColumns
 	var fields = []string{
 		cols.FileExtension,
@@ -122,36 +71,75 @@ func ScanDirectoryAudioFiles(
 		cols.WritingLibrary,
 		cols.Composer,
 	}
+	return fields
+}
+
+func ScanDirectoryAudioFiles(
+	ctx context.Context,
+	conn boil.ContextExecutor,
+	nc *nats.Conn,
+	logger types.Logger,
+	scanDate time.Time,
+	store *dbdata.MediaStore,
+	root string,
+	config *pb.Configuration,
+) error {
+
+	var err error
+	var files []string
+	start := time.Now()
+
+	// buffer all the media in db
+	var allMedia dbdata.Medias
+	if allMedia, err = store.List(ctx, conn, dbdata.MediaFilter{}, nil); err != nil {
+		logger.Error(err)
+		return err
+	}
+
+	mediaLocationKeys := allMedia.ToMap()
+
+	walker := func(filename string, isDir bool) bool {
+		if isDir {
+			return false
+		}
+		if !rule.FileIsValidExtension(config, filename) {
+			return false
+		}
+
+		// a bit of speed improvement, avoid a second time scanning the same file unless it has been changed in the file system
+		if val, ok := mediaLocationKeys[filename]; ok {
+			if !rule.NeedsMediaUpdate(val) {
+				return false
+			}
+		}
+
+		files = append(files, filename)
+		return false
+	}
+
+	logger.Info("[DEBUG] started scanning")
+	if err = filemgmt.WalkFiles(root, walker); err != nil {
+		logger.Error(err)
+		return err
+	}
 
 	var timeout = time.Second * time.Duration(config.Delay)
-	var output *pb.MediaInfoOutput
-
 	for _, f := range files {
-		input := &pb.MediaInfoInput{FileName: f}
-		if output, err = broker.MediaInfoRequest(nc, input, timeout); err != nil {
-			// TODO: send the files with errors to another listener and store in db
+		var m *pb.Media
+		if m, err = broker.RequestScanAudioFile(nc, logger, f, timeout); err != nil {
 			logger.Error(err)
 			continue
 		}
-		if output.Response == nil {
-			return errors.New("missing response")
-		}
-		if !output.Response.Ok {
-			return errors.New(output.Response.Error)
-		}
 
-		m := output.Media
 		m.Id = helpers.NewUUID()
-		// TODO: m.Sha  needs to be defined in another process
 		m.LastScan = helpers.TimeToTs(&scanDate)
-		m.ModifiedDate = output.LastModifiedDate
 		m.Location = f
 		m.FileExtension = filepath.Ext(f)
 
 		// if the location is the same and we made it here, that means we need to update the row
 		if val, ok := mediaLocationKeys[f]; ok {
 			m.Id = val.Id
-			if err = store.Update(ctx, conn, m, fields...); err != nil {
+			if err = store.Update(ctx, conn, m, updatableFields()...); err != nil {
 				return err
 			}
 		} else {
@@ -166,13 +154,19 @@ func ScanDirectoryAudioFiles(
 			if payload, err = proto.Marshal(&pb.ArtworkExtractInput{Media: m, ScanDate: helpers.TimeToTs2(scanDate)}); err != nil {
 				return err
 			}
-			if err = nc.Publish(strconv.Itoa(int(pb.Message_MESSAGE_ARTWORK_SCAN)), payload); err != nil {
+			if err = broker.PublishMessage(nc, pb.Message_MESSAGE_ARTWORK_SCAN, payload); err != nil {
 				logger.Error(err)
 			}
 		}
+
+		// on each case media has probably changed and we need to get the new sha hash
+		if err = broker.PublishMediaSHAUpdate(nc, &pb.MediaInfoInput{Media: m, FileName: f}); err != nil {
+			logger.Error(err)
+			return err
+		}
 	}
 
-	log.Printf("[INFO] files: %d  elapsed: %s\n", len(files), time.Since(start))
+	logger.Infof("[INFO] files: %d  elapsed: %s\n", len(files), time.Since(start))
 
 	return nil
 }

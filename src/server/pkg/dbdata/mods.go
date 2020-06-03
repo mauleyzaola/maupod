@@ -1,4 +1,4 @@
-package data
+package dbdata
 
 import (
 	"github.com/volatiletech/sqlboiler/queries/qm"

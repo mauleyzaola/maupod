@@ -81,7 +81,7 @@ class MediaList extends React.Component{
         }
         this.loadData(decodeURL(this.props.location.search));
     }
-
+    
     render() {
         const { rows } = this.state;
         return (

@@ -1,4 +1,4 @@
-package data
+package dbdata
 
 type MediaFilter struct {
 	QueryFilter

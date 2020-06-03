@@ -4,11 +4,11 @@ import (
 	"context"
 	"time"
 
-	"github.com/golang/protobuf/proto"
-	"github.com/mauleyzaola/maupod/src/server/pkg/data"
+	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 	"github.com/nats-io/nats.go"
+	"google.golang.org/protobuf/proto"
 )
 
 func (m *MsgHandler) handlerAudioScan(msg *nats.Msg) {
@@ -35,7 +35,7 @@ func (m *MsgHandler) handlerAudioScan(msg *nats.Msg) {
 		m.base.NATS(),
 		m.base.Logger(),
 		helpers.TsToTime2(input.ScanDate),
-		&data.MediaStore{},
+		&dbdata.MediaStore{},
 		input.Root,
 		m.config,
 	); err != nil {
