@@ -7,8 +7,8 @@ import (
 	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata/conversion"
 	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata/orm"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
-	"github.com/volatiletech/sqlboiler/boil"
-	"github.com/volatiletech/sqlboiler/queries/qm"
+	"github.com/volatiletech/sqlboiler/v4/boil"
+	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 )
 
 type MediaStore struct{}
