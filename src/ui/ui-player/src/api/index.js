@@ -11,6 +11,10 @@ const axios = Axios.create({
 
 const audioScan = data => axios.post(`/audio/scan`, data);
 
+const albumViewList = data => axios.get(`/media/albums`, {
+    params: data,
+})
+
 const decodeURL = search => querystring.decode(search.replace('?',''));
 
 const distinctListGet = ({field, filter}) => axios.get(`/media/${field}/distinct`, {
@@ -25,6 +29,7 @@ const mediaList = (data) => axios.get(`/media`, {
 
 export {
     audioScan,
+    albumViewList,
     decodeURL,
     distinctListGet,
     mediaList,
