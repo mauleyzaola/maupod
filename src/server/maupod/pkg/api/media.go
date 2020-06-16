@@ -33,3 +33,17 @@ func (a *ApiServer) MediaListGet(p TransactionExecutorParams) (status int, resul
 	}
 	return
 }
+
+func (a *ApiServer) AlbumViewListGet(p TransactionExecutorParams) (status int, result interface{}, err error) {
+	var filter dbdata.MediaFilter
+	if err = p.DecodeQuery(&filter); err != nil {
+		status = http.StatusBadRequest
+		return
+	}
+
+	if result, err = a.mediaStore.AlbumListView(p.ctx, p.conn, filter); err != nil {
+		status = http.StatusBadRequest
+		return
+	}
+	return
+}

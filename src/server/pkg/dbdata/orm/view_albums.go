@@ -19,23 +19,24 @@ import (
 	"github.com/volatiletech/sqlboiler/v4/queries"
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 	"github.com/volatiletech/sqlboiler/v4/queries/qmhelper"
-	"github.com/volatiletech/sqlboiler/v4/types"
 	"github.com/volatiletech/strmangle"
 )
 
 // ViewAlbum is an object representing the database table.
 type ViewAlbum struct {
-	ID              null.String       `boil:"id" json:"id,omitempty" toml:"id" yaml:"id,omitempty"`
-	AlbumIdentifier null.String       `boil:"album_identifier" json:"album_identifier,omitempty" toml:"album_identifier" yaml:"album_identifier,omitempty"`
-	Album           null.String       `boil:"album" json:"album,omitempty" toml:"album" yaml:"album,omitempty"`
-	Duration        null.Float64      `boil:"duration" json:"duration,omitempty" toml:"duration" yaml:"duration,omitempty"`
-	BitRate         types.NullDecimal `boil:"bit_rate" json:"bit_rate,omitempty" toml:"bit_rate" yaml:"bit_rate,omitempty"`
-	Performer       null.String       `boil:"performer" json:"performer,omitempty" toml:"performer" yaml:"performer,omitempty"`
-	Genre           null.String       `boil:"genre" json:"genre,omitempty" toml:"genre" yaml:"genre,omitempty"`
-	RecordedDate    null.Int64        `boil:"recorded_date" json:"recorded_date,omitempty" toml:"recorded_date" yaml:"recorded_date,omitempty"`
-	SamplingRate    types.NullDecimal `boil:"sampling_rate" json:"sampling_rate,omitempty" toml:"sampling_rate" yaml:"sampling_rate,omitempty"`
-	TrackNameTotal  null.Int64        `boil:"track_name_total" json:"track_name_total,omitempty" toml:"track_name_total" yaml:"track_name_total,omitempty"`
-	ShaImage        null.String       `boil:"sha_image" json:"sha_image,omitempty" toml:"sha_image" yaml:"sha_image,omitempty"`
+	ID              null.String `boil:"id" json:"id,omitempty" toml:"id" yaml:"id,omitempty"`
+	AlbumIdentifier null.String `boil:"album_identifier" json:"album_identifier,omitempty" toml:"album_identifier" yaml:"album_identifier,omitempty"`
+	Album           null.String `boil:"album" json:"album,omitempty" toml:"album" yaml:"album,omitempty"`
+	Duration        null.Int64  `boil:"duration" json:"duration,omitempty" toml:"duration" yaml:"duration,omitempty"`
+	BitRate         null.Int    `boil:"bit_rate" json:"bit_rate,omitempty" toml:"bit_rate" yaml:"bit_rate,omitempty"`
+	Performer       null.String `boil:"performer" json:"performer,omitempty" toml:"performer" yaml:"performer,omitempty"`
+	Genre           null.String `boil:"genre" json:"genre,omitempty" toml:"genre" yaml:"genre,omitempty"`
+	RecordedDate    null.Int    `boil:"recorded_date" json:"recorded_date,omitempty" toml:"recorded_date" yaml:"recorded_date,omitempty"`
+	SamplingRate    null.Int    `boil:"sampling_rate" json:"sampling_rate,omitempty" toml:"sampling_rate" yaml:"sampling_rate,omitempty"`
+	TrackNameTotal  null.Int    `boil:"track_name_total" json:"track_name_total,omitempty" toml:"track_name_total" yaml:"track_name_total,omitempty"`
+	ShaImage        null.String `boil:"sha_image" json:"sha_image,omitempty" toml:"sha_image" yaml:"sha_image,omitempty"`
+	Format          null.String `boil:"format" json:"format,omitempty" toml:"format" yaml:"format,omitempty"`
+	FileSize        null.Int    `boil:"file_size" json:"file_size,omitempty" toml:"file_size" yaml:"file_size,omitempty"`
 
 	R *viewAlbumR `boil:"-" json:"-" toml:"-" yaml:"-"`
 	L viewAlbumL  `boil:"-" json:"-" toml:"-" yaml:"-"`
@@ -53,6 +54,8 @@ var ViewAlbumColumns = struct {
 	SamplingRate    string
 	TrackNameTotal  string
 	ShaImage        string
+	Format          string
+	FileSize        string
 }{
 	ID:              "id",
 	AlbumIdentifier: "album_identifier",
@@ -65,6 +68,8 @@ var ViewAlbumColumns = struct {
 	SamplingRate:    "sampling_rate",
 	TrackNameTotal:  "track_name_total",
 	ShaImage:        "sha_image",
+	Format:          "format",
+	FileSize:        "file_size",
 }
 
 // Generated where
@@ -92,54 +97,6 @@ func (w whereHelpernull_String) GTE(x null.String) qm.QueryMod {
 	return qmhelper.Where(w.field, qmhelper.GTE, x)
 }
 
-type whereHelpernull_Float64 struct{ field string }
-
-func (w whereHelpernull_Float64) EQ(x null.Float64) qm.QueryMod {
-	return qmhelper.WhereNullEQ(w.field, false, x)
-}
-func (w whereHelpernull_Float64) NEQ(x null.Float64) qm.QueryMod {
-	return qmhelper.WhereNullEQ(w.field, true, x)
-}
-func (w whereHelpernull_Float64) IsNull() qm.QueryMod    { return qmhelper.WhereIsNull(w.field) }
-func (w whereHelpernull_Float64) IsNotNull() qm.QueryMod { return qmhelper.WhereIsNotNull(w.field) }
-func (w whereHelpernull_Float64) LT(x null.Float64) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.LT, x)
-}
-func (w whereHelpernull_Float64) LTE(x null.Float64) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.LTE, x)
-}
-func (w whereHelpernull_Float64) GT(x null.Float64) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.GT, x)
-}
-func (w whereHelpernull_Float64) GTE(x null.Float64) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.GTE, x)
-}
-
-type whereHelpertypes_NullDecimal struct{ field string }
-
-func (w whereHelpertypes_NullDecimal) EQ(x types.NullDecimal) qm.QueryMod {
-	return qmhelper.WhereNullEQ(w.field, false, x)
-}
-func (w whereHelpertypes_NullDecimal) NEQ(x types.NullDecimal) qm.QueryMod {
-	return qmhelper.WhereNullEQ(w.field, true, x)
-}
-func (w whereHelpertypes_NullDecimal) IsNull() qm.QueryMod { return qmhelper.WhereIsNull(w.field) }
-func (w whereHelpertypes_NullDecimal) IsNotNull() qm.QueryMod {
-	return qmhelper.WhereIsNotNull(w.field)
-}
-func (w whereHelpertypes_NullDecimal) LT(x types.NullDecimal) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.LT, x)
-}
-func (w whereHelpertypes_NullDecimal) LTE(x types.NullDecimal) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.LTE, x)
-}
-func (w whereHelpertypes_NullDecimal) GT(x types.NullDecimal) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.GT, x)
-}
-func (w whereHelpertypes_NullDecimal) GTE(x types.NullDecimal) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.GTE, x)
-}
-
 type whereHelpernull_Int64 struct{ field string }
 
 func (w whereHelpernull_Int64) EQ(x null.Int64) qm.QueryMod {
@@ -163,30 +120,57 @@ func (w whereHelpernull_Int64) GTE(x null.Int64) qm.QueryMod {
 	return qmhelper.Where(w.field, qmhelper.GTE, x)
 }
 
+type whereHelpernull_Int struct{ field string }
+
+func (w whereHelpernull_Int) EQ(x null.Int) qm.QueryMod {
+	return qmhelper.WhereNullEQ(w.field, false, x)
+}
+func (w whereHelpernull_Int) NEQ(x null.Int) qm.QueryMod {
+	return qmhelper.WhereNullEQ(w.field, true, x)
+}
+func (w whereHelpernull_Int) IsNull() qm.QueryMod    { return qmhelper.WhereIsNull(w.field) }
+func (w whereHelpernull_Int) IsNotNull() qm.QueryMod { return qmhelper.WhereIsNotNull(w.field) }
+func (w whereHelpernull_Int) LT(x null.Int) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.LT, x)
+}
+func (w whereHelpernull_Int) LTE(x null.Int) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.LTE, x)
+}
+func (w whereHelpernull_Int) GT(x null.Int) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.GT, x)
+}
+func (w whereHelpernull_Int) GTE(x null.Int) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.GTE, x)
+}
+
 var ViewAlbumWhere = struct {
 	ID              whereHelpernull_String
 	AlbumIdentifier whereHelpernull_String
 	Album           whereHelpernull_String
-	Duration        whereHelpernull_Float64
-	BitRate         whereHelpertypes_NullDecimal
+	Duration        whereHelpernull_Int64
+	BitRate         whereHelpernull_Int
 	Performer       whereHelpernull_String
 	Genre           whereHelpernull_String
-	RecordedDate    whereHelpernull_Int64
-	SamplingRate    whereHelpertypes_NullDecimal
-	TrackNameTotal  whereHelpernull_Int64
+	RecordedDate    whereHelpernull_Int
+	SamplingRate    whereHelpernull_Int
+	TrackNameTotal  whereHelpernull_Int
 	ShaImage        whereHelpernull_String
+	Format          whereHelpernull_String
+	FileSize        whereHelpernull_Int
 }{
 	ID:              whereHelpernull_String{field: "\"view_albums\".\"id\""},
 	AlbumIdentifier: whereHelpernull_String{field: "\"view_albums\".\"album_identifier\""},
 	Album:           whereHelpernull_String{field: "\"view_albums\".\"album\""},
-	Duration:        whereHelpernull_Float64{field: "\"view_albums\".\"duration\""},
-	BitRate:         whereHelpertypes_NullDecimal{field: "\"view_albums\".\"bit_rate\""},
+	Duration:        whereHelpernull_Int64{field: "\"view_albums\".\"duration\""},
+	BitRate:         whereHelpernull_Int{field: "\"view_albums\".\"bit_rate\""},
 	Performer:       whereHelpernull_String{field: "\"view_albums\".\"performer\""},
 	Genre:           whereHelpernull_String{field: "\"view_albums\".\"genre\""},
-	RecordedDate:    whereHelpernull_Int64{field: "\"view_albums\".\"recorded_date\""},
-	SamplingRate:    whereHelpertypes_NullDecimal{field: "\"view_albums\".\"sampling_rate\""},
-	TrackNameTotal:  whereHelpernull_Int64{field: "\"view_albums\".\"track_name_total\""},
+	RecordedDate:    whereHelpernull_Int{field: "\"view_albums\".\"recorded_date\""},
+	SamplingRate:    whereHelpernull_Int{field: "\"view_albums\".\"sampling_rate\""},
+	TrackNameTotal:  whereHelpernull_Int{field: "\"view_albums\".\"track_name_total\""},
 	ShaImage:        whereHelpernull_String{field: "\"view_albums\".\"sha_image\""},
+	Format:          whereHelpernull_String{field: "\"view_albums\".\"format\""},
+	FileSize:        whereHelpernull_Int{field: "\"view_albums\".\"file_size\""},
 }
 
 // ViewAlbumRels is where relationship names are stored.
@@ -206,8 +190,8 @@ func (*viewAlbumR) NewStruct() *viewAlbumR {
 type viewAlbumL struct{}
 
 var (
-	viewAlbumAllColumns            = []string{"id", "album_identifier", "album", "duration", "bit_rate", "performer", "genre", "recorded_date", "sampling_rate", "track_name_total", "sha_image"}
-	viewAlbumColumnsWithoutDefault = []string{"id", "album_identifier", "album", "duration", "bit_rate", "performer", "genre", "recorded_date", "sampling_rate", "track_name_total", "sha_image"}
+	viewAlbumAllColumns            = []string{"id", "album_identifier", "album", "duration", "bit_rate", "performer", "genre", "recorded_date", "sampling_rate", "track_name_total", "sha_image", "format", "file_size"}
+	viewAlbumColumnsWithoutDefault = []string{"id", "album_identifier", "album", "duration", "bit_rate", "performer", "genre", "recorded_date", "sampling_rate", "track_name_total", "sha_image", "format", "file_size"}
 	viewAlbumColumnsWithDefault    = []string{}
 	viewAlbumPrimaryKeyColumns     = []string{"id"}
 )

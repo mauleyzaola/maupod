@@ -2,7 +2,7 @@ import React from 'react';
 import {distinctListGet} from "./api";
 import uuid from 'uuid4';
 import { Link } from "react-router-dom";
-import {linkPerformerList} from "./routes";
+import {linkAlbumList} from "./routes";
 
 const PerformerHeader = () => (
     <thead>
@@ -17,7 +17,7 @@ function PerformerLine({row}){
     return (
         <tr>
             <td>
-                <Link to={linkPerformerList(row)}>
+                <Link to={linkAlbumList(row)}>
                     {performer}
                 </Link>
             </td>

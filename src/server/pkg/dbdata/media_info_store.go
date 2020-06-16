@@ -157,3 +157,43 @@ func (s *MediaStore) DistinctList(ctx context.Context, conn boil.ContextExecutor
 	}
 	return conversion.MediasFromORM(rows...), nil
 }
+
+func (s *MediaStore) AlbumListView(ctx context.Context, conn boil.ContextExecutor, filter MediaFilter) ([]*pb.Media, error) {
+	var mods []qm.QueryMod
+	var cols = orm.ViewAlbumColumns
+
+	if filter.Query != "" {
+		mods = append(mods, filter.ModOr(cols.Genre, cols.Performer, cols.Album, cols.Format))
+	}
+
+	if filter.Genre != "" {
+		mods = append(mods, filter.ModAnd(KeyValuePair{
+			Key:   cols.Genre,
+			Value: filter.Genre,
+		}))
+	}
+	if filter.Performer != "" {
+		mods = append(mods, filter.ModAnd(KeyValuePair{
+			Key:   cols.Performer,
+			Value: filter.Performer,
+		}))
+	}
+	if filter.Album != "" {
+		mods = append(mods, filter.ModAnd(KeyValuePair{
+			Key:   cols.Album,
+			Value: filter.Album,
+		}))
+	}
+	if filter.Format != "" {
+		mods = append(mods, filter.ModAnd(KeyValuePair{
+			Key:   cols.Format,
+			Value: filter.Format,
+		}))
+	}
+	mods = append(mods, filter.Mods()...)
+	rows, err := orm.ViewAlbums(mods...).All(ctx, conn)
+	if err != nil {
+		return nil, err
+	}
+	return conversion.ViewAlbumsToMedia(rows...), nil
+}

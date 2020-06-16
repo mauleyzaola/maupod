@@ -136,3 +136,29 @@ func MediasFromORM(a ...*orm.Medium) []*pb.Media {
 	}
 	return result
 }
+
+func ViewAlbumToMedia(v *orm.ViewAlbum)*pb.Media{
+	return &pb.Media{
+		Id:                    v.ID.String,
+		Format:                v.Format.String,
+		FileSize:              int64(v.FileSize.Int),
+		Duration:              float64(v.Duration.Int64),
+		Album:                 v.Album.String,
+		Performer:             v.Performer.String,
+		Genre:                 v.Genre.String,
+		RecordedDate:          int64(v.RecordedDate.Int),
+		SamplingRate:          int64(v.SamplingRate.Int),
+		BitRate:               int64(v.BitRate.Int),
+		TrackNameTotal:        int64(v.TrackNameTotal.Int),
+		ShaImage:              v.ShaImage.String,
+		AlbumIdentifier:       v.AlbumIdentifier.String,
+	}
+}
+
+func ViewAlbumsToMedia(a ...*orm.ViewAlbum)[]*pb.Media{
+	var result []*pb.Media
+	for _, v := range a {
+		result = append(result, ViewAlbumToMedia(v))
+	}
+	return result
+}
