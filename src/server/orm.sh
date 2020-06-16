@@ -2,25 +2,10 @@
 
 
 echo "[INFO] building database model"
+echo "[INFO] building database model"
 if [[ ! $(which sqlboiler) ]]; then
-    echo "[INFO] sqlboiler not found, trying to install now..."
-#     need to build manually because of original sqlboiler package dependencies
-    cd "$GOPATH/src/github.com/mauleyzaola"
-    if ! git clone https://github.com/mauleyzaola/sqlboiler.git;then
-      exit 1
-    fi
-    cd sqlboiler
-    if ! go mod download;then
-      exit 1
-    fi
-    cd drivers/sqlboiler-psql
-    if ! go install;then
-      exit 1
-    fi
-    cd ../../
-    if ! go install;then
-      exit 1
-    fi
+    echo "[INFO] sqlboiler not found, go to github.com/mauleyzaola/sqlboiler and execute ./install.sh"
+  exit 1
 fi
 
 if [[ ! $(which sql-migrate) ]]; then

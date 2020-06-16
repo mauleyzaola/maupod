@@ -3,10 +3,5 @@
 
 package orm
 
-var TableNames = struct {
-	Media      string
-	ViewAlbums string
-}{
-	Media:      "media",
-	ViewAlbums: "view_albums",
-}
+var ViewNames = struct {
+}{}

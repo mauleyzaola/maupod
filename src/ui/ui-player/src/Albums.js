@@ -49,7 +49,7 @@ class Albums extends React.Component{
         const { rows } = this.state;
         return(
             <div>
-                <table>
+                <table className='table table-bordered table-hover'>
                     <AlbumHeader />
                     <tbody>
                     {rows.map(row => <AlbumLine key={uuid()} row={row}  />)}

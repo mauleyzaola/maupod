@@ -6,8 +6,8 @@ import (
 	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata/orm"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
-	"github.com/volatiletech/sqlboiler/boil"
-	"github.com/volatiletech/sqlboiler/queries/qm"
+	"github.com/volatiletech/sqlboiler/v4/boil"
+	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 )
 
 // AlbumGroupDetection will calculate based on the current media, the album_identifier,
