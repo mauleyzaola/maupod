@@ -151,11 +151,11 @@ func (s *MediaStore) DistinctList(ctx context.Context, conn boil.ContextExecutor
 	mods = append(mods, qm.Distinct(filter.Distinct))
 	mods = append(mods, s.FilterMods(filter)...)
 	mods = append(mods, filter.Mods()...)
-	rows, err := orm.Media(mods...).All(ctx, conn)
+	rows, err := orm.ViewAlbums(mods...).All(ctx, conn)
 	if err != nil {
 		return nil, err
 	}
-	return conversion.MediasFromORM(rows...), nil
+	return conversion.ViewAlbumsToMedia(rows...), nil
 }
 
 func (s *MediaStore) AlbumListView(ctx context.Context, conn boil.ContextExecutor, filter MediaFilter) ([]*pb.Media, error) {
