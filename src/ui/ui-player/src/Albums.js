@@ -1,6 +1,6 @@
 import React from 'react';
 import {albumViewList, decodeURL} from "./api";
-import {linkAlbumSongList} from "./routes";
+import {linkAlbumView} from "./routes";
 import { Link } from "react-router-dom";
 import {msToString} from "./helpers";
 
@@ -9,7 +9,7 @@ const AlbumCard = ({r}) => {
         <div className='album-card col-3'>
             <div className="card text-white bg-primary">
                 <div className="card-header">
-                    <Link to={linkAlbumSongList(r)}>
+                    <Link to={linkAlbumView(r)}>
                     {r.album}
                     </Link>
                 </div>
@@ -50,7 +50,6 @@ class Albums extends React.Component{
 
     componentDidMount() {
         const data = decodeURL(this.props.location.search);
-        // data.limit=50;
         albumViewList(data).then(res => res.data || [])
            .then(rows => this.setState({rows}));
     }
