@@ -63,6 +63,12 @@ func (s *MediaStore) FilterMods(filter MediaFilter) []qm.QueryMod {
 			Value: filter.Performer,
 		}))
 	}
+	if filter.AlbumIdentifier != "" {
+		mods = append(mods, filter.ModAnd(KeyValuePair{
+			Key:   cols.AlbumIdentifier,
+			Value: filter.AlbumIdentifier,
+		}))
+	}
 	return mods
 }
 
