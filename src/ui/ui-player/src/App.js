@@ -2,6 +2,7 @@ import React from 'react';
 import 'bootswatch/dist/slate/bootstrap.min.css';
 import './App.css';
 import Albums from "./Albums";
+import Album from "./Album";
 import AudioScan from "./AudioScan";
 import Performers from './Performers'
 import Genres from "./Genres";
@@ -25,6 +26,7 @@ class App extends React.Component{
                         <Route exact path='/' component={Dashboard} />
                         <Route exact path='/audio-scan' component={AudioScan} />
                         <Route exact path='/albums' component={Albums} />
+                        <Route path='/album' component={Album} />
                         <Route exact path='/performers' component={Performers} />
                         <Route exact path='/genres' component={Genres} />
                         <Route path='/media' component={MediaList} />
