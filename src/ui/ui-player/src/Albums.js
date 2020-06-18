@@ -27,6 +27,9 @@ const AlbumCard = ({r}) => {
                 <div className="card-body">
                     <div className='row'>
                         <div className='col'>
+                            <Thumbnail album={r} />
+                        </div>
+                        <div className='col'>
                             <h4 className="card-title">
                                 <Link to={linkPerformerList(r)}>
                                     {r.performer}
@@ -45,9 +48,6 @@ const AlbumCard = ({r}) => {
                                 {r.format ? `Format: ${r.format}` : null}
                             </p>
                         </div>
-                        <div className='col'>
-                            <Thumbnail album={r} />
-                        </div>
                     </div>
 
                 </div>
@@ -61,7 +61,6 @@ const AlbumCard = ({r}) => {
     )
 }
 
-                // <Link to={linkAlbumList(row)}>
 
 class Albums extends React.Component{
     constructor(props) {

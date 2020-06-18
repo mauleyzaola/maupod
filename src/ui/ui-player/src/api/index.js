@@ -21,6 +21,8 @@ const distinctListGet = ({field, filter}) => axios.get(`/media/${field}/distinct
     params: filter,
 });
 
+const genreList = data => axios.get(`/genres`, { params: data});
+
 const objectToQueryString = data => querystring.stringify(data);
 
 const mediaList = (data) => axios.get(`/media`, {
@@ -32,6 +34,7 @@ export {
     albumViewList,
     decodeURL,
     distinctListGet,
+    genreList,
     mediaList,
     objectToQueryString,
 }
