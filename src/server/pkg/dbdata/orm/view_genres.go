@@ -27,6 +27,7 @@ type ViewGenre struct {
 	Genre          null.String  `boil:"genre" json:"genre,omitempty" toml:"genre" yaml:"genre,omitempty"`
 	PerformerCount null.Float64 `boil:"performer_count" json:"performer_count,omitempty" toml:"performer_count" yaml:"performer_count,omitempty"`
 	AlbumCount     null.Float64 `boil:"album_count" json:"album_count,omitempty" toml:"album_count" yaml:"album_count,omitempty"`
+	Duration       null.Float64 `boil:"duration" json:"duration,omitempty" toml:"duration" yaml:"duration,omitempty"`
 	Total          null.Float64 `boil:"total" json:"total,omitempty" toml:"total" yaml:"total,omitempty"`
 
 	R *viewGenreR `boil:"-" json:"-" toml:"-" yaml:"-"`
@@ -37,11 +38,13 @@ var ViewGenreColumns = struct {
 	Genre          string
 	PerformerCount string
 	AlbumCount     string
+	Duration       string
 	Total          string
 }{
 	Genre:          "genre",
 	PerformerCount: "performer_count",
 	AlbumCount:     "album_count",
+	Duration:       "duration",
 	Total:          "total",
 }
 
@@ -51,11 +54,13 @@ var ViewGenreWhere = struct {
 	Genre          whereHelpernull_String
 	PerformerCount whereHelpernull_Float64
 	AlbumCount     whereHelpernull_Float64
+	Duration       whereHelpernull_Float64
 	Total          whereHelpernull_Float64
 }{
 	Genre:          whereHelpernull_String{field: "\"view_genres\".\"genre\""},
 	PerformerCount: whereHelpernull_Float64{field: "\"view_genres\".\"performer_count\""},
 	AlbumCount:     whereHelpernull_Float64{field: "\"view_genres\".\"album_count\""},
+	Duration:       whereHelpernull_Float64{field: "\"view_genres\".\"duration\""},
 	Total:          whereHelpernull_Float64{field: "\"view_genres\".\"total\""},
 }
 
@@ -76,8 +81,8 @@ func (*viewGenreR) NewStruct() *viewGenreR {
 type viewGenreL struct{}
 
 var (
-	viewGenreAllColumns            = []string{"genre", "performer_count", "album_count", "total"}
-	viewGenreColumnsWithoutDefault = []string{"genre", "performer_count", "album_count", "total"}
+	viewGenreAllColumns            = []string{"genre", "performer_count", "album_count", "duration", "total"}
+	viewGenreColumnsWithoutDefault = []string{"genre", "performer_count", "album_count", "duration", "total"}
 	viewGenreColumnsWithDefault    = []string{}
 	viewGenrePrimaryKeyColumns     = []string{"genre"}
 )
