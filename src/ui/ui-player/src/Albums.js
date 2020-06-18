@@ -1,8 +1,19 @@
 import React from 'react';
 import {albumViewList, decodeURL} from "./api";
-import {linkAlbumView} from "./routes";
+import {linkAlbumView, linkGenreList, linkPerformerList} from "./routes";
 import { Link } from "react-router-dom";
 import {msToString} from "./helpers";
+
+
+const Thumbnail = ({album}) => {
+    if(!album.sha_image){
+        return null;
+    }
+    return (
+        <img alt='cover' src={`http://localhost:9000/thumbnail/${album.sha_image}.png`} />
+    )
+}
+
 
 const AlbumCard = ({r}) => {
     return (
@@ -14,19 +25,31 @@ const AlbumCard = ({r}) => {
                     </Link>
                 </div>
                 <div className="card-body">
-                    <h4 className="card-title">{r.performer}</h4>
-                    <p className="card-text">
-                        Genre: {r.genre}
-                    </p>
-                    <p className="card-text">
-                        {r.recorded_date ? `Recorded Date: ${r.recorded_date}` : null}
-                    </p>
-                    <p className="card-text">
-                        {r.track_name_total ? `Track Count: ${r.track_name_total}` : null}
-                    </p>
-                    <p className="card-text">
-                        {r.format ? `Format: ${r.format}` : null}
-                    </p>
+                    <div className='row'>
+                        <div className='col'>
+                            <h4 className="card-title">
+                                <Link to={linkPerformerList(r)}>
+                                    {r.performer}
+                                </Link>
+                            </h4>
+                            <p className="card-text">
+                                Genre: <Link to={linkGenreList(r)}>{r.genre}</Link>
+                            </p>
+                            <p className="card-text">
+                                {r.recorded_date ? `Recorded Date: ${r.recorded_date}` : null}
+                            </p>
+                            <p className="card-text">
+                                {r.track_name_total ? `Track Count: ${r.track_name_total}` : null}
+                            </p>
+                            <p className="card-text">
+                                {r.format ? `Format: ${r.format}` : null}
+                            </p>
+                        </div>
+                        <div className='col'>
+                            <Thumbnail album={r} />
+                        </div>
+                    </div>
+
                 </div>
                 <div className="card-footer">
                     <small className="text-muted">
@@ -48,11 +71,20 @@ class Albums extends React.Component{
         }
     }
 
+    loadData = data =>  albumViewList(data).then(res => res.data || []).then(rows => this.setState({rows}));
+
     componentDidMount() {
         const data = decodeURL(this.props.location.search);
-        albumViewList(data).then(res => res.data || [])
-           .then(rows => this.setState({rows}));
+        this.loadData(data);
     }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if(JSON.stringify(prevProps.location) === JSON.stringify(this.props.location)){
+            return;
+        }
+        this.loadData(decodeURL(this.props.location.search));
+    }
+
 
     render() {
         const { rows } = this.state;

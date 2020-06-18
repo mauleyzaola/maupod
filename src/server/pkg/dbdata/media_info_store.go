@@ -172,6 +172,12 @@ func (s *MediaStore) AlbumListView(ctx context.Context, conn boil.ContextExecuto
 		mods = append(mods, filter.ModOr(cols.Genre, cols.Performer, cols.Album, cols.Format))
 	}
 
+	if filter.AlbumIdentifier != "" {
+		mods = append(mods, filter.ModAnd(KeyValuePair{
+			Key:   cols.AlbumIdentifier,
+			Value: filter.AlbumIdentifier,
+		}))
+	}
 	if filter.Genre != "" {
 		mods = append(mods, filter.ModAnd(KeyValuePair{
 			Key:   cols.Genre,
