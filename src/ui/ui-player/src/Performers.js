@@ -1,36 +1,28 @@
 import React from 'react';
 import {distinctListGet} from "./api";
-import uuid from 'uuid4';
 import { Link } from "react-router-dom";
 import {linkAlbumList} from "./routes";
 import { groupOnFirstChar } from "./helpers";
 
-const PerformerHeader = () => (
-    <thead>
-        <tr>
-            <td>Name</td>
-        </tr>
-    </thead>
+const PerformerLetter = ({l}) => (
+    <div className='text-warning'>
+        <h4>{l}</h4>
+    </div>
 )
 
-function PerformerLine({row}){
-    const { performer } = row;
-    return (
-        <tr>
-            <td>
-                <Link to={linkAlbumList(row)}>
-                    {performer}
-                </Link>
-            </td>
-        </tr>
-    )
-}
+const PerformerLine = ({performer}) => (
+    <div>
+        <Link to={linkAlbumList({performer})}>
+            {performer}
+        </Link>
+    </div>
+)
 
 class Performers extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            items:{},
+            items:[],
         }
     }
 
@@ -51,15 +43,15 @@ class Performers extends React.Component{
     }
 
     render() {
-        const { rows } = this.state;
+        const { items } = this.state;
         return(
             <div>
-                <table>
-                    <PerformerHeader />
-                    <tbody>
-                        {/*{rows.map(row => <PerformerLine key={uuid()} row={row}  />)}*/}
-                    </tbody>
-                </table>
+                {items.map(item => (
+                    <div key={item.letter} >
+                        <PerformerLetter l={item.letter} />
+                        {item.items.map(p => <PerformerLine key={p} performer={p} />)}
+                    </div>
+                ))}
             </div>
         )
     }
