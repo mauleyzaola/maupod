@@ -3,6 +3,7 @@ import {distinctListGet} from "./api";
 import uuid from 'uuid4';
 import { Link } from "react-router-dom";
 import {linkAlbumList} from "./routes";
+import { groupOnFirstChar } from "./helpers";
 
 const PerformerHeader = () => (
     <thead>
@@ -29,7 +30,7 @@ class Performers extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            rows:[],
+            items:{},
         }
     }
 
@@ -42,7 +43,11 @@ class Performers extends React.Component{
             },
         })
             .then(res => res.data || [])
-            .then(rows => this.setState({rows}));
+            .then(rows => {
+                let items = [];
+                rows.forEach(x => items.push(x.performer));
+                this.setState({items: groupOnFirstChar(items)})
+            });
     }
 
     render() {
@@ -52,7 +57,7 @@ class Performers extends React.Component{
                 <table>
                     <PerformerHeader />
                     <tbody>
-                        {rows.map(row => <PerformerLine key={uuid()} row={row}  />)}
+                        {/*{rows.map(row => <PerformerLine key={uuid()} row={row}  />)}*/}
                     </tbody>
                 </table>
             </div>
