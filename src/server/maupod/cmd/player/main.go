@@ -1,12 +1,11 @@
 package main
 
 import (
-	"bytes"
-	"encoding/json"
+	"fmt"
 	"log"
 	"os"
-	"os/exec"
 
+	"github.com/DexterLB/mpvipc"
 	"github.com/spf13/viper"
 )
 
@@ -28,29 +27,62 @@ func init() {
 }
 
 func run() error {
-	// https://github.com/mpv-player/mpv/blob/master/DOCS/man/ipc.rst
-	// https://mpv.io/manual/master/#list-of-events
-	// https://github.com/DexterLB/mpvipc/blob/master/mpvipc.go
-	const command = `{ "command": ["get_property", "playback-time"] }`
-
-	cmd := exec.Command("./socket.sh")
-	cmd.Stdin = bytes.NewBufferString(command)
-	output, err := cmd.CombinedOutput()
+	conn := mpvipc.NewConnection("/tmp/mpvsocket")
+	err := conn.Open()
 	if err != nil {
 		return err
 	}
+	defer conn.Close()
 
-	var input = struct {
-		Data  float64
-		Error string
-	}{}
+	events, stopListening := conn.NewEventListener()
 
-	if err = json.Unmarshal(output, &input); err != nil {
+	path, err := conn.Get("path")
+	if err != nil {
 		return err
 	}
+	log.Printf("current file playing: %s", path)
 
-	log.Println("data: ", input.Data)
-	log.Println("error: ", input.Error)
+	//err = conn.Set("pause", true)
+	//if err != nil {
+	//	return err
+	//}
+	//log.Printf("paused!")
 
+	_, err = conn.Call("observe_property", 42, "volume")
+	if err != nil {
+		fmt.Print(err)
+	}
+
+	//ticker := time.NewTicker(time.Millisecond * 1000)
+	//go func() {
+	//	for {
+	//		select {
+	//		case t := <-ticker.C:
+	//			v, err := conn.Get("playback-time")
+	//			if err != nil {
+	//				panic(err)
+	//			}
+	//			fmt.Println("playback-time: ", v, t)
+	//		}
+	//	}
+	//}()
+
+	// TODO: implement state of paused/playing
+	// consider now only the default sound interface, but shold support more in the future
+
+	go func() {
+		conn.WaitUntilClosed()
+		stopListening <- struct{}{}
+	}()
+
+	for event := range events {
+		if event.ID == 42 {
+			log.Printf("volume now is %f", event.Data.(float64))
+		} else {
+			log.Printf("received event: %s id: %v", event.Name, event.Text)
+		}
+	}
+
+	log.Printf("mpv closed socket")
 	return nil
 }
