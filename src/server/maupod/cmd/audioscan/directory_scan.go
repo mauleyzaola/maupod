@@ -10,7 +10,6 @@ import (
 	"github.com/mauleyzaola/maupod/src/server/pkg/broker"
 	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata"
 	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata/orm"
-	"github.com/mauleyzaola/maupod/src/server/pkg/filemgmt"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 	"github.com/mauleyzaola/maupod/src/server/pkg/rules"
@@ -118,7 +117,7 @@ func ScanDirectoryAudioFiles(
 	}
 
 	logger.Info("[DEBUG] started scanning")
-	if err = filemgmt.WalkFiles(root, walker); err != nil {
+	if err = helpers.WalkFiles(root, walker); err != nil {
 		logger.Error(err)
 		return err
 	}

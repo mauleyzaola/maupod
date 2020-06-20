@@ -1,4 +1,4 @@
-package filemgmt
+package helpers
 
 import (
 	"io/ioutil"

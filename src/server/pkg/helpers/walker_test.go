@@ -1,4 +1,4 @@
-package filemgmt
+package helpers
 
 import (
 	"io/ioutil"
@@ -6,7 +6,6 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -14,7 +13,7 @@ import (
 func TestWalkFiles(t *testing.T) {
 	var mode = os.ModePerm
 	// create file structure
-	uid := helpers.NewUUID()
+	uid := NewUUID()
 	assert.NotEmpty(t, uid)
 
 	root := filepath.Join(os.TempDir(), uid)

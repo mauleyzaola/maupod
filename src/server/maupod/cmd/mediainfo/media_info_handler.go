@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
-	"github.com/mauleyzaola/maupod/src/server/pkg/media"
+	"github.com/mauleyzaola/maupod/src/server/pkg/information"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 	"github.com/nats-io/nats.go"
 	"google.golang.org/protobuf/proto"
@@ -45,7 +45,7 @@ func (m *MsgHandler) handlerMediaInfo(msg *nats.Msg) {
 	}
 	m.base.Logger().Info("received media info message: " + input.String())
 
-	result, err := media.RunMediaInfo(input.FileName)
+	result, err := information.MediaFromFile(input.FileName)
 	if err != nil {
 		m.base.Logger().Error(err)
 		output.Response.Ok = false
@@ -61,7 +61,7 @@ func (m *MsgHandler) handlerMediaInfo(msg *nats.Msg) {
 		return
 	}
 	output.LastModifiedDate = helpers.TimeToTs2(info.ModTime())
-	output.Media = result.ToProto()
+	output.Media = result
 	output.Media.FolderName = filepath.Dir(input.FileName)
 	output.Media.FileName = filepath.Base(input.FileName)
 	output.Media.Location = filepath.Join(output.Media.FolderName, output.Media.FileName)
