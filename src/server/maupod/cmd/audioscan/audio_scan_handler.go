@@ -8,13 +8,12 @@ import (
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 	"github.com/nats-io/nats.go"
-	"google.golang.org/protobuf/proto"
 )
 
 func (m *MsgHandler) handlerAudioScan(msg *nats.Msg) {
 	start := time.Now()
 	var input pb.ScanDirectoryAudioFilesInput
-	err := proto.Unmarshal(msg.Data, &input)
+	err := helpers.ProtoUnmarshal(msg.Data, &input)
 	if err != nil {
 		m.base.Logger().Error(err)
 		return

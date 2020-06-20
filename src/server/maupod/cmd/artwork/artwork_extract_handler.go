@@ -20,7 +20,6 @@ import (
 	"github.com/mauleyzaola/maupod/src/server/pkg/rules"
 	"github.com/mauleyzaola/maupod/src/server/pkg/types"
 	"github.com/nats-io/nats.go"
-	"google.golang.org/protobuf/proto"
 )
 
 const thumbnailDir = "thumbnail"
@@ -29,7 +28,7 @@ func (m *MsgHandler) handlerArtworkExtract(msg *nats.Msg) {
 
 	var err error
 	var input pb.ArtworkExtractInput
-	if err = proto.Unmarshal(msg.Data, &input); err != nil {
+	if err = helpers.ProtoUnmarshal(msg.Data, &input); err != nil {
 		m.base.Logger().Error(err)
 		return
 	}
@@ -54,7 +53,7 @@ func (m *MsgHandler) handlerArtworkExtract(msg *nats.Msg) {
 			m.base.Logger().Errorf("[ERROR]  %s", err.Error())
 			return
 		}
-		if payload, err = proto.Marshal(&pb.ArtworkUpdateInput{Media: input.Media}); err != nil {
+		if payload, err = helpers.ProtoMarshal(&pb.ArtworkUpdateInput{Media: input.Media}); err != nil {
 			m.base.Logger().Error(err)
 			return
 		}

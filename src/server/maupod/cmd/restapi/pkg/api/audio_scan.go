@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"time"
 
-	"google.golang.org/protobuf/proto"
 	"github.com/mauleyzaola/maupod/src/server/pkg/broker"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
@@ -20,7 +19,7 @@ func (a *ApiServer) AudioScanPost(p TransactionExecutorParams) (status int, resu
 	// so this value goes to db
 	input.ScanDate = helpers.TimeToTs2(time.Now())
 
-	data, err := proto.Marshal(&input)
+	data, err := helpers.ProtoMarshal(&input)
 	if err != nil {
 		status = http.StatusInternalServerError
 		return

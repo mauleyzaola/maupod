@@ -8,7 +8,6 @@ import (
 	"github.com/mauleyzaola/maupod/src/server/pkg/information"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 	"github.com/nats-io/nats.go"
-	"google.golang.org/protobuf/proto"
 )
 
 func (m *MsgHandler) handlerMediaInfo(msg *nats.Msg) {
@@ -27,7 +26,7 @@ func (m *MsgHandler) handlerMediaInfo(msg *nats.Msg) {
 		var localErr error
 		var data []byte
 
-		if data, localErr = proto.Marshal(output); localErr != nil {
+		if data, localErr = helpers.ProtoMarshal(output); localErr != nil {
 			m.base.Logger().Error(localErr)
 			return
 		}
@@ -37,7 +36,7 @@ func (m *MsgHandler) handlerMediaInfo(msg *nats.Msg) {
 		}
 	}()
 
-	if err = proto.Unmarshal(msg.Data, &input); err != nil {
+	if err = helpers.ProtoUnmarshal(msg.Data, &input); err != nil {
 		m.base.Logger().Error(err)
 		output.Response.Ok = false
 		output.Response.Error = err.Error()

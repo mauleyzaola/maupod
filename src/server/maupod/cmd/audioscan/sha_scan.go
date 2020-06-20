@@ -11,13 +11,12 @@ import (
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 	"github.com/nats-io/nats.go"
-	"google.golang.org/protobuf/proto"
 )
 
 func (m *MsgHandler) handlerSHAScan(msg *nats.Msg) {
 	var input pb.MediaInfoInput
 	var err error
-	if err = proto.Unmarshal(msg.Data, &input); err != nil {
+	if err = helpers.ProtoUnmarshal(msg.Data, &input); err != nil {
 		m.base.Logger().Error(err)
 		return
 	}

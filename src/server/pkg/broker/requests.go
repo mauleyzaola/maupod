@@ -5,15 +5,15 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 	"github.com/mauleyzaola/maupod/src/server/pkg/types"
 	"github.com/nats-io/nats.go"
-	"google.golang.org/protobuf/proto"
 )
 
 func mediaInfoRequest(nc *nats.Conn, input *pb.MediaInfoInput, timeout time.Duration) (*pb.MediaInfoOutput, error) {
 	var output pb.MediaInfoOutput
-	data, err := proto.Marshal(input)
+	data, err := helpers.ProtoMarshal(input)
 	if err != nil {
 		return nil, err
 	}
@@ -22,7 +22,7 @@ func mediaInfoRequest(nc *nats.Conn, input *pb.MediaInfoInput, timeout time.Dura
 		return nil, err
 	}
 
-	if err = proto.Unmarshal(msg.Data, &output); err != nil {
+	if err = helpers.ProtoUnmarshal(msg.Data, &output); err != nil {
 		return nil, err
 	}
 
@@ -30,16 +30,15 @@ func mediaInfoRequest(nc *nats.Conn, input *pb.MediaInfoInput, timeout time.Dura
 }
 
 func PublishMediaInfoDelete(nc *nats.Conn, input *pb.MediaInfoInput) error {
-	data, err := proto.Marshal(input)
+	data, err := helpers.ProtoMarshal(input)
 	if err != nil {
 		return err
 	}
 	return nc.Publish(strconv.Itoa(int(pb.Message_MESSAGE_MEDIA_DELETE)), data)
 }
 
-// TODO: implement the caller
 func PublishMediaSHAUpdate(nc *nats.Conn, input *pb.MediaInfoInput) error {
-	fileData, err := proto.Marshal(input)
+	fileData, err := helpers.ProtoMarshal(input)
 	if err != nil {
 		return err
 	}

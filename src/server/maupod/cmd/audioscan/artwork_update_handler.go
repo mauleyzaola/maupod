@@ -5,15 +5,15 @@ import (
 
 	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata"
 	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata/orm"
+	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 	"github.com/nats-io/nats.go"
 	"github.com/volatiletech/sqlboiler/boil"
-	"google.golang.org/protobuf/proto"
 )
 
 func (m *MsgHandler) handlerMediaUpdateArtwork(msg *nats.Msg) {
 	var input pb.ArtworkUpdateInput
-	err := proto.Unmarshal(msg.Data, &input)
+	err := helpers.ProtoUnmarshal(msg.Data, &input)
 	if err != nil {
 		m.base.Logger().Error(err)
 		return
