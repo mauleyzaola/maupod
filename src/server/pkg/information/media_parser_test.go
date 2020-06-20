@@ -1,4 +1,4 @@
-package media
+package information
 
 import (
 	"bytes"
@@ -39,12 +39,12 @@ func TestInfoString_Split(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotKey, gotValue := tt.l.Split()
+			gotKey, gotValue := tt.l.split()
 			if gotKey != tt.wantKey {
-				t.Errorf("Split() gotKey = %v, want %v", gotKey, tt.wantKey)
+				t.Errorf("split() gotKey = %v, want %v", gotKey, tt.wantKey)
 			}
 			if gotValue != tt.wantValue {
-				t.Errorf("Split() gotValue = %v, want %v", gotValue, tt.wantValue)
+				t.Errorf("split() gotValue = %v, want %v", gotValue, tt.wantValue)
 			}
 		})
 	}
@@ -89,7 +89,7 @@ func TestToInfoData(t *testing.T) {
 			`6 min 7 s 200 ms`,
 		},
 	}
-	got := ToInfoData(file)
+	got := toInfoData(file)
 	for k, v := range want {
 		val, ok := got[k]
 		assert.True(t, ok, k+" is missing")
@@ -176,9 +176,9 @@ func TestMediaParser(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			g, err := MediaParser(tt.args.r)
+			g, err := parseMediaInfo(tt.args.r)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("MediaParser() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("parseMediaInfo() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if w := tt.want; w != nil {

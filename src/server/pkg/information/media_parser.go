@@ -1,4 +1,4 @@
-package media
+package information
 
 import (
 	"bufio"
@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func MediaParser(r io.Reader) (*MediaInfo, error) {
+func parseMediaInfo(r io.Reader) (*MediaInfo, error) {
 	if r == nil {
 		return nil, errors.New("missing parameter: r")
 	}
@@ -23,7 +23,7 @@ func MediaParser(r io.Reader) (*MediaInfo, error) {
 		return val
 	}
 
-	infoData := ToInfoData(r)
+	infoData := toInfoData(r)
 	var mi = &MediaInfo{}
 	for key, value := range infoData {
 		defaultValue := value[0]
@@ -182,8 +182,8 @@ func MediaParser(r io.Reader) (*MediaInfo, error) {
 
 type InfoString string
 
-// Split will return a key and a value, based in mediainfo text output format
-func (in InfoString) Split() (key, value string) {
+// split will return a key and a value, based in mediainfo text output format
+func (in InfoString) split() (key, value string) {
 	const sep = ":"
 	val := string(in)
 	firstSep := strings.Index(val, sep)
@@ -200,13 +200,13 @@ func (in InfoString) Split() (key, value string) {
 
 type InfoData map[string][]string
 
-// ToInfoData will parse a mediainfo result grouped on its keys, considering each key should have a value otherwise will be ignored
-func ToInfoData(r io.Reader) InfoData {
+// toInfoData will parse a mediainfo result grouped on its keys, considering each key should have a value otherwise will be ignored
+func toInfoData(r io.Reader) InfoData {
 	var res = make(map[string][]string)
 	scanner := bufio.NewScanner(r)
 	for scanner.Scan() {
 		info := InfoString(scanner.Text())
-		k, v := info.Split()
+		k, v := info.split()
 		// ignore missing values
 		if v == "" {
 			continue
