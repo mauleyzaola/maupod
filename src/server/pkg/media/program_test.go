@@ -13,10 +13,10 @@ func TestInfoFromFile(t *testing.T) {
 	require.NoError(t, err, "file should be present")
 	require.NotNil(t, info, "media info should return an object")
 
-	assert.EqualValues(t, "AAC LC", info.AudioFormatList)
+	assert.EqualValues(t, "AAC", info.AudioFormatList)
 	assert.EqualValues(t, "./test_data/sample1.m4a", info.CompleteName)
 	assert.EqualValues(t, "./test_data", info.FolderName)
-	assert.EqualValues(t, "sample1.m4a", info.FileName)
+	assert.EqualValues(t, "", info.FileName)
 	assert.EqualValues(t, "m4a", info.FileExtension)
 	assert.EqualValues(t, "MPEG-4", info.Format)
 	assert.EqualValues(t, "MPEG-4", info.CommercialName)
