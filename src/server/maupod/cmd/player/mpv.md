@@ -36,7 +36,6 @@ http://manpages.ubuntu.com/manpages/bionic/man1/mpv.1.html
 
 * `pause`: Toggles pause mode. Values `true` or `false`
 * `audio-device`: Sets the audio device. `name` fully qualified is the value which should be used. Switching between audio interfaces causes a `pause` event in any case
-* `seek`: TODO
 * `speed`: Slow down or speed up playback by the factor given as parameter. Values are numbers from `0.01` to `100`
 * `volume`: Sets the volume. Values are numbers from `0` to `100`
 
@@ -45,9 +44,11 @@ http://manpages.ubuntu.com/manpages/bionic/man1/mpv.1.html
 In the golang wrapper we need to use `conn.Call()` function
 
 * `loadfile`: Changes the playing track at runtime. Example `"loadfile", filePath, "replace"`
-* `seek`: Relative to current position, for example `conn.Call("seek", -15)` will go backwards 15 seconds
+* `seek`: Relative to current position, for examples 
+`conn.Call("seek", -15, "relative")` will go backwards 15 seconds
+`conn.Call("seek", 200, "exact")` will go to position at 03:20 
 
-## Useful Parameters
+## Useful Stuff
 
 This starts `mpv` player without displaying any UI and connecting to unix socket
 ```
@@ -73,4 +74,14 @@ Does not play anything and waits for a command. Not sure how does this work thou
 This should be the startup command to fork it
 ```
 mpv --no-video --input-ipc-server=/tmp/mpv_socket --track-auto-selection=no . 
+```
+
+### Listeners
+```
+	events, _ := conn.NewEventListener()
+	go func() {
+		for event := range events {
+			log.Println(event.Name, event.Text, event.Data)
+		}
+	}()
 ```

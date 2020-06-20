@@ -29,10 +29,10 @@ func init() {
 }
 
 func run() error {
-	const songPath = "/media/mau/music-library/music/Adriana Calcanhotto/Maré/05 Mulher Sem Razão.m4a"
-	const songPath2 = "/media/mau/music-library/music/Gino Vannelli/Gino Vannelli Live/06 Hurts to Be In Love (Live).m4a"
+	const songAdriana = "/media/mau/music-library/music/Adriana Calcanhotto/Maré/05 Mulher Sem Razão.m4a"
+	const songGino = "/media/mau/music-library/music/Gino Vannelli/Gino Vannelli Live/06 Hurts to Be In Love (Live).m4a"
 
-	process, err := pkg.MPVStart(songPath)
+	process, err := pkg.MPVStart(songAdriana)
 	if err != nil {
 		return err
 	}
@@ -40,26 +40,13 @@ func run() error {
 	time.Sleep(time.Second)
 
 	log.Println("pid: ", process.Pid)
-	//time.Sleep(time.Second * 5)
-	//log.Println("trying to kill process")
-	//if err = process.Kill(); err != nil {
-	//	return err
-	//}
-	//return nil
 
-	// mpv --no-video . --input-unix-socket=/tmp/mpv_socket
 	conn := mpvipc.NewConnection("/tmp/mpv_socket")
 	err = conn.Open()
 	if err != nil {
 		return err
 	}
 	defer func() { _ = conn.Close() }()
-
-	//events, stopListening := conn.NewEventListener()
-
-	//if err = conn.Set("playlist_next", ""); err != nil {
-	//	return err
-	//}
 
 	var props = []string{}
 
@@ -71,25 +58,32 @@ func run() error {
 		log.Printf("prop: %s value: %v", prop, value)
 	}
 
-	//err = conn.Set("audio-device", "coreaudio/AppleUSBAudioEngine:Logitech USB Headset:Logitech USB Headset:14600000:2")
-	//err = conn.Set("audio-device", "coreaudio/AppleGFXHDAEngineOutputDP:0:{6D9E-7721-0002D07E}")
-	//err = conn.Set("external-file", "/media/mau/music-library/music/10,000 Maniacs/10,000 Maniacs - Original Album Series/CD5/02 - Eat For Two.flac")
-	//_, err = conn.Call("loadfile", songPath)
-	//if err != nil {
-	//	return err
-	//}
-
 	play := func(p string) {
 		log.Println("loading file: ", p)
 		conn.Call("loadfile", p)
 		conn.Set("pause", false)
-		time.Sleep(time.Second * 5)
 	}
 
-	play(songPath)
-	play(songPath2)
-	play(songPath2)
-	play(songPath)
+	seek := func(offset int) {
+		log.Println("offset to: ", offset)
+		conn.Call("seek", offset, "exact")
+	}
+
+	sleep := func(secs int) {
+		log.Println("sleeping secs: ", secs)
+		time.Sleep(time.Second * time.Duration(secs))
+	}
+
+	play(songAdriana)
+	sleep(5)
+	seek(150)
+	sleep(5)
+	play(songGino)
+	sleep(2)
+	seek(200)
+	sleep(5)
+	seek(-75)
+	sleep(3)
 
 	log.Println("killing mpv process")
 	process.Kill()
