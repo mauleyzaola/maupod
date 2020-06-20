@@ -125,7 +125,7 @@ func ScanDirectoryAudioFiles(
 	var timeout = time.Second * time.Duration(config.Delay)
 	for _, f := range files {
 		var m *pb.Media
-		if m, err = broker.RequestScanAudioFile(nc, logger, f, timeout); err != nil {
+		if m, err = broker.RequestMediaInfoScan(nc, logger, f, timeout); err != nil {
 			logger.Error(err)
 			continue
 		}
