@@ -40,7 +40,7 @@ func run() error {
 	//	return err
 	//}
 
-	var props = []string{"stream-open-filename"}
+	var props = []string{}
 
 	for _, prop := range props {
 		value, err := conn.Get(prop)
@@ -50,10 +50,12 @@ func run() error {
 		log.Printf("prop: %s value: %v", prop, value)
 	}
 
+	const filePath = "/media/mau/music-library/music/10,000 Maniacs/10,000 Maniacs - Original Album Series/CD3/01 - Eat For Two.flac"
+
 	//err = conn.Set("audio-device", "coreaudio/AppleUSBAudioEngine:Logitech USB Headset:Logitech USB Headset:14600000:2")
 	//err = conn.Set("audio-device", "coreaudio/AppleGFXHDAEngineOutputDP:0:{6D9E-7721-0002D07E}")
-	err = conn.Set("external-file", "/Users/mau/Downloads/music/Russ Miller/Arrival/11 RSVP.m4a")
-	//err = conn.Set("volume", 100)
+	//err = conn.Set("external-file", "/media/mau/music-library/music/10,000 Maniacs/10,000 Maniacs - Original Album Series/CD5/02 - Eat For Two.flac")
+	_, err = conn.Call("start", "00:10")
 	if err != nil {
 		return err
 	}
@@ -94,5 +96,6 @@ func run() error {
 	//}
 
 	//log.Printf("mpv closed socket")
+
 	return nil
 }

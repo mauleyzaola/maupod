@@ -2,6 +2,8 @@
 
 https://mpv.io/manual/stable/#properties
 https://mpv.io/manual/stable/#options
+https://mpv.io/manual/stable/#list-of-input-commands
+http://manpages.ubuntu.com/manpages/bionic/man1/mpv.1.html
 
 > Most options can be set as runtime via properties as well. Just remove the leading -- from the option name. These are not documented. Only properties which do not exist as option with the same name, or which have very different behavior from the options are documented
 
@@ -37,4 +39,29 @@ https://mpv.io/manual/stable/#options
 * `seek`: TODO
 * `speed`: Slow down or speed up playback by the factor given as parameter. Values are numbers from `0.01` to `100`
 * `volume`: Sets the volume. Values are numbers from `0` to `100`
-* 
+* `start`: Sets the position in seconds the track will start playing. Only applies for next tracks. Value is a relative or absolute number, for instance `+10` will start playing at `00:10`
+
+## COMMANDS
+
+In the golang wrapper we need to use `conn.Call()` function
+
+* `loadfile`: Changes the playing track at runtime. Example `"loadfile", filePath, "replace"`
+* `seek`: Relative to current position, for example `conn.Call("seek", -15)` will go backwards 15 seconds
+
+## Useful Parameters
+
+This starts `mpv` player without displaying any UI and connecting to unix socket
+```
+mpv --no-video --input-unix-socket=/tmp/mpv_socket .
+```
+
+
+Shows no output to stdout
+```
+--really-quiet
+```
+
+Does not play anything and waits for a command. Not sure how does this work though
+```
+--track-auto-selection=no
+```
