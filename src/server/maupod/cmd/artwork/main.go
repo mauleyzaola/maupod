@@ -10,7 +10,7 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
-	"github.com/mauleyzaola/maupod/src/server/pkg/rule"
+	"github.com/mauleyzaola/maupod/src/server/pkg/rules"
 	"github.com/mauleyzaola/maupod/src/server/pkg/simplelog"
 	"github.com/mauleyzaola/maupod/src/server/pkg/types"
 	"github.com/spf13/viper"
@@ -39,12 +39,12 @@ func run() error {
 	logger = &simplelog.Log{}
 	logger.Init()
 
-	config, err := rule.ConfigurationParse()
+	config, err := rules.ConfigurationParse()
 	if err != nil {
 		return err
 	}
 
-	if err = rule.ConfigurationValidate(config); err != nil {
+	if err = rules.ConfigurationValidate(config); err != nil {
 		return err
 	}
 

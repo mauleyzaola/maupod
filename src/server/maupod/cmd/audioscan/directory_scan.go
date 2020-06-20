@@ -13,7 +13,7 @@ import (
 	"github.com/mauleyzaola/maupod/src/server/pkg/filemgmt"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
-	"github.com/mauleyzaola/maupod/src/server/pkg/rule"
+	"github.com/mauleyzaola/maupod/src/server/pkg/rules"
 	"github.com/mauleyzaola/maupod/src/server/pkg/types"
 	"github.com/nats-io/nats.go"
 	"github.com/volatiletech/sqlboiler/boil"
@@ -102,13 +102,13 @@ func ScanDirectoryAudioFiles(
 		if isDir {
 			return false
 		}
-		if !rule.FileIsValidExtension(config, filename) {
+		if !rules.FileIsValidExtension(config, filename) {
 			return false
 		}
 
 		// a bit of speed improvement, avoid a second time scanning the same file unless it has been changed in the file system
 		if val, ok := mediaLocationKeys[filename]; ok {
-			if !rule.NeedsMediaUpdate(val) {
+			if !rules.NeedsMediaUpdate(val) {
 				return false
 			}
 		}
@@ -157,7 +157,7 @@ func ScanDirectoryAudioFiles(
 		}
 
 		// send message for extracting artwork if needed
-		if rule.NeedsImageUpdate(m) {
+		if rules.NeedsImageUpdate(m) {
 			var payload []byte
 			if payload, err = proto.Marshal(&pb.ArtworkExtractInput{Media: m, ScanDate: helpers.TimeToTs2(scanDate)}); err != nil {
 				return err

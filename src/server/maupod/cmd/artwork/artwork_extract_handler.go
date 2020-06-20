@@ -17,7 +17,7 @@ import (
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/images"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
-	"github.com/mauleyzaola/maupod/src/server/pkg/rule"
+	"github.com/mauleyzaola/maupod/src/server/pkg/rules"
 	"github.com/mauleyzaola/maupod/src/server/pkg/types"
 	"github.com/nats-io/nats.go"
 	"google.golang.org/protobuf/proto"
@@ -101,7 +101,7 @@ func (m *MsgHandler) handlerArtworkExtract(msg *nats.Msg) {
 
 	// write artwork if there is no other media with the same sha image
 	var x, y int
-	input.Media.ImageLocation = rule.ArtworkFileName(input.Media)
+	input.Media.ImageLocation = rules.ArtworkFileName(input.Media)
 	if x, y, err = images.Size(bytes.NewBuffer(imageData)); err != nil {
 		m.base.Logger().Error(err)
 		input.Media.Location = ""
@@ -163,13 +163,13 @@ func ScanArtwork(
 	media *pb.Media,
 ) ([]byte, error) {
 	// check media last_image_scan vs date last modified
-	if !rule.NeedsImageUpdate(media) {
+	if !rules.NeedsImageUpdate(media) {
 		logger.Info("image does not need to be updated")
 		return nil, nil
 	}
 
 	// we should not process the image a second time here, this is just a file scan
-	if rule.MediaHasImage(media) {
+	if rules.MediaHasImage(media) {
 		logger.Info("image does not have image data")
 		return nil, nil
 	}
