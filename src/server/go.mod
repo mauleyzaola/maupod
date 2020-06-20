@@ -3,7 +3,7 @@ module github.com/mauleyzaola/maupod/src/server
 go 1.14
 
 require (
-	github.com/DexterLB/mpvipc v0.0.0-20190216161438-2a226fa01bbd // indirect
+	github.com/DexterLB/mpvipc v0.0.0-20190216161438-2a226fa01bbd
 	github.com/disintegration/imaging v1.6.2
 	github.com/friendsofgo/errors v0.9.2
 	github.com/golang/protobuf v1.4.0

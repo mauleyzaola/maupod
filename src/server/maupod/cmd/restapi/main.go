@@ -10,14 +10,13 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/mauleyzaola/maupod/src/server/pkg/simplelog"
-	"github.com/mauleyzaola/maupod/src/server/pkg/types"
-
 	_ "github.com/lib/pq"
-	"github.com/mauleyzaola/maupod/src/server/maupod/pkg/api"
+	"github.com/mauleyzaola/maupod/src/server/maupod/cmd/restapi/pkg/api"
 	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata"
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/rule"
+	"github.com/mauleyzaola/maupod/src/server/pkg/simplelog"
+	"github.com/mauleyzaola/maupod/src/server/pkg/types"
 	"github.com/spf13/viper"
 )
 
