@@ -3,6 +3,9 @@ package main
 import (
 	"log"
 	"os"
+	"time"
+
+	"github.com/mauleyzaola/maupod/src/server/maupod/cmd/player/pkg"
 
 	"github.com/DexterLB/mpvipc"
 	"github.com/spf13/viper"
@@ -26,13 +29,31 @@ func init() {
 }
 
 func run() error {
-	// mpv --no-video . --input-unix-socket=/tmp/mpv_socket
-	conn := mpvipc.NewConnection("/tmp/mpv_socket")
-	err := conn.Open()
+	const songPath = "/media/mau/music-library/music/Adriana Calcanhotto/Maré/05 Mulher Sem Razão.m4a"
+	const songPath2 = "/media/mau/music-library/music/Gino Vannelli/Gino Vannelli Live/06 Hurts to Be In Love (Live).m4a"
+
+	process, err := pkg.MPVStart(songPath)
 	if err != nil {
 		return err
 	}
-	defer conn.Close()
+	// need to have a startup time
+	time.Sleep(time.Second)
+
+	log.Println("pid: ", process.Pid)
+	//time.Sleep(time.Second * 5)
+	//log.Println("trying to kill process")
+	//if err = process.Kill(); err != nil {
+	//	return err
+	//}
+	//return nil
+
+	// mpv --no-video . --input-unix-socket=/tmp/mpv_socket
+	conn := mpvipc.NewConnection("/tmp/mpv_socket")
+	err = conn.Open()
+	if err != nil {
+		return err
+	}
+	defer func() { _ = conn.Close() }()
 
 	//events, stopListening := conn.NewEventListener()
 
@@ -50,15 +71,29 @@ func run() error {
 		log.Printf("prop: %s value: %v", prop, value)
 	}
 
-	const filePath = "/media/mau/music-library/music/10,000 Maniacs/10,000 Maniacs - Original Album Series/CD3/01 - Eat For Two.flac"
-
 	//err = conn.Set("audio-device", "coreaudio/AppleUSBAudioEngine:Logitech USB Headset:Logitech USB Headset:14600000:2")
 	//err = conn.Set("audio-device", "coreaudio/AppleGFXHDAEngineOutputDP:0:{6D9E-7721-0002D07E}")
 	//err = conn.Set("external-file", "/media/mau/music-library/music/10,000 Maniacs/10,000 Maniacs - Original Album Series/CD5/02 - Eat For Two.flac")
-	_, err = conn.Call("start", "00:10")
-	if err != nil {
-		return err
+	//_, err = conn.Call("loadfile", songPath)
+	//if err != nil {
+	//	return err
+	//}
+
+	play := func(p string) {
+		log.Println("loading file: ", p)
+		conn.Call("loadfile", p)
+		conn.Set("pause", false)
+		time.Sleep(time.Second * 5)
 	}
+
+	play(songPath)
+	play(songPath2)
+	play(songPath2)
+	play(songPath)
+
+	log.Println("killing mpv process")
+	process.Kill()
+	return nil
 
 	//_, err = conn.Call("observe_property", 42, "volume")
 	//if err != nil {
