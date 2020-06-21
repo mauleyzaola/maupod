@@ -15,7 +15,7 @@ func (a *ApiServer) IPCPost(p TransactionExecutorParams) (status int, result int
 		return
 	}
 
-	if result, err = broker.RequestIPCCommand(a.nc, input, time.Second*time.Duration(a.config.Delay)); err != nil {
+	if result, err = broker.RequestIPCCommand(a.nc, &input, time.Second*time.Duration(a.config.Delay)); err != nil {
 		status = http.StatusInternalServerError
 		return
 	}

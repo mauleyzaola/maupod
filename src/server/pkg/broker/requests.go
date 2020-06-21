@@ -69,9 +69,9 @@ func RequestMediaInfoScan(nc *nats.Conn, logger types.Logger, filename string, t
 	return output.Media, nil
 }
 
-func RequestIPCCommand(nc *nats.Conn, input pb.IPCInput, timeout time.Duration) (*pb.IPCOutput, error) {
+func RequestIPCCommand(nc *nats.Conn, input *pb.IPCInput, timeout time.Duration) (*pb.IPCOutput, error) {
 	var output = &pb.IPCOutput{}
-	if err := doRequest(nc, int(pb.Message_MESSAGE_IPC), &input, output, timeout); err != nil {
+	if err := doRequest(nc, int(pb.Message_MESSAGE_IPC), input, output, timeout); err != nil {
 		return nil, err
 	}
 	return output, nil

@@ -42,21 +42,42 @@ func NewIPC(processor MPVProcessor) (*IPC, error) {
 	}
 
 	ipc := mpvipc.NewConnection(processor.SocketFileName())
-	if err := ipc.Open(); err != nil {
-		return nil, err
-	}
-	return &IPC{
+
+	// TODO: use properties for monitoring what is exactly doing mpv at runtime
+
+	ip := &IPC{
 		ipc:       ipc,
 		isPaused:  true,
 		processor: processor,
-	}, nil
+	}
+
+	return ip, nil
+}
+
+// restart checks if both mpv and ipc are open and running
+// if they are not, it will start/open them
+func (m *IPC) restart(filename string) error {
+	// TODO: improve this workflow, for now we can start and stop mpv process at will
+	var err error
+	if !m.processor.IsRunning() {
+		if err = m.processor.Start(filename); err != nil {
+			return err
+		}
+	}
+	if m.ipc.IsClosed() {
+		return m.ipc.Open()
+	}
+	return nil
 }
 
 func (m *IPC) Load(filename string) error {
+	err := m.restart(filename)
+	if err != nil {
+		return err
+	}
 	cmd := cmdLoadfile
 	log.Println(cmd.String(), filename)
-	_, err := os.Stat(filename)
-	if err != nil {
+	if _, err = os.Stat(filename); err != nil {
 		return err
 	}
 	_, err = m.ipc.Call(cmd.String(), filename)

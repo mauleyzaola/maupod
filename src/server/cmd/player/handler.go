@@ -46,7 +46,7 @@ func (m *MsgHandler) InitializeIPC(filename string) error {
 	if m.isInitialized {
 		return nil
 	}
-	processor, err := pkg.NewMpvProcessor(filename)
+	processor, err := pkg.NewMpvProcessor()
 	if err != nil {
 		return err
 	}

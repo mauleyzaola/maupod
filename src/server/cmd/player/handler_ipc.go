@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 	"strings"
@@ -20,13 +19,6 @@ func (m *MsgHandler) handlerIPC(msg *nats.Msg) {
 		m.base.Logger().Error(err)
 		return
 	}
-	data, err := json.MarshalIndent(&input, "", "  ")
-	if err != nil {
-		m.base.Logger().Error(err)
-		return
-	}
-	m.base.Logger().Info("received ipc message: ")
-	m.base.Logger().Info(string(data))
 
 	output := &pb.IPCOutput{
 		Ok:    false,
@@ -62,11 +54,6 @@ func (m *MsgHandler) handlerIPC(msg *nats.Msg) {
 
 	switch input.Command {
 	case pb.IPCCommand_IPC_PLAY:
-		if err = m.ipc.Load(filename); err != nil {
-			output.Error = err.Error()
-			output.Ok = false
-			return
-		}
 		if err = m.ipc.Play(); err != nil {
 			output.Error = err.Error()
 			output.Ok = false
@@ -74,6 +61,12 @@ func (m *MsgHandler) handlerIPC(msg *nats.Msg) {
 		}
 	case pb.IPCCommand_IPC_PAUSE:
 		if err = m.ipc.Pause(); err != nil {
+			output.Error = err.Error()
+			output.Ok = false
+			return
+		}
+	case pb.IPCCommand_IPC_LOAD:
+		if err = m.ipc.Load(filename); err != nil {
 			output.Error = err.Error()
 			output.Ok = false
 			return

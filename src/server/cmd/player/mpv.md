@@ -1,8 +1,11 @@
 # MPV Commands
 
 https://mpv.io/manual/stable/#properties
+
 https://mpv.io/manual/stable/#options
+
 https://mpv.io/manual/stable/#list-of-input-commands
+
 http://manpages.ubuntu.com/manpages/bionic/man1/mpv.1.html
 
 > Most options can be set as runtime via properties as well. Just remove the leading -- from the option name. These are not documented. Only properties which do not exist as option with the same name, or which have very different behavior from the options are documented
@@ -71,9 +74,14 @@ Does not play anything and waits for a command. Not sure how does this work thou
 --track-auto-selection=no
 ```
 
+Forces `mpv` not to exit (hence having a zombie process) when media ends
+```
+--keep-open=yes
+```
+
 This should be the startup command to fork it
 ```
-mpv --no-video --input-ipc-server=/tmp/mpv_socket --track-auto-selection=no . 
+mpv --no-video --input-ipc-server=/tmp/mpv_socket --keep-open=yes . 
 ```
 
 ### Listeners
