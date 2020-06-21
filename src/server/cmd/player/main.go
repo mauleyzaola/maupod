@@ -27,14 +27,33 @@ func init() {
 }
 
 func run() error {
-	const songWarpigs = "/Users/mau/Downloads/music/Black Sabbath/1970 Paranoid (Black Box Remaster)/01 War Pigs , Luke's Wall.flac"
-	const songGrave = "/Users/mau/Downloads/music/Black Sabbath/1971 Master Of Reality (Black Box Remaster)/04 Children Of The Grave.flac"
-	wr, err := pkg.NewMPV(songWarpigs)
+	const songWarpigs = "/media/mau/music-library/music/Black Sabbath/1970 Paranoid (Black Box Remaster)/01 War Pigs , Luke's Wall.flac"
+	const songGrave = "/media/mau/music-library/music/Black Sabbath/1971 Master Of Reality (Black Box Remaster)/04 Children Of The Grave.flac"
+
+	mpvProcess, err := pkg.NewMPVProcess(songWarpigs)
 	if err != nil {
 		return err
 	}
-	wr.Play(songWarpigs)
-	wr.PauseToggle()
-	time.Sleep(time.Second * 15)
-	return wr.Terminate()
+
+	// sample workflow pause/play
+	ipc, err := pkg.NewIPC(mpvProcess)
+	if err != nil {
+		return err
+	}
+	if err = ipc.Load(songGrave); err != nil {
+		return err
+	}
+	if err = ipc.Play(); err != nil {
+		return err
+	}
+	time.Sleep(time.Second * 3)
+	if err = ipc.Load(songWarpigs); err != nil {
+		return err
+	}
+	if err = ipc.Play(); err != nil {
+		return err
+	}
+	time.Sleep(time.Second * 3)
+	return ipc.Terminate()
+
 }
