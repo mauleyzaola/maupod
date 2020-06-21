@@ -29,22 +29,22 @@ func (c *CommandEnum) String() string {
 }
 
 type IPC struct {
-	ipc              *mpvipc.Connection
-	isPaused         bool
-	mpvProcessCloser MPVProcessCloser
+	ipc       *mpvipc.Connection
+	isPaused  bool
+	processor MPVProcessor
 }
 
-func NewIPC(mpvProcessCloser MPVProcessCloser) (*IPC, error) {
+func NewIPC(processor MPVProcessor) (*IPC, error) {
 	wrapper := &IPC{
-		isPaused:         true,
-		mpvProcessCloser: mpvProcessCloser,
+		isPaused:  true,
+		processor: processor,
 	}
 
-	wrapper.ipc = mpvipc.NewConnection(socketFile)
+	wrapper.ipc = mpvipc.NewConnection(processor.SocketFileName())
 	if err := wrapper.ipc.Open(); err != nil {
 		return nil, err
 	}
-	log.Println("opened successfully ipc wrapper for mpvProcessCloser socket: ", socketFile)
+	log.Println("opened successfully ipc wrapper for processor socket: ", processor.SocketFileName())
 	return wrapper, nil
 }
 
@@ -88,8 +88,8 @@ func (m *IPC) Terminate() error {
 	defer func() {
 		_ = m.ipc.Close()
 	}()
-	if m.mpvProcessCloser != nil {
-		return m.mpvProcessCloser.Close()
+	if m.processor != nil {
+		return m.processor.Close()
 	}
 	return nil
 }

@@ -3,18 +3,32 @@ package pkg
 import (
 	"log"
 	"os"
+	"path/filepath"
 )
 
-type MPVProcessCloser interface {
+type MPVProcessor interface {
+	MPVCloser
+	MPVSocketFileContainer
+}
+
+type MPVCloser interface {
 	Close() error
 }
 
-type MPVProcess struct {
-	process *os.Process
+type MPVSocketFileContainer interface {
+	SocketFileName() string
 }
 
-func NewMPVProcess(filename string) (MPVProcessCloser, error) {
-	cmd, err := MPVCommand(filename)
+type MPVProcess struct {
+	process    *os.Process
+	socketFile string
+}
+
+func NewMPVProcess(filename string) (MPVProcessor, error) {
+	mpv := &MPVProcess{
+		socketFile: filepath.Join(os.TempDir(), "mpv_socket"),
+	}
+	cmd, err := MPVCommand(mpv, filename)
 	if err != nil {
 		return nil, err
 	}
@@ -22,15 +36,18 @@ func NewMPVProcess(filename string) (MPVProcessCloser, error) {
 		return nil, err
 	}
 	log.Println("pid: ", cmd.Process.Pid)
+	mpv.process = cmd.Process
 
-	// give mpvProcessCloser some time to start up
+	// give processor some time to start up
 	sleep(defaultStartupSecs)
 
-	return &MPVProcess{
-		process: cmd.Process,
-	}, nil
+	return mpv, nil
 }
 
 func (mpv *MPVProcess) Close() error {
 	return mpv.process.Kill()
+}
+
+func (mpv *MPVProcess) SocketFileName() string {
+	return mpv.socketFile
 }
