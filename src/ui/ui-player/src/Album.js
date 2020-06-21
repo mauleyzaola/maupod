@@ -2,12 +2,9 @@ import React from 'react';
 import AlbumHeader from "./components/AlbumHeader";
 import {decodeURL} from "./api";
 import { albumViewList, ipcCommand, mediaList } from "./api";
-import {msToString, secondsToDate} from "./helpers";
-
-const IPC_PLAY = 0;
-const IPC_PAUSE = 1;
-const IPC_LOAD = 2;
-
+import {msToString } from "./helpers";
+import { IPC_PLAY, IPC_LOAD } from "./consts";
+import {playTrack} from "./player";
 
 
 const TrackListHeader = () => (
@@ -69,19 +66,7 @@ class Album extends React.Component{
         }
     }
 
-    onTrackClick = (r) => {
-        const promises = [
-            ipcCommand({
-                command: IPC_LOAD,
-                media: r,
-            }),
-            ipcCommand({
-                command: IPC_PLAY,
-                media: r,
-            }),
-        ]
-        Promise.all(promises).then(() => {});
-    }
+    onTrackClick = (r) => playTrack(r);
 
     render() {
         const { album, rows } = this.state;

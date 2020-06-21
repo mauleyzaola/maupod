@@ -8,20 +8,23 @@ import Performers from './Performers'
 import Genres from "./Genres";
 import Dashboard from "./Dashboard";
 import MediaList from "./MediaList";
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import {BrowserRouter as Router, Link, Route, Switch} from 'react-router-dom';
 import Nav from "./Nav";
+import { linkMediaList } from "./routes";
 
 class App extends React.Component{
     onSearch = e => {
-        e.preventDefault();
-        alert('not implemented yet!');
+        const uri = linkMediaList({query: this.query});
+        window.location.href = uri;
     }
+
+    onSearchChange = e => this.query = e.target.value;
 
     render() {
         return (
             <div>
                 <Router>
-                    <Nav onSearch={this.onSearch} />
+                    <Nav onSearch={this.onSearch} onChange={this.onSearchChange} />
                     <Switch>
                         <Route exact path='/' component={Dashboard} />
                         <Route exact path='/audio-scan' component={AudioScan} />
