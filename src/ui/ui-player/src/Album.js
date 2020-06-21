@@ -6,6 +6,7 @@ import {msToString, secondsToDate} from "./helpers";
 
 const IPC_PLAY = 0;
 const IPC_PAUSE = 1;
+const IPC_LOAD = 2;
 
 
 
@@ -15,6 +16,7 @@ const TrackListHeader = () => (
         <th>#</th>
         <th>Track</th>
         <th>Duration</th>
+        <th>Format</th>
     </tr>
     </thead>
 )
@@ -25,6 +27,7 @@ const TrackListRow = ({row, onTrackClick}) => {
             <td>{row.track_position}</td>
             <td onClick={() => onTrackClick(row)}>{row.track}</td>
             <td>{msToString(row.duration)}</td>
+            <td>{row.format}</td>
         </tr>
     )
 }
@@ -67,10 +70,17 @@ class Album extends React.Component{
     }
 
     onTrackClick = (r) => {
-        ipcCommand({
-            command: IPC_PLAY,
-            media: r,
-        }).then(response => console.log(response.data));
+        const promises = [
+            ipcCommand({
+                command: IPC_LOAD,
+                media: r,
+            }),
+            ipcCommand({
+                command: IPC_PLAY,
+                media: r,
+            }),
+        ]
+        Promise.all(promises).then(() => {});
     }
 
     render() {
