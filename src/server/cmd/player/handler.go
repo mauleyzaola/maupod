@@ -33,6 +33,11 @@ func (m *MsgHandler) Register() error {
 }
 
 func (m *MsgHandler) Close() {
+	if m.isInitialized {
+		if err := m.ipc.Terminate(); err != nil {
+			m.base.Logger().Error(err)
+		}
+	}
 	m.base.Close()
 }
 

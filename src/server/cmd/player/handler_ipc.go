@@ -2,6 +2,9 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
+	"os"
+	"strings"
 
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
@@ -46,15 +49,51 @@ func (m *MsgHandler) handlerIPC(msg *nats.Msg) {
 
 	// TODO: validate media is ok
 
-	// check ipc has been initialized always
-	//if val := input.Media.Location; val != "" {
-	//	if err = m.InitializeIPC(val); err != nil {
-	//		m.base.Logger().Error(err)
-	//		return
-	//	}
-	//}
+	var filename string
+
+	// check ipc has been initialized
+	if val := input.Media.Location; val != "" {
+		filename = convertToLocalPath(val)
+		if err = m.InitializeIPC(filename); err != nil {
+			m.base.Logger().Error(err)
+			return
+		}
+	}
+
+	switch input.Command {
+	case pb.IPCCommand_IPC_PLAY:
+		if err = m.ipc.Load(filename); err != nil {
+			output.Error = err.Error()
+			output.Ok = false
+			return
+		}
+		if err = m.ipc.Play(); err != nil {
+			output.Error = err.Error()
+			output.Ok = false
+			return
+		}
+	case pb.IPCCommand_IPC_PAUSE:
+		if err = m.ipc.Pause(); err != nil {
+			output.Error = err.Error()
+			output.Ok = false
+			return
+		}
+	default:
+		output.Error = fmt.Sprintf("unsupported command: %v", input.Command)
+		output.Ok = false
+		return
+	}
 
 	output.Ok = true
 
 	return
+}
+
+// TODO: fix this mess with the volume name vs local path
+func convertToLocalPath(filename string) string {
+	val := os.Getenv("MEDIA_STORE")
+	if val == "" {
+		return filename
+	}
+	return strings.Replace(filename, "/music-store", val, -1)
 }
