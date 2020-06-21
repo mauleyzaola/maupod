@@ -1,8 +1,12 @@
 import React from 'react';
 import AlbumHeader from "./components/AlbumHeader";
 import {decodeURL} from "./api";
-import { albumViewList, mediaList } from "./api";
+import { albumViewList, ipcCommand, mediaList } from "./api";
 import {msToString, secondsToDate} from "./helpers";
+
+const IPC_PLAY = 0;
+const IPC_PAUSE = 1;
+
 
 
 const TrackListHeader = () => (
@@ -15,11 +19,11 @@ const TrackListHeader = () => (
     </thead>
 )
 
-const TrackListRow = ({row}) => {
+const TrackListRow = ({row, onTrackClick}) => {
     return (
         <tr>
             <td>{row.track_position}</td>
-            <td>{row.track}</td>
+            <td onClick={() => onTrackClick(row)}>{row.track}</td>
             <td>{msToString(row.duration)}</td>
         </tr>
     )
@@ -62,6 +66,13 @@ class Album extends React.Component{
         }
     }
 
+    onTrackClick = (r) => {
+        ipcCommand({
+            command: IPC_PLAY,
+            media: r,
+        }).then(response => console.log(response.data));
+    }
+
     render() {
         const { album, rows } = this.state;
         return (
@@ -70,7 +81,7 @@ class Album extends React.Component{
                 <table className='table table-bordered table-hover table-striped'>
                     <TrackListHeader />
                     <tbody>
-                    {rows.map(row => <TrackListRow key={row.id} row={row} />)}
+                    {rows.map(row => <TrackListRow key={row.id} row={row} onTrackClick={this.onTrackClick} />)}
                     </tbody>
                 </table>
             </div>

@@ -47,12 +47,12 @@ func (m *MsgHandler) handlerIPC(msg *nats.Msg) {
 	// TODO: validate media is ok
 
 	// check ipc has been initialized always
-	if val := input.Media.Location; val != "" {
-		if err = m.InitializeIPC(val); err != nil {
-			m.base.Logger().Error(err)
-			return
-		}
-	}
+	//if val := input.Media.Location; val != "" {
+	//	if err = m.InitializeIPC(val); err != nil {
+	//		m.base.Logger().Error(err)
+	//		return
+	//	}
+	//}
 
 	output.Ok = true
 
