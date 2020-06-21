@@ -3,9 +3,16 @@ package main
 import (
 	"log"
 	"os"
+	"os/signal"
 	"time"
 
-	"github.com/mauleyzaola/maupod/src/server/cmd/player/pkg"
+	"github.com/nats-io/nats.go"
+
+	"github.com/mauleyzaola/maupod/src/server/pkg/rules"
+
+	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
+	"github.com/mauleyzaola/maupod/src/server/pkg/simplelog"
+	"github.com/mauleyzaola/maupod/src/server/pkg/types"
 	"github.com/spf13/viper"
 )
 
@@ -18,56 +25,63 @@ func main() {
 }
 
 func init() {
-	//viper.AddConfigPath(".")
-	//viper.SetConfigType("yaml")
-	//viper.SetConfigName(".maupod")
+	viper.AddConfigPath(".")
+	viper.SetConfigType("yaml")
+	viper.SetConfigName(".maupod")
 
-	//_ = viper.ReadInConfig()
+	_ = viper.ReadInConfig()
 	viper.AutomaticEnv()
 }
 
 func run() error {
-	const songWarpigs = "/media/mau/music-library/music/Black Sabbath/1970 Paranoid (Black Box Remaster)/01 War Pigs , Luke's Wall.flac"
-	const songNowhereFast = "/media/mau/music-library/music/Compilations/Streets of Fire/01 Nowhere Fast.m4a"
+	var logger types.Logger
+	logger = &simplelog.Log{}
+	logger.Init()
 
-	mpvProcess, err := pkg.NewMpvProcessor(songWarpigs)
+	config, err := rules.ConfigurationParse()
 	if err != nil {
 		return err
 	}
 
-	// sample workflow pause/play
-	ipc, err := pkg.NewIPC(mpvProcess)
+	if err = rules.ConfigurationValidate(config); err != nil {
+		return err
+	}
+
+	// we're outside the docker network, need to hit localhost
+	config.NatsUrl = nats.DefaultURL
+
+	nc, err := helpers.ConnectNATS(config.NatsUrl, int(config.Retries), time.Second*time.Duration(config.Delay))
 	if err != nil {
 		return err
 	}
-	if err = ipc.Load(songWarpigs); err != nil {
-		return err
-	}
-	if err = ipc.Play(); err != nil {
-		return err
-	}
-	time.Sleep(time.Second * 3)
-	if err = ipc.Load(songNowhereFast); err != nil {
-		return err
-	}
-	if err = ipc.Play(); err != nil {
-		return err
-	}
-	time.Sleep(time.Second * 3)
-	if err = ipc.Seek(50); err != nil {
-		return err
-	}
-	if err = ipc.Volume(120); err != nil {
-		return err
-	}
-	time.Sleep(time.Second * 3)
-	if err = ipc.Volume(70); err != nil {
-		return err
-	}
-	if err = ipc.SeekExact(200); err != nil {
-		return err
-	}
-	time.Sleep(time.Second * 3)
-	return ipc.Terminate()
+	logger.Info("successfully connected to NATS")
 
+	var hnd types.Broker
+	hnd = NewMsgHandler(logger, nc)
+	if err = hnd.Register(); err != nil {
+		return err
+	}
+
+	// handle interruptions and cleanup resources
+	signalChan := make(chan os.Signal, 1)
+	cleanupDone := make(chan bool)
+	signal.Notify(signalChan, os.Interrupt)
+	go func() {
+		cleanup := func() {
+			hnd.Close()
+			cleanupDone <- true
+		}
+	loop:
+		for {
+			select {
+			case <-signalChan:
+				break loop
+			}
+		}
+		cleanup()
+	}()
+
+	<-cleanupDone
+
+	return nil
 }
