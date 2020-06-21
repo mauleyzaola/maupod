@@ -9,6 +9,7 @@ import (
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 	"github.com/mauleyzaola/maupod/src/server/pkg/types"
 	"github.com/nats-io/nats.go"
+	"google.golang.org/protobuf/proto"
 )
 
 func mediaInfoRequest(nc *nats.Conn, input *pb.MediaInfoInput, timeout time.Duration) (*pb.MediaInfoOutput, error) {
@@ -29,20 +30,21 @@ func mediaInfoRequest(nc *nats.Conn, input *pb.MediaInfoInput, timeout time.Dura
 	return &output, nil
 }
 
-func PublishMediaInfoDelete(nc *nats.Conn, input *pb.MediaInfoInput) error {
+func doRequest(nc *nats.Conn, subject int, input, output proto.Message, timeout time.Duration) error {
 	data, err := helpers.ProtoMarshal(input)
 	if err != nil {
 		return err
 	}
-	return nc.Publish(strconv.Itoa(int(pb.Message_MESSAGE_MEDIA_DELETE)), data)
-}
-
-func PublishMediaSHAUpdate(nc *nats.Conn, input *pb.MediaInfoInput) error {
-	fileData, err := helpers.ProtoMarshal(input)
+	msg, err := nc.Request(strconv.Itoa(subject), data, timeout)
 	if err != nil {
 		return err
 	}
-	return PublishMessage(nc, pb.Message_MESSAGE_AUDIO_SHA, fileData)
+
+	if err = helpers.ProtoUnmarshal(msg.Data, output); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func RequestMediaInfoScan(nc *nats.Conn, logger types.Logger, filename string, timeout time.Duration) (*pb.Media, error) {
@@ -65,4 +67,12 @@ func RequestMediaInfoScan(nc *nats.Conn, logger types.Logger, filename string, t
 	output.Media.ModifiedDate = output.LastModifiedDate
 
 	return output.Media, nil
+}
+
+func RequestIPCCommand(nc *nats.Conn, input pb.IPCInput, timeout time.Duration) (*pb.IPCOutput, error) {
+	var output = &pb.IPCOutput{}
+	if err := doRequest(nc, int(pb.Message_MESSAGE_IPC), &input, output, timeout); err != nil {
+		return nil, err
+	}
+	return output, nil
 }
