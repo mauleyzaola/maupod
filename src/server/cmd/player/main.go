@@ -5,7 +5,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/mauleyzaola/maupod/src/server/maupod/cmd/player/pkg"
+	"github.com/mauleyzaola/maupod/src/server/cmd/player/pkg"
 
 	"github.com/DexterLB/mpvipc"
 	"github.com/spf13/viper"
