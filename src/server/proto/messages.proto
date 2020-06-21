@@ -11,6 +11,13 @@ enum Message {
     MESSAGE_MEDIA_INFO = 2;
     MESSAGE_MEDIA_UPDATE_ARTWORK = 3;
     MESSAGE_MEDIA_DELETE = 5;
+
+    MESSAGE_IPC=6;
+}
+
+enum IPCCommand {
+    IPC_PLAY = 0;
+    IPC_PAUSE = 1;
 }
 
 
@@ -21,6 +28,17 @@ message ArtworkExtractInput {
 
 message ArtworkUpdateInput {
     Media media = 1;
+}
+
+message IPCInput {
+    Media media = 1;
+    string value =2;
+    IPCCommand command = 3;
+}
+
+message IPCOutput {
+    bool ok = 1;
+    string error = 2;
 }
 
 message MediaInfoInput {

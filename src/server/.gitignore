@@ -3,3 +3,6 @@ maupod-*
 
 # custom environment files
 /.env
+
+# binaries
+/maupod-player

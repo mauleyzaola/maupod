@@ -23,6 +23,8 @@ const distinctListGet = ({field, filter}) => axios.get(`/media/${field}/distinct
 
 const genreList = data => axios.get(`/genres`, { params: data});
 
+const ipcCommand = data => axios.post(`/ipc`, data);
+
 const objectToQueryString = data => querystring.stringify(data);
 
 const mediaList = (data) => axios.get(`/media`, {
@@ -35,6 +37,7 @@ export {
     decodeURL,
     distinctListGet,
     genreList,
+    ipcCommand,
     mediaList,
     objectToQueryString,
 }
