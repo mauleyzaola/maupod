@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"strconv"
 
 	"github.com/mauleyzaola/maupod/src/server/pkg/handler"
@@ -12,12 +13,14 @@ import (
 type MsgHandler struct {
 	base   *handler.MsgHandler
 	config *pb.Configuration
+	db     *sql.DB
 }
 
-func NewMsgHandler(config *pb.Configuration, logger types.Logger, nc *nats.Conn) *MsgHandler {
+func NewMsgHandler(config *pb.Configuration, logger types.Logger, nc *nats.Conn, db *sql.DB) *MsgHandler {
 	return &MsgHandler{
 		base:   handler.NewMsgHandler(logger, nc),
 		config: config,
+		db:     db,
 	}
 }
 
@@ -26,6 +29,14 @@ func (m *MsgHandler) Register() error {
 		handler.Subscription{
 			Subject: strconv.Itoa(int(pb.Message_MESSAGE_MEDIA_INFO)),
 			Handler: m.handlerMediaInfo,
+		},
+		handler.Subscription{
+			Subject: strconv.Itoa(int(pb.Message_MESSAGE_MEDIA_UPDATE_ARTWORK)),
+			Handler: m.handlerMediaUpdateArtwork,
+		},
+		handler.Subscription{
+			Subject: strconv.Itoa(int(pb.Message_MESSAGE_MEDIA_UPDATE)),
+			Handler: m.handlerMediaUpdateDb,
 		},
 	)
 }

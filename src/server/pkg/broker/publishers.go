@@ -27,3 +27,19 @@ func PublishMediaSHAUpdate(nc *nats.Conn, input *pb.MediaInfoInput) error {
 	}
 	return PublishMessage(nc, pb.Message_MESSAGE_AUDIO_SHA, fileData)
 }
+
+func PublishMediaUpdateDb(nc *nats.Conn, media *pb.Media) error {
+	data, err := helpers.ProtoMarshal(media)
+	if err != nil {
+		return err
+	}
+	return PublishMessage(nc, pb.Message_MESSAGE_MEDIA_UPDATE, data)
+}
+
+func PublishMediaTagUpdate(nc *nats.Conn, media *pb.Media) error {
+	data, err := helpers.ProtoMarshal(media)
+	if err != nil {
+		return err
+	}
+	return PublishMessage(nc, pb.Message_MESSAGE_TAG_UPDATE, data)
+}
