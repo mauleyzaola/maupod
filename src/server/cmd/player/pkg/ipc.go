@@ -8,6 +8,15 @@ import (
 	"github.com/DexterLB/mpvipc"
 )
 
+type DispatcherFunc func(v interface{})
+
+type EventListener struct {
+	id        uint
+	eventName string
+	args      string
+	trigger   DispatcherFunc
+}
+
 type CommandEnum int
 
 const defaultStartupSecs = 1
@@ -34,6 +43,7 @@ type IPC struct {
 	ipc       *mpvipc.Connection
 	isPaused  bool
 	processor MPVProcessor
+	listeners map[uint]*EventListener
 }
 
 func NewIPC(processor MPVProcessor) (*IPC, error) {
@@ -47,32 +57,42 @@ func NewIPC(processor MPVProcessor) (*IPC, error) {
 		ipc:       ipc,
 		isPaused:  true,
 		processor: processor,
+		listeners: map[uint]*EventListener{}, // TODO: configure which events will be listening to
 	}
 
 	return ip, nil
 }
 
-func (m *IPC) configure() {
-	// TODO: use properties for monitoring what is exactly doing mpv at runtime
+func (m *IPC) configureListeners() error {
+	if len(m.listeners) == 0 {
+		return nil
+	}
+
+	// properties for monitoring what is exactly doing mpv at runtime
 	events, stopListening := m.ipc.NewEventListener()
 	go func() {
 		log.Println("ipc will close now")
 		m.ipc.WaitUntilClosed()
 		stopListening <- struct{}{}
 	}()
-	if _, err := m.ipc.Call("observe_property", 1, "ao-volume"); err != nil {
-		return
+
+	var err error
+	for k, v := range m.listeners {
+		if _, err = m.ipc.Call(v.eventName, k, v.args); err != nil {
+			return err
+		}
 	}
+
 	go func() {
 		for v := range events {
-			if v.ID == 1 {
-				log.Printf("observed property: %v data: %v", v.Name, v.Data)
-			} else {
-				log.Printf("property: %v data: %v", v.Name, v.Data)
+			dispatcher, ok := m.listeners[v.ID]
+			if !ok {
+				continue
 			}
+			dispatcher.trigger(v.Data)
 		}
 	}()
-
+	return nil
 }
 
 // restart checks if both mpv and ipc are open and running
@@ -89,7 +109,9 @@ func (m *IPC) restart(filename string) error {
 		if err = m.ipc.Open(); err != nil {
 			return err
 		}
-		m.configure()
+		if err = m.configureListeners(); err != nil {
+			return err
+		}
 	}
 	return nil
 }
