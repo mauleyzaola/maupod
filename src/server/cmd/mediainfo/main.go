@@ -6,6 +6,8 @@ import (
 	"os/signal"
 	"time"
 
+	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata"
+
 	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/rules"
 	"github.com/mauleyzaola/maupod/src/server/pkg/simplelog"
@@ -51,8 +53,13 @@ func run() error {
 	}
 	logger.Info("successfully connected to NATS")
 
+	db, err := dbdata.ConnectPostgres(config.DbConn, int(config.Retries), time.Second*time.Duration(config.Delay))
+	if err != nil {
+		return err
+	}
+
 	var hnd types.Broker
-	hnd = NewMsgHandler(config, logger, nc)
+	hnd = NewMsgHandler(config, logger, nc, db)
 	if err = hnd.Register(); err != nil {
 		return err
 	}
