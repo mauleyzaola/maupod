@@ -17,7 +17,7 @@ func (s *Log) Info(v string) {
 }
 
 func (s *Log) Error(err error) {
-	log.Println(err.Error())
+	log.Println("[ERROR] ", err.Error())
 }
 
 func (s *Log) Warning(v string) {

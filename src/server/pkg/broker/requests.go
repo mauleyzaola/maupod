@@ -12,46 +12,25 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-func mediaInfoRequest(nc *nats.Conn, input *pb.MediaInfoInput, timeout time.Duration) (*pb.MediaInfoOutput, error) {
-	var output pb.MediaInfoOutput
-	data, err := helpers.ProtoMarshal(input)
-	if err != nil {
-		return nil, err
-	}
-	msg, err := nc.Request(strconv.Itoa(int(pb.Message_MESSAGE_MEDIA_INFO)), data, timeout)
-	if err != nil {
-		return nil, err
-	}
-
-	if err = helpers.ProtoUnmarshal(msg.Data, &output); err != nil {
-		return nil, err
-	}
-
-	return &output, nil
-}
-
-func doRequest(nc *nats.Conn, subject int, input, output proto.Message, timeout time.Duration) error {
+func doRequest(nc *nats.Conn, subject pb.Message, input, output proto.Message, timeout time.Duration) error {
 	data, err := helpers.ProtoMarshal(input)
 	if err != nil {
 		return err
 	}
-	msg, err := nc.Request(strconv.Itoa(subject), data, timeout)
+	msg, err := nc.Request(strconv.Itoa(int(subject)), data, timeout)
 	if err != nil {
 		return err
 	}
-
 	if err = helpers.ProtoUnmarshal(msg.Data, output); err != nil {
 		return err
 	}
-
 	return nil
 }
 
 func RequestMediaInfoScan(nc *nats.Conn, logger types.Logger, filename string, timeout time.Duration) (*pb.Media, error) {
+	var output pb.MediaInfoOutput
 	input := &pb.MediaInfoInput{FileName: filename}
-	output, err := mediaInfoRequest(nc, input, timeout)
-	if err != nil {
-		// TODO: send the files with errors to another listener and store in db
+	if err := doRequest(nc, pb.Message_MESSAGE_MEDIA_INFO, input, &output, timeout); err != nil {
 		logger.Error(err)
 		return nil, err
 	}
@@ -71,7 +50,7 @@ func RequestMediaInfoScan(nc *nats.Conn, logger types.Logger, filename string, t
 
 func RequestIPCCommand(nc *nats.Conn, input *pb.IPCInput, timeout time.Duration) (*pb.IPCOutput, error) {
 	var output = &pb.IPCOutput{}
-	if err := doRequest(nc, int(pb.Message_MESSAGE_IPC), input, output, timeout); err != nil {
+	if err := doRequest(nc, pb.Message_MESSAGE_IPC, input, output, timeout); err != nil {
 		return nil, err
 	}
 	return output, nil

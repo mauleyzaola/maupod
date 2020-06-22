@@ -128,6 +128,13 @@ func ScanDirectoryAudioFiles(
 			continue
 		}
 
+		// if the minimal information such as track, album and performer are not present, ignore this scan
+		// TODO: send another NATS message for storing these errors
+		if err = rules.MediaCheckMinimalData(m); err != nil {
+			logger.Error(err)
+			continue
+		}
+
 		m.Id = helpers.NewUUID()
 		m.LastScan = helpers.TimeToTs(&scanDate)
 		m.Location = f

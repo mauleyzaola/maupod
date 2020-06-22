@@ -11,7 +11,6 @@ import (
 )
 
 func (m *MsgHandler) handlerMediaInfo(msg *nats.Msg) {
-
 	var err error
 	var input pb.MediaInfoInput
 

@@ -43,3 +43,16 @@ func NeedsImageUpdate(m *pb.Media) bool {
 func MediaHasImage(m *pb.Media) bool {
 	return m.ShaImage != "" && m.ImageLocation != ""
 }
+
+func MediaCheckMinimalData(m *pb.Media) error {
+	if m.Album == "" {
+		return errors.New("media missing: album")
+	}
+	if m.Track == "" {
+		return errors.New("media missing: track")
+	}
+	if m.Performer == "" {
+		return errors.New("media missing: performer")
+	}
+	return nil
+}
