@@ -1,0 +1,52 @@
+package taggers
+
+import (
+	"fmt"
+	"strconv"
+
+	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
+)
+
+const id3v2 = "id3v2"
+
+type MP3Tagger struct{}
+
+func (t *MP3Tagger) Tag(media *pb.Media, filename string) error {
+	var params []string
+	addParam := func(name, value string) {
+		params = append(params, fmt.Sprintf("%s=%s", name, value))
+	}
+	if media.Album != "" {
+		addParam("--album", media.Album)
+	}
+	if media.Performer != "" {
+		addParam("--artist", media.Performer)
+	}
+	if media.Track != "" {
+		addParam("--song", media.Track)
+	}
+	if media.TrackPosition != 0 || media.TrackNameTotal != 0 {
+		addParam("--track", fmt.Sprintf("%v/%v", media.TrackPosition, media.TrackNameTotal))
+	}
+	if media.RecordedDate != 0 {
+		addParam("--year", strconv.Itoa(int(media.RecordedDate)))
+	}
+	if media.Genre != "" {
+		addParam("--genre", media.Genre)
+	}
+	if media.Comment != "" {
+		addParam("--comment", fmt.Sprintf(":%s", media.Comment))
+	}
+
+	if err := run(id3v2, filename, params...); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (t *MP3Tagger) RemoveAll(filename string) error {
+	if err := run(id3v2, filename, "-D"); err != nil {
+		return err
+	}
+	return nil
+}
