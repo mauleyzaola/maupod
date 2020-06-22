@@ -43,8 +43,6 @@ func NewIPC(processor MPVProcessor) (*IPC, error) {
 
 	ipc := mpvipc.NewConnection(processor.SocketFileName())
 
-	// TODO: use properties for monitoring what is exactly doing mpv at runtime
-
 	ip := &IPC{
 		ipc:       ipc,
 		isPaused:  true,
@@ -52,6 +50,29 @@ func NewIPC(processor MPVProcessor) (*IPC, error) {
 	}
 
 	return ip, nil
+}
+
+func (m *IPC) configure() {
+	// TODO: use properties for monitoring what is exactly doing mpv at runtime
+	events, stopListening := m.ipc.NewEventListener()
+	go func() {
+		log.Println("ipc will close now")
+		m.ipc.WaitUntilClosed()
+		stopListening <- struct{}{}
+	}()
+	if _, err := m.ipc.Call("observe_property", 1, "ao-volume"); err != nil {
+		return
+	}
+	go func() {
+		for v := range events {
+			if v.ID == 1 {
+				log.Printf("observed property: %v data: %v", v.Name, v.Data)
+			} else {
+				log.Printf("property: %v data: %v", v.Name, v.Data)
+			}
+		}
+	}()
+
 }
 
 // restart checks if both mpv and ipc are open and running
@@ -65,7 +86,10 @@ func (m *IPC) restart(filename string) error {
 		}
 	}
 	if m.ipc.IsClosed() {
-		return m.ipc.Open()
+		if err = m.ipc.Open(); err != nil {
+			return err
+		}
+		m.configure()
 	}
 	return nil
 }

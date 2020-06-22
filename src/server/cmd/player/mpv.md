@@ -93,3 +93,37 @@ mpv --no-video --input-ipc-server=/tmp/mpv_socket --keep-open=yes .
 		}
 	}()
 ```
+
+## Properties
+
+Events Dispatched by MPV
+
+*Track Started*
+Happens only once when we load a track
+m.ipc.Call("observe_property", 1, "filename")
+
+*Track Position Changed*
+Happens each ~ 100ms
+m.ipc.Call("observe_property", 2, "stream-pos")
+
+*Track End Detected*
+Happens only once when file stream is calculated
+m.ipc.Call("observe_property", 2, "stream-end")
+
+*Position Percent Detected*
+Happens each ~ 100ms unit is percent of the song played
+m.ipc.Call("observe_property", 2, "percent-pos")
+
+*Time Position Detected*
+Happens each ~ 100ms unit is seconds
+m.ipc.Call("observe_property", 2, "time-pos")
+
+*Time Position Detected*
+The opposite of `time-pos` property unit is seconds
+m.ipc.Call("observe_property", 2, "time-remaining")
+
+
+These properties look usable, but not yet
+
+* `seeking`
+* `ao-volume`
