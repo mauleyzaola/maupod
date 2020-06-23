@@ -6,14 +6,15 @@ import (
 	"github.com/nats-io/nats.go"
 )
 
-func (m *MsgHandler) handlerTrackPlayed(msg *nats.Msg) {
+func (m *MsgHandler) handlerTrackPlayCountIncrease(msg *nats.Msg) {
 	var input pb.TrackPlayedInput
 	err := helpers.ProtoUnmarshal(msg.Data, &input)
 	if err != nil {
 		m.base.Logger().Error(err)
 		return
 	}
-	m.base.Logger().Info("handlerTrackPlayed" + input.String())
+	m.base.Logger().Info("handlerTrackPlayCountIncrease")
+	m.base.Logger().Info(input.String())
 }
 
 func (m *MsgHandler) handlerTrackSkipped(msg *nats.Msg) {

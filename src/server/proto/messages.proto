@@ -23,6 +23,7 @@ enum Message {
     MESSAGE_MPV_TIME_POS = 204;
     MESSAGE_MPV_TIME_REMAINING = 205;
 
+    // events are shared among triggers internally and player to apply more logic on it
     MESSAGE_EVENT_ON_TRACK_STARTED = 250;
     MESSAGE_EVENT_ON_TRACK_FINISHED = 251;
     MESSAGE_EVENT_ON_TRACK_PLAY_COUNT_INCREASE = 252;

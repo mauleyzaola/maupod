@@ -1,9 +1,8 @@
 import React from 'react';
 import AlbumHeader from "./components/AlbumHeader";
 import {decodeURL} from "./api";
-import { albumViewList, ipcCommand, mediaList } from "./api";
+import { albumViewList, mediaList } from "./api";
 import {msToString } from "./helpers";
-import { IPC_PLAY, IPC_LOAD } from "./consts";
 import {playTrack} from "./player";
 
 

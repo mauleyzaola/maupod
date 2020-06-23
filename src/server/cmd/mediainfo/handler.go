@@ -39,8 +39,8 @@ func (m *MsgHandler) Register() error {
 			Handler: m.handlerMediaUpdateDb,
 		},
 		handler.Subscription{
-			Subject: strconv.Itoa(int(pb.Message_MESSAGE_EVENT_ON_TRACK_PLAYED)),
-			Handler: m.handlerTrackPlayed,
+			Subject: strconv.Itoa(int(pb.Message_MESSAGE_EVENT_ON_TRACK_PLAY_COUNT_INCREASE)),
+			Handler: m.handlerTrackPlayCountIncrease,
 		},
 		handler.Subscription{
 			Subject: strconv.Itoa(int(pb.Message_MESSAGE_EVENT_ON_TRACK_SKIP_COUNT_INCREASE)),
