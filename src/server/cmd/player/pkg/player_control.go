@@ -11,6 +11,8 @@ import (
 
 const (
 	timePosThresholdSecs = 0.5
+	percentToBeCompleted = 80
+	percentToBeSkipped   = 20
 )
 
 // PlayerControl is a bridge between the mpv events and maupod events
@@ -18,6 +20,7 @@ type PlayerControl struct {
 	publishFn       broker.PublisherFunc
 	m               *pb.Media
 	lastTimePos     float64
+	lastPercentPos  float64
 	lastIsCompleted bool // true when based in the percent position, track is assumed to be complete
 }
 
@@ -29,6 +32,18 @@ func NewPlayerControl(publishFn broker.PublisherFunc) *PlayerControl {
 }
 
 func (p *PlayerControl) OnSongStarted(media *pb.Media) {
+	// evaluate p.lastPercentPos to consider if this track was skipped or not
+	if p.m == nil || p.m.Id != media.Id {
+		if p.lastPercentPos >= percentToBeSkipped && p.lastPercentPos < percentToBeCompleted {
+			input := &pb.TrackSkippedInput{
+				Media:     media,
+				Timestamp: helpers.TimeToTs(helpers.Now()),
+			}
+			_ = p.publishFn(pb.Message_MESSAGE_EVENT_ON_TRACK_SKIP_COUNT_INCREASE, input)
+		}
+	}
+
+	p.lastPercentPos = 0
 	p.m = media
 	p.lastTimePos = 0
 	p.lastIsCompleted = false
@@ -58,6 +73,7 @@ func (p *PlayerControl) OnTimePosChanged(v float64) {
 }
 
 func (p *PlayerControl) onPercentPosChanged(media *pb.Media, v float64) {
+	p.lastPercentPos = v
 	if p.lastIsCompleted {
 		return
 	}
@@ -70,7 +86,7 @@ func (p *PlayerControl) OnPercentPosChanged(media *pb.Media, v float64) {
 		Timestamp: helpers.TimeToTs(helpers.Now()),
 	}
 	// if track has played halfway we consider it as been played
-	if v >= 80 {
+	if v >= percentToBeCompleted {
 		_ = p.publishFn(pb.Message_MESSAGE_EVENT_ON_TRACK_PLAYED, input)
 		p.lastIsCompleted = true
 	}

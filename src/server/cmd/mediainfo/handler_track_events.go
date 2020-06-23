@@ -15,3 +15,13 @@ func (m *MsgHandler) handlerTrackPlayed(msg *nats.Msg) {
 	}
 	m.base.Logger().Info("handlerTrackPlayed" + input.String())
 }
+
+func (m *MsgHandler) handlerTrackSkipped(msg *nats.Msg) {
+	var input pb.TrackSkippedInput
+	err := helpers.ProtoUnmarshal(msg.Data, &input)
+	if err != nil {
+		m.base.Logger().Error(err)
+		return
+	}
+	m.base.Logger().Info("handlerTrackSkipped" + input.String())
+}

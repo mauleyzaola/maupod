@@ -86,3 +86,8 @@ message TrackPlayedInput {
     Media media = 1;
     google.protobuf.Timestamp timestamp = 2;
 }
+
+message TrackSkippedInput {
+    Media media = 1;
+    google.protobuf.Timestamp timestamp = 2;
+}
