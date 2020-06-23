@@ -50,7 +50,8 @@ func (m *MsgHandler) InitializeIPC(filename string) error {
 	if err != nil {
 		return err
 	}
-	if m.ipc, err = pkg.NewIPC(processor); err != nil {
+	control := pkg.NewPlayerControl()
+	if m.ipc, err = pkg.NewIPC(processor, control); err != nil {
 		return err
 	}
 	m.isInitialized = true

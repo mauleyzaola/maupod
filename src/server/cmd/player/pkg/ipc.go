@@ -5,9 +5,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
-
 	"github.com/DexterLB/mpvipc"
+	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 )
 
 type DispatcherFunc func(v interface{})
@@ -44,9 +43,11 @@ type IPC struct {
 	isPaused   bool
 	processor  MPVProcessor
 	listeners  map[pb.Message]*EventListener
+	lastMedia  *pb.Media
+	control    *PlayerControl
 }
 
-func NewIPC(processor MPVProcessor) (*IPC, error) {
+func NewIPC(processor MPVProcessor, control *PlayerControl) (*IPC, error) {
 	if processor == nil {
 		return nil, errors.New("missing parameter: processor")
 	}
@@ -57,32 +58,33 @@ func NewIPC(processor MPVProcessor) (*IPC, error) {
 		connection: connection,
 		isPaused:   true,
 		processor:  processor,
-		// configure which events will be listening to mpv actions
-		listeners: map[pb.Message]*EventListener{
-			pb.Message_MESSAGE_MPV_FILENAME: {
-				eventName: "filename",
-				trigger:   triggerFilename,
-			},
-			pb.Message_MESSAGE_MPV_STREAM_POS: {
-				eventName: "stream-pos",
-				trigger:   triggerStreamPos,
-			},
-			pb.Message_MESSAGE_MPV_STREAM_END: {
-				eventName: "stream-end",
-				trigger:   triggerStreamEnd,
-			},
-			pb.Message_MESSAGE_MPV_PERCENT_POS: {
-				eventName: "percent-pos",
-				trigger:   triggerPercentPos,
-			},
-			pb.Message_MESSAGE_MPV_TIME_POS: {
-				eventName: "time-pos",
-				trigger:   triggerTimePos,
-			},
-			pb.Message_MESSAGE_MPV_TIME_REMAINING: {
-				eventName: "time-remaining",
-				trigger:   triggerTimeRemaining,
-			},
+		control:    control,
+	}
+	// configure which events will be listening to mpv actions
+	ipc.listeners = map[pb.Message]*EventListener{
+		//pb.Message_MESSAGE_MPV_FILENAME: {
+		//	eventName: "filename",
+		//	trigger:   ipc.triggerFilename,
+		//},
+		pb.Message_MESSAGE_MPV_STREAM_POS: {
+			eventName: "stream-pos",
+			trigger:   ipc.triggerStreamPos,
+		},
+		pb.Message_MESSAGE_MPV_STREAM_END: {
+			eventName: "stream-end",
+			trigger:   ipc.triggerStreamEnd,
+		},
+		pb.Message_MESSAGE_MPV_PERCENT_POS: {
+			eventName: "percent-pos",
+			trigger:   ipc.triggerPercentPos,
+		},
+		pb.Message_MESSAGE_MPV_TIME_POS: {
+			eventName: "time-pos",
+			trigger:   ipc.triggerTimePos,
+		},
+		pb.Message_MESSAGE_MPV_TIME_REMAINING: {
+			eventName: "time-remaining",
+			trigger:   ipc.triggerTimeRemaining,
 		},
 	}
 
@@ -144,16 +146,17 @@ func (m *IPC) restart(filename string) error {
 	return nil
 }
 
-func (m *IPC) Load(filename string) error {
+func (m *IPC) Load(media *pb.Media) error {
+	var filename = media.Location
 	err := m.restart(filename)
 	if err != nil {
 		return err
 	}
 	cmd := cmdLoadfile
-	log.Println(cmd.String(), filename)
 	if _, err = os.Stat(filename); err != nil {
 		return err
 	}
+	m.lastMedia = media
 	_, err = m.connection.Call(cmd.String(), filename)
 	return err
 }
@@ -168,7 +171,6 @@ func (m *IPC) PauseToggle() error {
 
 func (m *IPC) pause(v bool) error {
 	cmd := cmdPause
-	log.Println(cmd.String(), v)
 	if err := m.connection.Set(cmd.String(), v); err != nil {
 		return err
 	}
@@ -199,21 +201,18 @@ func (m *IPC) Terminate() error {
 
 func (m *IPC) Seek(secs int) error {
 	cmd := cmdSeekOffset
-	log.Println(cmd.String(), secs)
 	_, err := m.connection.Call(cmd.String(), secs, "relative")
 	return err
 }
 
 func (m *IPC) SeekExact(secs int) error {
 	cmd := cmdSeekExact
-	log.Println(cmd.String(), "exact", secs)
 	_, err := m.connection.Call(cmd.String(), secs, "exact")
 	return err
 }
 
 func (m *IPC) Volume(v int) error {
 	cmd := cmdVolume
-	log.Println(cmd.String(), v)
 	return m.connection.Set(cmd.String(), v)
 }
 
@@ -223,10 +222,9 @@ func (m *IPC) Speed(v float64) error {
 }
 
 func (m *IPC) Play() error {
-	cmd := cmdPlay
-	log.Println(cmd.String())
 	if err := m.pause(false); err != nil {
 		return err
 	}
+	m.control.OnSongStarted(m.lastMedia)
 	return nil
 }
