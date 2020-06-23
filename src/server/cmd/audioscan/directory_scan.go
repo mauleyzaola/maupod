@@ -162,11 +162,7 @@ func ScanDirectoryAudioFiles(
 
 		// send message for extracting artwork if needed
 		if rules.NeedsImageUpdate(m) {
-			var payload []byte
-			if payload, err = helpers.ProtoMarshal(&pb.ArtworkExtractInput{Media: m, ScanDate: helpers.TimeToTs2(scanDate)}); err != nil {
-				return err
-			}
-			if err = broker.PublishMessage(nc, pb.Message_MESSAGE_ARTWORK_SCAN, payload); err != nil {
+			if err = broker.PublishBroker(nc, pb.Message_MESSAGE_ARTWORK_SCAN, &pb.ArtworkExtractInput{Media: m, ScanDate: helpers.TimeToTs2(scanDate)}); err != nil {
 				logger.Error(err)
 			}
 		}
