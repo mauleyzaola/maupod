@@ -23,10 +23,10 @@ enum Message {
     MESSAGE_MPV_TIME_POS = 204;
     MESSAGE_MPV_TIME_REMAINING = 205;
 
-    MESSAGE_EVENT_SONG_STARTED = 250;
-    MESSAGE_EVENT_SONG_FINISHED = 251;
-    MESSAGE_EVENT_SONG_PLAY_COUNT_INCREASE = 252;
-    MESSAGE_EVENT_SONG_SKIP_COUNT_INCREASE = 253;
+    MESSAGE_EVENT_ON_SONG_STARTED = 250;
+    MESSAGE_EVENT_ON_SONG_FINISHED = 251;
+    MESSAGE_EVENT_ON_SONG_PLAY_COUNT_INCREASE = 252;
+    MESSAGE_EVENT_ON_SONG_SKIP_COUNT_INCREASE = 253;
 }
 
 enum IPCCommand {
@@ -34,7 +34,6 @@ enum IPCCommand {
     IPC_PAUSE = 1;
     IPC_LOAD = 2;
 }
-
 
 message ArtworkExtractInput {
     Media media = 1;
@@ -75,4 +74,9 @@ message Response {
 message ScanDirectoryAudioFilesInput {
     string root = 1;
     google.protobuf.Timestamp scan_date = 2;
+}
+
+message SongStartedInput {
+    Media media = 1;
+    google.protobuf.Timestamp timestamp = 2;
 }
