@@ -1,7 +1,7 @@
 import React from 'react';
 import {msToString, secondsToDate} from "../helpers";
 import {Link} from "react-router-dom";
-import {linkAlbumList, linkGenreList, linkPerformerList} from "../routes";
+import { linkAlbumView, linkGenreList, linkPerformerList } from "../routes";
 import {playTrack} from "../player";
 
 const TrackListHeader = () => (
@@ -21,6 +21,8 @@ const TrackListHeader = () => (
     </tr>
     </thead>
 )
+
+const AlbumLink = ({r}) => r.album_identifier ? <Link to={linkAlbumView(r)}>{r.album}</Link> : <span>{r.album}</span>;
 
 const TrackListRow = ({row}) => {
     row.recorded_date = row.recorded_date || '';
@@ -48,7 +50,7 @@ const TrackListRow = ({row}) => {
             </td>
             <td>{msToString(row.duration)}</td>
             <td>
-                <Link to={linkAlbumList(row)}>{row.album}</Link>
+                <AlbumLink r={row} />
             </td>
             <td>{row.sampling_rate}</td>
             <td>{row.recorded_date}</td>
