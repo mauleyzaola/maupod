@@ -13,19 +13,16 @@ func (m *IPC) triggerTimePos(v interface{}) {
 	m.control.onTimePosChanged(val)
 }
 
-func (m *IPC) triggerStreamPos(v interface{}) {
-	//log.Println("triggerStreamPos: ", v)
-	// cast to float64
-}
+func (m *IPC) triggerStreamPos(v interface{}) {}
 
-func (m *IPC) triggerStreamEnd(v interface{}) {
-	//log.Println("triggerStreamEnd: ", v)
-	// cast to float64
-}
+func (m *IPC) triggerStreamEnd(v interface{}) {}
 
 func (m *IPC) triggerPercentPos(v interface{}) {
-	//log.Println("triggerPercentPos: ", v)
-	// cast to float64
+	val, ok := v.(float64)
+	if !ok {
+		return
+	}
+	m.control.onPercentPosChanged(m.lastMedia, val)
 }
 
 func (m *IPC) triggerTimeRemaining(v interface{}) {

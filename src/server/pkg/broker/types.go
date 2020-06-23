@@ -1,8 +1,8 @@
 package broker
 
 import (
-	"github.com/golang/protobuf/proto"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
+	"google.golang.org/protobuf/proto"
 )
 
 // generic function definition to mock NATS publish behavior

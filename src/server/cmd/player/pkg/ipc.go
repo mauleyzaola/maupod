@@ -66,14 +66,14 @@ func NewIPC(processor MPVProcessor, control *PlayerControl) (*IPC, error) {
 		//	eventName: "filename",
 		//	trigger:   ipc.triggerFilename,
 		//},
-		pb.Message_MESSAGE_MPV_STREAM_POS: {
-			eventName: "stream-pos",
-			trigger:   ipc.triggerStreamPos,
-		},
-		pb.Message_MESSAGE_MPV_STREAM_END: {
-			eventName: "stream-end",
-			trigger:   ipc.triggerStreamEnd,
-		},
+		//pb.Message_MESSAGE_MPV_STREAM_POS: {
+		//	eventName: "stream-pos",
+		//	trigger:   ipc.triggerStreamPos,
+		//},
+		//pb.Message_MESSAGE_MPV_STREAM_END: {
+		//	eventName: "stream-end",
+		//	trigger:   ipc.triggerStreamEnd,
+		//},
 		pb.Message_MESSAGE_MPV_PERCENT_POS: {
 			eventName: "percent-pos",
 			trigger:   ipc.triggerPercentPos,

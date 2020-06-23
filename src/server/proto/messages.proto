@@ -23,10 +23,11 @@ enum Message {
     MESSAGE_MPV_TIME_POS = 204;
     MESSAGE_MPV_TIME_REMAINING = 205;
 
-    MESSAGE_EVENT_ON_SONG_STARTED = 250;
-    MESSAGE_EVENT_ON_SONG_FINISHED = 251;
-    MESSAGE_EVENT_ON_SONG_PLAY_COUNT_INCREASE = 252;
-    MESSAGE_EVENT_ON_SONG_SKIP_COUNT_INCREASE = 253;
+    MESSAGE_EVENT_ON_TRACK_STARTED = 250;
+    MESSAGE_EVENT_ON_TRACK_FINISHED = 251;
+    MESSAGE_EVENT_ON_TRACK_PLAY_COUNT_INCREASE = 252;
+    MESSAGE_EVENT_ON_TRACK_SKIP_COUNT_INCREASE = 253;
+    MESSAGE_EVENT_ON_TRACK_PLAYED = 254;
 }
 
 enum IPCCommand {
@@ -76,7 +77,12 @@ message ScanDirectoryAudioFilesInput {
     google.protobuf.Timestamp scan_date = 2;
 }
 
-message SongStartedInput {
+message TrackStartedInput {
+    Media media = 1;
+    google.protobuf.Timestamp timestamp = 2;
+}
+
+message TrackPlayedInput {
     Media media = 1;
     google.protobuf.Timestamp timestamp = 2;
 }

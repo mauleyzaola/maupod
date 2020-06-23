@@ -38,6 +38,10 @@ func (m *MsgHandler) Register() error {
 			Subject: strconv.Itoa(int(pb.Message_MESSAGE_MEDIA_UPDATE)),
 			Handler: m.handlerMediaUpdateDb,
 		},
+		handler.Subscription{
+			Subject: strconv.Itoa(int(pb.Message_MESSAGE_EVENT_ON_TRACK_PLAYED)),
+			Handler: m.handlerTrackPlayed,
+		},
 	)
 }
 
