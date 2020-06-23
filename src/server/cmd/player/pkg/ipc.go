@@ -5,8 +5,17 @@ import (
 	"log"
 	"os"
 
+	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
+
 	"github.com/DexterLB/mpvipc"
 )
+
+type DispatcherFunc func(v interface{})
+
+type EventListener struct {
+	eventName string
+	trigger   DispatcherFunc
+}
 
 type CommandEnum int
 
@@ -31,9 +40,10 @@ func (c *CommandEnum) String() string {
 }
 
 type IPC struct {
-	ipc       *mpvipc.Connection
-	isPaused  bool
-	processor MPVProcessor
+	connection *mpvipc.Connection
+	isPaused   bool
+	processor  MPVProcessor
+	listeners  map[pb.Message]*EventListener
 }
 
 func NewIPC(processor MPVProcessor) (*IPC, error) {
@@ -41,20 +51,79 @@ func NewIPC(processor MPVProcessor) (*IPC, error) {
 		return nil, errors.New("missing parameter: processor")
 	}
 
-	ipc := mpvipc.NewConnection(processor.SocketFileName())
+	connection := mpvipc.NewConnection(processor.SocketFileName())
 
-	// TODO: use properties for monitoring what is exactly doing mpv at runtime
-
-	ip := &IPC{
-		ipc:       ipc,
-		isPaused:  true,
-		processor: processor,
+	ipc := &IPC{
+		connection: connection,
+		isPaused:   true,
+		processor:  processor,
+		// configure which events will be listening to mpv actions
+		listeners: map[pb.Message]*EventListener{
+			pb.Message_MESSAGE_MPV_FILENAME: {
+				eventName: "filename",
+				trigger:   triggerFilename,
+			},
+			pb.Message_MESSAGE_MPV_STREAM_POS: {
+				eventName: "stream-pos",
+				trigger:   triggerStreamPos,
+			},
+			pb.Message_MESSAGE_MPV_STREAM_END: {
+				eventName: "stream-end",
+				trigger:   triggerStreamEnd,
+			},
+			pb.Message_MESSAGE_MPV_PERCENT_POS: {
+				eventName: "percent-pos",
+				trigger:   triggerPercentPos,
+			},
+			pb.Message_MESSAGE_MPV_TIME_POS: {
+				eventName: "time-pos",
+				trigger:   triggerTimePos,
+			},
+			pb.Message_MESSAGE_MPV_TIME_REMAINING: {
+				eventName: "time-remaining",
+				trigger:   triggerTimeRemaining,
+			},
+		},
 	}
 
-	return ip, nil
+	return ipc, nil
 }
 
-// restart checks if both mpv and ipc are open and running
+func (m *IPC) configureListeners() error {
+	const observeCommand = "observe_property"
+	if len(m.listeners) == 0 {
+		return nil
+	}
+
+	// properties for monitoring what is exactly doing mpv at runtime
+	events, stopListening := m.connection.NewEventListener()
+	go func() {
+		log.Println("connection will close now")
+		m.connection.WaitUntilClosed()
+		stopListening <- struct{}{}
+	}()
+
+	var err error
+	for k, v := range m.listeners {
+		log.Printf("registering listener: %v %v\n", k, v.eventName)
+		if _, err = m.connection.Call(observeCommand, k, v.eventName); err != nil {
+			return err
+		}
+	}
+
+	go func() {
+		for v := range events {
+			dispatcher, ok := m.listeners[pb.Message(v.ID)]
+			if !ok {
+				continue
+			}
+			dispatcher.trigger(v.Data)
+		}
+	}()
+	return nil
+}
+
+// restart checks if both mpv and connection are open and running
 // if they are not, it will start/open them
 func (m *IPC) restart(filename string) error {
 	// TODO: improve this workflow, for now we can start and stop mpv process at will
@@ -64,8 +133,13 @@ func (m *IPC) restart(filename string) error {
 			return err
 		}
 	}
-	if m.ipc.IsClosed() {
-		return m.ipc.Open()
+	if m.connection.IsClosed() {
+		if err = m.connection.Open(); err != nil {
+			return err
+		}
+		if err = m.configureListeners(); err != nil {
+			return err
+		}
 	}
 	return nil
 }
@@ -80,7 +154,7 @@ func (m *IPC) Load(filename string) error {
 	if _, err = os.Stat(filename); err != nil {
 		return err
 	}
-	_, err = m.ipc.Call(cmd.String(), filename)
+	_, err = m.connection.Call(cmd.String(), filename)
 	return err
 }
 
@@ -95,7 +169,7 @@ func (m *IPC) PauseToggle() error {
 func (m *IPC) pause(v bool) error {
 	cmd := cmdPause
 	log.Println(cmd.String(), v)
-	if err := m.ipc.Set(cmd.String(), v); err != nil {
+	if err := m.connection.Set(cmd.String(), v); err != nil {
 		return err
 	}
 	m.isPaused = v
@@ -115,7 +189,7 @@ func (m *IPC) Terminate() error {
 	_ = m.Pause()
 	sleep(defaultStartupSecs)
 	defer func() {
-		_ = m.ipc.Close()
+		_ = m.connection.Close()
 	}()
 	if m.processor != nil {
 		return m.processor.Close()
@@ -126,26 +200,26 @@ func (m *IPC) Terminate() error {
 func (m *IPC) Seek(secs int) error {
 	cmd := cmdSeekOffset
 	log.Println(cmd.String(), secs)
-	_, err := m.ipc.Call(cmd.String(), secs, "relative")
+	_, err := m.connection.Call(cmd.String(), secs, "relative")
 	return err
 }
 
 func (m *IPC) SeekExact(secs int) error {
 	cmd := cmdSeekExact
 	log.Println(cmd.String(), "exact", secs)
-	_, err := m.ipc.Call(cmd.String(), secs, "exact")
+	_, err := m.connection.Call(cmd.String(), secs, "exact")
 	return err
 }
 
 func (m *IPC) Volume(v int) error {
 	cmd := cmdVolume
 	log.Println(cmd.String(), v)
-	return m.ipc.Set(cmd.String(), v)
+	return m.connection.Set(cmd.String(), v)
 }
 
 func (m *IPC) Speed(v float64) error {
 	cmd := cmdSpeed
-	return m.ipc.Set(cmd.String(), v)
+	return m.connection.Set(cmd.String(), v)
 }
 
 func (m *IPC) Play() error {
