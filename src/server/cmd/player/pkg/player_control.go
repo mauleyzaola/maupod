@@ -69,8 +69,8 @@ func (p *PlayerControl) OnPercentPosChanged(media *pb.Media, v float64) {
 		Media:     media,
 		Timestamp: helpers.TimeToTs(helpers.Now()),
 	}
-	// if track has played halfway we consider it to be played
-	if v >= 0.5 {
+	// if track has played halfway we consider it as been played
+	if v >= 80 {
 		_ = p.publishFn(pb.Message_MESSAGE_EVENT_ON_TRACK_PLAYED, input)
 		p.lastIsCompleted = true
 	}
