@@ -6,6 +6,10 @@ import (
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 )
 
+const (
+	timePosThresholdSecs = 0.5
+)
+
 // PlayerControl is a bridge between the mpv events and maupod events
 type PlayerControl struct {
 	m           *pb.Media
@@ -25,9 +29,14 @@ func (p *PlayerControl) OnSongStarted(media *pb.Media) {
 
 func (p *PlayerControl) onTimePosChanged(v float64) {
 	// evaluate how often we want this event to be triggered
+	if v == 0 {
+		return
+	}
 
-	if true {
+	diff := v - p.lastTimePos
+	if diff >= timePosThresholdSecs {
 		p.OnTimePosChanged(v)
+		p.lastTimePos = v
 	}
 }
 
