@@ -82,7 +82,7 @@ func (m *MsgHandler) handlerIPC(msg *nats.Msg) {
 	return
 }
 
-// TODO: fix this mess with the volume name vs local path
+// TODO: fix this mess with the volume name vs local path, maybe we should store file paths relative to the MEDIA_STORE value
 func convertToLocalPath(filename string) string {
 	val := os.Getenv("MEDIA_STORE")
 	if val == "" {
