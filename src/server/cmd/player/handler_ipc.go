@@ -51,6 +51,7 @@ func (m *MsgHandler) handlerIPC(msg *nats.Msg) {
 			return
 		}
 	}
+	input.Media.Location = filename
 
 	switch input.Command {
 	case pb.IPCCommand_IPC_PLAY:
@@ -60,13 +61,13 @@ func (m *MsgHandler) handlerIPC(msg *nats.Msg) {
 			return
 		}
 	case pb.IPCCommand_IPC_PAUSE:
-		if err = m.ipc.Pause(); err != nil {
+		if err = m.ipc.PauseToggle(); err != nil {
 			output.Error = err.Error()
 			output.Ok = false
 			return
 		}
 	case pb.IPCCommand_IPC_LOAD:
-		if err = m.ipc.Load(filename); err != nil {
+		if err = m.ipc.Load(input.Media); err != nil {
 			output.Error = err.Error()
 			output.Ok = false
 			return

@@ -3,7 +3,10 @@ package main
 import (
 	"strconv"
 
+	"google.golang.org/protobuf/proto"
+
 	"github.com/mauleyzaola/maupod/src/server/cmd/player/pkg"
+	"github.com/mauleyzaola/maupod/src/server/pkg/broker"
 	"github.com/mauleyzaola/maupod/src/server/pkg/handler"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 	"github.com/mauleyzaola/maupod/src/server/pkg/types"
@@ -50,7 +53,11 @@ func (m *MsgHandler) InitializeIPC(filename string) error {
 	if err != nil {
 		return err
 	}
-	if m.ipc, err = pkg.NewIPC(processor); err != nil {
+	var publishFn broker.PublisherFunc = func(subject pb.Message, payload proto.Message) error {
+		return broker.PublishBroker(m.base.NATS(), subject, payload)
+	}
+	control := pkg.NewPlayerControl(publishFn)
+	if m.ipc, err = pkg.NewIPC(processor, control); err != nil {
 		return err
 	}
 	m.isInitialized = true

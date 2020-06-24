@@ -19,12 +19,7 @@ func (a *ApiServer) AudioScanPost(p TransactionExecutorParams) (status int, resu
 	// so this value goes to db
 	input.ScanDate = helpers.TimeToTs2(time.Now())
 
-	data, err := helpers.ProtoMarshal(&input)
-	if err != nil {
-		status = http.StatusInternalServerError
-		return
-	}
-	if err = broker.PublishMessage(a.nc, pb.Message_MESSAGE_AUDIO_SCAN, data); err != nil {
+	if err = broker.PublishBroker(a.nc, pb.Message_MESSAGE_AUDIO_SCAN, &input); err != nil {
 		status = http.StatusInternalServerError
 		return
 	}
