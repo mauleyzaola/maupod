@@ -18,7 +18,7 @@ enum Message {
 
     MESSAGE_MPV_FILENAME = 200;
     MESSAGE_MPV_STREAM_POS = 201;
-    MESSAGE_MPV_STREAM_END = 202;
+    MESSAGE_MPV_STREAM_STARTS_ENDS = 202;
     MESSAGE_MPV_PERCENT_POS = 203;
     MESSAGE_MPV_TIME_POS = 204;
     MESSAGE_MPV_TIME_REMAINING = 205;
@@ -79,6 +79,11 @@ message ScanDirectoryAudioFilesInput {
 }
 
 message TrackStartedInput {
+    Media media = 1;
+    google.protobuf.Timestamp timestamp = 2;
+}
+
+message TrackEndedInput {
     Media media = 1;
     google.protobuf.Timestamp timestamp = 2;
 }

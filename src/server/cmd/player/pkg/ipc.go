@@ -74,17 +74,21 @@ func NewIPC(processor MPVProcessor, control *PlayerControl) (*IPC, error) {
 		//	eventName: "stream-end",
 		//	trigger:   ipc.triggerStreamEnd,
 		//},
-		pb.Message_MESSAGE_MPV_PERCENT_POS: {
-			eventName: "percent-pos",
-			trigger:   ipc.triggerPercentPos,
-		},
-		pb.Message_MESSAGE_MPV_TIME_POS: {
-			eventName: "time-pos",
-			trigger:   ipc.triggerTimePos,
-		},
-		pb.Message_MESSAGE_MPV_TIME_REMAINING: {
-			eventName: "time-remaining",
-			trigger:   ipc.triggerTimeRemaining,
+		//pb.Message_MESSAGE_MPV_PERCENT_POS: {
+		//	eventName: "percent-pos",
+		//	trigger:   ipc.triggerPercentPos,
+		//},
+		//pb.Message_MESSAGE_MPV_TIME_POS: {
+		//	eventName: "time-pos",
+		//	trigger:   ipc.triggerTimePos,
+		//},
+		//pb.Message_MESSAGE_MPV_TIME_REMAINING: {
+		//	eventName: "time-remaining",
+		//	trigger:   ipc.triggerTimeRemaining,
+		//},
+		pb.Message_MESSAGE_MPV_STREAM_STARTS_ENDS: {
+			eventName: "eof-reached",
+			trigger:   ipc.triggerStartsEnds,
 		},
 	}
 
@@ -225,6 +229,5 @@ func (m *IPC) Play() error {
 	if err := m.pause(false); err != nil {
 		return err
 	}
-	m.control.OnSongStarted(m.lastMedia)
 	return nil
 }

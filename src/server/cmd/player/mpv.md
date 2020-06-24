@@ -32,6 +32,7 @@ http://manpages.ubuntu.com/manpages/bionic/man1/mpv.1.html
 * `demuxer-lavf-list`: List of available libavformat demuxers' names. Example `[aa aac ac3 avi mpeg mp3]`
 * `mpv-version`: Return the mpv version/copyright string. Example `mpv 0.32.0`
 * `ffmpeg-version`: Return the contents of the av_version_info() API call. Example `ffmpeg-version value: 4.2.3`
+* `eof-reached`: Returns `true` when EOF has reached `false` otherwise. Useful to know when a song starts and ends
 
 
 

@@ -31,12 +31,16 @@ func NewPlayerControl(publishFn broker.PublisherFunc) *PlayerControl {
 	return p
 }
 
-func (p *PlayerControl) OnSongStarted(media *pb.Media) {
+func (p *PlayerControl) OnSongEnded(m *pb.Media) {
+	log.Printf("OnSongEnded id: %v track: %v\n", m.Id, m.Track)
+}
+
+func (p *PlayerControl) OnSongStarted(m *pb.Media) {
 	// evaluate p.lastPercentPos to consider if this track was skipped or not
-	if p.m == nil || p.m.Id != media.Id {
+	if p.m == nil || p.m.Id != m.Id {
 		if p.lastPercentPos >= percentToBeSkipped && p.lastPercentPos < percentToBeCompleted {
 			input := &pb.TrackSkippedInput{
-				Media:     media,
+				Media:     m,
 				Timestamp: helpers.TimeToTs(helpers.Now()),
 			}
 			_ = p.publishFn(pb.Message_MESSAGE_EVENT_ON_TRACK_SKIP_COUNT_INCREASE, input)
@@ -44,7 +48,7 @@ func (p *PlayerControl) OnSongStarted(media *pb.Media) {
 	}
 
 	p.lastPercentPos = 0
-	p.m = media
+	p.m = m
 	p.lastTimePos = 0
 	p.lastIsCompleted = false
 	log.Printf("OnSongStarted id: %v track: %v\n", p.m.Id, p.m.Track)
