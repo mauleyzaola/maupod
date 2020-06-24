@@ -14,7 +14,6 @@ func (m *MsgHandler) handlerTrackPlayCountIncrease(msg *nats.Msg) {
 		return
 	}
 	m.base.Logger().Info("handlerTrackPlayCountIncrease")
-	m.base.Logger().Info(input.String())
 }
 
 func (m *MsgHandler) handlerTrackSkipped(msg *nats.Msg) {
@@ -24,5 +23,5 @@ func (m *MsgHandler) handlerTrackSkipped(msg *nats.Msg) {
 		m.base.Logger().Error(err)
 		return
 	}
-	m.base.Logger().Info("handlerTrackSkipped" + input.String())
+	m.base.Logger().Info("handlerTrackSkipped")
 }

@@ -62,31 +62,19 @@ func NewIPC(processor MPVProcessor, control *PlayerControl) (*IPC, error) {
 	}
 	// configure which events will be listening to mpv actions
 	ipc.listeners = map[pb.Message]*EventListener{
-		//pb.Message_MESSAGE_MPV_FILENAME: {
-		//	eventName: "filename",
-		//	trigger:   ipc.triggerFilename,
-		//},
-		//pb.Message_MESSAGE_MPV_STREAM_POS: {
-		//	eventName: "stream-pos",
-		//	trigger:   ipc.triggerStreamPos,
-		//},
-		//pb.Message_MESSAGE_MPV_STREAM_END: {
-		//	eventName: "stream-end",
-		//	trigger:   ipc.triggerStreamEnd,
-		//},
-		//pb.Message_MESSAGE_MPV_PERCENT_POS: {
-		//	eventName: "percent-pos",
-		//	trigger:   ipc.triggerPercentPos,
-		//},
-		//pb.Message_MESSAGE_MPV_TIME_POS: {
-		//	eventName: "time-pos",
-		//	trigger:   ipc.triggerTimePos,
-		//},
-		//pb.Message_MESSAGE_MPV_TIME_REMAINING: {
-		//	eventName: "time-remaining",
-		//	trigger:   ipc.triggerTimeRemaining,
-		//},
-		pb.Message_MESSAGE_MPV_STREAM_STARTS_ENDS: {
+		pb.Message_MESSAGE_MPV_PERCENT_POS: {
+			eventName: "percent-pos",
+			trigger:   ipc.triggerPercentPos,
+		},
+		pb.Message_MESSAGE_MPV_TIME_POS: {
+			eventName: "time-pos",
+			trigger:   ipc.triggerTimePos,
+		},
+		pb.Message_MESSAGE_MPV_TIME_REMAINING: {
+			eventName: "time-remaining",
+			trigger:   ipc.triggerTimeRemaining,
+		},
+		pb.Message_MESSAGE_MPV_EOF_REACHED: {
 			eventName: "eof-reached",
 			trigger:   ipc.triggerStartsEnds,
 		},

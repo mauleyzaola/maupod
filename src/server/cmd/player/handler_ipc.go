@@ -61,7 +61,7 @@ func (m *MsgHandler) handlerIPC(msg *nats.Msg) {
 			return
 		}
 	case pb.IPCCommand_IPC_PAUSE:
-		if err = m.ipc.Pause(); err != nil {
+		if err = m.ipc.PauseToggle(); err != nil {
 			output.Error = err.Error()
 			output.Ok = false
 			return
