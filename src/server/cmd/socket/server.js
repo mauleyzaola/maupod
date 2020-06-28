@@ -1,8 +1,12 @@
 const WebSocket = require('ws')
+const wsOptions = { port: 8080 };
+const wss = new WebSocket.Server(wsOptions);
 
-const wss = new WebSocket.Server({ port: 8080 })
+console.log(`started websocket server on: ${JSON.stringify(wsOptions)}`);
 
 wss.on('connection', ws => {
+    const addr = ws._socket.remoteAddress
+    console.log(`new connection from ${addr}`);
     ws.on('message', message => {
         console.log(`Received message => ${message}`)
     })

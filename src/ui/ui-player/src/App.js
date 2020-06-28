@@ -15,9 +15,6 @@ import { linkMediaList } from "./routes";
 import Player from "./components/Player";
 
 class App extends React.Component{
-    constructor(props) {
-        super(props);
-    }
 
     onSearch = e => {
         window.location.href = linkMediaList({query: this.query});
