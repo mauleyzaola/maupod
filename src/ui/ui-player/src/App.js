@@ -12,9 +12,7 @@ import MediaList from "./MediaList";
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import Nav from "./Nav";
 import { linkMediaList } from "./routes";
-
-import { w3cwebsocket as W3CWebSocket } from "websocket";
-const client = new W3CWebSocket(`ws://localhost:8080`);
+import Player from "./components/Player";
 
 class App extends React.Component{
     constructor(props) {
@@ -25,16 +23,6 @@ class App extends React.Component{
         window.location.href = linkMediaList({query: this.query});
     }
 
-    // stupid simple connection which is working
-    componentDidMount() {
-        client.onopen = () => {
-            console.log('websocket connected')
-        }
-        client.onmessage = (message) => {
-            const { data } = message;
-            console.log(data);
-        };
-    }
 
     onSearchChange = e => this.query = e.target.value;
 
@@ -42,7 +30,11 @@ class App extends React.Component{
         return (
             <div>
                 <Router>
-                    <Nav onSearch={this.onSearch} onChange={this.onSearchChange} />
+                    <Nav
+                        onSearch={this.onSearch}
+                        onChange={this.onSearchChange}
+                    />
+                    <Player visible={true} />
                     <Switch>
                         <Route exact path='/' component={Dashboard} />
                         <Route exact path='/audio-scan' component={AudioScan} />
