@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@grpc/proto-loader": "^0.5.4",
+    "google-proto-files": "^2.1.0",
     "nats": "^1.4.9",
     "ws": "^7.3.0"
   }

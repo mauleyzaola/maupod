@@ -3,9 +3,17 @@ const wsOptions = { port: 8080 };
 const wss = new WebSocket.Server(wsOptions);
 const NATS = require('nats');
 const nc = NATS.connect();
-const protoLoader = require('@grpc/proto-loader');
-const PROTO_PATH = __dirname + './../../proto/'
-protoLoader.loadSync(PROTO_PATH + "messages.proto");
+const protos = require('google-proto-files');
+
+async function loadProtobuf(){
+    const files = protos.getProtoPath('logging', 'v2');
+    console.log(files);
+
+    const root = await protos.load(__dirname + './../../proto/messages.proto');
+    console.log(root);
+}
+
+loadProtobuf();
 
 console.log(`started websocket server on: ${JSON.stringify(wsOptions)}`);
 
