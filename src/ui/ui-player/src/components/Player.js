@@ -16,9 +16,12 @@ const cleanMedia = media => {
 const sendWSMessage = data => socket.send(JSON.stringify(data));
 
 class Player extends React.Component{
-    // constructor(props) {
-    //     super(props);
-    // }
+    constructor(props) {
+        super(props);
+        this.state = {
+            volume: 100,
+        }
+    }
 
     currentMedia;
 
@@ -42,7 +45,7 @@ class Player extends React.Component{
         // we need to send data as string
         // ideally we should use protobuf all over the places
         // this is the current workflow
-        // browser -> sends JSON -> nodejs -> parses JSON -> creates protobuf message -> sends to NATS
+        // browser -> sends JSON -> nodejs -> parses JSON -> creates message -> sends to NATS as JSON
 
         sendWSMessage({
             subject: REMOTE_PAUSE,
@@ -56,8 +59,10 @@ class Player extends React.Component{
     }
 
     onVolumeChange = e => {
+        const volume = e.target.value || '0'
+        this.setState({volume});
         if(!this.currentMedia) return;
-        sendWSMessage({ subject: REMOTE_VOLUME, media: cleanMedia(this.currentMedia), value: e.target.value });
+        sendWSMessage({ subject: REMOTE_VOLUME, media: cleanMedia(this.currentMedia), value: volume });
     }
 
 
@@ -74,7 +79,7 @@ class Player extends React.Component{
                 <button type='button' className='btn btn-secondary btn-sm' onClick={() => this.onPause(this.props.media)}>
                     <FaPause />
                 </button>
-                <input type='range' className='form-cotrol' min='0' max='130' onChange={this.onVolumeChange} />
+                <input type='range' className='form-cotrol' min='0' max='130' value={this.state.volume} onChange={this.onVolumeChange} />
             </div>
         )
     }
