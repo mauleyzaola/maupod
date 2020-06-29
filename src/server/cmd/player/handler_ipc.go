@@ -1,43 +1,26 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"log"
 	"os"
 	"strings"
 
-	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 	"github.com/nats-io/nats.go"
 )
 
 func (m *MsgHandler) handlerIPC(msg *nats.Msg) {
-
 	var err error
 	var input pb.IPCInput
 
-	if err = helpers.ProtoUnmarshal(msg.Data, &input); err != nil {
+	if err = json.Unmarshal(msg.Data, &input); err != nil {
 		m.base.Logger().Error(err)
 		return
 	}
 
-	output := &pb.IPCOutput{
-		Ok:    false,
-		Error: "",
-	}
-
-	defer func() {
-		var localErr error
-		var data []byte
-
-		if data, localErr = helpers.ProtoMarshal(output); localErr != nil {
-			m.base.Logger().Error(localErr)
-			return
-		}
-		if localErr = msg.Respond(data); localErr != nil {
-			m.base.Logger().Error(localErr)
-			return
-		}
-	}()
+	log.Println("command: ", input.Command)
 
 	// TODO: validate media is ok
 
@@ -55,30 +38,29 @@ func (m *MsgHandler) handlerIPC(msg *nats.Msg) {
 
 	switch input.Command {
 	case pb.IPCCommand_IPC_PLAY:
+		if err = m.ipc.Load(input.Media); err != nil {
+			m.base.Logger().Error(err)
+			return
+		}
 		if err = m.ipc.Play(); err != nil {
-			output.Error = err.Error()
-			output.Ok = false
+			m.base.Logger().Error(err)
 			return
 		}
 	case pb.IPCCommand_IPC_PAUSE:
 		if err = m.ipc.PauseToggle(); err != nil {
-			output.Error = err.Error()
-			output.Ok = false
+			m.base.Logger().Error(err)
 			return
 		}
 	case pb.IPCCommand_IPC_LOAD:
 		if err = m.ipc.Load(input.Media); err != nil {
-			output.Error = err.Error()
-			output.Ok = false
+			m.base.Logger().Error(err)
 			return
 		}
 	default:
-		output.Error = fmt.Sprintf("unsupported command: %v", input.Command)
-		output.Ok = false
+		err = fmt.Errorf("unsupported command: %v", input.Command)
+		m.base.Logger().Error(err)
 		return
 	}
-
-	output.Ok = true
 
 	return
 }

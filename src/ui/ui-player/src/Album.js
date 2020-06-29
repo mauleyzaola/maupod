@@ -9,7 +9,6 @@ import Player from "./components/Player";
 const TrackListHeader = () => (
     <thead>
     <tr>
-        <th></th>
         <th>#</th>
         <th>Track</th>
         <th>Duration</th>
@@ -21,11 +20,17 @@ const TrackListHeader = () => (
 const TrackListRow = ({row}) => {
     return (
         <tr>
-            <td>
-                <Player visible={true} media={row} />
-            </td>
             <td>{row.track_position}</td>
-            <td>{row.track}</td>
+            <td>
+                <div className='row'>
+                    <div className='col-1'>
+                        <Player visible={true} media={row} />
+                    </div>
+                    <div className='col-11'>
+                        {row.track}
+                    </div>
+                </div>
+            </td>
             <td>{msToString(row.duration)}</td>
             <td>{row.format}</td>
         </tr>

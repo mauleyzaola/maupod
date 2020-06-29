@@ -3,14 +3,13 @@ package main
 import (
 	"strconv"
 
-	"google.golang.org/protobuf/proto"
-
 	"github.com/mauleyzaola/maupod/src/server/cmd/player/pkg"
 	"github.com/mauleyzaola/maupod/src/server/pkg/broker"
 	"github.com/mauleyzaola/maupod/src/server/pkg/handler"
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
 	"github.com/mauleyzaola/maupod/src/server/pkg/types"
 	"github.com/nats-io/nats.go"
+	"google.golang.org/protobuf/proto"
 )
 
 type MsgHandler struct {

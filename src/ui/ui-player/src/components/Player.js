@@ -2,8 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import { FaPlay, FaPause } from "react-icons/all";
+import {REMOTE_PAUSE, REMOTE_PLAY} from "../consts";
 
-const client = new W3CWebSocket(`ws://localhost:8080`);
+const socket = new W3CWebSocket(`ws://localhost:8080`);
+
+// missing fields, issues with deserializing data in the server
+const cleanMedia = media => {
+    const {id, track, location} = media;
+    return {id, track, location};
+}
+
+const sendWSMessage = data => socket.send(JSON.stringify(data));
 
 class Player extends React.Component{
     // constructor(props) {
@@ -12,10 +21,10 @@ class Player extends React.Component{
 
     // stupid simple connection which is working
     componentDidMount() {
-        client.onopen = () => {
+        socket.onopen = () => {
             console.log('websocket connected')
         }
-        client.onmessage = (message) => {
+        socket.onmessage = (message) => {
             const { data } = message;
             console.log(data);
         };
@@ -23,7 +32,7 @@ class Player extends React.Component{
 
     componentWillUnmount() {
         console.log("websocket will close");
-        client.close();
+        socket.close();
     }
 
     onPause = (media) => {
@@ -32,10 +41,13 @@ class Player extends React.Component{
         // this is the current workflow
         // browser -> sends JSON -> nodejs -> parses JSON -> creates protobuf message -> sends to NATS
 
-        console.log(`TODO: send pause track: ${media.track}`)
+        sendWSMessage({
+            subject: REMOTE_PAUSE,
+            media: cleanMedia(media),
+        });
     }
 
-    onPlay = (media) => console.log(`TODO: send play track: ${media.track}`)
+    onPlay = (media) => sendWSMessage({ subject: REMOTE_PLAY, media: cleanMedia(media)});
 
 
     render() {

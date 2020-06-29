@@ -2,7 +2,7 @@ import React from 'react';
 import {msToString, secondsToDate} from "../helpers";
 import {Link} from "react-router-dom";
 import { linkAlbumView, linkGenreList, linkPerformerList } from "../routes";
-import {playTrack} from "../player";
+import Player from "./Player";
 
 const TrackListHeader = () => (
     <thead>
@@ -39,8 +39,15 @@ const TrackListRow = ({row}) => {
                 <Thumbnail />
             </td>
             <td>{row.track_position}</td>
-            <td onClick={() => playTrack(row)}>
-                {row.track}
+            <td>
+                <div className='row'>
+                    <div className='col-4'>
+                        <Player visible={true} media={row} />
+                    </div>
+                    <div className='col-8'>
+                        {row.track}
+                    </div>
+                </div>
             </td>
             <td>
                 <Link to={linkPerformerList(row)}>{row.performer}</Link>
