@@ -2620,7 +2620,8 @@ proto.pb.Message = {
 proto.pb.IPCCommand = {
   IPC_PLAY: 0,
   IPC_PAUSE: 1,
-  IPC_LOAD: 2
+  IPC_LOAD: 2,
+  IPC_VOLUME: 3
 };
 
 /**
@@ -2628,7 +2629,8 @@ proto.pb.IPCCommand = {
  */
 proto.pb.RemoteCommand = {
   REMOTE_PLAY: 0,
-  REMOTE_PAUSE: 1
+  REMOTE_PAUSE: 1,
+  REMOTE_VOLUME: 2
 };
 
 goog.object.extend(exports, proto.pb);

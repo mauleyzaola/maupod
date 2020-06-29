@@ -2,14 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import { FaPlay, FaPause } from "react-icons/all";
-import {REMOTE_PAUSE, REMOTE_PLAY} from "../consts";
+import {REMOTE_PAUSE, REMOTE_PLAY, REMOTE_VOLUME} from "../consts";
 
 const socket = new W3CWebSocket(`ws://localhost:8080`);
 
 // missing fields, issues with deserializing data in the server
 const cleanMedia = media => {
-    const {id, track, location} = media;
-    return {id, track, location};
+    const result = Object.assign({}, media);
+    result.recorded_date = result.recorded_date || 0;
+    return result;
 }
 
 const sendWSMessage = data => socket.send(JSON.stringify(data));
@@ -18,6 +19,8 @@ class Player extends React.Component{
     // constructor(props) {
     //     super(props);
     // }
+
+    currentMedia;
 
     // stupid simple connection which is working
     componentDidMount() {
@@ -31,8 +34,8 @@ class Player extends React.Component{
     }
 
     componentWillUnmount() {
-        console.log("websocket will close");
-        socket.close();
+        // console.log("websocket will close");
+        // socket.close();
     }
 
     onPause = (media) => {
@@ -47,7 +50,15 @@ class Player extends React.Component{
         });
     }
 
-    onPlay = (media) => sendWSMessage({ subject: REMOTE_PLAY, media: cleanMedia(media)});
+    onPlay = (media) => {
+        this.currentMedia = media;
+        sendWSMessage({ subject: REMOTE_PLAY, media: cleanMedia(media)});
+    }
+
+    onVolumeChange = e => {
+        if(!this.currentMedia) return;
+        sendWSMessage({ subject: REMOTE_VOLUME, media: cleanMedia(this.currentMedia), value: e.target.value });
+    }
 
 
     render() {
@@ -56,18 +67,15 @@ class Player extends React.Component{
             return null;
         }
         return (
-            <ul className='pagination'>
-                <li className='page-item'>
-                    <button type='button' className='btn btn-secondary btn-sm' onClick={() => this.onPlay(this.props.media)}>
-                        <FaPlay />
-                    </button>
-                </li>
-                <li className='page-item'>
-                    <button type='button' className='btn btn-secondary btn-sm' onClick={() => this.onPause(this.props.media)}>
-                        <FaPause />
-                    </button>
-                </li>
-            </ul>
+            <div className='form-inline'>
+                <button type='button' className='btn btn-secondary btn-sm' onClick={() => this.onPlay(this.props.media)}>
+                    <FaPlay />
+                </button>
+                <button type='button' className='btn btn-secondary btn-sm' onClick={() => this.onPause(this.props.media)}>
+                    <FaPause />
+                </button>
+                <input type='range' className='form-cotrol' min='0' max='130' onChange={this.onVolumeChange} />
+            </div>
         )
     }
 }

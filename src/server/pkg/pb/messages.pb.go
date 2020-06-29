@@ -125,9 +125,10 @@ func (Message) EnumDescriptor() ([]byte, []int) {
 type IPCCommand int32
 
 const (
-	IPCCommand_IPC_PLAY  IPCCommand = 0
-	IPCCommand_IPC_PAUSE IPCCommand = 1
-	IPCCommand_IPC_LOAD  IPCCommand = 2
+	IPCCommand_IPC_PLAY   IPCCommand = 0
+	IPCCommand_IPC_PAUSE  IPCCommand = 1
+	IPCCommand_IPC_LOAD   IPCCommand = 2
+	IPCCommand_IPC_VOLUME IPCCommand = 3
 )
 
 // Enum value maps for IPCCommand.
@@ -136,11 +137,13 @@ var (
 		0: "IPC_PLAY",
 		1: "IPC_PAUSE",
 		2: "IPC_LOAD",
+		3: "IPC_VOLUME",
 	}
 	IPCCommand_value = map[string]int32{
-		"IPC_PLAY":  0,
-		"IPC_PAUSE": 1,
-		"IPC_LOAD":  2,
+		"IPC_PLAY":   0,
+		"IPC_PAUSE":  1,
+		"IPC_LOAD":   2,
+		"IPC_VOLUME": 3,
 	}
 )
 
@@ -169,6 +172,57 @@ func (x IPCCommand) Number() protoreflect.EnumNumber {
 // Deprecated: Use IPCCommand.Descriptor instead.
 func (IPCCommand) EnumDescriptor() ([]byte, []int) {
 	return file_messages_proto_rawDescGZIP(), []int{1}
+}
+
+// these are commands that will be sent from the browser to the websocket server
+// websocket should have its own logic to dispatch the NATS message
+type RemoteCommand int32
+
+const (
+	RemoteCommand_REMOTE_PLAY   RemoteCommand = 0
+	RemoteCommand_REMOTE_PAUSE  RemoteCommand = 1
+	RemoteCommand_REMOTE_VOLUME RemoteCommand = 2
+)
+
+// Enum value maps for RemoteCommand.
+var (
+	RemoteCommand_name = map[int32]string{
+		0: "REMOTE_PLAY",
+		1: "REMOTE_PAUSE",
+		2: "REMOTE_VOLUME",
+	}
+	RemoteCommand_value = map[string]int32{
+		"REMOTE_PLAY":   0,
+		"REMOTE_PAUSE":  1,
+		"REMOTE_VOLUME": 2,
+	}
+)
+
+func (x RemoteCommand) Enum() *RemoteCommand {
+	p := new(RemoteCommand)
+	*p = x
+	return p
+}
+
+func (x RemoteCommand) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (RemoteCommand) Descriptor() protoreflect.EnumDescriptor {
+	return file_messages_proto_enumTypes[2].Descriptor()
+}
+
+func (RemoteCommand) Type() protoreflect.EnumType {
+	return &file_messages_proto_enumTypes[2]
+}
+
+func (x RemoteCommand) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use RemoteCommand.Descriptor instead.
+func (RemoteCommand) EnumDescriptor() ([]byte, []int) {
+	return file_messages_proto_rawDescGZIP(), []int{2}
 }
 
 type ArtworkExtractInput struct {
@@ -955,14 +1009,19 @@ var file_messages_proto_rawDesc = []byte{
 	0x4f, 0x55, 0x4e, 0x54, 0x5f, 0x49, 0x4e, 0x43, 0x52, 0x45, 0x41, 0x53, 0x45, 0x10, 0xfd, 0x01,
 	0x12, 0x22, 0x0a, 0x1d, 0x4d, 0x45, 0x53, 0x53, 0x41, 0x47, 0x45, 0x5f, 0x45, 0x56, 0x45, 0x4e,
 	0x54, 0x5f, 0x4f, 0x4e, 0x5f, 0x54, 0x52, 0x41, 0x43, 0x4b, 0x5f, 0x50, 0x4c, 0x41, 0x59, 0x45,
-	0x44, 0x10, 0xfe, 0x01, 0x2a, 0x37, 0x0a, 0x0a, 0x49, 0x50, 0x43, 0x43, 0x6f, 0x6d, 0x6d, 0x61,
+	0x44, 0x10, 0xfe, 0x01, 0x2a, 0x47, 0x0a, 0x0a, 0x49, 0x50, 0x43, 0x43, 0x6f, 0x6d, 0x6d, 0x61,
 	0x6e, 0x64, 0x12, 0x0c, 0x0a, 0x08, 0x49, 0x50, 0x43, 0x5f, 0x50, 0x4c, 0x41, 0x59, 0x10, 0x00,
 	0x12, 0x0d, 0x0a, 0x09, 0x49, 0x50, 0x43, 0x5f, 0x50, 0x41, 0x55, 0x53, 0x45, 0x10, 0x01, 0x12,
-	0x0c, 0x0a, 0x08, 0x49, 0x50, 0x43, 0x5f, 0x4c, 0x4f, 0x41, 0x44, 0x10, 0x02, 0x42, 0x2d, 0x5a,
-	0x2b, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x6d, 0x61, 0x75, 0x6c,
-	0x65, 0x79, 0x7a, 0x61, 0x6f, 0x6c, 0x61, 0x2f, 0x6d, 0x61, 0x75, 0x70, 0x6f, 0x64, 0x2f, 0x73,
-	0x72, 0x63, 0x2f, 0x73, 0x65, 0x72, 0x76, 0x65, 0x72, 0x2f, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x33,
+	0x0c, 0x0a, 0x08, 0x49, 0x50, 0x43, 0x5f, 0x4c, 0x4f, 0x41, 0x44, 0x10, 0x02, 0x12, 0x0e, 0x0a,
+	0x0a, 0x49, 0x50, 0x43, 0x5f, 0x56, 0x4f, 0x4c, 0x55, 0x4d, 0x45, 0x10, 0x03, 0x2a, 0x45, 0x0a,
+	0x0d, 0x52, 0x65, 0x6d, 0x6f, 0x74, 0x65, 0x43, 0x6f, 0x6d, 0x6d, 0x61, 0x6e, 0x64, 0x12, 0x0f,
+	0x0a, 0x0b, 0x52, 0x45, 0x4d, 0x4f, 0x54, 0x45, 0x5f, 0x50, 0x4c, 0x41, 0x59, 0x10, 0x00, 0x12,
+	0x10, 0x0a, 0x0c, 0x52, 0x45, 0x4d, 0x4f, 0x54, 0x45, 0x5f, 0x50, 0x41, 0x55, 0x53, 0x45, 0x10,
+	0x01, 0x12, 0x11, 0x0a, 0x0d, 0x52, 0x45, 0x4d, 0x4f, 0x54, 0x45, 0x5f, 0x56, 0x4f, 0x4c, 0x55,
+	0x4d, 0x45, 0x10, 0x02, 0x42, 0x2d, 0x5a, 0x2b, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63,
+	0x6f, 0x6d, 0x2f, 0x6d, 0x61, 0x75, 0x6c, 0x65, 0x79, 0x7a, 0x61, 0x6f, 0x6c, 0x61, 0x2f, 0x6d,
+	0x61, 0x75, 0x70, 0x6f, 0x64, 0x2f, 0x73, 0x72, 0x63, 0x2f, 0x73, 0x65, 0x72, 0x76, 0x65, 0x72,
+	0x2f, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -977,45 +1036,46 @@ func file_messages_proto_rawDescGZIP() []byte {
 	return file_messages_proto_rawDescData
 }
 
-var file_messages_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_messages_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
 var file_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_messages_proto_goTypes = []interface{}{
 	(Message)(0),                         // 0: pb.Message
 	(IPCCommand)(0),                      // 1: pb.IPCCommand
-	(*ArtworkExtractInput)(nil),          // 2: pb.ArtworkExtractInput
-	(*ArtworkUpdateInput)(nil),           // 3: pb.ArtworkUpdateInput
-	(*IPCInput)(nil),                     // 4: pb.IPCInput
-	(*IPCOutput)(nil),                    // 5: pb.IPCOutput
-	(*MediaInfoInput)(nil),               // 6: pb.MediaInfoInput
-	(*MediaInfoOutput)(nil),              // 7: pb.MediaInfoOutput
-	(*Response)(nil),                     // 8: pb.Response
-	(*ScanDirectoryAudioFilesInput)(nil), // 9: pb.ScanDirectoryAudioFilesInput
-	(*TrackStartedInput)(nil),            // 10: pb.TrackStartedInput
-	(*TrackEndedInput)(nil),              // 11: pb.TrackEndedInput
-	(*TrackPlayedInput)(nil),             // 12: pb.TrackPlayedInput
-	(*TrackSkippedInput)(nil),            // 13: pb.TrackSkippedInput
-	(*Media)(nil),                        // 14: pb.Media
-	(*timestamp.Timestamp)(nil),          // 15: google.protobuf.Timestamp
+	(RemoteCommand)(0),                   // 2: pb.RemoteCommand
+	(*ArtworkExtractInput)(nil),          // 3: pb.ArtworkExtractInput
+	(*ArtworkUpdateInput)(nil),           // 4: pb.ArtworkUpdateInput
+	(*IPCInput)(nil),                     // 5: pb.IPCInput
+	(*IPCOutput)(nil),                    // 6: pb.IPCOutput
+	(*MediaInfoInput)(nil),               // 7: pb.MediaInfoInput
+	(*MediaInfoOutput)(nil),              // 8: pb.MediaInfoOutput
+	(*Response)(nil),                     // 9: pb.Response
+	(*ScanDirectoryAudioFilesInput)(nil), // 10: pb.ScanDirectoryAudioFilesInput
+	(*TrackStartedInput)(nil),            // 11: pb.TrackStartedInput
+	(*TrackEndedInput)(nil),              // 12: pb.TrackEndedInput
+	(*TrackPlayedInput)(nil),             // 13: pb.TrackPlayedInput
+	(*TrackSkippedInput)(nil),            // 14: pb.TrackSkippedInput
+	(*Media)(nil),                        // 15: pb.Media
+	(*timestamp.Timestamp)(nil),          // 16: google.protobuf.Timestamp
 }
 var file_messages_proto_depIdxs = []int32{
-	14, // 0: pb.ArtworkExtractInput.media:type_name -> pb.Media
-	15, // 1: pb.ArtworkExtractInput.scan_date:type_name -> google.protobuf.Timestamp
-	14, // 2: pb.ArtworkUpdateInput.media:type_name -> pb.Media
-	14, // 3: pb.IPCInput.media:type_name -> pb.Media
+	15, // 0: pb.ArtworkExtractInput.media:type_name -> pb.Media
+	16, // 1: pb.ArtworkExtractInput.scan_date:type_name -> google.protobuf.Timestamp
+	15, // 2: pb.ArtworkUpdateInput.media:type_name -> pb.Media
+	15, // 3: pb.IPCInput.media:type_name -> pb.Media
 	1,  // 4: pb.IPCInput.command:type_name -> pb.IPCCommand
-	14, // 5: pb.MediaInfoInput.media:type_name -> pb.Media
-	14, // 6: pb.MediaInfoOutput.media:type_name -> pb.Media
-	8,  // 7: pb.MediaInfoOutput.response:type_name -> pb.Response
-	15, // 8: pb.MediaInfoOutput.last_modified_date:type_name -> google.protobuf.Timestamp
-	15, // 9: pb.ScanDirectoryAudioFilesInput.scan_date:type_name -> google.protobuf.Timestamp
-	14, // 10: pb.TrackStartedInput.media:type_name -> pb.Media
-	15, // 11: pb.TrackStartedInput.timestamp:type_name -> google.protobuf.Timestamp
-	14, // 12: pb.TrackEndedInput.media:type_name -> pb.Media
-	15, // 13: pb.TrackEndedInput.timestamp:type_name -> google.protobuf.Timestamp
-	14, // 14: pb.TrackPlayedInput.media:type_name -> pb.Media
-	15, // 15: pb.TrackPlayedInput.timestamp:type_name -> google.protobuf.Timestamp
-	14, // 16: pb.TrackSkippedInput.media:type_name -> pb.Media
-	15, // 17: pb.TrackSkippedInput.timestamp:type_name -> google.protobuf.Timestamp
+	15, // 5: pb.MediaInfoInput.media:type_name -> pb.Media
+	15, // 6: pb.MediaInfoOutput.media:type_name -> pb.Media
+	9,  // 7: pb.MediaInfoOutput.response:type_name -> pb.Response
+	16, // 8: pb.MediaInfoOutput.last_modified_date:type_name -> google.protobuf.Timestamp
+	16, // 9: pb.ScanDirectoryAudioFilesInput.scan_date:type_name -> google.protobuf.Timestamp
+	15, // 10: pb.TrackStartedInput.media:type_name -> pb.Media
+	16, // 11: pb.TrackStartedInput.timestamp:type_name -> google.protobuf.Timestamp
+	15, // 12: pb.TrackEndedInput.media:type_name -> pb.Media
+	16, // 13: pb.TrackEndedInput.timestamp:type_name -> google.protobuf.Timestamp
+	15, // 14: pb.TrackPlayedInput.media:type_name -> pb.Media
+	16, // 15: pb.TrackPlayedInput.timestamp:type_name -> google.protobuf.Timestamp
+	15, // 16: pb.TrackSkippedInput.media:type_name -> pb.Media
+	16, // 17: pb.TrackSkippedInput.timestamp:type_name -> google.protobuf.Timestamp
 	18, // [18:18] is the sub-list for method output_type
 	18, // [18:18] is the sub-list for method input_type
 	18, // [18:18] is the sub-list for extension type_name
@@ -1180,7 +1240,7 @@ func file_messages_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_messages_proto_rawDesc,
-			NumEnums:      2,
+			NumEnums:      3,
 			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   0,

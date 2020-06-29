@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
@@ -53,6 +54,16 @@ func (m *MsgHandler) handlerIPC(msg *nats.Msg) {
 		}
 	case pb.IPCCommand_IPC_LOAD:
 		if err = m.ipc.Load(input.Media); err != nil {
+			m.base.Logger().Error(err)
+			return
+		}
+	case pb.IPCCommand_IPC_VOLUME:
+		val, err := strconv.ParseInt(input.Value, 10, 64)
+		if err != nil {
+			m.base.Logger().Error(err)
+			return
+		}
+		if err = m.ipc.Volume(int(val)); err != nil {
 			m.base.Logger().Error(err)
 			return
 		}

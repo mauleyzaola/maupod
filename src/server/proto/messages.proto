@@ -34,6 +34,7 @@ enum IPCCommand {
     IPC_PLAY = 0;
     IPC_PAUSE = 1;
     IPC_LOAD = 2;
+    IPC_VOLUME = 3;
 }
 
 // these are commands that will be sent from the browser to the websocket server
@@ -41,6 +42,7 @@ enum IPCCommand {
 enum RemoteCommand {
     REMOTE_PLAY = 0;
     REMOTE_PAUSE = 1;
+    REMOTE_VOLUME = 2;
 }
 
 message ArtworkExtractInput {
