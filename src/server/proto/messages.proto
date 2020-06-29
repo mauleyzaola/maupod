@@ -36,6 +36,13 @@ enum IPCCommand {
     IPC_LOAD = 2;
 }
 
+// these are commands that will be sent from the browser to the websocket server
+// websocket should have its own logic to dispatch the NATS message
+enum RemoteCommand {
+    REMOTE_PLAY = 0;
+    REMOTE_PAUSE = 1;
+}
+
 message ArtworkExtractInput {
     Media media = 1;
     google.protobuf.Timestamp scan_date = 2;

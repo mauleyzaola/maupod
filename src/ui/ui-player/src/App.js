@@ -12,7 +12,6 @@ import MediaList from "./MediaList";
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import Nav from "./Nav";
 import { linkMediaList } from "./routes";
-import Player from "./components/Player";
 
 class App extends React.Component{
 
@@ -31,7 +30,6 @@ class App extends React.Component{
                         onSearch={this.onSearch}
                         onChange={this.onSearchChange}
                     />
-                    <Player visible={true} />
                     <Switch>
                         <Route exact path='/' component={Dashboard} />
                         <Route exact path='/audio-scan' component={AudioScan} />

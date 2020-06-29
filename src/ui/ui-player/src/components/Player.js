@@ -1,5 +1,5 @@
 import React from 'react';
-import {bool} from 'prop-types';
+import PropTypes from 'prop-types';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import { FaPlay, FaPause } from "react-icons/all";
 
@@ -26,6 +26,17 @@ class Player extends React.Component{
         client.close();
     }
 
+    onPause = (media) => {
+        // we need to send data as string
+        // ideally we should use protobuf all over the places
+        // this is the current workflow
+        // browser -> sends JSON -> nodejs -> parses JSON -> creates protobuf message -> sends to NATS
+
+        console.log(`TODO: send pause track: ${media.track}`)
+    }
+
+    onPlay = (media) => console.log(`TODO: send play track: ${media.track}`)
+
 
     render() {
         const { visible } = this.props;
@@ -33,26 +44,25 @@ class Player extends React.Component{
             return null;
         }
         return (
-            <div className='row'>
-                <div className='col'>
-                    <div className='btn-toolbar'>
-                        <div className='btn-group mr-2'>
-                            <button type='button' className='btn btn-secondary'>
-                                <FaPlay />
-                            </button>
-                            <button type='button' className='btn btn-secondary'>
-                                <FaPause />
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <ul className='pagination'>
+                <li className='page-item'>
+                    <button type='button' className='btn btn-secondary btn-sm' onClick={() => this.onPlay(this.props.media)}>
+                        <FaPlay />
+                    </button>
+                </li>
+                <li className='page-item'>
+                    <button type='button' className='btn btn-secondary btn-sm' onClick={() => this.onPause(this.props.media)}>
+                        <FaPause />
+                    </button>
+                </li>
+            </ul>
         )
     }
 }
 
 Player.propTypes = {
-    visible: bool.isRequired,
+    visible: PropTypes.bool.isRequired,
+    media: PropTypes.object.isRequired,
 }
 
 export default Player;

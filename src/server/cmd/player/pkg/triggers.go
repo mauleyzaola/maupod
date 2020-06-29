@@ -35,6 +35,10 @@ func (m *IPC) triggerTimeRemaining(v interface{}) {
 }
 
 func (m *IPC) triggerStartsEnds(v interface{}) {
+	if m.connection == nil {
+		log.Println("[WARNING] m.connection not available yet")
+		return
+	}
 	val, ok := v.(bool)
 	if !ok {
 		return

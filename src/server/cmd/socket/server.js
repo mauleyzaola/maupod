@@ -3,26 +3,24 @@ const wsOptions = { port: 8080 };
 const wss = new WebSocket.Server(wsOptions);
 const NATS = require('nats');
 const nc = NATS.connect();
-const protos = require('google-proto-files');
+const messages = require('./nodepb/messages_pb');
+const remoteMessages = messages.RemoteCommand;
+const ipcMessages = messages.IPCCommand;
 
-async function loadProtobuf(){
-    const files = protos.getProtoPath('logging', 'v2');
-    console.log(files);
-
-    const root = await protos.load(__dirname + './../../proto/messages.proto');
-    console.log(root);
-}
-
-loadProtobuf();
+console.log(JSON.stringify(remoteMessages))
+console.log(JSON.stringify(ipcMessages))
 
 console.log(`started websocket server on: ${JSON.stringify(wsOptions)}`);
 
 wss.on('connection', ws => {
     const addr = ws._socket.remoteAddress
     console.log(`new connection from ${addr}`);
+
     ws.on('message', message => {
-        console.log(`Received message => ${message}`)
+        const data = JSON.parse(message);
+        console.log(`${JSON.stringify(data)}`);
     })
+
     ws.send('ho!')
 })
 
