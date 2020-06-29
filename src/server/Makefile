@@ -23,8 +23,8 @@ logs:
 
 force:
 prepare-proto: force
-	rm -rf ./pkg/pb
-	mkdir -p ./pkg/pb
+	rm -rf ./cmd/socket/pb
+	mkdir -p ./cmd/socket/pb
 
 prepare-proto-node: force
 	rm -rf ./nodepb
@@ -34,7 +34,8 @@ proto: prepare-proto
 	protoc --proto_path=proto --go_out=pkg/pb --go_opt=paths=source_relative ./proto/*
 
 proto-node: prepare-proto-node
-	protoc --proto_path=proto --js_out=import_style=commonjs,binary:nodepb ./proto/*
+	#protoc --proto_path=proto --js_out=import_style=commonjs,binary:nodepb ./proto/*
+	protoc --proto_path=proto --js_out=nodepb,binary:. ./proto/*
 
 test:
 	go test -cover -count 1 ./...

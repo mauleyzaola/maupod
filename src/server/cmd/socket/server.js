@@ -3,9 +3,9 @@ const wsOptions = { port: 8080 };
 const wss = new WebSocket.Server(wsOptions);
 const NATS = require('nats');
 const nc = NATS.connect();
-const messages = require( './../../nodepb/pb');
-
-// console.log(`proto.pb.Message.MESSAGE_ARTWORK_SCAN: ${messages}`);
+const protoLoader = require('@grpc/proto-loader');
+const PROTO_PATH = __dirname + './../../proto/'
+protoLoader.loadSync(PROTO_PATH + "messages.proto");
 
 console.log(`started websocket server on: ${JSON.stringify(wsOptions)}`);
 
