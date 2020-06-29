@@ -23,11 +23,20 @@ logs:
 
 force:
 prepare-proto: force
-	rm -rf ./pkg/pb
-	mkdir -p ./pkg/pb
+	rm -rf ./cmd/socket/pb
+	mkdir -p ./cmd/socket/pb
+
+prepare-proto-node: force
+	rm -rf ./cmd/socket/nodepb
+	mkdir -p ./cmd/socket//nodepb
 
 proto: prepare-proto
 	protoc --proto_path=proto --go_out=pkg/pb --go_opt=paths=source_relative ./proto/*
+
+proto-node: prepare-proto-node
+	# protoc --proto_path=proto --js_out=./cmd/socket/nodepb,binary:. ./proto/*
+    # commonjs was the only way of make it work from nodejs with generated js files
+	protoc --proto_path=proto --js_out=import_style=commonjs,binary:cmd/socket/nodepb ./proto/*
 
 test:
 	go test -cover -count 1 ./...

@@ -1,6 +1,7 @@
 import React from 'react';
 import 'bootswatch/dist/slate/bootstrap.min.css';
 import './App.css';
+
 import Albums from "./Albums";
 import Album from "./Album";
 import AudioScan from "./AudioScan";
@@ -13,10 +14,11 @@ import Nav from "./Nav";
 import { linkMediaList } from "./routes";
 
 class App extends React.Component{
+
     onSearch = e => {
-        const uri = linkMediaList({query: this.query});
-        window.location.href = uri;
+        window.location.href = linkMediaList({query: this.query});
     }
+
 
     onSearchChange = e => this.query = e.target.value;
 
@@ -24,7 +26,10 @@ class App extends React.Component{
         return (
             <div>
                 <Router>
-                    <Nav onSearch={this.onSearch} onChange={this.onSearchChange} />
+                    <Nav
+                        onSearch={this.onSearch}
+                        onChange={this.onSearchChange}
+                    />
                     <Switch>
                         <Route exact path='/' component={Dashboard} />
                         <Route exact path='/audio-scan' component={AudioScan} />

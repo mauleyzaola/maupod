@@ -1,8 +1,10 @@
-const IPC_PLAY = 0;
-// const IPC_PAUSE = 1;
-const IPC_LOAD = 2;
+const REMOTE_PLAY = 0;
+const REMOTE_PAUSE = 1;
+const REMOTE_VOLUME = 2;
+
 
 export {
-    IPC_PLAY,
-    IPC_LOAD,
+    REMOTE_PLAY,
+    REMOTE_PAUSE,
+    REMOTE_VOLUME,
 }

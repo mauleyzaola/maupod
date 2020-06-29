@@ -3,7 +3,7 @@ import AlbumHeader from "./components/AlbumHeader";
 import {decodeURL} from "./api";
 import { albumViewList, mediaList } from "./api";
 import {msToString } from "./helpers";
-import {playTrack} from "./player";
+import Player from "./components/Player";
 
 
 const TrackListHeader = () => (
@@ -17,11 +17,20 @@ const TrackListHeader = () => (
     </thead>
 )
 
-const TrackListRow = ({row, onTrackClick}) => {
+const TrackListRow = ({row}) => {
     return (
         <tr>
             <td>{row.track_position}</td>
-            <td onClick={() => onTrackClick(row)}>{row.track}</td>
+            <td>
+                <div className='row'>
+                    <div className='col-1'>
+                        <Player visible={true} media={row} />
+                    </div>
+                    <div className='col-11'>
+                        {row.track}
+                    </div>
+                </div>
+            </td>
             <td>{msToString(row.duration)}</td>
             <td>{row.format}</td>
         </tr>
@@ -65,7 +74,8 @@ class Album extends React.Component{
         }
     }
 
-    onTrackClick = (r) => playTrack(r);
+    // temporary hack to call the player using rest api
+    // onTrackClick = (r) => playTrack(r);
 
     render() {
         const { album, rows } = this.state;
@@ -75,7 +85,7 @@ class Album extends React.Component{
                 <table className='table table-bordered table-hover table-striped'>
                     <TrackListHeader />
                     <tbody>
-                    {rows.map(row => <TrackListRow key={row.id} row={row} onTrackClick={this.onTrackClick} />)}
+                    {rows.map(row => <TrackListRow key={row.id} row={row} />)}
                     </tbody>
                 </table>
             </div>

@@ -92,7 +92,7 @@ func (m *IPC) configureListeners() error {
 	// properties for monitoring what is exactly doing mpv at runtime
 	events, stopListening := m.connection.NewEventListener()
 	go func() {
-		log.Println("connection will close now")
+		log.Println("connection ipc/mpv has been established")
 		m.connection.WaitUntilClosed()
 		stopListening <- struct{}{}
 	}()
