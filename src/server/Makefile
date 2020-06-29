@@ -26,8 +26,15 @@ prepare-proto: force
 	rm -rf ./pkg/pb
 	mkdir -p ./pkg/pb
 
+prepare-proto-node: force
+	rm -rf ./nodepb
+	mkdir -p ./nodepb
+
 proto: prepare-proto
 	protoc --proto_path=proto --go_out=pkg/pb --go_opt=paths=source_relative ./proto/*
+
+proto-node: prepare-proto-node
+	protoc --proto_path=proto --js_out=import_style=commonjs,binary:nodepb ./proto/*
 
 test:
 	go test -cover -count 1 ./...
