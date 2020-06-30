@@ -5,6 +5,14 @@
 * [TODO] Music management
 * [TODO] Play music to any device
 
+## Environment
+
+We need this variable to point to the backend API
+
+```
+REACT_APP_API_URL=http://localhost:8000
+```
+
 ## Available Scripts
 
 In the project directory, you can run:
