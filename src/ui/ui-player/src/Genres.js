@@ -1,5 +1,5 @@
 import React from 'react';
-import {genreList} from "./api";
+import {genreArtworkList, genreList} from "./api";
 import GenreCard from "./components/GenreCard";
 
 
@@ -12,19 +12,29 @@ class Genres extends React.Component{
     }
 
     componentDidMount() {
+        let rows = [];
         genreList({
             direction: 'asc',
             sort: 'genre',
         })
             .then(res => res.data || [])
-            .then(rows => this.setState({rows}));
+            .then(data => rows = data)
+            .then(() => genreArtworkList())
+            .then(response => {
+                const artworks = response.data;
+                for(let i = 0; i < rows.length; i++){
+                    let row = rows[i];
+                    row.artworks = artworks[row.genre] || [];
+                }
+                this.setState({rows});
+            })
     }
 
     render() {
         const { rows } = this.state;
         return(
             <div className='card-deck'>
-                {rows.map(r => <GenreCard key={r.genre} r={r} />)}
+                {rows.map(row => <GenreCard key={row.genre} row={row} />)}
             </div>
         )
     }

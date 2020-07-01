@@ -1,3 +1,9 @@
 .album-card {
     padding: 5px;
 }
+
+.artwork-xs {
+    padding: 2px;
+    height: 60px;
+    width: 60px;
+}

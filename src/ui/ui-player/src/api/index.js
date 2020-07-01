@@ -22,8 +22,7 @@ const distinctListGet = ({field, filter}) => axios.get(`/media/${field}/distinct
 });
 
 const genreList = data => axios.get(`/genres`, { params: data});
-
-const ipcCommand = data => axios.post(`/ipc`, data);
+const genreArtworkList = data => axios.get(`/genres/artwork`, { params: data});
 
 const objectToQueryString = data => querystring.stringify(data);
 
@@ -36,8 +35,8 @@ export {
     albumViewList,
     decodeURL,
     distinctListGet,
+    genreArtworkList,
     genreList,
-    ipcCommand,
     mediaList,
     objectToQueryString,
 }
