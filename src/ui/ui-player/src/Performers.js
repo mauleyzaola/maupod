@@ -5,8 +5,10 @@ import {linkAlbumList} from "./routes";
 import { groupOnFirstChar } from "./helpers";
 
 const PerformerLetter = ({l}) => (
-    <div className='text-warning'>
-        <h4>{l}</h4>
+    <div>
+        <h4  className='text-warning'>
+            {l}
+        </h4>
     </div>
 )
 
