@@ -30,10 +30,6 @@ func (m *MsgHandler) Register() error {
 			Subject: strconv.Itoa(int(pb.Message_MESSAGE_AUDIO_SCAN)),
 			Handler: m.handlerAudioScan,
 		},
-		handler.Subscription{
-			Subject: strconv.Itoa(int(pb.Message_MESSAGE_AUDIO_SHA)),
-			Handler: m.handlerSHAScan,
-		},
 	)
 }
 

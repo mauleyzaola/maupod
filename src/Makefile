@@ -13,7 +13,7 @@ dev: build-dev up logs
 dev-ui:
 	# this value should be in the environment instead
 	# REACT_APP_API_URL="http://localhost:8000" npm run start
-	$(MAKE) -C cmd/ui-player dev
+	$(MAKE) -C ../ui-player dev
 
 down:
 	docker-compose -f dev.docker-compose.yml stop

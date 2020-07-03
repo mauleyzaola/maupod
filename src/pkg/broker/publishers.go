@@ -25,10 +25,6 @@ func PublishMediaInfoDelete(nc *nats.Conn, input *pb.MediaInfoInput) error {
 	return nc.Publish(strconv.Itoa(int(pb.Message_MESSAGE_MEDIA_DELETE)), data)
 }
 
-func PublishMediaSHAUpdate(nc *nats.Conn, input *pb.MediaInfoInput) error {
-	return PublishBroker(nc, pb.Message_MESSAGE_AUDIO_SHA, input)
-}
-
 func PublishMediaUpdateDb(nc *nats.Conn, media *pb.Media) error {
 	return PublishBroker(nc, pb.Message_MESSAGE_MEDIA_UPDATE, media)
 }

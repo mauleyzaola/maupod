@@ -2656,7 +2656,6 @@ proto.pb.TrackSkippedInput.prototype.hasTimestamp = function() {
 proto.pb.Message = {
   MESSAGE_ARTWORK_SCAN: 0,
   MESSAGE_AUDIO_SCAN: 1,
-  MESSAGE_AUDIO_SHA: 4,
   MESSAGE_MEDIA_INFO: 2,
   MESSAGE_MEDIA_UPDATE_ARTWORK: 3,
   MESSAGE_MEDIA_DELETE: 5,

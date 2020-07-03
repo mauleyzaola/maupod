@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"log"
 	"path/filepath"
 	"time"
 
@@ -140,6 +141,12 @@ func ScanDirectoryAudioFiles(
 			continue
 		}
 
+		// create/update sha
+		if m.Sha, err = helpers.SHAFromFile(f); err != nil {
+			log.Println(err)
+			return err
+		}
+
 		m.Id = helpers.NewUUID()
 		m.LastScan = helpers.TimeToTs(&scanDate)
 		m.Location = f
@@ -171,12 +178,6 @@ func ScanDirectoryAudioFiles(
 			if err = broker.PublishBroker(nc, pb.Message_MESSAGE_ARTWORK_SCAN, &pb.ArtworkExtractInput{Media: m, ScanDate: helpers.TimeToTs2(scanDate)}); err != nil {
 				logger.Error(err)
 			}
-		}
-
-		// on each case media has probably changed and we need to get the new sha hash
-		if err = broker.PublishMediaSHAUpdate(nc, &pb.MediaInfoInput{Media: m, FileName: f}); err != nil {
-			logger.Error(err)
-			return err
 		}
 	}
 
