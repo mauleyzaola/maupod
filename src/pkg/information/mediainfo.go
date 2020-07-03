@@ -1,15 +1,17 @@
 package information
 
 import (
+	"bytes"
+
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
 )
 
-func MediaFromFile(filename string) (*pb.Media, error) {
-	val, err := mediaInfoFromFile(filename)
+func MediaFromRaw(raw string) (*pb.Media, error) {
+	m, err := ParseMediaInfo(bytes.NewBufferString(raw))
 	if err != nil {
 		return nil, err
 	}
-	return val.ToProto(), nil
+	return m.ToProto(), nil
 }
 
 // MediaInfo represents the output from `mediainfo` program

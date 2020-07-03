@@ -8,7 +8,8 @@ import (
 )
 
 func TestInfoFromFile(t *testing.T) {
-	info, err := mediaInfoFromFile("./test_data/sample1.m4a")
+	raw, err := MediaInfoFromFile("./test_data/sample1.m4a")
+	info, err := ParseMediaInfo(raw)
 	require.NoError(t, err, "file should be present")
 	require.NotNil(t, info, "media info should return an object")
 

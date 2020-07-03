@@ -126,10 +126,12 @@ func ScanDirectoryAudioFiles(
 	var timeout = time.Second * time.Duration(config.Delay)
 	for _, f := range files {
 		var m *pb.Media
-		if m, err = broker.RequestMediaInfoScan(nc, logger, f, timeout); err != nil {
+		var output *pb.MediaInfoOutput
+		if output, err = broker.RequestMediaInfoScan(nc, f, timeout); err != nil {
 			logger.Error(err)
 			continue
 		}
+		m = output.Media
 
 		// if the minimal information such as track, album and performer are not present, ignore this scan
 		// TODO: send another NATS message for storing these errors

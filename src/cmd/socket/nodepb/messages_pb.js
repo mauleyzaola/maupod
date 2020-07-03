@@ -1222,7 +1222,8 @@ proto.pb.MediaInfoOutput.toObject = function(includeInstance, msg) {
   var f, obj = {
     media: (f = msg.getMedia()) && media_pb.Media.toObject(includeInstance, f),
     response: (f = msg.getResponse()) && proto.pb.Response.toObject(includeInstance, f),
-    lastModifiedDate: (f = msg.getLastModifiedDate()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f)
+    lastModifiedDate: (f = msg.getLastModifiedDate()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    raw: jspb.Message.getFieldWithDefault(msg, 4, "")
   };
 
   if (includeInstance) {
@@ -1273,6 +1274,10 @@ proto.pb.MediaInfoOutput.deserializeBinaryFromReader = function(msg, reader) {
       var value = new google_protobuf_timestamp_pb.Timestamp;
       reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
       msg.setLastModifiedDate(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setRaw(value);
       break;
     default:
       reader.skipField();
@@ -1325,6 +1330,13 @@ proto.pb.MediaInfoOutput.serializeBinaryToWriter = function(message, writer) {
       3,
       f,
       google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getRaw();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
     );
   }
 };
@@ -1438,6 +1450,24 @@ proto.pb.MediaInfoOutput.prototype.clearLastModifiedDate = function() {
  */
 proto.pb.MediaInfoOutput.prototype.hasLastModifiedDate = function() {
   return jspb.Message.getField(this, 3) != null;
+};
+
+
+/**
+ * optional string raw = 4;
+ * @return {string}
+ */
+proto.pb.MediaInfoOutput.prototype.getRaw = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.pb.MediaInfoOutput} returns this
+ */
+proto.pb.MediaInfoOutput.prototype.setRaw = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
 };
 
 

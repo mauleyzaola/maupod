@@ -10,6 +10,9 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"time"
+
+	"github.com/mauleyzaola/maupod/src/pkg/broker"
 
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/mauleyzaola/maupod/src/pkg/rules"
@@ -47,7 +50,7 @@ func (m *MsgHandler) handlerArtworkExtract(msg *nats.Msg) {
 		}
 	}()
 
-	var imageData []byte
+	var imageFileLocation string
 	var data []byte
 
 	input.Media.LastImageScan = helpers.TimeToTs(helpers.Now())
@@ -73,11 +76,8 @@ func (m *MsgHandler) handlerArtworkExtract(msg *nats.Msg) {
 	}
 
 	// check for the image in the same directory of the audio file
-	if imageData, err = extractMediaFromDirectory(input.Media.Location); err != nil {
-		// check for image in the audio file
-		if imageData, err = extractMediaFromAudioFile(input.Media.Location); err != nil {
-			return
-		}
+	if imageFileLocation = findArtworkSameDirectory(input.Media.Location); imageFileLocation == "" {
+		return
 	}
 
 	// TODO: this is a fucking mess
@@ -85,26 +85,28 @@ func (m *MsgHandler) handlerArtworkExtract(msg *nats.Msg) {
 	// 2. use imagemagick for resize and png conversion
 	// convert cover.jpg -resize 300x300 cover.png :D
 
-	// no image available, exit
-	if imageData == nil {
-		return
-	}
-
 	// check shape and size are valid
-	if err = imageValidSize(data, int(m.config.ArtworkBigSize)); err != nil {
+	if err = imageValidSize(m.base.NATS(), imageFileLocation, int(m.config.ArtworkBigSize)); err != nil {
 		log.Println(err)
 		return
 	}
 
-	if data, err = helpers.SHA(bytes.NewBuffer(imageData)); err != nil {
+	if err = imageWriteArtwork(imageFileLocation, artworkPath, int(m.config.ArtworkBigSize)); err != nil {
 		log.Println(err)
 		return
 	}
-	if err = imageWriteArtwork(imageData, artworkPath, int(m.config.ArtworkBigSize)); err != nil {
+
+	if data, err = ioutil.ReadFile(artworkPath); err != nil {
+		log.Println(err)
+		return
+	}
+
+	if data, err = helpers.SHA(bytes.NewBuffer(data)); err != nil {
 		log.Println(err)
 		return
 	}
 	input.Media.ShaImage = helpers.HashFromSHA(data)
+	return
 }
 
 func artworkFullPath(config *pb.Configuration, media *pb.Media) string {
@@ -113,17 +115,18 @@ func artworkFullPath(config *pb.Configuration, media *pb.Media) string {
 	return filepath.Join(dir, imageLocation)
 }
 
-func imageWriteArtwork(data []byte, artworkPath string, imageSize int) error {
+func imageWriteArtwork(source, target string, imageSize int) error {
 	var bigSize = imageSize
-	err := images.ImageResize(bytes.NewBuffer(data), artworkPath, bigSize, bigSize)
+	err := images.ImageResize(source, target, bigSize, bigSize)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func imageValidSize(data []byte, minWidth int) error {
-	x, y, err := images.Size(bytes.NewBuffer(data))
+func imageValidSize(nc *nats.Conn, filename string, minWidth int) error {
+	output, err := broker.RequestMediaInfoScan(nc, filename, time.Second*3)
+	x, y, err := images.Size(bytes.NewBufferString(output.Raw))
 	if err != nil {
 		return err
 	}
@@ -140,17 +143,7 @@ func imageValidSize(data []byte, minWidth int) error {
 	return nil
 }
 
-// picks the image from the audio file
-func extractMediaFromAudioFile(location string) ([]byte, error) {
-	w := &bytes.Buffer{}
-	if err := images.ExtractImageFromMedia(w, location); err != nil {
-		return nil, err
-	}
-	return w.Bytes(), nil
-}
-
-// extractMediaFromDirectory picks first image from directory
-func extractMediaFromDirectory(location string) ([]byte, error) {
+func findArtworkSameDirectory(location string) string {
 	const (
 		pngExt = ".png"
 		jpgExt = ".jpg"
@@ -159,7 +152,7 @@ func extractMediaFromDirectory(location string) ([]byte, error) {
 	dir := filepath.Dir(location)
 	files, err := ioutil.ReadDir(dir)
 	if err != nil {
-		return nil, err
+		return ""
 	}
 	var validImageFiles = helpers.StringSlice([]string{pngExt, jpgExt})
 	var matchedFile os.FileInfo
@@ -174,13 +167,8 @@ func extractMediaFromDirectory(location string) ([]byte, error) {
 		break
 	}
 	if matchedFile == nil {
-		return nil, errors.New("no image file found in dir: " + dir)
+		return ""
 	}
 
-	var imageData []byte
-	if imageData, err = ioutil.ReadFile(filepath.Join(dir, matchedFile.Name())); err != nil {
-		return nil, err
-	}
-
-	return imageData, nil
+	return filepath.Join(dir, matchedFile.Name())
 }

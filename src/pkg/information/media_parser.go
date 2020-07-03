@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func parseMediaInfo(r io.Reader) (*MediaInfo, error) {
+func ParseMediaInfo(r io.Reader) (*MediaInfo, error) {
 	if r == nil {
 		return nil, errors.New("missing parameter: r")
 	}
@@ -182,8 +182,8 @@ func parseMediaInfo(r io.Reader) (*MediaInfo, error) {
 
 type InfoString string
 
-// split will return a key and a value, based in mediainfo text output format
-func (in InfoString) split() (key, value string) {
+// Split will return a key and a value, based in mediainfo text output format
+func (in InfoString) Split() (key, value string) {
 	const sep = ":"
 	val := string(in)
 	firstSep := strings.Index(val, sep)
@@ -206,7 +206,7 @@ func toInfoData(r io.Reader) InfoData {
 	scanner := bufio.NewScanner(r)
 	for scanner.Scan() {
 		info := InfoString(scanner.Text())
-		k, v := info.split()
+		k, v := info.Split()
 		// ignore missing values
 		if v == "" {
 			continue

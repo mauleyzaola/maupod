@@ -8,10 +8,7 @@ import (
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 )
 
-// MediaFromFile returns a MediaInfo slice
-// params can be either one file, many files or even many paths, not necessary
-// pointing to specific audio files, but directories that contain audio files within
-func mediaInfoFromFile(filename string) (*MediaInfo, error) {
+func MediaInfoFromFile(filename string) (*bytes.Buffer, error) {
 	const mediaInfoProgram = "mediainfo"
 	if !helpers.ProgramExists(mediaInfoProgram) {
 		return nil, fmt.Errorf("could not find program: %s in path", mediaInfoProgram)
@@ -29,8 +26,7 @@ func mediaInfoFromFile(filename string) (*MediaInfo, error) {
 	if err != nil {
 		return nil, fmt.Errorf("%s %s : %v", output.String(), errOutput.String(), err)
 	}
-
-	return parseMediaInfo(output)
+	return output, nil
 }
 
 // TODO: implement a unique field parser to discover more fields in the future from mediainfo output

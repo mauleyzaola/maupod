@@ -43,7 +43,17 @@ func (m *MsgHandler) handlerMediaInfo(msg *nats.Msg) {
 	}
 	m.base.Logger().Info("received media info message: " + input.String())
 
-	result, err := information.MediaFromFile(input.FileName)
+	raw, err := information.MediaInfoFromFile(input.FileName)
+	if err != nil {
+		m.base.Logger().Error(err)
+		output.Response.Ok = false
+		output.Response.Error = err.Error()
+		return
+	}
+	var rawStr = raw.String()
+	output.Raw = rawStr
+
+	result, err := information.MediaFromRaw(rawStr)
 	if err != nil {
 		m.base.Logger().Error(err)
 		output.Response.Ok = false

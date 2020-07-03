@@ -19,19 +19,19 @@ func TestInfoString_Split(t *testing.T) {
 		wantValue string
 	}{
 		{
-			name:      "simple split",
+			name:      "simple Split",
 			l:         `Count                                    : 331`,
 			wantKey:   "Count",
 			wantValue: "331",
 		},
 		{
-			name:      "split double colon",
+			name:      "Split double colon",
 			l:         `Format/Url                               : https://xiph.org/flac/`,
 			wantKey:   "Format/Url",
 			wantValue: "https://xiph.org/flac/",
 		},
 		{
-			name:      "split missing value",
+			name:      "Split missing value",
 			l:         `General`,
 			wantKey:   "",
 			wantValue: "",
@@ -39,12 +39,12 @@ func TestInfoString_Split(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotKey, gotValue := tt.l.split()
+			gotKey, gotValue := tt.l.Split()
 			if gotKey != tt.wantKey {
-				t.Errorf("split() gotKey = %v, want %v", gotKey, tt.wantKey)
+				t.Errorf("Split() gotKey = %v, want %v", gotKey, tt.wantKey)
 			}
 			if gotValue != tt.wantValue {
-				t.Errorf("split() gotValue = %v, want %v", gotValue, tt.wantValue)
+				t.Errorf("Split() gotValue = %v, want %v", gotValue, tt.wantValue)
 			}
 		})
 	}
@@ -176,9 +176,9 @@ func TestMediaParser(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			g, err := parseMediaInfo(tt.args.r)
+			g, err := ParseMediaInfo(tt.args.r)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("parseMediaInfo() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("ParseMediaInfo() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if w := tt.want; w != nil {
