@@ -1,9 +1,5 @@
-build: build-player
+build-dev: build-player
 	@echo "[INFO] building micro services in development mode"
-	docker build -f ./dockerfiles/artwork.Dockerfile -t maupod-artwork .
-	docker build -f ./dockerfiles/audioscan.Dockerfile -t maupod-audioscan .
-	docker build -f ./dockerfiles/mediainfo.Dockerfile -t maupod-mediainfo .
-	docker build -f ./dockerfiles/restapi.Dockerfile -t maupod-restapi .
 
 build-player:
 	@echo "[INFO] building player in host"
@@ -12,14 +8,14 @@ build-player:
 clean: down
 	rm -f ./maupod-*
 
-dev: build up logs
+dev: build-dev up logs
 
 down:
-	docker-compose stop
-	docker-compose down
+	docker-compose -f dev.docker-compose.yml stop
+	docker-compose -f dev.docker-compose.yml down
 
 logs:
-	docker-compose logs -f
+	docker-compose -f dev.docker-compose.yml logs -f
 
 force:
 prepare-proto: force
@@ -43,4 +39,4 @@ test:
 
 up:
 	@echo "[INFO] starting docker-compose micro services"
-	docker-compose up -d
+	docker-compose -f dev.docker-compose.yml up --build -d

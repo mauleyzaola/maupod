@@ -1,0 +1,72 @@
+# dev environment
+version: "3.7"
+services:
+  maupod-socket:
+    build:
+      context: .
+      dockerfile: dockerfiles/dev.socket.Dockerfile
+    depends_on:
+      - nats-server
+    ports:
+    - 8080:8080
+
+  maupod-artwork:
+    build:
+      context: .
+      dockerfile: dockerfiles/dev.artwork.Dockerfile
+    environment:
+      - ARTWORK_STORE
+    volumes:
+      - ./:/go/src/github.com/mauleyzaola/maupod/src/server
+      - $MEDIA_STORE:/music-store
+      - $HOME/Downloads/artwork:/artwork
+
+  maupod-audioscan:
+    build:
+      context: .
+      dockerfile: dockerfiles/dev.audioscan.Dockerfile
+    environment:
+      - MEDIA_STORE
+    volumes:
+      - ./:/go/src/github.com/mauleyzaola/maupod/src/server
+      - $MEDIA_STORE:/music-store
+
+  maupod-mediainfo:
+    build:
+      context: .
+      dockerfile: dockerfiles/dev.mediainfo.Dockerfile
+    environment:
+      - MEDIA_STORE
+    volumes:
+      - ./:/go/src/github.com/mauleyzaola/maupod/src/server
+      - $MEDIA_STORE:/music-store
+
+  maupod-restapi:
+    build:
+      context: .
+      dockerfile: dockerfiles/dev.restapi.Dockerfile
+    volumes:
+      - ./:/go/src/github.com/mauleyzaola/maupod/src/server
+      - $HOME/Downloads/artwork:/artwork
+    expose:
+      - 8000
+    ports:
+      - 8000:8000
+      - 9000:9000
+
+  nats-server:
+    image: nats:2.1
+    restart: always
+    ports:
+      - 4222:4222
+
+  pg:
+    image: postgres:9.5
+    environment:
+      - POSTGRES_PASSWORD=nevermind
+    volumes:
+      - $HOME/data/pg/data:/var/lib/postgresql/data
+    expose:
+      - 5432
+    ports:
+      - 5432:5432

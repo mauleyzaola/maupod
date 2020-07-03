@@ -1,8 +1,9 @@
 const WebSocket = require('ws')
 const wsOptions = { port: 8080 };
 const wss = new WebSocket.Server(wsOptions);
+const servers = ['nats://nats-server:4222']
 const NATS = require('nats');
-const nc = NATS.connect({json: true});
+const nc = NATS.connect({json: true, servers: servers});
 const messages = require('./nodepb/messages_pb');
 const ipcCommands = messages.IPCCommand;
 const remoteCommands = messages.RemoteCommand;
