@@ -15,6 +15,7 @@ enum Message {
     MESSAGE_MEDIA_UPDATE = 7;
 
     MESSAGE_IPC = 100;
+    MESSAGE_REST_API_READY = 101;
 
     // specific to mpv events
     MESSAGE_MPV_EOF_REACHED = 202;

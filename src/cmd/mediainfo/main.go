@@ -6,9 +6,10 @@ import (
 	"os/signal"
 	"time"
 
+	"github.com/mauleyzaola/maupod/src/pkg/broker"
+
 	_ "github.com/lib/pq"
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata"
-	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/pkg/rules"
 	"github.com/mauleyzaola/maupod/src/pkg/simplelog"
 	"github.com/mauleyzaola/maupod/src/pkg/types"
@@ -47,11 +48,15 @@ func run() error {
 		return err
 	}
 
-	nc, err := helpers.ConnectNATS(config.NatsUrl, int(config.Retries), time.Second*time.Duration(config.Delay))
+	nc, err := broker.ConnectNATS(config.NatsUrl, int(config.Retries), time.Second*time.Duration(config.Delay))
 	if err != nil {
 		return err
 	}
 	logger.Info("successfully connected to NATS")
+
+	if err = broker.RestAPIPing(nc, int(config.Retries), time.Second*time.Duration(config.Delay)); err != nil {
+		return err
+	}
 
 	db, err := dbdata.ConnectPostgres(config.DbConn, int(config.Retries), time.Second*time.Duration(config.Delay))
 	if err != nil {

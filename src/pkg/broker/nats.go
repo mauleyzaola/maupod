@@ -1,8 +1,10 @@
-package helpers
+package broker
 
 import (
 	"errors"
 	"time"
+
+	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 
 	"github.com/nats-io/nats.go"
 )
@@ -19,7 +21,7 @@ func ConnectNATS(natsURL string, retries int, delay time.Duration) (*nats.Conn, 
 		}
 		return conn != nil
 	}
-	ok, err := RetryFunc("connecting to NATS", retries, delay, fn)
+	ok, err := helpers.RetryFunc("connecting to NATS", retries, delay, fn)
 	if err != nil {
 		return nil, err
 	}
@@ -27,4 +29,22 @@ func ConnectNATS(natsURL string, retries int, delay time.Duration) (*nats.Conn, 
 		return nil, errors.New("[ERROR] could not connect to NATS")
 	}
 	return conn, nil
+}
+
+func RestAPIPing(nc *nats.Conn, retries int, delay time.Duration) error {
+	var ok bool
+	fn := func(retry int) bool {
+		if err := RequestRestAPIReady(nc, delay); err != nil {
+			return false
+		}
+		ok = true
+		return ok
+	}
+	if _, err := helpers.RetryFunc("ping RestAPI", retries, delay, fn); err != nil {
+		return err
+	}
+	if !ok {
+		return errors.New("could not ping RestAPI")
+	}
+	return nil
 }

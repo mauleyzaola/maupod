@@ -6,7 +6,8 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/mauleyzaola/maupod/src/pkg/helpers"
+	"github.com/mauleyzaola/maupod/src/pkg/broker"
+
 	"github.com/mauleyzaola/maupod/src/pkg/rules"
 	"github.com/mauleyzaola/maupod/src/pkg/simplelog"
 	"github.com/mauleyzaola/maupod/src/pkg/types"
@@ -48,7 +49,7 @@ func run() error {
 	// we're outside the docker network, need to hit localhost
 	config.NatsUrl = nats.DefaultURL
 
-	nc, err := helpers.ConnectNATS(config.NatsUrl, int(config.Retries), time.Second*time.Duration(config.Delay))
+	nc, err := broker.ConnectNATS(config.NatsUrl, int(config.Retries), time.Second*time.Duration(config.Delay))
 	if err != nil {
 		return err
 	}

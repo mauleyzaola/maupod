@@ -55,3 +55,8 @@ func RequestIPCCommand(nc *nats.Conn, input *pb.IPCInput, timeout time.Duration)
 	}
 	return output, nil
 }
+
+func RequestRestAPIReady(nc *nats.Conn, timeout time.Duration) error {
+	_, err := nc.Request(strconv.Itoa(int(pb.Message_MESSAGE_REST_API_READY)), nil, timeout)
+	return err
+}
