@@ -10,6 +10,11 @@ clean: down
 
 dev: build-dev up logs
 
+dev-ui:
+	# this value should be in the environment instead
+	# REACT_APP_API_URL="http://localhost:8000" npm run start
+	$(MAKE) -C cmd/ui-player dev
+
 down:
 	docker-compose -f dev.docker-compose.yml stop
 	docker-compose -f dev.docker-compose.yml down
@@ -19,18 +24,17 @@ logs:
 
 force:
 prepare-proto: force
-	rm -rf ./cmd/socket/pb
-	mkdir -p ./cmd/socket/pb
+	rm -rf ./pkg/pb
+	mkdir -p ./pkg/pb
 
 prepare-proto-node: force
 	rm -rf ./cmd/socket/nodepb
-	mkdir -p ./cmd/socket//nodepb
+	mkdir -p ./cmd/socket/nodepb
 
-proto: prepare-proto
+proto: proto-node prepare-proto
 	protoc --proto_path=proto --go_out=pkg/pb --go_opt=paths=source_relative ./proto/*
 
 proto-node: prepare-proto-node
-	# protoc --proto_path=proto --js_out=./cmd/socket/nodepb,binary:. ./proto/*
     # commonjs was the only way of make it work from nodejs with generated js files
 	protoc --proto_path=proto --js_out=import_style=commonjs,binary:cmd/socket/nodepb ./proto/*
 

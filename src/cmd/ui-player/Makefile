@@ -8,4 +8,3 @@ dev: install
 
 install:
 	yarn install
-
