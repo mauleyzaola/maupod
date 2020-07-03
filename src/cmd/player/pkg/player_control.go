@@ -10,8 +10,7 @@ import (
 
 const (
 	timePosThresholdSecs = 0.5
-	// TODO: change to 80%
-	percentToBeCompleted = 10
+	percentToBeCompleted = 80
 	percentToBeSkipped   = 20
 )
 
