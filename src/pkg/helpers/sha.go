@@ -4,6 +4,7 @@ import (
 	"crypto/sha512"
 	"fmt"
 	"io"
+	"os"
 )
 
 func SHA(r io.Reader) ([]byte, error) {
@@ -16,4 +17,17 @@ func SHA(r io.Reader) ([]byte, error) {
 
 func HashFromSHA(data []byte) string {
 	return fmt.Sprintf("%x", string(data))
+}
+
+func SHAFromFile(filename string) (string, error) {
+	file, err := os.Open(filename)
+	if err != nil {
+		return "", err
+	}
+	defer func() { _ = file.Close() }()
+	data, err := SHA(file)
+	if err != nil {
+		return "", err
+	}
+	return HashFromSHA(data), nil
 }

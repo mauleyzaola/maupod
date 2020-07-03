@@ -56,7 +56,7 @@ func TestWalkFiles(t *testing.T) {
 	files := make(map[string]*myfile)
 
 	var fn WalkerFunc = func(name string, isDir bool) bool {
-		t.Logf("walking file: %s isDir: %v", name, isDir)
+		//t.Logf("walking file: %s isDir: %v", name, isDir)
 		myfile := &myfile{
 			base:     filepath.Base(name),
 			fullpath: name,
