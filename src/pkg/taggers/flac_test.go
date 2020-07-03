@@ -10,7 +10,15 @@ import (
 )
 
 func readMediaInfo(filename string) (*pb.Media, error) {
-	return information.MediaFromFile(filename)
+	raw, err := information.MediaInfoFromFile(filename)
+	if err != nil {
+		return nil, err
+	}
+	mediaInfo, err := information.ParseMediaInfo(raw)
+	if err != nil {
+		return nil, err
+	}
+	return mediaInfo.ToProto(), nil
 }
 
 func compareMedia(t *testing.T, m1, m2 *pb.Media) {

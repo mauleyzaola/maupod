@@ -74,9 +74,6 @@ class Album extends React.Component{
         }
     }
 
-    // temporary hack to call the player using rest api
-    // onTrackClick = (r) => playTrack(r);
-
     render() {
         const { album, rows } = this.state;
         return (

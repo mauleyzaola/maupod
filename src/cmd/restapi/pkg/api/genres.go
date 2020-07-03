@@ -3,8 +3,8 @@ package api
 import (
 	"net/http"
 
-	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata/orm"
+	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 )
 
@@ -20,7 +20,7 @@ func (a *ApiServer) GenresListGet(p TransactionExecutorParams) (status int, resu
 func (a *ApiServer) GenreArtworksGet(p TransactionExecutorParams) (status int, result interface{}, err error) {
 	var mods []qm.QueryMod
 	var cols = orm.MediumColumns
-	mods = append(mods, qm.Where(cols.ShaImage+" <> '' "))
+	mods = append(mods, qm.Where(cols.ImageLocation+" <> '' "))
 	rows, err := orm.Media(mods...).All(p.ctx, p.conn)
 	if err != nil {
 		status = http.StatusInternalServerError
@@ -33,7 +33,7 @@ func (a *ApiServer) GenreArtworksGet(p TransactionExecutorParams) (status int, r
 			continue
 		}
 		val := keys[genre]
-		val = append(val, r.ShaImage)
+		val = append(val, r.ImageLocation)
 		keys[genre] = val
 	}
 

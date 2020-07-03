@@ -28,22 +28,6 @@ func NeedsMediaUpdate(m *pb.Media) bool {
 	return diffSeconds < 0
 }
 
-// Needs update compares the file system modified date vs database value
-func NeedsImageUpdate(m *pb.Media) bool {
-	if m.LastImageScan == nil {
-		return true
-	}
-	if m.ModifiedDate == nil {
-		return true
-	}
-	diffSeconds := m.LastImageScan.Seconds - m.ModifiedDate.Seconds
-	return diffSeconds < 0
-}
-
-func MediaHasImage(m *pb.Media) bool {
-	return m.ShaImage != "" && m.ImageLocation != ""
-}
-
 func MediaCheckMinimalData(m *pb.Media) error {
 	if m.Album == "" {
 		return errors.New("media missing: album")

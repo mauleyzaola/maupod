@@ -7,7 +7,6 @@ import (
 
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
-	"github.com/mauleyzaola/maupod/src/pkg/types"
 	"github.com/nats-io/nats.go"
 	"google.golang.org/protobuf/proto"
 )
@@ -27,11 +26,10 @@ func doRequest(nc *nats.Conn, subject pb.Message, input, output proto.Message, t
 	return nil
 }
 
-func RequestMediaInfoScan(nc *nats.Conn, logger types.Logger, filename string, timeout time.Duration) (*pb.Media, error) {
+func RequestMediaInfoScan(nc *nats.Conn, filename string, timeout time.Duration) (*pb.MediaInfoOutput, error) {
 	var output pb.MediaInfoOutput
 	input := &pb.MediaInfoInput{FileName: filename}
 	if err := doRequest(nc, pb.Message_MESSAGE_MEDIA_INFO, input, &output, timeout); err != nil {
-		logger.Error(err)
 		return nil, err
 	}
 	if output.Response == nil {
@@ -45,7 +43,7 @@ func RequestMediaInfoScan(nc *nats.Conn, logger types.Logger, filename string, t
 	}
 	output.Media.ModifiedDate = output.LastModifiedDate
 
-	return output.Media, nil
+	return &output, nil
 }
 
 func RequestIPCCommand(nc *nats.Conn, input *pb.IPCInput, timeout time.Duration) (*pb.IPCOutput, error) {

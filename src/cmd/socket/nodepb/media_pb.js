@@ -118,7 +118,6 @@ proto.pb.Media.toObject = function(includeInstance, msg) {
     writingLibrary: jspb.Message.getFieldWithDefault(msg, 51, ""),
     modifiedDate: (f = msg.getModifiedDate()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
     composer: jspb.Message.getFieldWithDefault(msg, 53, ""),
-    shaImage: jspb.Message.getFieldWithDefault(msg, 54, ""),
     lastImageScan: (f = msg.getLastImageScan()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
     imageLocation: jspb.Message.getFieldWithDefault(msg, 56, ""),
     albumIdentifier: jspb.Message.getFieldWithDefault(msg, 57, ""),
@@ -360,10 +359,6 @@ proto.pb.Media.deserializeBinaryFromReader = function(msg, reader) {
     case 53:
       var value = /** @type {string} */ (reader.readString());
       msg.setComposer(value);
-      break;
-    case 54:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setShaImage(value);
       break;
     case 55:
       var value = new google_protobuf_timestamp_pb.Timestamp;
@@ -760,13 +755,6 @@ proto.pb.Media.serializeBinaryToWriter = function(message, writer) {
   if (f.length > 0) {
     writer.writeString(
       53,
-      f
-    );
-  }
-  f = message.getShaImage();
-  if (f.length > 0) {
-    writer.writeString(
-      54,
       f
     );
   }
@@ -1737,24 +1725,6 @@ proto.pb.Media.prototype.getComposer = function() {
  */
 proto.pb.Media.prototype.setComposer = function(value) {
   return jspb.Message.setProto3StringField(this, 53, value);
-};
-
-
-/**
- * optional string sha_image = 54;
- * @return {string}
- */
-proto.pb.Media.prototype.getShaImage = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 54, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.pb.Media} returns this
- */
-proto.pb.Media.prototype.setShaImage = function(value) {
-  return jspb.Message.setProto3StringField(this, 54, value);
 };
 
 

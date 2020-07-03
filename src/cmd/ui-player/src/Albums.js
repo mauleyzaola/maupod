@@ -6,11 +6,11 @@ import {msToString} from "./helpers";
 
 
 const Thumbnail = ({album}) => {
-    if(!album.sha_image){
+    if(!album.image_location){
         return null;
     }
     return (
-        <img alt='cover' src={`http://localhost:9000/thumbnail/${album.sha_image}.png`} />
+        <img className='artwork-small' alt='cover' src={`http://localhost:9000/${album.image_location}`} />
     )
 }
 

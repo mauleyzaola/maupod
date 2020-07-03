@@ -80,6 +80,7 @@ func ScanDirectoryAudioFiles(
 	store *dbdata.MediaStore,
 	root string,
 	config *pb.Configuration,
+	force bool,
 ) error {
 
 	var err error
@@ -103,10 +104,12 @@ func ScanDirectoryAudioFiles(
 			return false
 		}
 
-		// a bit of speed improvement, avoid a second time scanning the same file unless it has been changed in the file system
-		if val, ok := mediaLocationKeys[filename]; ok {
-			if !rules.NeedsMediaUpdate(val) {
-				return false
+		if !force {
+			// a bit of speed improvement, avoid a second time scanning the same file unless it has been changed in the file system
+			if val, ok := mediaLocationKeys[filename]; ok {
+				if !rules.NeedsMediaUpdate(val) {
+					return false
+				}
 			}
 		}
 
@@ -123,10 +126,12 @@ func ScanDirectoryAudioFiles(
 	var timeout = time.Second * time.Duration(config.Delay)
 	for _, f := range files {
 		var m *pb.Media
-		if m, err = broker.RequestMediaInfoScan(nc, logger, f, timeout); err != nil {
+		var output *pb.MediaInfoOutput
+		if output, err = broker.RequestMediaInfoScan(nc, f, timeout); err != nil {
 			logger.Error(err)
 			continue
 		}
+		m = output.Media
 
 		// if the minimal information such as track, album and performer are not present, ignore this scan
 		// TODO: send another NATS message for storing these errors
@@ -143,6 +148,7 @@ func ScanDirectoryAudioFiles(
 		// if the location is the same and we made it here, that means we need to update the row
 		if val, ok := mediaLocationKeys[f]; ok {
 			m.Id = val.Id
+			m.AlbumIdentifier = val.AlbumIdentifier
 			if err = store.Update(ctx, conn, m, updatableFields()...); err != nil {
 				return err
 			}
@@ -160,8 +166,8 @@ func ScanDirectoryAudioFiles(
 			}
 		}
 
-		// send message for extracting artwork if needed
-		if rules.NeedsImageUpdate(m) {
+		// send message for extracting artwork if album has identifier
+		if m.AlbumIdentifier != "" {
 			if err = broker.PublishBroker(nc, pb.Message_MESSAGE_ARTWORK_SCAN, &pb.ArtworkExtractInput{Media: m, ScanDate: helpers.TimeToTs2(scanDate)}); err != nil {
 				logger.Error(err)
 			}
