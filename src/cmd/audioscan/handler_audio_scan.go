@@ -37,6 +37,7 @@ func (m *MsgHandler) handlerAudioScan(msg *nats.Msg) {
 		&dbdata.MediaStore{},
 		input.Root,
 		m.config,
+		input.Force,
 	); err != nil {
 		m.base.Logger().Error(err)
 		return

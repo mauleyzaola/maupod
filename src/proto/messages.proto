@@ -85,6 +85,7 @@ message Response {
 message ScanDirectoryAudioFilesInput {
     string root = 1;
     google.protobuf.Timestamp scan_date = 2;
+    bool force = 3;
 }
 
 message TrackStartedInput {

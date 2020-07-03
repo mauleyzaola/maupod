@@ -3,8 +3,8 @@ package rules
 import "github.com/mauleyzaola/maupod/src/pkg/pb"
 
 func ArtworkFileName(media *pb.Media) string {
-	if media.ShaImage == "" {
+	if media.AlbumIdentifier == "" {
 		return ""
 	}
-	return media.ShaImage + ".png"
+	return media.AlbumIdentifier + ".png"
 }

@@ -1634,7 +1634,8 @@ proto.pb.ScanDirectoryAudioFilesInput.prototype.toObject = function(opt_includeI
 proto.pb.ScanDirectoryAudioFilesInput.toObject = function(includeInstance, msg) {
   var f, obj = {
     root: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    scanDate: (f = msg.getScanDate()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f)
+    scanDate: (f = msg.getScanDate()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    force: jspb.Message.getBooleanFieldWithDefault(msg, 3, false)
   };
 
   if (includeInstance) {
@@ -1680,6 +1681,10 @@ proto.pb.ScanDirectoryAudioFilesInput.deserializeBinaryFromReader = function(msg
       reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
       msg.setScanDate(value);
       break;
+    case 3:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setForce(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -1722,6 +1727,13 @@ proto.pb.ScanDirectoryAudioFilesInput.serializeBinaryToWriter = function(message
       2,
       f,
       google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getForce();
+  if (f) {
+    writer.writeBool(
+      3,
+      f
     );
   }
 };
@@ -1779,6 +1791,24 @@ proto.pb.ScanDirectoryAudioFilesInput.prototype.clearScanDate = function() {
  */
 proto.pb.ScanDirectoryAudioFilesInput.prototype.hasScanDate = function() {
   return jspb.Message.getField(this, 2) != null;
+};
+
+
+/**
+ * optional bool force = 3;
+ * @return {boolean}
+ */
+proto.pb.ScanDirectoryAudioFilesInput.prototype.getForce = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 3, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.pb.ScanDirectoryAudioFilesInput} returns this
+ */
+proto.pb.ScanDirectoryAudioFilesInput.prototype.setForce = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 3, value);
 };
 
 

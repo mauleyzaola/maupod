@@ -80,6 +80,7 @@ func ScanDirectoryAudioFiles(
 	store *dbdata.MediaStore,
 	root string,
 	config *pb.Configuration,
+	force bool,
 ) error {
 
 	var err error
@@ -103,10 +104,12 @@ func ScanDirectoryAudioFiles(
 			return false
 		}
 
-		// a bit of speed improvement, avoid a second time scanning the same file unless it has been changed in the file system
-		if val, ok := mediaLocationKeys[filename]; ok {
-			if !rules.NeedsMediaUpdate(val) {
-				return false
+		if !force {
+			// a bit of speed improvement, avoid a second time scanning the same file unless it has been changed in the file system
+			if val, ok := mediaLocationKeys[filename]; ok {
+				if !rules.NeedsMediaUpdate(val) {
+					return false
+				}
 			}
 		}
 
@@ -146,6 +149,12 @@ func ScanDirectoryAudioFiles(
 			if err = store.Update(ctx, conn, m, updatableFields()...); err != nil {
 				return err
 			}
+
+			// send message for extracting artwork
+			if err = broker.PublishBroker(nc, pb.Message_MESSAGE_ARTWORK_SCAN, &pb.ArtworkExtractInput{Media: val, ScanDate: helpers.TimeToTs2(scanDate)}); err != nil {
+				logger.Error(err)
+			}
+
 		} else {
 			// consider assigning album identifier (experimental feature only on new media)
 			var albumIdentifier string
@@ -157,13 +166,6 @@ func ScanDirectoryAudioFiles(
 			m.IsCompilation = isCompilation
 			if err = store.Insert(ctx, conn, m); err != nil {
 				return err
-			}
-		}
-
-		// send message for extracting artwork if needed
-		if rules.NeedsImageUpdate(m) {
-			if err = broker.PublishBroker(nc, pb.Message_MESSAGE_ARTWORK_SCAN, &pb.ArtworkExtractInput{Media: m, ScanDate: helpers.TimeToTs2(scanDate)}); err != nil {
-				logger.Error(err)
 			}
 		}
 
