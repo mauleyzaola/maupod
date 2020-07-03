@@ -148,15 +148,10 @@ func ScanDirectoryAudioFiles(
 		// if the location is the same and we made it here, that means we need to update the row
 		if val, ok := mediaLocationKeys[f]; ok {
 			m.Id = val.Id
+			m.AlbumIdentifier = val.AlbumIdentifier
 			if err = store.Update(ctx, conn, m, updatableFields()...); err != nil {
 				return err
 			}
-
-			// send message for extracting artwork
-			if err = broker.PublishBroker(nc, pb.Message_MESSAGE_ARTWORK_SCAN, &pb.ArtworkExtractInput{Media: val, ScanDate: helpers.TimeToTs2(scanDate)}); err != nil {
-				logger.Error(err)
-			}
-
 		} else {
 			// consider assigning album identifier (experimental feature only on new media)
 			var albumIdentifier string
@@ -168,6 +163,13 @@ func ScanDirectoryAudioFiles(
 			m.IsCompilation = isCompilation
 			if err = store.Insert(ctx, conn, m); err != nil {
 				return err
+			}
+		}
+
+		// send message for extracting artwork if album has identifier
+		if m.AlbumIdentifier != "" {
+			if err = broker.PublishBroker(nc, pb.Message_MESSAGE_ARTWORK_SCAN, &pb.ArtworkExtractInput{Media: m, ScanDate: helpers.TimeToTs2(scanDate)}); err != nil {
+				logger.Error(err)
 			}
 		}
 

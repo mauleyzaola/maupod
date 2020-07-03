@@ -25,12 +25,8 @@ func AlbumGroupDetection(ctx context.Context, conn boil.ContextExecutor, media *
 	if err != nil {
 		return
 	}
-	if len(rows) == 0 {
-		// there is no way of knowing what this is yet, we assume it is a compilation
-		isCompilation = true
-		return
-	}
-	isCompilation = false
+
+	// TODO: implement compilation
 	for _, v := range rows {
 		if v.AlbumIdentifier != "" {
 			albumIdentifier = v.AlbumIdentifier
@@ -38,13 +34,14 @@ func AlbumGroupDetection(ctx context.Context, conn boil.ContextExecutor, media *
 		}
 	}
 	// not assigned yet, then create one
-	albumIdentifier = helpers.NewUUID()
+	if albumIdentifier == "" {
+		albumIdentifier = helpers.NewUUID()
+	}
 
 	for _, v := range rows {
-		if v.AlbumIdentifier != albumIdentifier || v.IsCompilation != isCompilation {
+		if v.AlbumIdentifier != albumIdentifier {
 			v.AlbumIdentifier = albumIdentifier
-			v.IsCompilation = isCompilation
-			if _, err = v.Update(ctx, conn, boil.Whitelist(cols.AlbumIdentifier, cols.IsCompilation)); err != nil {
+			if _, err = v.Update(ctx, conn, boil.Whitelist(cols.AlbumIdentifier)); err != nil {
 				return
 			}
 		}
