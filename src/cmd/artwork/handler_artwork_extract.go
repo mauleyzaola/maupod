@@ -24,8 +24,6 @@ import (
 	"github.com/nats-io/nats.go"
 )
 
-const thumbnailDir = "thumbnail"
-
 func (m *MsgHandler) handlerArtworkExtract(msg *nats.Msg) {
 	var err error
 	var input pb.ArtworkExtractInput
@@ -50,62 +48,40 @@ func (m *MsgHandler) handlerArtworkExtract(msg *nats.Msg) {
 		}
 	}()
 
-	var imageFileLocation string
-	var data []byte
-
 	input.Media.LastImageScan = helpers.TimeToTs(helpers.Now())
+	if input.Media.AlbumIdentifier == "" {
+		// the album identifier is a 1:1 match with the image file, if not present, cannot process artwork
+		return
+	}
+
+	var coverLocation string
 
 	// check if artwork already exist for the same album
 	var artworkPath = artworkFullPath(m.config, input.Media)
 	if _, err = os.Stat(artworkPath); err == nil {
-		var file *os.File
-		if file, err = os.Open(artworkPath); err != nil {
-			log.Println(err)
-			return
-		}
-		if data, err = helpers.SHA(file); err != nil {
-			log.Println(err)
-			return
-		}
-		if err = file.Close(); err != nil {
-			log.Println(err)
-			return
-		}
-		input.Media.ShaImage = helpers.HashFromSHA(data)
+		log.Printf("track: %s album: %s already exists artwork\n", input.Media.Track, input.Media.Album)
+		input.Media.ImageLocation = rules.ArtworkFileName(input.Media)
 		return
 	}
 
 	// check for the image in the same directory of the audio file
-	if imageFileLocation = findArtworkSameDirectory(input.Media.Location); imageFileLocation == "" {
+	if coverLocation = findArtworkSameDirectory(input.Media.Location); coverLocation == "" {
 		return
 	}
-
-	// TODO: this is a fucking mess
-	// 1. use mediainfo for getting image size
-	// 2. use imagemagick for resize and png conversion
-	// convert cover.jpg -resize 300x300 cover.png :D
 
 	// check shape and size are valid
-	if err = imageValidSize(m.base.NATS(), imageFileLocation, int(m.config.ArtworkBigSize)); err != nil {
+	if err = imageValidSize(m.base.NATS(), coverLocation, int(m.config.ArtworkBigSize)); err != nil {
 		log.Println(err)
 		return
 	}
 
-	if err = imageWriteArtwork(imageFileLocation, artworkPath, int(m.config.ArtworkBigSize)); err != nil {
+	if err = imageWriteArtwork(coverLocation, artworkPath, int(m.config.ArtworkBigSize)); err != nil {
 		log.Println(err)
 		return
 	}
 
-	if data, err = ioutil.ReadFile(artworkPath); err != nil {
-		log.Println(err)
-		return
-	}
-
-	if data, err = helpers.SHA(bytes.NewBuffer(data)); err != nil {
-		log.Println(err)
-		return
-	}
-	input.Media.ShaImage = helpers.HashFromSHA(data)
+	// if we got this far, assign the artwork value to the track
+	input.Media.ImageLocation = rules.ArtworkFileName(input.Media)
 	return
 }
 

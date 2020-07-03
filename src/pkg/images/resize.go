@@ -2,16 +2,11 @@ package images
 
 import (
 	"bufio"
-	"bytes"
-	"errors"
-	"fmt"
 	"io"
-	"os/exec"
 	"strconv"
 
-	"github.com/mauleyzaola/maupod/src/pkg/helpers"
-
 	"github.com/mauleyzaola/maupod/src/pkg/information"
+	"gopkg.in/gographics/imagick.v2/imagick"
 )
 
 func Size(r io.Reader) (x, y int, err error) {
@@ -39,31 +34,17 @@ func Size(r io.Reader) (x, y int, err error) {
 }
 
 func ImageResize(source, target string, width, height int) error {
-	const program = "convert"
-	if !helpers.ProgramExists(program) {
-		return fmt.Errorf("could not find program: %s in path", program)
+	imagick.Initialize()
+	defer imagick.Terminate()
+	mw := imagick.NewMagickWand()
+	if err := mw.ReadImage(source); err != nil {
+		return err
 	}
-	if source == "" {
-		return errors.New("missing parameter: source")
+	if err := mw.ResizeImage(uint(width), uint(height), imagick.FILTER_LANCZOS, 1); err != nil {
+		return err
 	}
-	if target == "" {
-		return errors.New("missing parameter: target")
-	}
-
-	var p = []string{
-		source,
-		fmt.Sprintf("-resize=%dx%d", width, height),
-		target,
-	}
-	p = append(p, source)
-	cmd := exec.Command(program, p...)
-	output := &bytes.Buffer{}
-	errOutput := &bytes.Buffer{}
-	cmd.Stdout = output
-	cmd.Stderr = errOutput
-	err := cmd.Run()
-	if err != nil {
-		return fmt.Errorf("%s %s : %v", output.String(), errOutput.String(), err)
+	if err := mw.WriteImage(target); err != nil {
+		return err
 	}
 	return nil
 }

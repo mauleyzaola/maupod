@@ -61,7 +61,6 @@ func MediaToORM(v *pb.Media) *orm.Medium {
 		WritingLibrary:        v.WritingLibrary,
 		ModifiedDate:          helpers.TsToTime2(v.ModifiedDate),
 		Composer:              v.Composer,
-		ShaImage:              v.ShaImage,
 		LastImageScan:         null.TimeFromPtr(helpers.TsToTime(v.LastImageScan)),
 		ImageLocation:         v.ImageLocation,
 		AlbumIdentifier:       v.AlbumIdentifier,
@@ -122,7 +121,6 @@ func MediaFromORM(v *orm.Medium) *pb.Media {
 		ModifiedDate:          helpers.TimeToTs2(v.ModifiedDate),
 		Composer:              v.Composer,
 		LastImageScan:         helpers.TimeToTs(v.LastImageScan.Ptr()),
-		ShaImage:              v.ShaImage,
 		ImageLocation:         v.ImageLocation,
 		AlbumIdentifier:       v.AlbumIdentifier,
 		IsCompilation:         v.IsCompilation,
@@ -138,21 +136,22 @@ func MediasFromORM(a ...*orm.Medium) []*pb.Media {
 }
 
 func ViewAlbumToMedia(v *orm.ViewAlbum) *pb.Media {
-	return &pb.Media{
+	m := &pb.Media{
 		Id:              v.ID.String,
 		Format:          v.Format.String,
-		FileSize:        int64(v.FileSize.Float64),
-		Duration:        float64(v.Duration.Float64),
+		FileSize:        v.FileSize.Int64,
 		Album:           v.Album.String,
 		Performer:       v.Performer.String,
 		Genre:           v.Genre.String,
-		RecordedDate:    int64(v.RecordedDate.Int),
-		SamplingRate:    int64(v.SamplingRate.Float64),
-		BitRate:         int64(v.BitRate.Float64),
-		TrackNameTotal:  int64(v.TrackNameTotal.Int),
-		ShaImage:        v.ShaImage.String,
+		RecordedDate:    v.RecordedDate.Int64,
+		SamplingRate:    v.SamplingRate.Int64,
+		BitRate:         v.BitRate.Int64,
+		TrackNameTotal:  v.TrackNameTotal.Int64,
 		AlbumIdentifier: v.AlbumIdentifier.String,
+		Duration:        float64(v.Duration.Int64),
+		ImageLocation:   v.ImageLocation.String,
 	}
+	return m
 }
 
 func ViewAlbumsToMedia(a ...*orm.ViewAlbum) []*pb.Media {

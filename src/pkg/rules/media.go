@@ -28,10 +28,6 @@ func NeedsMediaUpdate(m *pb.Media) bool {
 	return diffSeconds < 0
 }
 
-func MediaHasImage(m *pb.Media) bool {
-	return m.ShaImage != "" && m.ImageLocation != ""
-}
-
 func MediaCheckMinimalData(m *pb.Media) error {
 	if m.Album == "" {
 		return errors.New("media missing: album")

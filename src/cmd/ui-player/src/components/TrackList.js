@@ -28,10 +28,10 @@ const TrackListRow = ({row}) => {
     row.recorded_date = row.recorded_date || '';
     const modifiedDate = row.modified_date ? secondsToDate(row.modified_date.seconds).toLocaleDateString() : '';
     const Thumbnail = () => {
-        if(!row.sha_image){
+        if(!row.image_location){
             return null;
         }
-        return <img style={{width: '30px'}}  alt='cover' src={`http://localhost:9000/thumbnail/${row.sha_image}.png`} />;
+        return <img style={{width: '30px'}}  alt='cover' src={`http://localhost:9000/${row.image_location}`} />;
     }
     return (
         <tr>

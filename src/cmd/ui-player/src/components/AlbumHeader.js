@@ -4,11 +4,11 @@ import { Link } from "react-router-dom";
 import { linkGenreList, linkPerformerList } from "../routes";
 
 const Thumbnail = ({album}) => {
-    if(!album.sha_image){
+    if(!album.image_location){
         return null;
     }
     return (
-        <img alt='cover' src={`http://localhost:9000/${album.sha_image}.png`} />
+        <img alt='cover' src={`http://localhost:9000/${album.image_location}`} />
     )
 }
 

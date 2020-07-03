@@ -31,7 +31,6 @@ func ArtworkDbUpdate(ctx context.Context, conn boil.ContextExecutor, media *pb.M
 	var cols = orm.MediumColumns
 	return store.Update(ctx, conn, media,
 		cols.ImageLocation,
-		cols.ShaImage,
 		cols.LastImageScan,
 		cols.ModifiedDate,
 	)
