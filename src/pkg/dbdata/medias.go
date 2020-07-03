@@ -1,6 +1,6 @@
 package dbdata
 
-import "github.com/mauleyzaola/maupod/src/server/pkg/pb"
+import "github.com/mauleyzaola/maupod/src/pkg/pb"
 
 type Medias []*pb.Media
 

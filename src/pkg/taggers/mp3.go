@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/pkg/pb"
 )
 
 const id3v2 = "id3v2"

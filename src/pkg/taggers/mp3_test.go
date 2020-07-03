@@ -3,7 +3,7 @@ package taggers
 import (
 	"testing"
 
-	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

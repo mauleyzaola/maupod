@@ -4,9 +4,9 @@ import (
 	"database/sql"
 	"strconv"
 
-	"github.com/mauleyzaola/maupod/src/server/pkg/handler"
-	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
-	"github.com/mauleyzaola/maupod/src/server/pkg/types"
+	"github.com/mauleyzaola/maupod/src/pkg/handler"
+	"github.com/mauleyzaola/maupod/src/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/pkg/types"
 	"github.com/nats-io/nats.go"
 )
 

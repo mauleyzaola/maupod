@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/mauleyzaola/maupod/src/server/pkg/broker"
-	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/pkg/broker"
+	"github.com/mauleyzaola/maupod/src/pkg/pb"
 )
 
 func (a *ApiServer) IPCPost(p TransactionExecutorParams) (status int, result interface{}, err error) {

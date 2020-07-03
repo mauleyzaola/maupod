@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/pkg/pb"
 )
 
 type Tagger interface {

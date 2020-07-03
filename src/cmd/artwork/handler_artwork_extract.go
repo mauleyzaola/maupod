@@ -13,12 +13,12 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata"
-	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
-	"github.com/mauleyzaola/maupod/src/server/pkg/images"
-	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
-	"github.com/mauleyzaola/maupod/src/server/pkg/rules"
-	"github.com/mauleyzaola/maupod/src/server/pkg/types"
+	"github.com/mauleyzaola/maupod/src/pkg/dbdata"
+	"github.com/mauleyzaola/maupod/src/pkg/helpers"
+	"github.com/mauleyzaola/maupod/src/pkg/images"
+	"github.com/mauleyzaola/maupod/src/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/pkg/rules"
+	"github.com/mauleyzaola/maupod/src/pkg/types"
 	"github.com/nats-io/nats.go"
 )
 

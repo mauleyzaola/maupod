@@ -1,4 +1,4 @@
-module github.com/mauleyzaola/maupod/src/server
+module github.com/mauleyzaola/maupod/src
 
 go 1.14
 

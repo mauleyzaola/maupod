@@ -1,7 +1,7 @@
 package broker
 
 import (
-	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"google.golang.org/protobuf/proto"
 )
 

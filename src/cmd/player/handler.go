@@ -3,11 +3,11 @@ package main
 import (
 	"strconv"
 
-	"github.com/mauleyzaola/maupod/src/server/cmd/player/pkg"
-	"github.com/mauleyzaola/maupod/src/server/pkg/broker"
-	"github.com/mauleyzaola/maupod/src/server/pkg/handler"
-	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
-	"github.com/mauleyzaola/maupod/src/server/pkg/types"
+	"github.com/mauleyzaola/maupod/src/cmd/player/pkg"
+	"github.com/mauleyzaola/maupod/src/pkg/broker"
+	"github.com/mauleyzaola/maupod/src/pkg/handler"
+	"github.com/mauleyzaola/maupod/src/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/pkg/types"
 	"github.com/nats-io/nats.go"
 	"google.golang.org/protobuf/proto"
 )

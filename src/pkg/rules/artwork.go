@@ -1,6 +1,6 @@
 package rules
 
-import "github.com/mauleyzaola/maupod/src/server/pkg/pb"
+import "github.com/mauleyzaola/maupod/src/pkg/pb"
 
 func ArtworkFileName(media *pb.Media) string {
 	if media.ShaImage == "" {

@@ -6,7 +6,7 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
+	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 )
 
 func run(program, filename string, params ...string) error {

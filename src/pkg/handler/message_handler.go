@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"github.com/mauleyzaola/maupod/src/server/pkg/types"
+	"github.com/mauleyzaola/maupod/src/pkg/types"
 	"github.com/nats-io/nats.go"
 )
 

@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
-	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
-	"github.com/mauleyzaola/maupod/src/server/pkg/taggers"
+	"github.com/mauleyzaola/maupod/src/pkg/helpers"
+	"github.com/mauleyzaola/maupod/src/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/pkg/taggers"
 	"github.com/nats-io/nats.go"
 )
 

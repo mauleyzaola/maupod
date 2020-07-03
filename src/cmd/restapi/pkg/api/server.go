@@ -7,11 +7,10 @@ import (
 	"net/http"
 
 	"github.com/nats-io/nats.go"
-
 	schema "github.com/gorilla/Schema"
-	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata"
-	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
-	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/pkg/dbdata"
+	"github.com/mauleyzaola/maupod/src/pkg/helpers"
+	"github.com/mauleyzaola/maupod/src/pkg/pb"
 )
 
 type ApiServer struct {

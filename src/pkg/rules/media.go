@@ -4,7 +4,7 @@ import (
 	"errors"
 	"os"
 
-	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/pkg/pb"
 )
 
 // FileInfo returns the information from the file system about a media item

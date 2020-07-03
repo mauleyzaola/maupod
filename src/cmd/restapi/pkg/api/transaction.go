@@ -7,7 +7,7 @@ import (
 	"strconv"
 
 	schema "github.com/gorilla/Schema"
-	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
+	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 	"github.com/volatiletech/sqlboiler/boil"
 )
 

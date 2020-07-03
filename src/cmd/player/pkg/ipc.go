@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/DexterLB/mpvipc"
-	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/pkg/pb"
 )
 
 type DispatcherFunc func(v interface{})

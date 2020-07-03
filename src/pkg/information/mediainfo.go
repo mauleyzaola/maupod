@@ -1,7 +1,7 @@
 package information
 
 import (
-	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/pkg/pb"
 )
 
 func MediaFromFile(filename string) (*pb.Media, error) {

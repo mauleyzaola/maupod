@@ -3,9 +3,8 @@ package api
 import (
 	"net/http"
 
-	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
-
-	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata/orm"
+	"github.com/mauleyzaola/maupod/src/pkg/helpers"
+	"github.com/mauleyzaola/maupod/src/pkg/dbdata/orm"
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 )
 

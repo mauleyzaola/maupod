@@ -7,11 +7,11 @@ import (
 	"time"
 
 	_ "github.com/lib/pq"
-	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata"
-	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
-	"github.com/mauleyzaola/maupod/src/server/pkg/rules"
-	"github.com/mauleyzaola/maupod/src/server/pkg/simplelog"
-	"github.com/mauleyzaola/maupod/src/server/pkg/types"
+	"github.com/mauleyzaola/maupod/src/pkg/dbdata"
+	"github.com/mauleyzaola/maupod/src/pkg/helpers"
+	"github.com/mauleyzaola/maupod/src/pkg/rules"
+	"github.com/mauleyzaola/maupod/src/pkg/simplelog"
+	"github.com/mauleyzaola/maupod/src/pkg/types"
 	"github.com/spf13/viper"
 )
 

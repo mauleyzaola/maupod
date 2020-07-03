@@ -3,10 +3,10 @@ package main
 import (
 	"context"
 
-	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata"
-	"github.com/mauleyzaola/maupod/src/server/pkg/dbdata/orm"
-	"github.com/mauleyzaola/maupod/src/server/pkg/helpers"
-	"github.com/mauleyzaola/maupod/src/server/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/pkg/dbdata"
+	"github.com/mauleyzaola/maupod/src/pkg/dbdata/orm"
+	"github.com/mauleyzaola/maupod/src/pkg/helpers"
+	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/nats-io/nats.go"
 )
 
