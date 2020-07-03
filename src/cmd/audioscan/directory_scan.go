@@ -68,6 +68,7 @@ func updatableFields() []string {
 		cols.StreamIdentifier,
 		cols.WritingLibrary,
 		cols.Composer,
+		cols.Sha,
 	}
 	return fields
 }
@@ -157,6 +158,9 @@ func ScanDirectoryAudioFiles(
 			m.Id = val.Id
 			m.AlbumIdentifier = val.AlbumIdentifier
 			if err = store.Update(ctx, conn, m, updatableFields()...); err != nil {
+				return err
+			}
+			if err = broker.PublishMediaSHAUpdate(nc, m); err != nil {
 				return err
 			}
 		} else {

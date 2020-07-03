@@ -50,10 +50,11 @@ func (m *MsgHandler) handlerTrackSkipped(msg *nats.Msg) {
 
 func insertEvent(ctx context.Context, conn boil.ContextExecutor, event pb.Message, media *pb.Media) error {
 	var mediaEvent = orm.MediaEvent{
-		ID:    helpers.NewUUID(),
-		Sha:   media.Sha,
-		TS:    time.Now(),
-		Event: int(event),
+		ID:      helpers.NewUUID(),
+		Sha:     media.Sha,
+		TS:      time.Now(),
+		Event:   int(event),
+		MediaID: media.Id,
 	}
 	return mediaEvent.Insert(ctx, conn, boil.Infer())
 }

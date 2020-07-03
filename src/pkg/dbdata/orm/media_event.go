@@ -23,25 +23,28 @@ import (
 
 // MediaEvent is an object representing the database table.
 type MediaEvent struct {
-	ID    string    `boil:"id" json:"id" toml:"id" yaml:"id"`
-	Sha   string    `boil:"sha" json:"sha" toml:"sha" yaml:"sha"`
-	TS    time.Time `boil:"ts" json:"ts" toml:"ts" yaml:"ts"`
-	Event int       `boil:"event" json:"event" toml:"event" yaml:"event"`
+	ID      string    `boil:"id" json:"id" toml:"id" yaml:"id"`
+	Sha     string    `boil:"sha" json:"sha" toml:"sha" yaml:"sha"`
+	MediaID string    `boil:"media_id" json:"media_id" toml:"media_id" yaml:"media_id"`
+	TS      time.Time `boil:"ts" json:"ts" toml:"ts" yaml:"ts"`
+	Event   int       `boil:"event" json:"event" toml:"event" yaml:"event"`
 
 	R *mediaEventR `boil:"-" json:"-" toml:"-" yaml:"-"`
 	L mediaEventL  `boil:"-" json:"-" toml:"-" yaml:"-"`
 }
 
 var MediaEventColumns = struct {
-	ID    string
-	Sha   string
-	TS    string
-	Event string
+	ID      string
+	Sha     string
+	MediaID string
+	TS      string
+	Event   string
 }{
-	ID:    "id",
-	Sha:   "sha",
-	TS:    "ts",
-	Event: "event",
+	ID:      "id",
+	Sha:     "sha",
+	MediaID: "media_id",
+	TS:      "ts",
+	Event:   "event",
 }
 
 // Generated where
@@ -70,15 +73,17 @@ func (w whereHelperint) NIN(slice []int) qm.QueryMod {
 }
 
 var MediaEventWhere = struct {
-	ID    whereHelperstring
-	Sha   whereHelperstring
-	TS    whereHelpertime_Time
-	Event whereHelperint
+	ID      whereHelperstring
+	Sha     whereHelperstring
+	MediaID whereHelperstring
+	TS      whereHelpertime_Time
+	Event   whereHelperint
 }{
-	ID:    whereHelperstring{field: "\"media_event\".\"id\""},
-	Sha:   whereHelperstring{field: "\"media_event\".\"sha\""},
-	TS:    whereHelpertime_Time{field: "\"media_event\".\"ts\""},
-	Event: whereHelperint{field: "\"media_event\".\"event\""},
+	ID:      whereHelperstring{field: "\"media_event\".\"id\""},
+	Sha:     whereHelperstring{field: "\"media_event\".\"sha\""},
+	MediaID: whereHelperstring{field: "\"media_event\".\"media_id\""},
+	TS:      whereHelpertime_Time{field: "\"media_event\".\"ts\""},
+	Event:   whereHelperint{field: "\"media_event\".\"event\""},
 }
 
 // MediaEventRels is where relationship names are stored.
@@ -98,8 +103,8 @@ func (*mediaEventR) NewStruct() *mediaEventR {
 type mediaEventL struct{}
 
 var (
-	mediaEventAllColumns            = []string{"id", "sha", "ts", "event"}
-	mediaEventColumnsWithoutDefault = []string{"id", "sha", "ts", "event"}
+	mediaEventAllColumns            = []string{"id", "sha", "media_id", "ts", "event"}
+	mediaEventColumnsWithoutDefault = []string{"id", "sha", "media_id", "ts", "event"}
 	mediaEventColumnsWithDefault    = []string{}
 	mediaEventPrimaryKeyColumns     = []string{"id"}
 )

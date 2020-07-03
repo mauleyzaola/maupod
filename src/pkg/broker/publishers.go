@@ -32,3 +32,7 @@ func PublishMediaUpdateDb(nc *nats.Conn, media *pb.Media) error {
 func PublishMediaTagUpdate(nc *nats.Conn, media *pb.Media) error {
 	return PublishBroker(nc, pb.Message_MESSAGE_TAG_UPDATE, media)
 }
+
+func PublishMediaSHAUpdate(nc *nats.Conn, media *pb.Media) error {
+	return PublishBroker(nc, pb.Message_MESSAGE_MEDIA_UPDATE_SHA, media)
+}

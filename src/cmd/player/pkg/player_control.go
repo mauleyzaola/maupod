@@ -10,7 +10,7 @@ import (
 
 const (
 	timePosThresholdSecs = 0.5
-	percentToBeCompleted = 80
+	percentToBeCompleted = 50
 	percentToBeSkipped   = 20
 )
 

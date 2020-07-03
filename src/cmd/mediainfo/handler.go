@@ -46,6 +46,10 @@ func (m *MsgHandler) Register() error {
 			Subject: strconv.Itoa(int(pb.Message_MESSAGE_EVENT_ON_TRACK_SKIP_COUNT_INCREASE)),
 			Handler: m.handlerTrackSkipped,
 		},
+		handler.Subscription{
+			Subject: strconv.Itoa(int(pb.Message_MESSAGE_MEDIA_UPDATE_SHA)),
+			Handler: m.handlerUpdateSHA,
+		},
 	)
 }
 
