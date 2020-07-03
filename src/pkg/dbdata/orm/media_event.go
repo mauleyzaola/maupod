@@ -23,25 +23,25 @@ import (
 
 // MediaEvent is an object representing the database table.
 type MediaEvent struct {
-	ID      string    `boil:"id" json:"id" toml:"id" yaml:"id"`
-	MediaID string    `boil:"media_id" json:"media_id" toml:"media_id" yaml:"media_id"`
-	TS      time.Time `boil:"ts" json:"ts" toml:"ts" yaml:"ts"`
-	Event   int       `boil:"event" json:"event" toml:"event" yaml:"event"`
+	ID    string    `boil:"id" json:"id" toml:"id" yaml:"id"`
+	Sha   string    `boil:"sha" json:"sha" toml:"sha" yaml:"sha"`
+	TS    time.Time `boil:"ts" json:"ts" toml:"ts" yaml:"ts"`
+	Event int       `boil:"event" json:"event" toml:"event" yaml:"event"`
 
 	R *mediaEventR `boil:"-" json:"-" toml:"-" yaml:"-"`
 	L mediaEventL  `boil:"-" json:"-" toml:"-" yaml:"-"`
 }
 
 var MediaEventColumns = struct {
-	ID      string
-	MediaID string
-	TS      string
-	Event   string
+	ID    string
+	Sha   string
+	TS    string
+	Event string
 }{
-	ID:      "id",
-	MediaID: "media_id",
-	TS:      "ts",
-	Event:   "event",
+	ID:    "id",
+	Sha:   "sha",
+	TS:    "ts",
+	Event: "event",
 }
 
 // Generated where
@@ -70,27 +70,23 @@ func (w whereHelperint) NIN(slice []int) qm.QueryMod {
 }
 
 var MediaEventWhere = struct {
-	ID      whereHelperstring
-	MediaID whereHelperstring
-	TS      whereHelpertime_Time
-	Event   whereHelperint
+	ID    whereHelperstring
+	Sha   whereHelperstring
+	TS    whereHelpertime_Time
+	Event whereHelperint
 }{
-	ID:      whereHelperstring{field: "\"media_event\".\"id\""},
-	MediaID: whereHelperstring{field: "\"media_event\".\"media_id\""},
-	TS:      whereHelpertime_Time{field: "\"media_event\".\"ts\""},
-	Event:   whereHelperint{field: "\"media_event\".\"event\""},
+	ID:    whereHelperstring{field: "\"media_event\".\"id\""},
+	Sha:   whereHelperstring{field: "\"media_event\".\"sha\""},
+	TS:    whereHelpertime_Time{field: "\"media_event\".\"ts\""},
+	Event: whereHelperint{field: "\"media_event\".\"event\""},
 }
 
 // MediaEventRels is where relationship names are stored.
 var MediaEventRels = struct {
-	Medium string
-}{
-	Medium: "Medium",
-}
+}{}
 
 // mediaEventR is where relationships are stored.
 type mediaEventR struct {
-	Medium *Medium `boil:"Medium" json:"Medium" toml:"Medium" yaml:"Medium"`
 }
 
 // NewStruct creates a new relationship struct
@@ -102,8 +98,8 @@ func (*mediaEventR) NewStruct() *mediaEventR {
 type mediaEventL struct{}
 
 var (
-	mediaEventAllColumns            = []string{"id", "media_id", "ts", "event"}
-	mediaEventColumnsWithoutDefault = []string{"id", "media_id", "ts", "event"}
+	mediaEventAllColumns            = []string{"id", "sha", "ts", "event"}
+	mediaEventColumnsWithoutDefault = []string{"id", "sha", "ts", "event"}
 	mediaEventColumnsWithDefault    = []string{}
 	mediaEventPrimaryKeyColumns     = []string{"id"}
 )
@@ -197,163 +193,6 @@ func (q mediaEventQuery) Exists(ctx context.Context, exec boil.ContextExecutor) 
 	}
 
 	return count > 0, nil
-}
-
-// Medium pointed to by the foreign key.
-func (o *MediaEvent) Medium(mods ...qm.QueryMod) mediumQuery {
-	queryMods := []qm.QueryMod{
-		qm.Where("\"id\" = ?", o.MediaID),
-	}
-
-	queryMods = append(queryMods, mods...)
-
-	query := Media(queryMods...)
-	queries.SetFrom(query.Query, "\"media\"")
-
-	return query
-}
-
-// LoadMedium allows an eager lookup of values, cached into the
-// loaded structs of the objects. This is for an N-1 relationship.
-func (mediaEventL) LoadMedium(ctx context.Context, e boil.ContextExecutor, singular bool, maybeMediaEvent interface{}, mods queries.Applicator) error {
-	var slice []*MediaEvent
-	var object *MediaEvent
-
-	if singular {
-		object = maybeMediaEvent.(*MediaEvent)
-	} else {
-		slice = *maybeMediaEvent.(*[]*MediaEvent)
-	}
-
-	args := make([]interface{}, 0, 1)
-	if singular {
-		if object.R == nil {
-			object.R = &mediaEventR{}
-		}
-		args = append(args, object.MediaID)
-
-	} else {
-	Outer:
-		for _, obj := range slice {
-			if obj.R == nil {
-				obj.R = &mediaEventR{}
-			}
-
-			for _, a := range args {
-				if a == obj.MediaID {
-					continue Outer
-				}
-			}
-
-			args = append(args, obj.MediaID)
-
-		}
-	}
-
-	if len(args) == 0 {
-		return nil
-	}
-
-	query := NewQuery(
-		qm.From(`media`),
-		qm.WhereIn(`media.id in ?`, args...),
-	)
-	if mods != nil {
-		mods.Apply(query)
-	}
-
-	results, err := query.QueryContext(ctx, e)
-	if err != nil {
-		return errors.Wrap(err, "failed to eager load Medium")
-	}
-
-	var resultSlice []*Medium
-	if err = queries.Bind(results, &resultSlice); err != nil {
-		return errors.Wrap(err, "failed to bind eager loaded slice Medium")
-	}
-
-	if err = results.Close(); err != nil {
-		return errors.Wrap(err, "failed to close results of eager load for media")
-	}
-	if err = results.Err(); err != nil {
-		return errors.Wrap(err, "error occurred during iteration of eager loaded relations for media")
-	}
-
-	if len(resultSlice) == 0 {
-		return nil
-	}
-
-	if singular {
-		foreign := resultSlice[0]
-		object.R.Medium = foreign
-		if foreign.R == nil {
-			foreign.R = &mediumR{}
-		}
-		foreign.R.MediaEvents = append(foreign.R.MediaEvents, object)
-		return nil
-	}
-
-	for _, local := range slice {
-		for _, foreign := range resultSlice {
-			if local.MediaID == foreign.ID {
-				local.R.Medium = foreign
-				if foreign.R == nil {
-					foreign.R = &mediumR{}
-				}
-				foreign.R.MediaEvents = append(foreign.R.MediaEvents, local)
-				break
-			}
-		}
-	}
-
-	return nil
-}
-
-// SetMedium of the mediaEvent to the related item.
-// Sets o.R.Medium to related.
-// Adds o to related.R.MediaEvents.
-func (o *MediaEvent) SetMedium(ctx context.Context, exec boil.ContextExecutor, insert bool, related *Medium) error {
-	var err error
-	if insert {
-		if err = related.Insert(ctx, exec, boil.Infer()); err != nil {
-			return errors.Wrap(err, "failed to insert into foreign table")
-		}
-	}
-
-	updateQuery := fmt.Sprintf(
-		"UPDATE \"media_event\" SET %s WHERE %s",
-		strmangle.SetParamNames("\"", "\"", 1, []string{"media_id"}),
-		strmangle.WhereClause("\"", "\"", 2, mediaEventPrimaryKeyColumns),
-	)
-	values := []interface{}{related.ID, o.ID}
-
-	if boil.IsDebug(ctx) {
-		writer := boil.DebugWriterFrom(ctx)
-		fmt.Fprintln(writer, updateQuery)
-		fmt.Fprintln(writer, values)
-	}
-	if _, err = exec.ExecContext(ctx, updateQuery, values...); err != nil {
-		return errors.Wrap(err, "failed to update local table")
-	}
-
-	o.MediaID = related.ID
-	if o.R == nil {
-		o.R = &mediaEventR{
-			Medium: related,
-		}
-	} else {
-		o.R.Medium = related
-	}
-
-	if related.R == nil {
-		related.R = &mediumR{
-			MediaEvents: MediaEventSlice{o},
-		}
-	} else {
-		related.R.MediaEvents = append(related.R.MediaEvents, o)
-	}
-
-	return nil
 }
 
 // MediaEvents retrieves all the records using an executor.

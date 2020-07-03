@@ -3,7 +3,7 @@
 
 create table media_event (
     id text primary key ,
-    media_id text not null references media(id),
+    sha text not null,
     ts timestamp with time zone not null,
     event int not null
 );
