@@ -70,3 +70,11 @@ services:
       - 5432
     ports:
       - 5432:5432
+
+  redis:
+    image: redis:5-alpine
+    command: "redis-server --appendonly yes"
+    volumes:
+      - $HOME/data/redis/data:/data
+    ports:
+      - 6379:6379
