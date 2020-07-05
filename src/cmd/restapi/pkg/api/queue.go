@@ -1,19 +1,21 @@
 package api
 
 import (
+	"context"
 	"net/http"
 
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata/conversion"
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata/orm"
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/pkg/types"
+	"github.com/volatiletech/sqlboiler/v4/boil"
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 )
 
-func (a *ApiServer) QueueListGet(p TransactionExecutorParams) (status int, result interface{}, err error) {
-	rows, err := orm.MediaQueues(qm.OrderBy(orm.MediaQueueColumns.ID+" asc")).All(p.ctx, p.conn)
+func queueList(ctx context.Context, conn boil.ContextExecutor) (types.Medias, error) {
+	rows, err := orm.MediaQueues(qm.OrderBy(orm.MediaQueueColumns.ID+" asc")).All(ctx, conn)
 	if err != nil {
-		status = http.StatusInternalServerError
-		return
+		return nil, err
 	}
 
 	var ids []interface{}
@@ -21,10 +23,9 @@ func (a *ApiServer) QueueListGet(p TransactionExecutorParams) (status int, resul
 		ids = append(ids, v.MediaID)
 	}
 
-	medias, err := orm.Media(qm.WhereIn(orm.MediumColumns.ID+" in ?", ids...)).All(p.ctx, p.conn)
+	medias, err := orm.Media(qm.WhereIn(orm.MediumColumns.ID+" in ?", ids...)).All(ctx, conn)
 	if err != nil {
-		status = http.StatusInternalServerError
-		return
+		return nil, err
 	}
 	var keys = make(map[string]*pb.Media)
 	for _, v := range medias {
@@ -39,7 +40,14 @@ func (a *ApiServer) QueueListGet(p TransactionExecutorParams) (status int, resul
 		}
 		res = append(res, val)
 	}
-	result = res
+	return res, nil
+}
+
+func (a *ApiServer) QueueGet(p TransactionExecutorParams) (status int, result interface{}, err error) {
+	if result, err = queueList(p.ctx, p.conn); err != nil {
+		status = http.StatusInternalServerError
+		return
+	}
 	return
 }
 
@@ -49,5 +57,40 @@ func (a *ApiServer) QueuePost(p TransactionExecutorParams) (status int, result i
 		status = http.StatusBadRequest
 		return
 	}
+
+	list, err := queueList(p.ctx, p.conn)
+	if err != nil {
+		status = http.StatusInternalServerError
+		return
+	}
+
+	if list, err = list.InsertAt(input.Media, int(input.Index)); err != nil {
+		status = http.StatusBadRequest
+		return
+	}
+	result = list
+	return
+}
+
+func (a *ApiServer) QueueDelete(p TransactionExecutorParams) (status int, result interface{}, err error) {
+	var input = struct {
+		Index int `schema:"index"`
+	}{}
+	if err = p.DecodeQuery(&input); err != nil {
+		status = http.StatusBadRequest
+		return
+	}
+
+	list, err := queueList(p.ctx, p.conn)
+	if err != nil {
+		status = http.StatusInternalServerError
+		return
+	}
+
+	if list, err = list.RemoveAt(input.Index); err != nil {
+		status = http.StatusBadRequest
+		return
+	}
+	result = list
 	return
 }

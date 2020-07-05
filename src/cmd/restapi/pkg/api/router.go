@@ -36,7 +36,9 @@ func SetupRoutes(a *ApiServer, output io.Writer) http.Handler {
 	baseRouter.HandleFunc("/media", chainGlueCors(a.MediaListGet)).Methods(http.MethodOptions, http.MethodGet)
 	baseRouter.HandleFunc("/media/albums", chainGlueCors(a.AlbumViewListGet)).Methods(http.MethodOptions, http.MethodGet)
 
-	baseRouter.HandleFunc("/queue/list", chainGlueCors(a.QueueListGet)).Methods(http.MethodOptions, http.MethodGet)
+	baseRouter.HandleFunc("/queue", chainGlueCors(a.QueueGet)).Methods(http.MethodOptions, http.MethodGet)
+	baseRouter.HandleFunc("/queue", chainGlueCors(a.QueuePost)).Methods(http.MethodOptions, http.MethodPost)
+	baseRouter.HandleFunc("/queue", chainGlueCors(a.QueueDelete)).Methods(http.MethodOptions, http.MethodDelete)
 
 	if output != nil {
 		return handlers.CombinedLoggingHandler(output, baseRouter)
