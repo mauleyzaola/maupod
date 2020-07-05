@@ -6,7 +6,6 @@ import {REMOTE_PAUSE, REMOTE_PLAY, REMOTE_VOLUME} from "../consts";
 
 const socket = new W3CWebSocket(`ws://localhost:8080`);
 
-// missing fields, issues with deserializing data in the server
 const cleanMedia = media => {
     const result = Object.assign({}, media);
     result.recorded_date = result.recorded_date || 0;
