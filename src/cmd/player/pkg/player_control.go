@@ -11,7 +11,7 @@ import (
 const (
 	timePosThresholdSecs = 0.5
 	percentToBeCompleted = 50
-	percentToBeSkipped   = 20
+	percentToBeSkipped   = 5
 )
 
 // PlayerControl is a bridge between the mpv events and maupod events
