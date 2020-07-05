@@ -7,6 +7,12 @@ If you are not developing, then nothing is needed to be done
 ### Imagemagick Install
 
 ```
+sudo apt-get update && sudo apt-get install -y libmagickwand-dev
+```
+
+Maupod is **not** compatible with latest version, anyway this is how it can be installed
+
+```
 wget https://www.imagemagick.org/download/ImageMagick.tar.gz
 tar xvzf ImageMagick.tar.gz
 cd ImageMagick-7.0.10-23/

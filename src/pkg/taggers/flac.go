@@ -7,7 +7,7 @@ import (
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
 )
 
-const metaflac = "metaflac"
+const flacTagProgram = "metaflac"
 
 type FLACTagger struct{}
 
@@ -41,14 +41,14 @@ func (t *FLACTagger) Tag(media *pb.Media, filename string) error {
 	if media.TrackNameTotal != 0 {
 		addParam("TOTALTRACKS", strconv.Itoa(int(media.TrackNameTotal)))
 	}
-	if err := run(metaflac, filename, params...); err != nil {
+	if err := run(flacTagProgram, filename, params...); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (t *FLACTagger) RemoveAll(filename string) error {
-	if err := run(metaflac, filename, "--remove-all"); err != nil {
+	if err := run(flacTagProgram, filename, "--remove-all"); err != nil {
 		return err
 	}
 	return nil

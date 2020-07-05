@@ -7,7 +7,7 @@ import (
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
 )
 
-const id3v2 = "id3v2"
+const mp3TagProgram = "id3v2"
 
 type MP3Tagger struct{}
 
@@ -38,14 +38,14 @@ func (t *MP3Tagger) Tag(media *pb.Media, filename string) error {
 		addParam("--comment", fmt.Sprintf(":%s", media.Comment))
 	}
 
-	if err := run(id3v2, filename, params...); err != nil {
+	if err := run(mp3TagProgram, filename, params...); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (t *MP3Tagger) RemoveAll(filename string) error {
-	if err := run(id3v2, filename, "-D"); err != nil {
+	if err := run(mp3TagProgram, filename, "-D"); err != nil {
 		return err
 	}
 	return nil

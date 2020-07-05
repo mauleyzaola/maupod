@@ -26,12 +26,17 @@ func SetupRoutes(a *ApiServer, output io.Writer) http.Handler {
 
 	baseRouter.HandleFunc("/audio/scan", chainGlueCors(a.AudioScanPost)).Methods(http.MethodOptions, http.MethodPost)
 	baseRouter.HandleFunc("/artwork/scan", chainGlueCors(a.ArtworkScanPost)).Methods(http.MethodOptions, http.MethodPost)
+
 	baseRouter.HandleFunc("/genres", chainGlueCors(a.GenresListGet)).Methods(http.MethodOptions, http.MethodGet)
 	baseRouter.HandleFunc("/genres/artwork", chainGlueCors(a.GenreArtworksGet)).Methods(http.MethodOptions, http.MethodGet)
+
 	baseRouter.HandleFunc("/ipc", chainGlueCors(a.IPCPost)).Methods(http.MethodOptions, http.MethodPost)
+
 	baseRouter.HandleFunc("/media/{field}/distinct", chainGlueCors(a.DistinctListGet)).Methods(http.MethodOptions, http.MethodGet)
 	baseRouter.HandleFunc("/media", chainGlueCors(a.MediaListGet)).Methods(http.MethodOptions, http.MethodGet)
 	baseRouter.HandleFunc("/media/albums", chainGlueCors(a.AlbumViewListGet)).Methods(http.MethodOptions, http.MethodGet)
+
+	baseRouter.HandleFunc("/queue/list", chainGlueCors(a.QueueListGet)).Methods(http.MethodOptions, http.MethodGet)
 
 	if output != nil {
 		return handlers.CombinedLoggingHandler(output, baseRouter)

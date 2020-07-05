@@ -6,11 +6,13 @@ package orm
 var TableNames = struct {
 	Media      string
 	MediaEvent string
+	MediaQueue string
 	ViewAlbums string
 	ViewGenres string
 }{
 	Media:      "media",
 	MediaEvent: "media_event",
+	MediaQueue: "media_queue",
 	ViewAlbums: "view_albums",
 	ViewGenres: "view_genres",
 }

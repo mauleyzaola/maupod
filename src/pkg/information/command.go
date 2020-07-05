@@ -28,8 +28,3 @@ func MediaInfoFromFile(filename string) (*bytes.Buffer, error) {
 	}
 	return output, nil
 }
-
-// TODO: implement a unique field parser to discover more fields in the future from mediainfo output
-//func MediaInfoFieldFinder(filename string) ([]string, error) {
-//	return nil, errors.New("not implemented")
-//}

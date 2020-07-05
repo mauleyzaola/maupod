@@ -36,13 +36,6 @@ func TestMP3Tagger(t *testing.T) {
 			wantErr:      false,
 			removedMedia: &pb.Media{},
 		},
-		//{
-		//	args: args{
-		//		filename: "./test_data/wrong.mp3",
-		//	},
-		//	wantErr:      true,
-		//	removedMedia: nil,
-		//},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t1 *testing.T) {
