@@ -51,7 +51,7 @@ services:
     expose:
       - 8000
     ports:
-      - 8000:8000
+      - 8888:8000
       - 9000:9000
 
   nats-server:
@@ -69,5 +69,5 @@ services:
     expose:
       - 5432
     ports:
-      - 5432:5432
+      - 5433:5432
 

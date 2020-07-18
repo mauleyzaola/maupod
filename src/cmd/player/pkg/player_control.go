@@ -35,7 +35,6 @@ func (p *PlayerControl) OnSongEnded(m *pb.Media) {
 }
 
 func (p *PlayerControl) OnSongStarted(m *pb.Media) {
-	// evaluate p.lastPercentPos to consider if this track was skipped or not
 	if p.m == nil || p.m.Id != m.Id {
 		if p.lastPercentPos >= percentToBeSkipped && p.lastPercentPos < percentToBeCompleted {
 			input := &pb.TrackSkippedInput{

@@ -27,7 +27,7 @@ export MEDIA_STORE="/media/mau/music-library/music"
 And this other needs to point to the ip of the backend
 
 ```
-export REACT_APP_API_URL="http://localhost:8000"
+export REACT_APP_API_URL="http://localhost:8888"
 ```
 
 In one terminal 
