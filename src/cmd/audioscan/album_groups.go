@@ -12,14 +12,13 @@ import (
 
 // AlbumGroupDetection will calculate based on the current media, the album_identifier,
 // and whether it is or not a compilation
-func AlbumGroupDetection(ctx context.Context, conn boil.ContextExecutor, media *pb.Media) (albumIdentifier string, isCompilation bool, err error) {
+func AlbumGroupDetection(ctx context.Context, conn boil.ContextExecutor, media *pb.Media) (albumIdentifier string, err error) {
 	var mods []qm.QueryMod
 	var where = orm.MediumWhere
 	var cols = orm.MediumColumns
 
-	// read rows same album and performer
-	mods = append(mods, where.Performer.EQ(media.Performer))
-	mods = append(mods, where.Album.EQ(media.Album))
+	// read rows same directory
+	mods = append(mods, where.Directory.EQ(media.Directory))
 
 	rows, err := orm.Media(mods...).All(ctx, conn)
 	if err != nil {

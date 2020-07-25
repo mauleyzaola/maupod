@@ -72,6 +72,7 @@ proto.pb.Media.toObject = function(includeInstance, msg) {
     sha: jspb.Message.getFieldWithDefault(msg, 2, ""),
     location: jspb.Message.getFieldWithDefault(msg, 3, ""),
     lastScan: (f = msg.getLastScan()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    directory: jspb.Message.getFieldWithDefault(msg, 5, ""),
     fileExtension: jspb.Message.getFieldWithDefault(msg, 6, ""),
     format: jspb.Message.getFieldWithDefault(msg, 7, ""),
     fileSize: jspb.Message.getFieldWithDefault(msg, 8, 0),
@@ -120,8 +121,7 @@ proto.pb.Media.toObject = function(includeInstance, msg) {
     composer: jspb.Message.getFieldWithDefault(msg, 53, ""),
     lastImageScan: (f = msg.getLastImageScan()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
     imageLocation: jspb.Message.getFieldWithDefault(msg, 56, ""),
-    albumIdentifier: jspb.Message.getFieldWithDefault(msg, 57, ""),
-    isCompilation: jspb.Message.getBooleanFieldWithDefault(msg, 58, false)
+    albumIdentifier: jspb.Message.getFieldWithDefault(msg, 57, "")
   };
 
   if (includeInstance) {
@@ -174,6 +174,10 @@ proto.pb.Media.deserializeBinaryFromReader = function(msg, reader) {
       var value = new google_protobuf_timestamp_pb.Timestamp;
       reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
       msg.setLastScan(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setDirectory(value);
       break;
     case 6:
       var value = /** @type {string} */ (reader.readString());
@@ -373,10 +377,6 @@ proto.pb.Media.deserializeBinaryFromReader = function(msg, reader) {
       var value = /** @type {string} */ (reader.readString());
       msg.setAlbumIdentifier(value);
       break;
-    case 58:
-      var value = /** @type {boolean} */ (reader.readBool());
-      msg.setIsCompilation(value);
-      break;
     default:
       reader.skipField();
       break;
@@ -433,6 +433,13 @@ proto.pb.Media.serializeBinaryToWriter = function(message, writer) {
       4,
       f,
       google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getDirectory();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
     );
   }
   f = message.getFileExtension();
@@ -780,13 +787,6 @@ proto.pb.Media.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getIsCompilation();
-  if (f) {
-    writer.writeBool(
-      58,
-      f
-    );
-  }
 };
 
 
@@ -878,6 +878,24 @@ proto.pb.Media.prototype.clearLastScan = function() {
  */
 proto.pb.Media.prototype.hasLastScan = function() {
   return jspb.Message.getField(this, 4) != null;
+};
+
+
+/**
+ * optional string directory = 5;
+ * @return {string}
+ */
+proto.pb.Media.prototype.getDirectory = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.pb.Media} returns this
+ */
+proto.pb.Media.prototype.setDirectory = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
 };
 
 
@@ -1798,24 +1816,6 @@ proto.pb.Media.prototype.getAlbumIdentifier = function() {
  */
 proto.pb.Media.prototype.setAlbumIdentifier = function(value) {
   return jspb.Message.setProto3StringField(this, 57, value);
-};
-
-
-/**
- * optional bool is_compilation = 58;
- * @return {boolean}
- */
-proto.pb.Media.prototype.getIsCompilation = function() {
-  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 58, false));
-};
-
-
-/**
- * @param {boolean} value
- * @return {!proto.pb.Media} returns this
- */
-proto.pb.Media.prototype.setIsCompilation = function(value) {
-  return jspb.Message.setProto3BooleanField(this, 58, value);
 };
 
 

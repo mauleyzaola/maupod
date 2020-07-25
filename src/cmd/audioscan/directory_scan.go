@@ -151,6 +151,7 @@ func ScanDirectoryAudioFiles(
 		m.Id = helpers.NewUUID()
 		m.LastScan = helpers.TimeToTs(&scanDate)
 		m.Location = f
+		m.Directory = filepath.Dir(m.Location)
 		m.FileExtension = filepath.Ext(f)
 
 		// if the location is the same and we made it here, that means we need to update the row
@@ -166,12 +167,10 @@ func ScanDirectoryAudioFiles(
 		} else {
 			// consider assigning album identifier (experimental feature only on new media)
 			var albumIdentifier string
-			var isCompilation bool
-			if albumIdentifier, isCompilation, err = AlbumGroupDetection(ctx, conn, m); err != nil {
+			if albumIdentifier, err = AlbumGroupDetection(ctx, conn, m); err != nil {
 				return err
 			}
 			m.AlbumIdentifier = albumIdentifier
-			m.IsCompilation = isCompilation
 			if err = store.Insert(ctx, conn, m); err != nil {
 				return err
 			}

@@ -64,7 +64,7 @@ func MediaToORM(v *pb.Media) *orm.Medium {
 		LastImageScan:         null.TimeFromPtr(helpers.TsToTime(v.LastImageScan)),
 		ImageLocation:         v.ImageLocation,
 		AlbumIdentifier:       v.AlbumIdentifier,
-		IsCompilation:         v.IsCompilation,
+		Directory:             v.Directory,
 	}
 }
 
@@ -123,7 +123,7 @@ func MediaFromORM(v *orm.Medium) *pb.Media {
 		LastImageScan:         helpers.TimeToTs(v.LastImageScan.Ptr()),
 		ImageLocation:         v.ImageLocation,
 		AlbumIdentifier:       v.AlbumIdentifier,
-		IsCompilation:         v.IsCompilation,
+		Directory:             v.Directory,
 	}
 }
 

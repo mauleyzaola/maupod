@@ -18,6 +18,8 @@ message Media {
     // date the media file was scanned
     google.protobuf.Timestamp last_scan = 4;
 
+    string directory = 5;
+
     string file_extension = 6;
     string format = 7;
     int64 file_size = 8;
@@ -69,6 +71,5 @@ message Media {
 
     string image_location = 56;
     string album_identifier = 57;
-    bool is_compilation = 58;
 }
 
