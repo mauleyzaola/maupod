@@ -6,18 +6,53 @@ import {msToString } from "./helpers";
 import Player from "./components/Player";
 
 
-const TrackListHeader = () => (
-    <thead>
-    <tr>
-        <th>#</th>
-        <th>Track</th>
-        <th>Duration</th>
-        <th>Format</th>
-    </tr>
-    </thead>
-)
+const TrackListHeader = ({isCompilation}) => {
+    if(isCompilation) {
+        return (
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Track</th>
+                <th>Performer</th>
+                <th>Duration</th>
+                <th>Format</th>
+            </tr>
+            </thead>
+        )
+    }
+    return (
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Track</th>
+            <th>Duration</th>
+            <th>Format</th>
+        </tr>
+        </thead>
+    )
+}
 
-const TrackListRow = ({row}) => {
+const TrackListRow = ({isCompilation, row}) => {
+    if(isCompilation){
+        return (
+            <tr>
+                <td>{row.track_position}</td>
+                <td>
+                    <div className='row'>
+                        <div className='col-1'>
+                            <Player visible={true} media={row} />
+                        </div>
+                        <div className='col-11'>
+                            {row.track}
+                        </div>
+                    </div>
+                </td>
+                <td>{row.performer}</td>
+                <td>{msToString(row.duration)}</td>
+                <td>{row.format}</td>
+            </tr>
+        )
+    }
     return (
         <tr>
             <td>{row.track_position}</td>
@@ -45,7 +80,23 @@ class Album extends React.Component{
             album:null,
             rows: [],
             genre: '',
+            isCompilation: false,
         }
+    }
+
+    isCompilation = (rows) => {
+        let performer = '';
+        for(let i = 0; i < rows.length; i++){
+            const row = rows[i];
+            if(i === 0){
+                performer = row.performer;
+                continue;
+            }
+            if(performer !== row.performer){
+                return true;
+            }
+        }
+        return false;
     }
 
     loadData = search => {
@@ -58,7 +109,10 @@ class Album extends React.Component{
             })
             .then(() => mediaList({ sort:'track_position', direction: 'asc', ...search}))
             .then(res => res.data || [])
-            .then(rows => this.setState({rows, album}))
+            .then(rows => {
+                const isCompilation = this.isCompilation(rows);
+                this.setState({rows, album, isCompilation})
+            })
     }
 
     componentDidMount() {
@@ -75,14 +129,14 @@ class Album extends React.Component{
     }
 
     render() {
-        const { album, rows } = this.state;
+        const { album, rows, isCompilation } = this.state;
         return (
             <div>
                 <AlbumHeader album={album} />
                 <table className='table table-bordered table-hover table-striped'>
-                    <TrackListHeader />
+                    <TrackListHeader isCompilation={isCompilation}/>
                     <tbody>
-                    {rows.map(row => <TrackListRow key={row.id} row={row} />)}
+                    {rows.map(row => <TrackListRow key={row.id} row={row} isCompilation={isCompilation} />)}
                     </tbody>
                 </table>
             </div>
