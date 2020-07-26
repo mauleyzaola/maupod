@@ -35,16 +35,11 @@ func (p *PlayerControl) OnSongEnded(m *pb.Media) {
 }
 
 func (p *PlayerControl) OnSongStarted(m *pb.Media) {
-	if p.m == nil || p.m.Id != m.Id {
-		if p.lastPercentPos >= percentToBeSkipped && p.lastPercentPos < percentToBeCompleted {
-			input := &pb.TrackSkippedInput{
-				Media:     m,
-				Timestamp: helpers.TimeToTs(helpers.Now()),
-			}
-			_ = p.publishFn(pb.Message_MESSAGE_EVENT_ON_TRACK_SKIP_COUNT_INCREASE, input)
-		}
-	}
+	// read state
+	var isNewTrack = p.m == nil || p.m.Id != m.Id
+	var lastPercentPos = p.lastPercentPos
 
+	// initialize values
 	p.lastPercentPos = 0
 	p.m = m
 	p.lastTimePos = 0
@@ -55,6 +50,16 @@ func (p *PlayerControl) OnSongStarted(m *pb.Media) {
 		Timestamp: helpers.TimeToTs(helpers.Now()),
 	}
 	_ = p.publishFn(pb.Message_MESSAGE_EVENT_ON_TRACK_STARTED, input)
+
+	if isNewTrack {
+		if lastPercentPos >= percentToBeSkipped && lastPercentPos < percentToBeCompleted {
+			input := &pb.TrackSkippedInput{
+				Media:     m,
+				Timestamp: helpers.TimeToTs(helpers.Now()),
+			}
+			_ = p.publishFn(pb.Message_MESSAGE_EVENT_ON_TRACK_SKIP_COUNT_INCREASE, input)
+		}
+	}
 }
 
 func (p *PlayerControl) onTimePosChanged(v float64) {

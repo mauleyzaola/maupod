@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"errors"
 	"net/http"
 
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata/conversion"
@@ -64,10 +65,23 @@ func (a *ApiServer) QueuePost(p TransactionExecutorParams) (status int, result i
 		return
 	}
 
-	if list, err = list.InsertAt(input.Media, int(input.Index)); err != nil {
-		status = http.StatusBadRequest
-		return
+	if input.Index == 0 {
+		if input.NamedPosition == pb.NamedPosition_POSITION_TOP {
+			list.InsertTop(input.Media)
+		} else if input.NamedPosition == pb.NamedPosition_POSITION_BOTTOM {
+			list.InsertBottom(input.Media)
+		} else {
+			err = errors.New("invalid named position and missing index, what should we do")
+			status = http.StatusBadRequest
+			return
+		}
+	} else {
+		if list, err = list.InsertAt(input.Media, int(input.Index)); err != nil {
+			status = http.StatusBadRequest
+			return
+		}
 	}
+
 	result = list
 	return
 }

@@ -24,6 +24,7 @@ goog.exportSymbol('proto.pb.IPCOutput', null, global);
 goog.exportSymbol('proto.pb.MediaInfoInput', null, global);
 goog.exportSymbol('proto.pb.MediaInfoOutput', null, global);
 goog.exportSymbol('proto.pb.Message', null, global);
+goog.exportSymbol('proto.pb.NamedPosition', null, global);
 goog.exportSymbol('proto.pb.QueueInput', null, global);
 goog.exportSymbol('proto.pb.RemoteCommand', null, global);
 goog.exportSymbol('proto.pb.Response', null, global);
@@ -1526,7 +1527,8 @@ proto.pb.QueueInput.prototype.toObject = function(opt_includeInstance) {
 proto.pb.QueueInput.toObject = function(includeInstance, msg) {
   var f, obj = {
     media: (f = msg.getMedia()) && media_pb.Media.toObject(includeInstance, f),
-    index: jspb.Message.getFieldWithDefault(msg, 2, 0)
+    index: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    namedPosition: jspb.Message.getFieldWithDefault(msg, 3, 0)
   };
 
   if (includeInstance) {
@@ -1572,6 +1574,10 @@ proto.pb.QueueInput.deserializeBinaryFromReader = function(msg, reader) {
       var value = /** @type {number} */ (reader.readInt64());
       msg.setIndex(value);
       break;
+    case 3:
+      var value = /** @type {!proto.pb.NamedPosition} */ (reader.readEnum());
+      msg.setNamedPosition(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -1613,6 +1619,13 @@ proto.pb.QueueInput.serializeBinaryToWriter = function(message, writer) {
   if (f !== 0) {
     writer.writeInt64(
       2,
+      f
+    );
+  }
+  f = message.getNamedPosition();
+  if (f !== 0.0) {
+    writer.writeEnum(
+      3,
       f
     );
   }
@@ -1671,6 +1684,24 @@ proto.pb.QueueInput.prototype.getIndex = function() {
  */
 proto.pb.QueueInput.prototype.setIndex = function(value) {
   return jspb.Message.setProto3IntField(this, 2, value);
+};
+
+
+/**
+ * optional NamedPosition named_position = 3;
+ * @return {!proto.pb.NamedPosition}
+ */
+proto.pb.QueueInput.prototype.getNamedPosition = function() {
+  return /** @type {!proto.pb.NamedPosition} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/**
+ * @param {!proto.pb.NamedPosition} value
+ * @return {!proto.pb.QueueInput} returns this
+ */
+proto.pb.QueueInput.prototype.setNamedPosition = function(value) {
+  return jspb.Message.setProto3EnumField(this, 3, value);
 };
 
 
@@ -2886,6 +2917,14 @@ proto.pb.IPCCommand = {
   IPC_PAUSE: 1,
   IPC_LOAD: 2,
   IPC_VOLUME: 3
+};
+
+/**
+ * @enum {number}
+ */
+proto.pb.NamedPosition = {
+  POSITION_TOP: 0,
+  POSITION_BOTTOM: 1
 };
 
 /**

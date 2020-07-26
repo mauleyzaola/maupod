@@ -28,7 +28,6 @@ enum Message {
     MESSAGE_EVENT_ON_TRACK_FINISHED = 251;
     MESSAGE_EVENT_ON_TRACK_PLAY_COUNT_INCREASE = 252;
     MESSAGE_EVENT_ON_TRACK_SKIP_COUNT_INCREASE = 253;
-    MESSAGE_EVENT_ON_TRACK_PLAYED = 254;
 }
 
 enum IPCCommand {
@@ -36,6 +35,11 @@ enum IPCCommand {
     IPC_PAUSE = 1;
     IPC_LOAD = 2;
     IPC_VOLUME = 3;
+}
+
+enum NamedPosition {
+    POSITION_TOP = 0;
+    POSITION_BOTTOM = 1;
 }
 
 // these are commands that will be sent from the browser to the websocket server
@@ -81,6 +85,7 @@ message MediaInfoOutput {
 message QueueInput {
     Media media = 1;
     int64 index = 2;
+    NamedPosition named_position = 3;
 }
 
 message Response {
