@@ -28,6 +28,11 @@ enum Message {
     MESSAGE_EVENT_ON_TRACK_FINISHED = 251;
     MESSAGE_EVENT_ON_TRACK_PLAY_COUNT_INCREASE = 252;
     MESSAGE_EVENT_ON_TRACK_SKIP_COUNT_INCREASE = 253;
+
+    // queue management
+    MESSAGE_QUEUE_LIST = 300;
+    MESSAGE_QUEUE_ADD = 301;
+    MESSAGE_QUEUE_REMOVE = 302;
 }
 
 enum IPCCommand {
@@ -86,6 +91,11 @@ message QueueInput {
     Media media = 1;
     int64 index = 2;
     NamedPosition named_position = 3;
+}
+
+message QueueOutput {
+    repeated Media rows = 1;
+    string error = 2;
 }
 
 message Response {

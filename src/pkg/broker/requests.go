@@ -64,3 +64,36 @@ func RequestRestAPIReady(nc *nats.Conn, timeout time.Duration) error {
 	_, err := nc.Request(strconv.Itoa(int(pb.Message_MESSAGE_REST_API_READY)), nil, timeout)
 	return err
 }
+
+func RequestQueueAdd(nc *nats.Conn, input *pb.QueueInput, timeout time.Duration) (*pb.QueueOutput, error) {
+	var output pb.QueueOutput
+	if err := doRequest(nc, pb.Message_MESSAGE_QUEUE_ADD, input, &output, timeout); err != nil {
+		return nil, err
+	}
+	if output.Error != "" {
+		return nil, errors.New(output.Error)
+	}
+	return &output, nil
+}
+
+func RequestQueueRemove(nc *nats.Conn, input *pb.QueueInput, timeout time.Duration) (*pb.QueueOutput, error) {
+	var output pb.QueueOutput
+	if err := doRequest(nc, pb.Message_MESSAGE_QUEUE_REMOVE, input, &output, timeout); err != nil {
+		return nil, err
+	}
+	if output.Error != "" {
+		return nil, errors.New(output.Error)
+	}
+	return &output, nil
+}
+
+func RequestQueueList(nc *nats.Conn, input *pb.QueueInput, timeout time.Duration) (*pb.QueueOutput, error) {
+	var output pb.QueueOutput
+	if err := doRequest(nc, pb.Message_MESSAGE_QUEUE_LIST, input, &output, timeout); err != nil {
+		return nil, err
+	}
+	if output.Error != "" {
+		return nil, errors.New(output.Error)
+	}
+	return &output, nil
+}

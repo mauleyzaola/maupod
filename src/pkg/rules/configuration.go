@@ -4,6 +4,7 @@ import (
 	"errors"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/spf13/viper"
@@ -61,4 +62,8 @@ func ConfigurationFileSystemStores(c *pb.Configuration) []*pb.FileStore {
 		}
 	}
 	return roots
+}
+
+func Timeout(c *pb.Configuration) time.Duration {
+	return time.Second * time.Duration(c.Delay)
 }

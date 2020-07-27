@@ -4,14 +4,6 @@ import { FaPlay, FaAngleDoubleUp, FaAngleDoubleDown } from "react-icons/all";
 import {IPC_PLAY, POSITION_BOTTOM, POSITION_TOP} from "../consts";
 import {ipcCommand, queueAdd} from "../api";
 
-
-const cleanMedia = media => {
-    const result = Object.assign({}, media);
-    result.recorded_date = result.recorded_date || 0;
-    return result;
-}
-
-
 const TrackPlayControls = ({media}) => (
     <div className='form-inline'>
         <PlayerPlay media={media} />
@@ -27,7 +19,7 @@ class PlayerPlay extends React.Component{
     }
 
     onClick = (media) => {
-        ipcCommand(({ command: IPC_PLAY, media: cleanMedia(media)}))
+        ipcCommand(({ command: IPC_PLAY, media}))
             .then(data => console.log(data))
     }
 

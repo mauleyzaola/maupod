@@ -1,7 +1,9 @@
 package main
 
 import (
+	"context"
 	"database/sql"
+	"log"
 	"strconv"
 
 	"github.com/mauleyzaola/maupod/src/pkg/handler"
@@ -11,16 +13,23 @@ import (
 )
 
 type MsgHandler struct {
-	base   *handler.MsgHandler
-	config *pb.Configuration
-	db     *sql.DB
+	base       *handler.MsgHandler
+	config     *pb.Configuration
+	db         *sql.DB
+	queueItems types.Medias
 }
 
 func NewMsgHandler(config *pb.Configuration, logger types.Logger, nc *nats.Conn, db *sql.DB) *MsgHandler {
+	queueItems, err := queueList(context.Background(), db)
+	if err != nil {
+		log.Println("[ERROR] queueList() ", err)
+	}
+
 	return &MsgHandler{
-		base:   handler.NewMsgHandler(logger, nc),
-		config: config,
-		db:     db,
+		base:       handler.NewMsgHandler(logger, nc),
+		config:     config,
+		db:         db,
+		queueItems: queueItems,
 	}
 }
 
@@ -50,9 +59,23 @@ func (m *MsgHandler) Register() error {
 			Subject: strconv.Itoa(int(pb.Message_MESSAGE_MEDIA_UPDATE_SHA)),
 			Handler: m.handlerUpdateSHA,
 		},
+
+		handler.Subscription{
+			Subject: strconv.Itoa(int(pb.Message_MESSAGE_QUEUE_LIST)),
+			Handler: m.handlerQueueList,
+		},
+		handler.Subscription{
+			Subject: strconv.Itoa(int(pb.Message_MESSAGE_QUEUE_ADD)),
+			Handler: m.handlerQueueAdd,
+		},
+		handler.Subscription{
+			Subject: strconv.Itoa(int(pb.Message_MESSAGE_QUEUE_REMOVE)),
+			Handler: m.handlerQueueRemove,
+		},
 	)
 }
 
 func (m *MsgHandler) Close() {
+	// TODO: persist the queue items to db
 	m.base.Close()
 }
