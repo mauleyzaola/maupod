@@ -2,6 +2,7 @@ package main
 
 import (
 	"strconv"
+	"time"
 
 	"github.com/mauleyzaola/maupod/src/cmd/player/pkg"
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
@@ -55,7 +56,11 @@ func (m *MsgHandler) InitializeIPC(filename string) error {
 	var publishFn broker.PublisherFunc = func(subject pb.Message, payload proto.Message) error {
 		return broker.PublishBroker(m.base.NATS(), subject, payload)
 	}
-	control := pkg.NewPlayerControl(publishFn)
+	var requestFn broker.RequestFunc = func(subject pb.Message, input, output proto.Message) error {
+		// TODO: timeout should come from configuration
+		return broker.DoRequest(m.base.NATS(), subject, input, output, time.Second)
+	}
+	control := pkg.NewPlayerControl(publishFn, requestFn)
 	if m.ipc, err = pkg.NewIPC(processor, control); err != nil {
 		return err
 	}

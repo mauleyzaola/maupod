@@ -18,7 +18,6 @@ var media_pb = require('./media_pb.js');
 goog.object.extend(proto, media_pb);
 goog.exportSymbol('proto.pb.ArtworkExtractInput', null, global);
 goog.exportSymbol('proto.pb.ArtworkUpdateInput', null, global);
-goog.exportSymbol('proto.pb.IPCCommand', null, global);
 goog.exportSymbol('proto.pb.IPCInput', null, global);
 goog.exportSymbol('proto.pb.IPCOutput', null, global);
 goog.exportSymbol('proto.pb.MediaInfoInput', null, global);
@@ -762,7 +761,7 @@ proto.pb.IPCInput.deserializeBinaryFromReader = function(msg, reader) {
       msg.setValue(value);
       break;
     case 3:
-      var value = /** @type {!proto.pb.IPCCommand} */ (reader.readEnum());
+      var value = /** @type {!proto.pb.Message} */ (reader.readEnum());
       msg.setCommand(value);
       break;
     default:
@@ -875,16 +874,16 @@ proto.pb.IPCInput.prototype.setValue = function(value) {
 
 
 /**
- * optional IPCCommand command = 3;
- * @return {!proto.pb.IPCCommand}
+ * optional Message command = 3;
+ * @return {!proto.pb.Message}
  */
 proto.pb.IPCInput.prototype.getCommand = function() {
-  return /** @type {!proto.pb.IPCCommand} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+  return /** @type {!proto.pb.Message} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
 /**
- * @param {!proto.pb.IPCCommand} value
+ * @param {!proto.pb.Message} value
  * @return {!proto.pb.IPCInput} returns this
  */
 proto.pb.IPCInput.prototype.setCommand = function(value) {
@@ -3100,14 +3099,18 @@ proto.pb.TrackSkippedInput.prototype.hasTimestamp = function() {
  * @enum {number}
  */
 proto.pb.Message = {
-  MESSAGE_ARTWORK_SCAN: 0,
-  MESSAGE_AUDIO_SCAN: 1,
-  MESSAGE_MEDIA_INFO: 2,
-  MESSAGE_MEDIA_UPDATE_ARTWORK: 3,
-  MESSAGE_MEDIA_UPDATE_SHA: 4,
-  MESSAGE_MEDIA_DELETE: 5,
-  MESSAGE_TAG_UPDATE: 6,
-  MESSAGE_MEDIA_UPDATE: 7,
+  IPC_PLAY: 0,
+  IPC_PAUSE: 1,
+  IPC_LOAD: 2,
+  IPC_VOLUME: 3,
+  MESSAGE_ARTWORK_SCAN: 10,
+  MESSAGE_AUDIO_SCAN: 11,
+  MESSAGE_MEDIA_INFO: 12,
+  MESSAGE_MEDIA_UPDATE_ARTWORK: 13,
+  MESSAGE_MEDIA_UPDATE_SHA: 14,
+  MESSAGE_MEDIA_DELETE: 15,
+  MESSAGE_TAG_UPDATE: 16,
+  MESSAGE_MEDIA_UPDATE: 17,
   MESSAGE_IPC: 100,
   MESSAGE_REST_API_READY: 101,
   MESSAGE_MPV_EOF_REACHED: 202,
@@ -3121,16 +3124,6 @@ proto.pb.Message = {
   MESSAGE_QUEUE_LIST: 300,
   MESSAGE_QUEUE_ADD: 301,
   MESSAGE_QUEUE_REMOVE: 302
-};
-
-/**
- * @enum {number}
- */
-proto.pb.IPCCommand = {
-  IPC_PLAY: 0,
-  IPC_PAUSE: 1,
-  IPC_LOAD: 2,
-  IPC_VOLUME: 3
 };
 
 /**

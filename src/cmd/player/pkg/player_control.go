@@ -17,21 +17,57 @@ const (
 // PlayerControl is a bridge between the mpv events and maupod events
 type PlayerControl struct {
 	publishFn       broker.PublisherFunc
+	requestFn       broker.RequestFunc
 	m               *pb.Media
 	lastTimePos     float64
 	lastPercentPos  float64
 	lastIsCompleted bool // true when based in the percent position, track is assumed to be complete
 }
 
-func NewPlayerControl(publishFn broker.PublisherFunc) *PlayerControl {
+func NewPlayerControl(publishFn broker.PublisherFunc, requestFn broker.RequestFunc) *PlayerControl {
 	p := &PlayerControl{
 		publishFn: publishFn,
+		requestFn: requestFn,
 	}
 	return p
 }
 
 func (p *PlayerControl) OnSongEnded(m *pb.Media) {
 	log.Printf("OnSongEnded id: %v track: %v\n", m.Id, m.Track)
+	var output pb.QueueOutput
+	if err := p.requestFn(pb.Message_MESSAGE_QUEUE_LIST, &pb.QueueInput{}, &output); err != nil {
+		log.Println(err)
+		return
+	}
+
+	// check queue is not empty
+	if len(output.Rows) == 0 {
+		log.Println("reached end of queue")
+		return
+	}
+
+	// play next song in the queue
+	var media = output.Rows[0]
+	log.Println("[DEBUG] next song in queue: ", media.Track)
+	var ipcInput = pb.IPCInput{
+		Media:   media,
+		Command: pb.Message_IPC_PLAY,
+	}
+	if err := p.publishFn(pb.Message_MESSAGE_IPC, &ipcInput); err != nil {
+		log.Println(err)
+		return
+	}
+
+	// remove the first element from the queue
+	log.Println("[DEBUG] remove from queue: ", media.Track)
+	var queueInput = &pb.QueueInput{
+		Media: media,
+		Index: 0,
+	}
+	if err := p.publishFn(pb.Message_MESSAGE_QUEUE_REMOVE, queueInput); err != nil {
+		log.Println(err)
+		return
+	}
 }
 
 func (p *PlayerControl) OnSongStarted(m *pb.Media) {

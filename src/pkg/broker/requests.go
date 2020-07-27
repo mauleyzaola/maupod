@@ -11,7 +11,7 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-func doRequest(nc *nats.Conn, subject pb.Message, input, output proto.Message, timeout time.Duration) error {
+func DoRequest(nc *nats.Conn, subject pb.Message, input, output proto.Message, timeout time.Duration) error {
 	data, err := helpers.ProtoMarshal(input)
 	if err != nil {
 		return err
@@ -39,7 +39,7 @@ func doPublish(nc *nats.Conn, subject pb.Message, input proto.Message) error {
 func RequestMediaInfoScan(nc *nats.Conn, filename string, timeout time.Duration) (*pb.MediaInfoOutput, error) {
 	var output pb.MediaInfoOutput
 	input := &pb.MediaInfoInput{FileName: filename}
-	if err := doRequest(nc, pb.Message_MESSAGE_MEDIA_INFO, input, &output, timeout); err != nil {
+	if err := DoRequest(nc, pb.Message_MESSAGE_MEDIA_INFO, input, &output, timeout); err != nil {
 		return nil, err
 	}
 	if output.Response == nil {
@@ -67,7 +67,7 @@ func RequestRestAPIReady(nc *nats.Conn, timeout time.Duration) error {
 
 func RequestQueueAdd(nc *nats.Conn, input *pb.QueueInput, timeout time.Duration) (*pb.QueueOutput, error) {
 	var output pb.QueueOutput
-	if err := doRequest(nc, pb.Message_MESSAGE_QUEUE_ADD, input, &output, timeout); err != nil {
+	if err := DoRequest(nc, pb.Message_MESSAGE_QUEUE_ADD, input, &output, timeout); err != nil {
 		return nil, err
 	}
 	if output.Error != "" {
@@ -78,7 +78,7 @@ func RequestQueueAdd(nc *nats.Conn, input *pb.QueueInput, timeout time.Duration)
 
 func RequestQueueRemove(nc *nats.Conn, input *pb.QueueInput, timeout time.Duration) (*pb.QueueOutput, error) {
 	var output pb.QueueOutput
-	if err := doRequest(nc, pb.Message_MESSAGE_QUEUE_REMOVE, input, &output, timeout); err != nil {
+	if err := DoRequest(nc, pb.Message_MESSAGE_QUEUE_REMOVE, input, &output, timeout); err != nil {
 		return nil, err
 	}
 	if output.Error != "" {
@@ -89,7 +89,7 @@ func RequestQueueRemove(nc *nats.Conn, input *pb.QueueInput, timeout time.Durati
 
 func RequestQueueList(nc *nats.Conn, input *pb.QueueInput, timeout time.Duration) (*pb.QueueOutput, error) {
 	var output pb.QueueOutput
-	if err := doRequest(nc, pb.Message_MESSAGE_QUEUE_LIST, input, &output, timeout); err != nil {
+	if err := DoRequest(nc, pb.Message_MESSAGE_QUEUE_LIST, input, &output, timeout); err != nil {
 		return nil, err
 	}
 	if output.Error != "" {
