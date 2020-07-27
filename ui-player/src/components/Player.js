@@ -1,17 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FaPlay, FaAngleDoubleUp, FaAngleDoubleDown } from "react-icons/all";
-import {IPC_PLAY, POSITION_BOTTOM, POSITION_TOP} from "../consts";
+import { FaForward, FaPlay, FaPause, FaAngleDoubleUp, FaAngleDoubleDown } from "react-icons/all";
+import {IPC_PAUSE, IPC_PLAY, IPC_SKIP, POSITION_BOTTOM, POSITION_TOP} from "../consts";
 import {ipcCommand, queueAdd} from "../api";
 
 const TrackPlayControls = ({media}) => (
     <div className='form-inline'>
         <PlayerPlay media={media} />
+        <PlayerPause media={media} />
         <PlayerPlayNext media={media} />
         <PlayerPlayLater media={media} />
+        <PlayerSkip media={media} />
     </div>
 )
-
 
 class PlayerPlay extends React.Component{
     constructor(props) {
@@ -30,6 +31,28 @@ class PlayerPlay extends React.Component{
                     className="btn btn-secondary btn-sm"
                     onClick={() => this.onClick(media)}>
                 <FaPlay />
+            </button>
+        )
+    }
+}
+
+class PlayerPause extends React.Component{
+    constructor(props) {
+        super(props);
+    }
+
+    onClick = (media) => {
+        ipcCommand(({ command: IPC_PAUSE, media}))
+            .then(data => console.log(data))
+    }
+
+    render() {
+        const { media } = this.props;
+        return (
+            <button type="button"
+                    className="btn btn-secondary btn-sm"
+                    onClick={() => this.onClick(media)}>
+                <FaPause />
             </button>
         )
     }
@@ -81,7 +104,38 @@ class PlayerPlayLater extends React.Component{
     }
 }
 
+class PlayerSkip extends React.Component{
+    constructor(props) {
+        super(props);
+    }
+
+    onClick = media => {
+        ipcCommand(({ command: IPC_SKIP, media}))
+            .then(data => console.log(data))
+    }
+
+    render() {
+        const { media } = this.props;
+        return (
+            <button type="button"
+                    title="skip"
+                    className="btn btn-secondary btn-sm"
+                    onClick={() => this.onClick(media)}>
+                <FaForward />
+            </button>
+        )
+    }
+}
+
 PlayerPlay.propTypes = {
+    media: PropTypes.object.isRequired,
+}
+
+PlayerPause.propTypes = {
+    media: PropTypes.object.isRequired,
+}
+
+PlayerSkip.propTypes = {
     media: PropTypes.object.isRequired,
 }
 
@@ -96,5 +150,6 @@ TrackPlayControls.propTypes = {
 export {
     PlayerPlay,
     PlayerPlayNext,
+    PlayerPause,
     TrackPlayControls,
 }

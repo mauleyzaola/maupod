@@ -33,7 +33,6 @@ func NewPlayerControl(publishFn broker.PublisherFunc, requestFn broker.RequestFu
 }
 
 func (p *PlayerControl) OnSongEnded(m *pb.Media) {
-	log.Printf("OnSongEnded id: %v track: %v\n", m.Id, m.Track)
 	var output pb.QueueOutput
 	if err := p.requestFn(pb.Message_MESSAGE_QUEUE_LIST, &pb.QueueInput{}, &output); err != nil {
 		log.Println(err)
@@ -48,7 +47,6 @@ func (p *PlayerControl) OnSongEnded(m *pb.Media) {
 
 	// play next song in the queue
 	var media = output.Rows[0]
-	log.Println("[DEBUG] next song in queue: ", media.Track)
 	var ipcInput = pb.IPCInput{
 		Media:   media,
 		Command: pb.Message_IPC_PLAY,

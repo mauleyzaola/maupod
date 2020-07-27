@@ -10,6 +10,7 @@ enum Message {
     IPC_PAUSE = 1;
     IPC_LOAD = 2;
     IPC_VOLUME = 3;
+    IPC_SKIP = 4; // not really IPC but in the same workflow
 
     MESSAGE_ARTWORK_SCAN = 10;
     MESSAGE_AUDIO_SCAN = 11;

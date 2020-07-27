@@ -223,3 +223,10 @@ func (m *IPC) Play() error {
 	}
 	return nil
 }
+
+func (m *IPC) Skip() {
+	if m.lastMedia == nil {
+		return
+	}
+	m.control.OnSongEnded(m.lastMedia)
+}

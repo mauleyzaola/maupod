@@ -56,6 +56,11 @@ func (m *MsgHandler) handlerIPC(msg *nats.Msg) {
 			m.base.Logger().Error(err)
 			return
 		}
+	case pb.Message_IPC_SKIP:
+		if input.Media == nil {
+			return
+		}
+		m.ipc.Skip()
 	case pb.Message_IPC_VOLUME:
 		val, err := strconv.ParseInt(input.Value, 10, 64)
 		if err != nil {
