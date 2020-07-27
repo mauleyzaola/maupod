@@ -28,6 +28,7 @@ class PlayerPlay extends React.Component{
         const { media } = this.props;
         return (
             <button type="button"
+                    title="play"
                     className="btn btn-secondary btn-sm"
                     onClick={() => this.onClick(media)}>
                 <FaPlay />
@@ -50,6 +51,7 @@ class PlayerPause extends React.Component{
         const { media } = this.props;
         return (
             <button type="button"
+                    title="pause"
                     className="btn btn-secondary btn-sm"
                     onClick={() => this.onClick(media)}>
                 <FaPause />
