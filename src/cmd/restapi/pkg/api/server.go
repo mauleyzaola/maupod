@@ -6,11 +6,11 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/nats-io/nats.go"
 	schema "github.com/gorilla/Schema"
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata"
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
+	"github.com/nats-io/nats.go"
 )
 
 type ApiServer struct {

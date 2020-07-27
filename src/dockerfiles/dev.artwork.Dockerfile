@@ -1,4 +1,4 @@
-FROM golang:1 as golang-dev
+FROM golang:1.14 as golang-dev
 
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y locales ffmpeg id3v2 flac libmagickwand-dev

@@ -16,6 +16,7 @@ import { linkMediaList } from "./routes";
 class App extends React.Component{
 
     onSearch = e => {
+        // this is doggy shit, page gets refreshed on each submission
         window.location.href = linkMediaList({query: this.query});
     }
 

@@ -27,6 +27,7 @@ type Medium struct {
 	ID                    string    `boil:"id" json:"id" toml:"id" yaml:"id"`
 	Sha                   string    `boil:"sha" json:"sha" toml:"sha" yaml:"sha"`
 	Location              string    `boil:"location" json:"location" toml:"location" yaml:"location"`
+	Directory             string    `boil:"directory" json:"directory" toml:"directory" yaml:"directory"`
 	ImageLocation         string    `boil:"image_location" json:"image_location" toml:"image_location" yaml:"image_location"`
 	LastImageScan         null.Time `boil:"last_image_scan" json:"last_image_scan,omitempty" toml:"last_image_scan" yaml:"last_image_scan,omitempty"`
 	FileExtension         string    `boil:"file_extension" json:"file_extension" toml:"file_extension" yaml:"file_extension"`
@@ -88,6 +89,7 @@ var MediumColumns = struct {
 	ID                    string
 	Sha                   string
 	Location              string
+	Directory             string
 	ImageLocation         string
 	LastImageScan         string
 	FileExtension         string
@@ -144,6 +146,7 @@ var MediumColumns = struct {
 	ID:                    "id",
 	Sha:                   "sha",
 	Location:              "location",
+	Directory:             "directory",
 	ImageLocation:         "image_location",
 	LastImageScan:         "last_image_scan",
 	FileExtension:         "file_extension",
@@ -332,6 +335,7 @@ var MediumWhere = struct {
 	ID                    whereHelperstring
 	Sha                   whereHelperstring
 	Location              whereHelperstring
+	Directory             whereHelperstring
 	ImageLocation         whereHelperstring
 	LastImageScan         whereHelpernull_Time
 	FileExtension         whereHelperstring
@@ -388,6 +392,7 @@ var MediumWhere = struct {
 	ID:                    whereHelperstring{field: "\"media\".\"id\""},
 	Sha:                   whereHelperstring{field: "\"media\".\"sha\""},
 	Location:              whereHelperstring{field: "\"media\".\"location\""},
+	Directory:             whereHelperstring{field: "\"media\".\"directory\""},
 	ImageLocation:         whereHelperstring{field: "\"media\".\"image_location\""},
 	LastImageScan:         whereHelpernull_Time{field: "\"media\".\"last_image_scan\""},
 	FileExtension:         whereHelperstring{field: "\"media\".\"file_extension\""},
@@ -459,8 +464,8 @@ func (*mediumR) NewStruct() *mediumR {
 type mediumL struct{}
 
 var (
-	mediumAllColumns            = []string{"id", "sha", "location", "image_location", "last_image_scan", "file_extension", "format", "file_size", "duration", "overall_bit_rate_mode", "overall_bit_rate", "stream_size", "album", "track", "title", "track_position", "performer", "genre", "recorded_date", "comment", "channels", "channel_positions", "channel_layout", "sampling_rate", "sampling_count", "bit_depth", "compression_mode", "encoded_library", "encoded_library_name", "encoded_library_version", "bit_rate_mode", "bit_rate", "last_scan", "modified_date", "track_name_total", "album_performer", "audio_count", "bit_depth_string", "commercial_name", "complete_name", "count_of_audio_streams", "encoded_library_date", "file_name", "folder_name", "format_info", "format_url", "internet_media_type", "kind_of_stream", "part", "part_total", "stream_identifier", "writing_library", "composer", "album_identifier", "is_compilation"}
-	mediumColumnsWithoutDefault = []string{"id", "sha", "location", "image_location", "last_image_scan", "file_extension", "format", "file_size", "duration", "overall_bit_rate_mode", "overall_bit_rate", "stream_size", "album", "track", "title", "track_position", "performer", "genre", "recorded_date", "comment", "channels", "channel_positions", "channel_layout", "sampling_rate", "sampling_count", "bit_depth", "compression_mode", "encoded_library", "encoded_library_name", "encoded_library_version", "bit_rate_mode", "bit_rate", "last_scan", "modified_date", "track_name_total", "album_performer", "audio_count", "bit_depth_string", "commercial_name", "complete_name", "count_of_audio_streams", "encoded_library_date", "file_name", "folder_name", "format_info", "format_url", "internet_media_type", "kind_of_stream", "part", "part_total", "stream_identifier", "writing_library", "composer"}
+	mediumAllColumns            = []string{"id", "sha", "location", "directory", "image_location", "last_image_scan", "file_extension", "format", "file_size", "duration", "overall_bit_rate_mode", "overall_bit_rate", "stream_size", "album", "track", "title", "track_position", "performer", "genre", "recorded_date", "comment", "channels", "channel_positions", "channel_layout", "sampling_rate", "sampling_count", "bit_depth", "compression_mode", "encoded_library", "encoded_library_name", "encoded_library_version", "bit_rate_mode", "bit_rate", "last_scan", "modified_date", "track_name_total", "album_performer", "audio_count", "bit_depth_string", "commercial_name", "complete_name", "count_of_audio_streams", "encoded_library_date", "file_name", "folder_name", "format_info", "format_url", "internet_media_type", "kind_of_stream", "part", "part_total", "stream_identifier", "writing_library", "composer", "album_identifier", "is_compilation"}
+	mediumColumnsWithoutDefault = []string{"id", "sha", "location", "directory", "image_location", "last_image_scan", "file_extension", "format", "file_size", "duration", "overall_bit_rate_mode", "overall_bit_rate", "stream_size", "album", "track", "title", "track_position", "performer", "genre", "recorded_date", "comment", "channels", "channel_positions", "channel_layout", "sampling_rate", "sampling_count", "bit_depth", "compression_mode", "encoded_library", "encoded_library_name", "encoded_library_version", "bit_rate_mode", "bit_rate", "last_scan", "modified_date", "track_name_total", "album_performer", "audio_count", "bit_depth_string", "commercial_name", "complete_name", "count_of_audio_streams", "encoded_library_date", "file_name", "folder_name", "format_info", "format_url", "internet_media_type", "kind_of_stream", "part", "part_total", "stream_identifier", "writing_library", "composer"}
 	mediumColumnsWithDefault    = []string{"album_identifier", "is_compilation"}
 	mediumPrimaryKeyColumns     = []string{"id"}
 )

@@ -1,4 +1,4 @@
-FROM golang:1 as golang-dev
+FROM golang:1.14 as golang-dev
 
 RUN ["go", "get", "-v", "github.com/githubnemo/CompileDaemon"]
 

@@ -60,7 +60,7 @@ wss.on('connection', ws => {
         }
     })
 
-    ws.send('beer is good');
+    ws.send('socket started');
 })
 
 // working webcosket server

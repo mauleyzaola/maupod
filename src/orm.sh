@@ -10,7 +10,8 @@ fi
 
 if [[ ! $(which sql-migrate) ]]; then
     echo "[INFO] sql-migrate not found, run the command below outside of GOPATH"
-    echo "go get -u github.com/rubenv/sql-migrate/..."
+    echo "cd\
+"
     exit 1
 fi
 

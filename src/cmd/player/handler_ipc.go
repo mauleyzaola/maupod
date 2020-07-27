@@ -1,12 +1,13 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/nats-io/nats.go"
@@ -16,14 +17,12 @@ func (m *MsgHandler) handlerIPC(msg *nats.Msg) {
 	var err error
 	var input pb.IPCInput
 
-	if err = json.Unmarshal(msg.Data, &input); err != nil {
-		m.base.Logger().Error(err)
+	if err = helpers.ProtoUnmarshal(msg.Data, &input); err != nil {
+		log.Println(err)
 		return
 	}
 
 	log.Println("command: ", input.Command)
-
-	// TODO: validate media is ok
 
 	var filename string
 
@@ -38,7 +37,7 @@ func (m *MsgHandler) handlerIPC(msg *nats.Msg) {
 	input.Media.Location = filename
 
 	switch input.Command {
-	case pb.IPCCommand_IPC_PLAY:
+	case pb.Message_IPC_PLAY:
 		if err = m.ipc.Load(input.Media); err != nil {
 			m.base.Logger().Error(err)
 			return
@@ -47,17 +46,22 @@ func (m *MsgHandler) handlerIPC(msg *nats.Msg) {
 			m.base.Logger().Error(err)
 			return
 		}
-	case pb.IPCCommand_IPC_PAUSE:
+	case pb.Message_IPC_PAUSE:
 		if err = m.ipc.PauseToggle(); err != nil {
 			m.base.Logger().Error(err)
 			return
 		}
-	case pb.IPCCommand_IPC_LOAD:
+	case pb.Message_IPC_LOAD:
 		if err = m.ipc.Load(input.Media); err != nil {
 			m.base.Logger().Error(err)
 			return
 		}
-	case pb.IPCCommand_IPC_VOLUME:
+	case pb.Message_IPC_SKIP:
+		if input.Media == nil {
+			return
+		}
+		m.ipc.Skip()
+	case pb.Message_IPC_VOLUME:
 		val, err := strconv.ParseInt(input.Value, 10, 64)
 		if err != nil {
 			m.base.Logger().Error(err)

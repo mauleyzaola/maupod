@@ -69,7 +69,6 @@ var sampleMedium = &orm.Medium{
 	LastImageScan:         null.TimeFrom(year2000),
 	ImageLocation:         "51",
 	AlbumIdentifier:       "52",
-	IsCompilation:         true,
 }
 var sampleMedia = &pb.Media{
 	Id:                    "1",
@@ -125,7 +124,6 @@ var sampleMedia = &pb.Media{
 	LastImageScan:         helpers.TimeToTs(&year2000),
 	ImageLocation:         "51",
 	AlbumIdentifier:       "52",
-	IsCompilation:         true,
 }
 
 func TestMediaToORM(t *testing.T) {
@@ -200,7 +198,6 @@ func TestMediaToORM(t *testing.T) {
 			assert.EqualValues(t, w.LastImageScan, g.LastImageScan)
 			assert.EqualValues(t, w.ImageLocation, g.ImageLocation)
 			assert.EqualValues(t, w.AlbumIdentifier, g.AlbumIdentifier)
-			assert.EqualValues(t, w.IsCompilation, g.IsCompilation)
 		})
 	}
 }
@@ -277,7 +274,6 @@ func TestMediaFromORM(t *testing.T) {
 			assert.EqualValues(t, w.LastImageScan.Nanos, g.LastImageScan.Nanos)
 			assert.EqualValues(t, w.ImageLocation, g.ImageLocation)
 			assert.EqualValues(t, w.AlbumIdentifier, g.AlbumIdentifier)
-			assert.EqualValues(t, w.IsCompilation, g.IsCompilation)
 		})
 	}
 }

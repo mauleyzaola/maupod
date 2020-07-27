@@ -1,93 +1,155 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { w3cwebsocket as W3CWebSocket } from "websocket";
-import { FaPlay, FaPause } from "react-icons/all";
-import {REMOTE_PAUSE, REMOTE_PLAY, REMOTE_VOLUME} from "../consts";
+import { FaForward, FaPlay, FaPause, FaAngleDoubleUp, FaAngleDoubleDown } from "react-icons/all";
+import {IPC_PAUSE, IPC_PLAY, IPC_SKIP, POSITION_BOTTOM, POSITION_TOP} from "../consts";
+import {ipcCommand, queueAdd} from "../api";
 
-const socket = new W3CWebSocket(`ws://localhost:8080`);
+const TrackPlayControls = ({media}) => (
+    <div className='form-inline'>
+        <PlayerPlay media={media} />
+        <PlayerPause media={media} />
+        <PlayerPlayNext media={media} />
+        <PlayerPlayLater media={media} />
+        <PlayerSkip media={media} />
+    </div>
+)
 
-// missing fields, issues with deserializing data in the server
-const cleanMedia = media => {
-    const result = Object.assign({}, media);
-    result.recorded_date = result.recorded_date || 0;
-    return result;
-}
-
-const sendWSMessage = data => socket.send(JSON.stringify(data));
-
-class Player extends React.Component{
+class PlayerPlay extends React.Component{
     constructor(props) {
         super(props);
-        this.state = {
-            volume: 100,
-        }
     }
 
-    currentMedia;
-
-    // stupid simple connection which is working
-    componentDidMount() {
-        socket.onopen = () => {
-            console.log('websocket connected')
-        }
-        socket.onmessage = (message) => {
-            const { data } = message;
-            console.log(data);
-        };
+    onClick = (media) => {
+        ipcCommand(({ command: IPC_PLAY, media}))
+            .then(data => console.log(data))
     }
-
-    componentWillUnmount() {
-        // console.log("websocket will close");
-        // socket.close();
-    }
-
-    onPause = (media) => {
-        // we need to send data as string
-        // ideally we should use protobuf all over the places
-        // this is the current workflow
-        // browser -> sends JSON -> nodejs -> parses JSON -> creates message -> sends to NATS as JSON
-
-        sendWSMessage({
-            subject: REMOTE_PAUSE,
-            media: cleanMedia(media),
-        });
-    }
-
-    onPlay = (media) => {
-        this.currentMedia = media;
-        sendWSMessage({ subject: REMOTE_PLAY, media: cleanMedia(media)});
-    }
-
-    onVolumeChange = e => {
-        const volume = e.target.value || '0'
-        this.setState({volume});
-        if(!this.currentMedia) return;
-        sendWSMessage({ subject: REMOTE_VOLUME, media: cleanMedia(this.currentMedia), value: volume });
-    }
-
 
     render() {
-        const { visible } = this.props;
-        if(!visible){
-            return null;
-        }
+        const { media } = this.props;
         return (
-            <div className='form-inline'>
-                <button type='button' className='btn btn-secondary btn-sm' onClick={() => this.onPlay(this.props.media)}>
-                    <FaPlay />
-                </button>
-                <button type='button' className='btn btn-secondary btn-sm' onClick={() => this.onPause(this.props.media)}>
-                    <FaPause />
-                </button>
-                <input type='range' className='form-cotrol' min='0' max='130' value={this.state.volume} onChange={this.onVolumeChange} />
-            </div>
+            <button type="button"
+                    className="btn btn-secondary btn-sm"
+                    onClick={() => this.onClick(media)}>
+                <FaPlay />
+            </button>
         )
     }
 }
 
-Player.propTypes = {
-    visible: PropTypes.bool.isRequired,
+class PlayerPause extends React.Component{
+    constructor(props) {
+        super(props);
+    }
+
+    onClick = (media) => {
+        ipcCommand(({ command: IPC_PAUSE, media}))
+            .then(data => console.log(data))
+    }
+
+    render() {
+        const { media } = this.props;
+        return (
+            <button type="button"
+                    className="btn btn-secondary btn-sm"
+                    onClick={() => this.onClick(media)}>
+                <FaPause />
+            </button>
+        )
+    }
+}
+
+class PlayerPlayNext extends React.Component{
+    constructor(props) {
+        super(props);
+    }
+
+    onClick = media => {
+        queueAdd({media: media, named_position: POSITION_TOP})
+            .then(data => console.log(data));
+    }
+
+    render() {
+        const { media } = this.props;
+        return (
+            <button type="button"
+                    title="play next"
+                    className="btn btn-secondary btn-sm"
+                    onClick={() => this.onClick(media)}>
+                <FaAngleDoubleUp />
+            </button>
+        )
+    }
+}
+
+class PlayerPlayLater extends React.Component{
+    constructor(props) {
+        super(props);
+    }
+
+    onClick = media => {
+        queueAdd({media: media, named_position: POSITION_BOTTOM})
+            .then(data => console.log(data));
+    }
+
+    render() {
+        const { media } = this.props;
+        return (
+            <button type="button"
+                    title="play later"
+                    className="btn btn-secondary btn-sm"
+                    onClick={() => this.onClick(media)}>
+                <FaAngleDoubleDown />
+            </button>
+        )
+    }
+}
+
+class PlayerSkip extends React.Component{
+    constructor(props) {
+        super(props);
+    }
+
+    onClick = media => {
+        ipcCommand(({ command: IPC_SKIP, media}))
+            .then(data => console.log(data))
+    }
+
+    render() {
+        const { media } = this.props;
+        return (
+            <button type="button"
+                    title="skip"
+                    className="btn btn-secondary btn-sm"
+                    onClick={() => this.onClick(media)}>
+                <FaForward />
+            </button>
+        )
+    }
+}
+
+PlayerPlay.propTypes = {
     media: PropTypes.object.isRequired,
 }
 
-export default Player;
+PlayerPause.propTypes = {
+    media: PropTypes.object.isRequired,
+}
+
+PlayerSkip.propTypes = {
+    media: PropTypes.object.isRequired,
+}
+
+PlayerPlayNext.propTypes = {
+    media: PropTypes.object.isRequired,
+}
+
+TrackPlayControls.propTypes = {
+    media: PropTypes.object.isRequired,
+}
+
+export {
+    PlayerPlay,
+    PlayerPlayNext,
+    PlayerPause,
+    TrackPlayControls,
+}

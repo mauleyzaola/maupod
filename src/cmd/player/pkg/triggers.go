@@ -1,6 +1,9 @@
 package pkg
 
-import "log"
+import (
+	"log"
+	"time"
+)
 
 // TODO: create an object which has some "intelligence" like knowing which is the current track played
 // throttling to avoid sending too often messages to listeners
@@ -43,6 +46,16 @@ func (m *IPC) triggerStartsEnds(v interface{}) {
 	if !ok {
 		return
 	}
+
+	// workaround triggering a second time the play track event
+	const threshold = time.Millisecond * 100
+	var now = time.Now()
+	var diff = now.Sub(m.lastStartTrackEvent)
+	m.lastStartTrackEvent = now
+	if diff < threshold {
+		return
+	}
+
 	if val {
 		m.control.OnSongEnded(m.lastMedia)
 	} else {

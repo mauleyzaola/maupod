@@ -23,7 +23,7 @@ Restful web server
 Get all media from performer *depeche mode* in album *ultra*
 
 ```
-curl -XGET -G "http://localhost:8000/media" \
+curl -XGET -G "http://localhost:8888/media" \
  --data-urlencode 'performer=depeche mode' \
  --data-urlencode 'album=ultra' \
  | jq '. | length'

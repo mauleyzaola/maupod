@@ -5,6 +5,7 @@ create table media (
     id text primary key,
     sha text not null,
     location text not null unique,
+    directory text not null,
     image_location text not null,
     last_image_scan timestamp without time zone null,
 

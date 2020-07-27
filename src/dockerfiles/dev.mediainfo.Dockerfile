@@ -1,4 +1,4 @@
-FROM golang:1 as golang-dev
+FROM golang:1.14 as golang-dev
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y locales mediainfo
 RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \

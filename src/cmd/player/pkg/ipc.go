@@ -4,6 +4,7 @@ import (
 	"errors"
 	"log"
 	"os"
+	"time"
 
 	"github.com/DexterLB/mpvipc"
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
@@ -45,6 +46,9 @@ type IPC struct {
 	listeners  map[pb.Message]*EventListener
 	lastMedia  *pb.Media
 	control    *PlayerControl
+
+	// workaround to avoid a second play event
+	lastStartTrackEvent time.Time
 }
 
 func NewIPC(processor MPVProcessor, control *PlayerControl) (*IPC, error) {
@@ -218,4 +222,11 @@ func (m *IPC) Play() error {
 		return err
 	}
 	return nil
+}
+
+func (m *IPC) Skip() {
+	if m.lastMedia == nil {
+		return
+	}
+	m.control.OnSongEnded(m.lastMedia)
 }

@@ -83,7 +83,7 @@ func run() error {
 
 	signalChan := make(chan os.Signal, 1)
 	server := http.Server{
-		Addr:    viper.GetString("port"),
+		Addr:    ":8000",
 		Handler: api.SetupRoutes(apiServer, output),
 		//ReadTimeout:  TODO,
 		//WriteTimeout: TODO,

@@ -5,14 +5,21 @@ import "google/protobuf/timestamp.proto";
 import "media.proto";
 
 enum Message {
-    MESSAGE_ARTWORK_SCAN = 0;
-    MESSAGE_AUDIO_SCAN = 1;
-    MESSAGE_MEDIA_INFO = 2;
-    MESSAGE_MEDIA_UPDATE_ARTWORK = 3;
-    MESSAGE_MEDIA_UPDATE_SHA = 4;
-    MESSAGE_MEDIA_DELETE = 5;
-    MESSAGE_TAG_UPDATE = 6;
-    MESSAGE_MEDIA_UPDATE = 7;
+    // ipc commands
+    IPC_PLAY = 0;
+    IPC_PAUSE = 1;
+    IPC_LOAD = 2;
+    IPC_VOLUME = 3;
+    IPC_SKIP = 4; // not really IPC but in the same workflow
+
+    MESSAGE_ARTWORK_SCAN = 10;
+    MESSAGE_AUDIO_SCAN = 11;
+    MESSAGE_MEDIA_INFO = 12;
+    MESSAGE_MEDIA_UPDATE_ARTWORK = 13;
+    MESSAGE_MEDIA_UPDATE_SHA = 14;
+    MESSAGE_MEDIA_DELETE = 15;
+    MESSAGE_TAG_UPDATE = 16;
+    MESSAGE_MEDIA_UPDATE = 17;
 
     MESSAGE_IPC = 100;
     MESSAGE_REST_API_READY = 101;
@@ -28,18 +35,21 @@ enum Message {
     MESSAGE_EVENT_ON_TRACK_FINISHED = 251;
     MESSAGE_EVENT_ON_TRACK_PLAY_COUNT_INCREASE = 252;
     MESSAGE_EVENT_ON_TRACK_SKIP_COUNT_INCREASE = 253;
-    MESSAGE_EVENT_ON_TRACK_PLAYED = 254;
+
+    // queue management
+    MESSAGE_QUEUE_LIST = 300;
+    MESSAGE_QUEUE_ADD = 301;
+    MESSAGE_QUEUE_REMOVE = 302;
 }
 
-enum IPCCommand {
-    IPC_PLAY = 0;
-    IPC_PAUSE = 1;
-    IPC_LOAD = 2;
-    IPC_VOLUME = 3;
+enum NamedPosition {
+    POSITION_TOP = 0;
+    POSITION_BOTTOM = 1;
 }
 
 // these are commands that will be sent from the browser to the websocket server
 // websocket should have its own logic to dispatch the NATS message
+// is this really needed now?
 enum RemoteCommand {
     REMOTE_PLAY = 0;
     REMOTE_PAUSE = 1;
@@ -58,7 +68,7 @@ message ArtworkUpdateInput {
 message IPCInput {
     Media media = 1;
     string value =2;
-    IPCCommand command = 3;
+    Message command = 3;
 }
 
 message IPCOutput {
@@ -76,6 +86,17 @@ message MediaInfoOutput {
     Response response = 2;
     google.protobuf.Timestamp last_modified_date = 3;
     string raw = 4;
+}
+
+message QueueInput {
+    Media media = 1;
+    int64 index = 2;
+    NamedPosition named_position = 3;
+}
+
+message QueueOutput {
+    repeated Media rows = 1;
+    string error = 2;
 }
 
 message Response {

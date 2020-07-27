@@ -11,7 +11,12 @@ These are a set of applications that eventually should accomplish:
 * Docker
 * NodeJS
 
+[mpv](src/docs/mpv.md)
+
 ## Running
+
+For the time being, only in development mode. There are no releases yet, 
+so the procedure is kind of tricky
 
 This environment variable needs to point to the directory where your media files live
 
@@ -19,25 +24,24 @@ This environment variable needs to point to the directory where your media files
 export MEDIA_STORE="/media/mau/music-library/music"
 ```
 
-### Frontend
+And this other needs to point to the ip of the backend
 
 ```
-cd src/ui/ui-player
+export REACT_APP_API_URL="http://localhost:8888"
+```
+
+In one terminal 
+
+```
 make dev
 ```
 
-`ctrl+c` to stop
-
-Start the browser at http://localhost:3000
-
-### Backend
-
+Once that is done, run in another terminal
 ```
-cd src/server
-make dev
+make dev-ui
 ```
 
-`ctrl+c` to stop then `make clean` to clean up docker stuff
+Browser will automatically start at http://localhost:3000
 
 #### Artwork
 
@@ -48,3 +52,21 @@ Default is `~/Downloads/artwork`
 ```
 - $HOME/Downloads/artwork:/artwork
 ```
+
+### Development
+
+Ensure to meet the following requirements
+
+[Tagger](src/pkg/taggers/README.md)
+
+[Protoc](src/docs/protocol-buffers.md)
+
+[Mediainfo](src/docs/mediainfo.md)
+
+### Related Software
+
+These packages will make your life easier, although not mandatory
+
+[Flacon](src/docs/flacon.md)
+
+[Kid3](src/docs/kid3.md)

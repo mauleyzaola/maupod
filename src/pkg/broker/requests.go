@@ -11,7 +11,7 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-func doRequest(nc *nats.Conn, subject pb.Message, input, output proto.Message, timeout time.Duration) error {
+func DoRequest(nc *nats.Conn, subject pb.Message, input, output proto.Message, timeout time.Duration) error {
 	data, err := helpers.ProtoMarshal(input)
 	if err != nil {
 		return err
@@ -20,16 +20,26 @@ func doRequest(nc *nats.Conn, subject pb.Message, input, output proto.Message, t
 	if err != nil {
 		return err
 	}
-	if err = helpers.ProtoUnmarshal(msg.Data, output); err != nil {
-		return err
+	if output != nil {
+		if err = helpers.ProtoUnmarshal(msg.Data, output); err != nil {
+			return err
+		}
 	}
 	return nil
+}
+
+func doPublish(nc *nats.Conn, subject pb.Message, input proto.Message) error {
+	data, err := helpers.ProtoMarshal(input)
+	if err != nil {
+		return err
+	}
+	return nc.Publish(strconv.Itoa(int(subject)), data)
 }
 
 func RequestMediaInfoScan(nc *nats.Conn, filename string, timeout time.Duration) (*pb.MediaInfoOutput, error) {
 	var output pb.MediaInfoOutput
 	input := &pb.MediaInfoInput{FileName: filename}
-	if err := doRequest(nc, pb.Message_MESSAGE_MEDIA_INFO, input, &output, timeout); err != nil {
+	if err := DoRequest(nc, pb.Message_MESSAGE_MEDIA_INFO, input, &output, timeout); err != nil {
 		return nil, err
 	}
 	if output.Response == nil {
@@ -46,15 +56,44 @@ func RequestMediaInfoScan(nc *nats.Conn, filename string, timeout time.Duration)
 	return &output, nil
 }
 
-func RequestIPCCommand(nc *nats.Conn, input *pb.IPCInput, timeout time.Duration) (*pb.IPCOutput, error) {
-	var output = &pb.IPCOutput{}
-	if err := doRequest(nc, pb.Message_MESSAGE_IPC, input, output, timeout); err != nil {
-		return nil, err
-	}
-	return output, nil
+func RequestIPCCommand(nc *nats.Conn, input *pb.IPCInput, timeout time.Duration) error {
+	return doPublish(nc, pb.Message_MESSAGE_IPC, input)
 }
 
 func RequestRestAPIReady(nc *nats.Conn, timeout time.Duration) error {
 	_, err := nc.Request(strconv.Itoa(int(pb.Message_MESSAGE_REST_API_READY)), nil, timeout)
 	return err
+}
+
+func RequestQueueAdd(nc *nats.Conn, input *pb.QueueInput, timeout time.Duration) (*pb.QueueOutput, error) {
+	var output pb.QueueOutput
+	if err := DoRequest(nc, pb.Message_MESSAGE_QUEUE_ADD, input, &output, timeout); err != nil {
+		return nil, err
+	}
+	if output.Error != "" {
+		return nil, errors.New(output.Error)
+	}
+	return &output, nil
+}
+
+func RequestQueueRemove(nc *nats.Conn, input *pb.QueueInput, timeout time.Duration) (*pb.QueueOutput, error) {
+	var output pb.QueueOutput
+	if err := DoRequest(nc, pb.Message_MESSAGE_QUEUE_REMOVE, input, &output, timeout); err != nil {
+		return nil, err
+	}
+	if output.Error != "" {
+		return nil, errors.New(output.Error)
+	}
+	return &output, nil
+}
+
+func RequestQueueList(nc *nats.Conn, input *pb.QueueInput, timeout time.Duration) (*pb.QueueOutput, error) {
+	var output pb.QueueOutput
+	if err := DoRequest(nc, pb.Message_MESSAGE_QUEUE_LIST, input, &output, timeout); err != nil {
+		return nil, err
+	}
+	if output.Error != "" {
+		return nil, errors.New(output.Error)
+	}
+	return &output, nil
 }
