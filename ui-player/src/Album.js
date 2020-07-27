@@ -3,7 +3,7 @@ import AlbumHeader from "./components/AlbumHeader";
 import {decodeURL} from "./api";
 import { albumViewList, mediaList } from "./api";
 import {msToString } from "./helpers";
-import Player from "./components/Player";
+import {PlayerPlay, PlayerPlayNext, TrackPlayControls} from "./components/Player";
 
 
 const TrackListHeader = ({isCompilation}) => {
@@ -40,7 +40,7 @@ const TrackListRow = ({isCompilation, row}) => {
                 <td>
                     <div className='row'>
                         <div className='col-1'>
-                            <Player visible={true} media={row} />
+                            <TrackPlayControls media={row} />
                         </div>
                         <div className='col-11'>
                             {row.track}
@@ -59,7 +59,7 @@ const TrackListRow = ({isCompilation, row}) => {
             <td>
                 <div className='row'>
                     <div className='col-1'>
-                        <Player visible={true} media={row} />
+                        <TrackPlayControls media={row} />
                     </div>
                     <div className='col-11'>
                         {row.track}

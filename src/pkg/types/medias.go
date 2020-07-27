@@ -27,11 +27,8 @@ func (m Medias) InsertTop(media *pb.Media) Medias {
 }
 
 func (m Medias) InsertBottom(media *pb.Media) Medias {
-	var index = len(m) - 1
-	if index == -1 {
-		index++
-	}
-	res, _ := m.InsertAt(media, index)
+	var res = m
+	res = append(res, media)
 	return res
 }
 

@@ -2,7 +2,7 @@
 -- +migrate Up
 
 create table media_queue(
-    id text primary key,
+	id text primary key ,
 	position int not null,
 	media_id text not null
 );

@@ -1,12 +1,13 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/nats-io/nats.go"
@@ -16,14 +17,12 @@ func (m *MsgHandler) handlerIPC(msg *nats.Msg) {
 	var err error
 	var input pb.IPCInput
 
-	if err = json.Unmarshal(msg.Data, &input); err != nil {
-		m.base.Logger().Error(err)
+	if err = helpers.ProtoUnmarshal(msg.Data, &input); err != nil {
+		log.Println(err)
 		return
 	}
 
 	log.Println("command: ", input.Command)
-
-	// TODO: validate media is ok
 
 	var filename string
 

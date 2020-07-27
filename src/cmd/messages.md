@@ -4,7 +4,7 @@
 
 | Message | Handler | Sender |Action |
 | ------------- |:-------------:| :-------------:| -----|
-| MESSAGE_ARTWORK_SCAN| artwork | audioscan  | looks up for artwork and makes a copy to `artwork` directory |
+| MESSAGE_ARTWORK_SCAN| artwork | audioscan  | looks up for artwork and makes a copy to artwork directory |
 | MESSAGE_AUDIO_SCAN | audioscan | restapi | scans a directory for media new or updated |
 | MESSAGE_MEDIA_INFO| mediainfo | audioscan | extracts information from a media file |
 | MESSAGE_MEDIA_UPDATE_ARTWORK | mediainfo | artwork | updates artwork for a media in db |

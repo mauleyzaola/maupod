@@ -7,6 +7,7 @@ import (
 
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata/conversion"
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata/orm"
+	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/mauleyzaola/maupod/src/pkg/types"
 	"github.com/volatiletech/sqlboiler/v4/boil"
@@ -44,6 +45,25 @@ func queueList(ctx context.Context, conn boil.ContextExecutor) (types.Medias, er
 	return res, nil
 }
 
+// TODO: improve this shit
+func queueSave(ctx context.Context, conn boil.ContextExecutor, rows types.Medias) error {
+	_, err := orm.MediaQueues().DeleteAll(ctx, conn)
+	if err != nil {
+		return err
+	}
+	for i, v := range rows {
+		q := orm.MediaQueue{
+			ID:       helpers.NewUUID(),
+			Position: i,
+			MediaID:  v.Id,
+		}
+		if err = q.Insert(ctx, conn, boil.Infer()); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func (a *ApiServer) QueueGet(p TransactionExecutorParams) (status int, result interface{}, err error) {
 	if result, err = queueList(p.ctx, p.conn); err != nil {
 		status = http.StatusInternalServerError
@@ -65,11 +85,11 @@ func (a *ApiServer) QueuePost(p TransactionExecutorParams) (status int, result i
 		return
 	}
 
-	if input.Index == 0 {
+	if input.Index == -1 {
 		if input.NamedPosition == pb.NamedPosition_POSITION_TOP {
-			list.InsertTop(input.Media)
+			list = list.InsertTop(input.Media)
 		} else if input.NamedPosition == pb.NamedPosition_POSITION_BOTTOM {
-			list.InsertBottom(input.Media)
+			list = list.InsertBottom(input.Media)
 		} else {
 			err = errors.New("invalid named position and missing index, what should we do")
 			status = http.StatusBadRequest
@@ -80,6 +100,11 @@ func (a *ApiServer) QueuePost(p TransactionExecutorParams) (status int, result i
 			status = http.StatusBadRequest
 			return
 		}
+	}
+
+	if err = queueSave(p.ctx, p.conn, list); err != nil {
+		status = http.StatusInternalServerError
+		return
 	}
 
 	result = list
