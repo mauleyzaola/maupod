@@ -39,10 +39,10 @@ const TrackListRow = ({isCompilation, row}) => {
                 <td>{row.track_position}</td>
                 <td>
                     <div className='row'>
-                        <div className='col-1'>
+                        <div className='col-4'>
                             <TrackPlayControls media={row} />
                         </div>
-                        <div className='col-11'>
+                        <div className='col-8'>
                             {row.track}
                         </div>
                     </div>
@@ -58,10 +58,10 @@ const TrackListRow = ({isCompilation, row}) => {
             <td>{row.track_position}</td>
             <td>
                 <div className='row'>
-                    <div className='col-1'>
+                    <div className='col-4'>
                         <TrackPlayControls media={row} />
                     </div>
-                    <div className='col-11'>
+                    <div className='col-8'>
                         {row.track}
                     </div>
                 </div>

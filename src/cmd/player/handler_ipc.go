@@ -36,6 +36,12 @@ func (m *MsgHandler) handlerIPC(msg *nats.Msg) {
 	}
 	input.Media.Location = filename
 
+	// check the file exists before emit the event to mpv https://github.com/mauleyzaola/maupod/issues/75
+	if _, err = os.Stat(input.Media.Location); err != nil {
+		log.Println(err)
+		return
+	}
+
 	switch input.Command {
 	case pb.Message_IPC_PLAY:
 		if err = m.ipc.Load(input.Media); err != nil {

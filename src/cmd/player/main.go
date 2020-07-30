@@ -11,7 +11,6 @@ import (
 	"github.com/mauleyzaola/maupod/src/pkg/rules"
 	"github.com/mauleyzaola/maupod/src/pkg/simplelog"
 	"github.com/mauleyzaola/maupod/src/pkg/types"
-	"github.com/nats-io/nats.go"
 	"github.com/spf13/viper"
 )
 
@@ -49,8 +48,8 @@ func run() error {
 		return err
 	}
 
-	// we're outside the docker network, need to hit localhost
-	config.NatsUrl = nats.DefaultURL
+	// don't use common NATS port
+	config.NatsUrl = "nats://127.0.0.1:4244"
 
 	nc, err := broker.ConnectNATS(config.NatsUrl, int(config.Retries), time.Second*time.Duration(config.Delay))
 	if err != nil {

@@ -45,7 +45,9 @@ const TrackListRow = ({row}) => {
                         <TrackPlayControls media={row}/>
                     </div>
                     <div className='col-8'>
-                        {row.track}
+                        <span title={row.location}>
+                            {row.track}
+                        </span>
                     </div>
                 </div>
             </td>
