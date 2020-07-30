@@ -58,7 +58,7 @@ services:
     image: nats:2.1
     restart: always
     ports:
-      - 4222:4222
+      - 4244:4222
 
   pg:
     image: postgres:9.5
@@ -68,6 +68,6 @@ services:
       - $HOME/data/pg/data:/var/lib/postgresql/data
     expose:
       - 5432
-    ports:
-      - 5432:5432
+#    ports:
+#      - 5432:5432
 
