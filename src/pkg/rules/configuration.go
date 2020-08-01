@@ -41,29 +41,6 @@ func FileIsValidExtension(c *pb.Configuration, filename string) bool {
 	return false
 }
 
-func ConfigurationFileSystemStores(c *pb.Configuration) []*pb.FileStore {
-	var roots []*pb.FileStore
-	for _, v := range c.MediaStores {
-		switch v.Type {
-		case pb.FileStore_FILE_SYSTEM:
-			roots = append(roots, v)
-		default:
-			continue
-		}
-	}
-	if len(roots) == 0 {
-		// if no store is available in yaml file, lookup in the environment
-		if val := viper.GetString("MEDIA_STORE"); val != "" {
-			roots = append(roots, &pb.FileStore{
-				Name:     "store",
-				Type:     pb.FileStore_FILE_SYSTEM,
-				Location: val,
-			})
-		}
-	}
-	return roots
-}
-
 func Timeout(c *pb.Configuration) time.Duration {
 	return time.Second * time.Duration(c.Delay)
 }

@@ -7,6 +7,8 @@ import (
 	"os/signal"
 	"time"
 
+	"github.com/mauleyzaola/maupod/src/pkg/pb"
+
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
 
 	_ "github.com/lib/pq"
@@ -50,7 +52,16 @@ func run() error {
 	}
 
 	// create directory if not exists
-	config.MediaStores = rules.ConfigurationFileSystemStores(config)
+	if val := os.Getenv("MEDIA_STORE"); val != "" {
+		config.MediaStores = []*pb.FileStore{
+			{
+				Type:     pb.FileStore_FILE_SYSTEM,
+				Name:     "media-store",
+				Location: val,
+			},
+		}
+	}
+
 	if len(config.MediaStores) == 0 {
 		return errors.New("could not find any media store in configuration or environment")
 	}

@@ -4,6 +4,8 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/mauleyzaola/maupod/src/pkg/paths"
+
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/pkg/information"
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
@@ -43,7 +45,9 @@ func (m *MsgHandler) handlerMediaInfo(msg *nats.Msg) {
 	}
 	m.base.Logger().Info("received media info message: " + input.String())
 
-	raw, err := information.MediaInfoFromFile(input.FileName)
+	var fullPath = paths.FullPath(input.FileName)
+	var location = paths.LocationPath(fullPath)
+	raw, err := information.MediaInfoFromFile(fullPath)
 	if err != nil {
 		m.base.Logger().Error(err)
 		output.Response.Ok = false
@@ -61,7 +65,7 @@ func (m *MsgHandler) handlerMediaInfo(msg *nats.Msg) {
 		return
 	}
 
-	info, err := os.Stat(input.FileName)
+	info, err := os.Stat(fullPath)
 	if err != nil {
 		m.base.Logger().Error(err)
 		output.Response.Ok = false
@@ -70,7 +74,7 @@ func (m *MsgHandler) handlerMediaInfo(msg *nats.Msg) {
 	}
 	output.LastModifiedDate = helpers.TimeToTs2(info.ModTime())
 	output.Media = result
-	output.Media.FolderName = filepath.Dir(input.FileName)
+	output.Media.FolderName = filepath.Dir(location)
 	output.Media.FileName = filepath.Base(input.FileName)
 	output.Media.Location = filepath.Join(output.Media.FolderName, output.Media.FileName)
 	output.Response.Ok = true

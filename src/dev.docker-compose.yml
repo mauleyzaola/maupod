@@ -15,7 +15,7 @@ services:
       context: .
       dockerfile: dockerfiles/dev.artwork.Dockerfile
     environment:
-      - ARTWORK_STORE
+      - MEDIA_STORE=/music-store
     volumes:
       - ./:/go/src/github.com/mauleyzaola/maupod/src/server
       - $MEDIA_STORE:/music-store
@@ -26,7 +26,7 @@ services:
       context: .
       dockerfile: dockerfiles/dev.audioscan.Dockerfile
     environment:
-      - MEDIA_STORE
+      - MEDIA_STORE=/music-store
     volumes:
       - ./:/go/src/github.com/mauleyzaola/maupod/src/server
       - $MEDIA_STORE:/music-store
@@ -36,7 +36,7 @@ services:
       context: .
       dockerfile: dockerfiles/dev.mediainfo.Dockerfile
     environment:
-      - MEDIA_STORE
+      - MEDIA_STORE=/music-store
     volumes:
       - ./:/go/src/github.com/mauleyzaola/maupod/src/server
       - $MEDIA_STORE:/music-store
@@ -68,6 +68,6 @@ services:
       - $HOME/data/pg/data:/var/lib/postgresql/data
     expose:
       - 5432
-#    ports:
-#      - 5432:5432
+    ports:
+      - 5432:5432
 
