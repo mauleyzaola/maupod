@@ -40,6 +40,9 @@ enum Message {
     MESSAGE_QUEUE_LIST = 300;
     MESSAGE_QUEUE_ADD = 301;
     MESSAGE_QUEUE_REMOVE = 302;
+
+    // file management
+    MESSAGE_DIRECTORY_READ = 400;
 }
 
 enum NamedPosition {
@@ -65,6 +68,15 @@ message ArtworkUpdateInput {
     Media media = 1;
 }
 
+message DirectoryReadInput {
+    string root = 1;
+}
+
+message DirectoryReadOutput {
+    repeated FileItem files = 1;
+    string error = 2;
+}
+
 message IPCInput {
     Media media = 1;
     string value =2;
@@ -74,6 +86,14 @@ message IPCInput {
 message IPCOutput {
     bool ok = 1;
     string error = 2;
+}
+
+message FileItem {
+    string location = 1;
+    bool is_dir = 2;
+    int64 size = 3;
+    string name = 4;
+    string id = 5;
 }
 
 message MediaInfoInput {

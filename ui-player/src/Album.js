@@ -3,7 +3,7 @@ import AlbumHeader from "./components/AlbumHeader";
 import {decodeURL} from "./api";
 import { albumViewList, mediaList } from "./api";
 import {msToString } from "./helpers";
-import {PlayerPlay, PlayerPlayNext, TrackPlayControls} from "./components/Player";
+import {TrackPlayControls} from "./components/Player";
 
 
 const TrackListHeader = ({isCompilation}) => {

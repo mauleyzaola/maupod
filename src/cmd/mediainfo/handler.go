@@ -72,6 +72,10 @@ func (m *MsgHandler) Register() error {
 			Subject: strconv.Itoa(int(pb.Message_MESSAGE_QUEUE_REMOVE)),
 			Handler: m.handlerQueueRemove,
 		},
+		handler.Subscription{
+			Subject: strconv.Itoa(int(pb.Message_MESSAGE_DIRECTORY_READ)),
+			Handler: m.handlerReadDirectory,
+		},
 	)
 }
 
