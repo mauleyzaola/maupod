@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {decodeURL, directoryRead} from "../api";
+import {audioScan, decodeURL, directoryRead} from "../api";
 import {Link} from 'react-router-dom';
-import { FaFolder} from "react-icons/fa/index";
+import { FaFolder, FaMusic } from "react-icons/fa/index";
 
 const FileList = ({files, onClick}) => (
     <table className='table table-border small'>
@@ -27,7 +27,7 @@ const FileRow = ({file, onClick}) => {
             <td className={css} title={file.location} onClick={() => onClick(file)}>
                 {file.is_dir
                     ? <span> <FaFolder/>  <Link to={`/file-browser?root=${file.location}`}>{` ${file.name}`}</Link></span>
-                    : <span>{file.name}</span>
+                    : <span><FaMusic /> {file.name}</span>
                 }
             </td>
             <td>{!file.is_dir ? file.size : null}</td>
@@ -71,11 +71,24 @@ class FileBrowser extends React.Component{
         this.setState({files});
     }
 
+    runAudioScan = () => {
+        const data = decodeURL(this.props.location.search);
+        data.force = true;
+        audioScan(data).then(() => console.log('Request was successful'))
+    }
+
+    handleScanClick = () => this.runAudioScan();
+
     render() {
         const { files } = this.state;
         return (
             <div>
                 <FileList files={files} onClick={this.onClick} />
+                <form>
+                    <div className='form-group'>
+                        <button type='button' className='btn btn-info' onClick={this.handleScanClick}>Scan</button>
+                    </div>
+                </form>
             </div>
         )
     }
