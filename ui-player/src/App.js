@@ -4,7 +4,6 @@ import './App.css';
 
 import Albums from "./Albums";
 import Album from "./Album";
-import AudioScan from "./AudioScan";
 import Performers from './Performers'
 import Genres from "./Genres";
 import Dashboard from "./Dashboard";
@@ -34,7 +33,6 @@ class App extends React.Component{
                     />
                     <Switch>
                         <Route exact path='/' component={Dashboard} />
-                        <Route exact path='/audio-scan' component={AudioScan} />
                         <Route exact path='/albums' component={Albums} />
                         <Route path='/album' component={Album} />
                         <Route exact path='/performers' component={Performers} />

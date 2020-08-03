@@ -35,9 +35,6 @@ class Nav extends React.Component{
                             <Link className="nav-link" to='/performers'>Performers</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" to='/audio-scan'>Audio Scan</Link>
-                        </li>
-                        <li className="nav-item">
                             <Link className="nav-link" to='/file-browser'>File Browser</Link>
                         </li>
                     </ul>
