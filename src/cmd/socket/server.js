@@ -5,63 +5,38 @@ const servers = ['nats://nats-server:4222']
 const NATS = require('nats');
 const nc = NATS.connect({json: true, servers: servers});
 const messages = require('./nodepb/messages_pb');
-const ipcCommands = messages.IPCCommand;
-const remoteCommands = messages.RemoteCommand;
-const ipcMsg = messages.Message.MESSAGE_IPC;
-
+const subjects = messages.Message;
 
 console.log(`started websocket server on: ${JSON.stringify(wsOptions)}`);
 
-const sendPlay = media => {
-    nc.publish(ipcMsg, {
-        media: media,
-        command: ipcCommands.IPC_PLAY,
-    });
-}
-
-const sendPause = media => {
-    nc.publish(ipcMsg, {
-        media: media,
-        command: ipcCommands.IPC_PAUSE,
-    });
-}
-
-const sendVolume = ({media, value}) => {
-    nc.publish(ipcMsg, {
-        value,
-        media,
-        command: ipcCommands.IPC_VOLUME,
-    });
-}
+nc.subscribe(subjects.MESSAGE_SOCKET_TRACK_POSITION_PERCENT, (msg) => {
+    try{
+        const { media, percent } = msg;
+        console.log(`received event track: ${media.track} percent played: ${percent}`)
+    }catch (e){
+        console.log(e);
+    }
+})
 
 wss.on('connection', ws => {
     const addr = ws._socket.remoteAddress
     console.log(`new connection from ${addr}`);
 
-    ws.on('message', message => {
-        const data = JSON.parse(message);
-        try{
-            switch (data.subject) {
-                case remoteCommands.REMOTE_PLAY:
-                    sendPlay(data.media);
-                    break;
-                case remoteCommands.REMOTE_PAUSE:
-                    sendPause(data.media);
-                    break;
-                case remoteCommands.REMOTE_VOLUME:
-                    sendVolume(data);
-                    break;
-                default:
-                    console.log(`unsupported: ${data.subject}`);
-                    break;
-            }
-        }catch (e) {
-            console.log(e);
-        }
-    })
+    // ws.on('message', message => {
+    //     const data = JSON.parse(message);
+    //     try{
+    //         switch (data.subject) {
+    //             case remoteCommands.REMOTE_PLAY:
+    //                 sendPlay(data.media);
+    //                 break;
+    //             default:
+    //                 console.log(`unsupported: ${data.subject}`);
+    //                 break;
+    //         }
+    //     }catch (e) {
+    //         console.log(e);
+    //     }
+    // })
 
     ws.send('socket started');
 })
-
-// working webcosket server
-// TODO: connect to NATS and dispatch events to the UI

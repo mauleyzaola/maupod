@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"strconv"
 	"time"
 
@@ -60,7 +61,14 @@ func (m *MsgHandler) InitializeIPC(filename string) error {
 		// TODO: timeout should come from configuration
 		return broker.DoRequest(m.base.NATS(), subject, input, output, time.Second)
 	}
-	control := pkg.NewPlayerControl(publishFn, requestFn)
+	var publishFnJSON broker.PublisherFuncJSON = func(subject pb.Message, payload interface{}) error {
+		data, err := json.Marshal(payload)
+		if err != nil {
+			return err
+		}
+		return m.base.NATS().Publish(strconv.Itoa(int(subject)), data)
+	}
+	control := pkg.NewPlayerControl(publishFn, publishFnJSON, requestFn)
 	if m.ipc, err = pkg.NewIPC(processor, control); err != nil {
 		return err
 	}
