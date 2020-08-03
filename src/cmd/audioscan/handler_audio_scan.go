@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"log"
 	"time"
 
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata"
@@ -23,7 +24,7 @@ func (m *MsgHandler) handlerAudioScan(msg *nats.Msg) {
 		m.base.Logger().Info("[INFO] elapsed time: " + time.Since(start).String())
 	}()
 
-	m.base.Logger().Info("received audio scan message: " + input.String())
+	log.Println("received audio scan message: " + input.String())
 
 	ctx := context.Background()
 	conn := m.db

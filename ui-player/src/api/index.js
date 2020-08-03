@@ -23,7 +23,10 @@ const albumViewList = data => axios.get(`/media/albums`, {
 })
 
 const decodeURL = search => querystring.decode(search.replace('?',''));
-
+const directoryRead = async data => {
+    const response = await axios.post(`/file-browser/directory`, data);
+    return response.data.files || [];
+}
 const distinctListGet = ({field, filter}) => axios.get(`/media/${field}/distinct`, {
     params: filter,
 });
@@ -43,6 +46,7 @@ export {
     audioScan,
     albumViewList,
     decodeURL,
+    directoryRead,
     distinctListGet,
     ipcCommand,
     genreArtworkList,

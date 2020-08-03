@@ -22,8 +22,6 @@ func SetupRoutes(a *ApiServer, output io.Writer) http.Handler {
 
 	http.Handle("/", baseRouter)
 
-	baseRouter.HandleFunc("/system/ping", handlerPing).Methods(http.MethodOptions, http.MethodGet)
-
 	baseRouter.HandleFunc("/audio/scan", chainGlueCors(a.AudioScanPost)).Methods(http.MethodOptions, http.MethodPost)
 	baseRouter.HandleFunc("/artwork/scan", chainGlueCors(a.ArtworkScanPost)).Methods(http.MethodOptions, http.MethodPost)
 
@@ -32,6 +30,8 @@ func SetupRoutes(a *ApiServer, output io.Writer) http.Handler {
 
 	baseRouter.HandleFunc("/ipc", chainGlueCors(a.IPCPost)).Methods(http.MethodOptions, http.MethodPost)
 
+	baseRouter.HandleFunc("/file-browser/directory", chainGlueCors(a.DirectoryReadGet)).Methods(http.MethodOptions, http.MethodPost)
+
 	baseRouter.HandleFunc("/media/{field}/distinct", chainGlueCors(a.DistinctListGet)).Methods(http.MethodOptions, http.MethodGet)
 	baseRouter.HandleFunc("/media", chainGlueCors(a.MediaListGet)).Methods(http.MethodOptions, http.MethodGet)
 	baseRouter.HandleFunc("/media/albums", chainGlueCors(a.AlbumViewListGet)).Methods(http.MethodOptions, http.MethodGet)
@@ -39,6 +39,8 @@ func SetupRoutes(a *ApiServer, output io.Writer) http.Handler {
 	baseRouter.HandleFunc("/queue", chainGlueCors(a.QueueGet)).Methods(http.MethodOptions, http.MethodGet)
 	baseRouter.HandleFunc("/queue", chainGlueCors(a.QueuePost)).Methods(http.MethodOptions, http.MethodPost)
 	baseRouter.HandleFunc("/queue", chainGlueCors(a.QueueDelete)).Methods(http.MethodOptions, http.MethodDelete)
+
+	baseRouter.HandleFunc("/system/ping", handlerPing).Methods(http.MethodOptions, http.MethodGet)
 
 	if output != nil {
 		return handlers.CombinedLoggingHandler(output, baseRouter)

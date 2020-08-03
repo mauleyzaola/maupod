@@ -12,6 +12,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/mauleyzaola/maupod/src/pkg/paths"
+
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
 
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
@@ -65,7 +67,7 @@ func (m *MsgHandler) handlerArtworkExtract(msg *nats.Msg) {
 	}
 
 	// check for the image in the same directory of the audio file
-	if coverLocation = findArtworkSameDirectory(input.Media.Location); coverLocation == "" {
+	if coverLocation = findArtworkSameDirectory(paths.FullPath(input.Media.Location)); coverLocation == "" {
 		return
 	}
 
@@ -101,7 +103,7 @@ func imageWriteArtwork(source, target string, imageSize int) error {
 }
 
 func imageValidSize(nc *nats.Conn, filename string, minWidth int) error {
-	output, err := broker.RequestMediaInfoScan(nc, filename, time.Second*3)
+	output, err := broker.RequestMediaInfoScan(nc, paths.LocationPath(filename), time.Second*3)
 	x, y, err := images.Size(bytes.NewBufferString(output.Raw))
 	if err != nil {
 		return err

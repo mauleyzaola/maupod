@@ -37,6 +37,9 @@ class Nav extends React.Component{
                         <li className="nav-item">
                             <Link className="nav-link" to='/audio-scan'>Audio Scan</Link>
                         </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to='/file-browser'>File Browser</Link>
+                        </li>
                     </ul>
                     <form className="form-inline my-2 my-lg-0" onSubmit={e => {
                         e.preventDefault();

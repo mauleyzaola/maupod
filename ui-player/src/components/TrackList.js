@@ -2,7 +2,7 @@ import React from 'react';
 import {msToString, secondsToDate} from "../helpers";
 import {Link} from "react-router-dom";
 import { linkAlbumView, linkGenreList, linkPerformerList } from "../routes";
-import Player, {PlayerPlay, TrackPlayControls} from "./Player";
+import {TrackPlayControls} from "./Player";
 
 const TrackListHeader = () => (
     <thead>

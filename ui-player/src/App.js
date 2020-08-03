@@ -12,6 +12,7 @@ import MediaList from "./MediaList";
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import Nav from "./Nav";
 import { linkMediaList } from "./routes";
+import FileBrowser from "./components/FileBrowser";
 
 class App extends React.Component{
 
@@ -39,6 +40,7 @@ class App extends React.Component{
                         <Route exact path='/performers' component={Performers} />
                         <Route exact path='/genres' component={Genres} />
                         <Route path='/media' component={MediaList} />
+                        <Route path='/file-browser' component={FileBrowser} />
                     </Switch>
                 </Router>
             </div>

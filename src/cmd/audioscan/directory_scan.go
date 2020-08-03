@@ -6,6 +6,8 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/mauleyzaola/maupod/src/pkg/paths"
+
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata"
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata/orm"
@@ -92,7 +94,7 @@ func ScanDirectoryAudioFiles(
 	// buffer all the media in db
 	var allMedia dbdata.Medias
 	if allMedia, err = store.List(ctx, conn, dbdata.MediaFilter{}, nil); err != nil {
-		logger.Error(err)
+		log.Println(err)
 		return err
 	}
 
@@ -120,17 +122,19 @@ func ScanDirectoryAudioFiles(
 	}
 
 	logger.Info("[DEBUG] started scanning")
-	if err = helpers.WalkFiles(root, walker); err != nil {
-		logger.Error(err)
+	if err = helpers.WalkFiles(paths.FullPath(root), walker); err != nil {
+		log.Println(err)
 		return err
 	}
 
 	var timeout = time.Second * time.Duration(config.Delay)
 	for _, f := range files {
+		var location = paths.LocationPath(f)
+		var fullPath = paths.FullPath(location)
 		var m *pb.Media
 		var output *pb.MediaInfoOutput
-		if output, err = broker.RequestMediaInfoScan(nc, f, timeout); err != nil {
-			logger.Error(err)
+		if output, err = broker.RequestMediaInfoScan(nc, location, timeout); err != nil {
+			log.Println(err)
 			continue
 		}
 		m = output.Media
@@ -138,24 +142,24 @@ func ScanDirectoryAudioFiles(
 		// if the minimal information such as track, album and performer are not present, ignore this scan
 		// TODO: send another NATS message for storing these errors
 		if err = rules.MediaCheckMinimalData(m); err != nil {
-			logger.Error(err)
+			log.Println(err)
 			continue
 		}
 
 		// create/update sha
-		if m.Sha, err = helpers.SHAFromFile(f); err != nil {
+		if m.Sha, err = helpers.SHAFromFile(fullPath); err != nil {
 			log.Println(err)
 			return err
 		}
 
 		m.Id = helpers.NewUUID()
 		m.LastScan = helpers.TimeToTs(&scanDate)
-		m.Location = f
+		m.Location = location
 		m.Directory = filepath.Dir(m.Location)
-		m.FileExtension = filepath.Ext(f)
+		m.FileExtension = filepath.Ext(location)
 
 		// if the location is the same and we made it here, that means we need to update the row
-		if val, ok := mediaLocationKeys[f]; ok {
+		if val, ok := mediaLocationKeys[location]; ok {
 			m.Id = val.Id
 			m.AlbumIdentifier = val.AlbumIdentifier
 			if err = store.Update(ctx, conn, m, updatableFields()...); err != nil {
@@ -179,7 +183,7 @@ func ScanDirectoryAudioFiles(
 		// send message for extracting artwork if album has identifier
 		if m.AlbumIdentifier != "" {
 			if err = broker.PublishBroker(nc, pb.Message_MESSAGE_ARTWORK_SCAN, &pb.ArtworkExtractInput{Media: m, ScanDate: helpers.TimeToTs2(scanDate)}); err != nil {
-				logger.Error(err)
+				log.Println(err)
 			}
 		}
 	}

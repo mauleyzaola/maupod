@@ -97,3 +97,11 @@ func RequestQueueList(nc *nats.Conn, input *pb.QueueInput, timeout time.Duration
 	}
 	return &output, nil
 }
+
+func RequestFileBrowserDirectory(nc *nats.Conn, input *pb.DirectoryReadInput, timeout time.Duration) (*pb.DirectoryReadOutput, error) {
+	var output pb.DirectoryReadOutput
+	if err := DoRequest(nc, pb.Message_MESSAGE_DIRECTORY_READ, input, &output, timeout); err != nil {
+		return nil, err
+	}
+	return &output, nil
+}

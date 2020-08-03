@@ -5,9 +5,9 @@ import (
 	"log"
 	"os"
 	"strconv"
-	"strings"
 
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
+	"github.com/mauleyzaola/maupod/src/pkg/paths"
 
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/nats-io/nats.go"
@@ -28,7 +28,7 @@ func (m *MsgHandler) handlerIPC(msg *nats.Msg) {
 
 	// check ipc has been initialized
 	if val := input.Media.Location; val != "" {
-		filename = convertToLocalPath(val)
+		filename = paths.FullPath(val)
 		if err = m.InitializeIPC(filename); err != nil {
 			m.base.Logger().Error(err)
 			return
@@ -84,13 +84,4 @@ func (m *MsgHandler) handlerIPC(msg *nats.Msg) {
 	}
 
 	return
-}
-
-// TODO: fix this mess with the volume name vs local path, maybe we should store file paths relative to the MEDIA_STORE value
-func convertToLocalPath(filename string) string {
-	val := os.Getenv("MEDIA_STORE")
-	if val == "" {
-		return filename
-	}
-	return strings.Replace(filename, "/music-store", val, -1)
 }

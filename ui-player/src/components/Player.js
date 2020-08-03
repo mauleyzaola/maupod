@@ -15,13 +15,9 @@ const TrackPlayControls = ({media}) => (
 )
 
 class PlayerPlay extends React.Component{
-    constructor(props) {
-        super(props);
-    }
-
     onClick = (media) => {
         ipcCommand(({ command: IPC_PLAY, media}))
-            .then(data => console.log(data))
+            .then(() => {})
     }
 
     render() {
@@ -38,13 +34,9 @@ class PlayerPlay extends React.Component{
 }
 
 class PlayerPause extends React.Component{
-    constructor(props) {
-        super(props);
-    }
-
     onClick = (media) => {
         ipcCommand(({ command: IPC_PAUSE, media}))
-            .then(data => console.log(data))
+            .then(() => {})
     }
 
     render() {
@@ -61,13 +53,9 @@ class PlayerPause extends React.Component{
 }
 
 class PlayerPlayNext extends React.Component{
-    constructor(props) {
-        super(props);
-    }
-
     onClick = media => {
         queueAdd({media: media, named_position: POSITION_TOP})
-            .then(data => console.log(data));
+            .then(() => {})
     }
 
     render() {
@@ -84,13 +72,9 @@ class PlayerPlayNext extends React.Component{
 }
 
 class PlayerPlayLater extends React.Component{
-    constructor(props) {
-        super(props);
-    }
-
     onClick = media => {
         queueAdd({media: media, named_position: POSITION_BOTTOM})
-            .then(data => console.log(data));
+            .then(() => {})
     }
 
     render() {
@@ -107,13 +91,9 @@ class PlayerPlayLater extends React.Component{
 }
 
 class PlayerSkip extends React.Component{
-    constructor(props) {
-        super(props);
-    }
-
     onClick = media => {
         ipcCommand(({ command: IPC_SKIP, media}))
-            .then(data => console.log(data))
+            .then(() => {})
     }
 
     render() {
@@ -150,8 +130,8 @@ TrackPlayControls.propTypes = {
 }
 
 export {
-    PlayerPlay,
-    PlayerPlayNext,
-    PlayerPause,
+    // PlayerPlay,
+    // PlayerPlayNext,
+    // PlayerPause,
     TrackPlayControls,
 }
