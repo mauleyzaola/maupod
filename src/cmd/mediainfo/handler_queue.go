@@ -86,6 +86,10 @@ func (m *MsgHandler) handlerQueueAdd(msg *nats.Msg) {
 	var output pb.QueueOutput
 
 	defer func() {
+		if err = m.queueSave(); err != nil {
+			log.Println(err)
+			return
+		}
 		data, err := helpers.ProtoMarshal(&output)
 		if err != nil {
 			log.Println(err)
@@ -130,6 +134,10 @@ func (m *MsgHandler) handlerQueueRemove(msg *nats.Msg) {
 	var output pb.QueueOutput
 
 	defer func() {
+		if err = m.queueSave(); err != nil {
+			log.Println(err)
+			return
+		}
 		data, err := helpers.ProtoMarshal(&output)
 		if err != nil {
 			log.Println(err)
@@ -145,4 +153,43 @@ func (m *MsgHandler) handlerQueueRemove(msg *nats.Msg) {
 	}
 	m.queueItems = list
 	output.Rows = list
+}
+
+func (m *MsgHandler) queueSave() error {
+	conn, err := m.db.Begin()
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err != nil {
+			err = conn.Rollback()
+		} else {
+			err = conn.Commit()
+		}
+		if err != nil {
+			log.Println(err)
+		}
+	}()
+	if _, err = conn.Exec("truncate table " + orm.TableNames.MediaQueue); err != nil {
+		return err
+	}
+	log.Printf("[INFO] persisting %d queue items to db\n", len(m.queueItems))
+	ctx := context.Background()
+	for i, v := range m.queueItems {
+		item := &orm.MediaQueue{
+			ID:       helpers.NewUUID(),
+			Position: i,
+			MediaID:  v.Id,
+		}
+		if err = item.Insert(ctx, conn, boil.Infer()); err != nil {
+			return err
+		}
+	}
+	return err
+}
+
+func (m *MsgHandler) handlerQueueSave(msg *nats.Msg) {
+	if err := m.queueSave(); err != nil {
+		log.Println(err)
+	}
 }

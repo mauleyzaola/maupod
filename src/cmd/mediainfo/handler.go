@@ -73,6 +73,10 @@ func (m *MsgHandler) Register() error {
 			Handler: m.handlerQueueRemove,
 		},
 		handler.Subscription{
+			Subject: strconv.Itoa(int(pb.Message_MESSAGE_QUEUE_SAVE)),
+			Handler: m.handlerQueueSave,
+		},
+		handler.Subscription{
 			Subject: strconv.Itoa(int(pb.Message_MESSAGE_DIRECTORY_READ)),
 			Handler: m.handlerReadDirectory,
 		},
@@ -80,6 +84,5 @@ func (m *MsgHandler) Register() error {
 }
 
 func (m *MsgHandler) Close() {
-	// TODO: persist the queue items to db
 	m.base.Close()
 }
