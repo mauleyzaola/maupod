@@ -7,10 +7,11 @@ import (
 	"time"
 
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
-
+	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/mauleyzaola/maupod/src/pkg/rules"
 	"github.com/mauleyzaola/maupod/src/pkg/simplelog"
 	"github.com/mauleyzaola/maupod/src/pkg/types"
+	"github.com/nats-io/nats.go"
 	"github.com/spf13/viper"
 )
 
@@ -63,6 +64,11 @@ func run() error {
 		return err
 	}
 
+	// TODO: configure this feature somewhere else
+	if err := autoPlayQueue(nc, config); err != nil {
+		log.Println(err)
+	}
+
 	// handle interruptions and cleanup resources
 	signalChan := make(chan os.Signal, 1)
 	cleanupDone := make(chan bool)
@@ -84,5 +90,33 @@ func run() error {
 
 	<-cleanupDone
 
+	return nil
+}
+
+func autoPlayQueue(nc *nats.Conn, config *pb.Configuration) error {
+	var timeout = rules.Timeout(config)
+	output, err := broker.RequestQueueList(nc, &pb.QueueInput{}, timeout)
+	if err != nil {
+		return err
+	}
+	if len(output.Rows) == 0 {
+		return nil
+	}
+	nextMedia := output.Rows[0]
+	// send a nats message
+	var input = &pb.IPCInput{
+		Media:   nextMedia,
+		Value:   "",
+		Command: pb.Message_IPC_PLAY,
+	}
+	if err = broker.RequestIPCCommand(nc, input, timeout); err != nil {
+		return err
+	}
+	if _, err = broker.RequestQueueRemove(nc, &pb.QueueInput{
+		Media: nextMedia,
+		Index: 0,
+	}, timeout); err != nil {
+		return err
+	}
 	return nil
 }
