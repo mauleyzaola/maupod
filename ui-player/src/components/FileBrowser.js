@@ -4,7 +4,7 @@ import {decodeURL, directoryRead} from "../api";
 import {Link} from 'react-router-dom';
 import { FaFolder} from "react-icons/fa/index";
 
-const FileList = ({files}) => (
+const FileList = ({files, onClick}) => (
     <table className='table table-border small'>
     <thead>
     <tr>
@@ -13,22 +13,27 @@ const FileList = ({files}) => (
     </tr>
     </thead>
         <tbody>
-        {files.map(x => <FileRow key={x.id} file={x} />)}
+        {files.map(x => <FileRow key={x.id} file={x} onClick={onClick} />)}
         </tbody>
     </table>
 )
 
-const FileRow = ({file}) => (
-    <tr>
-        <td title={file.location}>
-            {file.is_dir
-                ? <span> <FaFolder/>  <Link to={`/file-browser?root=${file.location}`}>{` ${file.name}`}</Link></span>
-                : <span>{file.name}</span>
-            }
-        </td>
-        <td>{!file.is_dir ? file.size : null}</td>
-    </tr>
-)
+const FileRow = ({file, onClick}) => {
+
+    const css = file.selected ? 'text-warning' : '';
+
+    return (
+        <tr>
+            <td className={css} title={file.location} onClick={() => onClick(file)}>
+                {file.is_dir
+                    ? <span> <FaFolder/>  <Link to={`/file-browser?root=${file.location}`}>{` ${file.name}`}</Link></span>
+                    : <span>{file.name}</span>
+                }
+            </td>
+            <td>{!file.is_dir ? file.size : null}</td>
+        </tr>
+    )
+}
 
 class FileBrowser extends React.Component{
     constructor(props) {
@@ -56,11 +61,21 @@ class FileBrowser extends React.Component{
         this.setState({files});
     }
 
+    onClick = file => {
+        const { files } = this.state;
+        const item = files.find(x => x.id === file.id);
+        if(!item){
+            return;
+        }
+        item.selected = !item.selected;
+        this.setState({files});
+    }
+
     render() {
         const { files } = this.state;
         return (
             <div>
-                <FileList files={files} />
+                <FileList files={files} onClick={this.onClick} />
             </div>
         )
     }
