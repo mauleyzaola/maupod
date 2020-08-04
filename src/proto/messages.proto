@@ -44,6 +44,10 @@ enum Message {
 
     // file management
     MESSAGE_DIRECTORY_READ = 400;
+
+    // real time socket events
+    MESSAGE_SOCKET_TRACK_POSITION_PERCENT = 500;
+    MESSAGE_SOCKET_TRACK_POSITION_PERCENT_CHANGE = 501;
 }
 
 enum NamedPosition {
@@ -53,7 +57,8 @@ enum NamedPosition {
 
 // these are commands that will be sent from the browser to the websocket server
 // websocket should have its own logic to dispatch the NATS message
-// is this really needed now?
+// is this really needed now? no, we'll keep it as documentation for js madness
+// [deprecated]
 enum RemoteCommand {
     REMOTE_PLAY = 0;
     REMOTE_PAUSE = 1;
@@ -131,6 +136,11 @@ message ScanDirectoryAudioFilesInput {
     bool force = 3;
 }
 
+message SocketTrackPositionChangeInput {
+    double percent = 1;
+    Media media = 2;
+}
+
 message TrackStartedInput {
     Media media = 1;
     google.protobuf.Timestamp timestamp = 2;
@@ -144,6 +154,11 @@ message TrackEndedInput {
 message TrackPlayedInput {
     Media media = 1;
     google.protobuf.Timestamp timestamp = 2;
+}
+
+message TrackPositionInput {
+    Media media = 1;
+    float percent = 2;
 }
 
 message TrackSkippedInput {

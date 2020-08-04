@@ -2,7 +2,9 @@ package rules
 
 import (
 	"errors"
+	"fmt"
 	"os"
+	"time"
 
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
 )
@@ -39,4 +41,17 @@ func MediaCheckMinimalData(m *pb.Media) error {
 		return errors.New("media missing: performer")
 	}
 	return nil
+}
+
+// MediaPercentToSeconds converts the percent of the track to seconds played
+func MediaPercentToSeconds(m *pb.Media, percent float64) (*time.Duration, error) {
+	if percent < 0 || percent > 100 {
+		return nil, fmt.Errorf("percent out of range: %v", percent)
+	}
+	if m.Duration == 0 {
+		return nil, errors.New("missing duration, cannot calculate percent")
+	}
+	var percentPlayed = m.Duration / percent
+	var duration = time.Millisecond * time.Duration(percentPlayed)
+	return &duration, nil
 }

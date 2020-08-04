@@ -3,6 +3,8 @@ package pkg
 import (
 	"log"
 
+	"github.com/mauleyzaola/maupod/src/pkg/paths"
+
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
@@ -17,6 +19,7 @@ const (
 // PlayerControl is a bridge between the mpv events and maupod events
 type PlayerControl struct {
 	publishFn       broker.PublisherFunc
+	publishFnJSON   broker.PublisherFuncJSON
 	requestFn       broker.RequestFunc
 	m               *pb.Media
 	lastTimePos     float64
@@ -24,10 +27,11 @@ type PlayerControl struct {
 	lastIsCompleted bool // true when based in the percent position, track is assumed to be complete
 }
 
-func NewPlayerControl(publishFn broker.PublisherFunc, requestFn broker.RequestFunc) *PlayerControl {
+func NewPlayerControl(publishFn broker.PublisherFunc, publishFnJSON broker.PublisherFuncJSON, requestFn broker.RequestFunc) *PlayerControl {
 	p := &PlayerControl{
-		publishFn: publishFn,
-		requestFn: requestFn,
+		publishFn:     publishFn,
+		publishFnJSON: publishFnJSON,
+		requestFn:     requestFn,
 	}
 	return p
 }
@@ -115,23 +119,29 @@ func (p *PlayerControl) OnTimePosChanged(v float64) {
 
 func (p *PlayerControl) onPercentPosChanged(media *pb.Media, v float64) {
 	p.lastPercentPos = v
-	if p.lastIsCompleted {
-		return
-	}
 	p.OnPercentPosChanged(media, v)
 }
 
 func (p *PlayerControl) OnPercentPosChanged(media *pb.Media, v float64) {
-	input := &pb.TrackPlayedInput{
-		Media:     media,
-		Timestamp: helpers.TimeToTs(helpers.Now()),
+	// check percente position to know if track has completed playing
+	if !p.lastIsCompleted {
+		if v >= percentToBeCompleted {
+			_ = p.publishFn(pb.Message_MESSAGE_EVENT_ON_TRACK_PLAY_COUNT_INCREASE, &pb.TrackPlayedInput{
+				Media:     media,
+				Timestamp: helpers.TimeToTs(helpers.Now()),
+			})
+			p.lastIsCompleted = true
+		}
 	}
 
-	//log.Println("percent played: ", v)
-
-	// if track has played halfway we consider it as been played and increase the counting
-	if v >= percentToBeCompleted {
-		_ = p.publishFn(pb.Message_MESSAGE_EVENT_ON_TRACK_PLAY_COUNT_INCREASE, input)
-		p.lastIsCompleted = true
+	// location should be relative
+	tmpMedia := *media
+	tmpMedia.Location = paths.LocationPath(tmpMedia.Location)
+	// we need to send json here, so easier to deal for node
+	if err := p.publishFnJSON(pb.Message_MESSAGE_SOCKET_TRACK_POSITION_PERCENT, &pb.TrackPositionInput{
+		Media:   &tmpMedia,
+		Percent: float32(v),
+	}); err != nil {
+		log.Println(err)
 	}
 }

@@ -23,6 +23,8 @@ message Media {
     string file_extension = 6;
     string format = 7;
     int64 file_size = 8;
+
+    // duration is calculated as milliseconds
     double duration = 9;
     string overall_bit_rate_mode = 10;
     int64 overall_bit_rate = 11;

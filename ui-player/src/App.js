@@ -12,6 +12,7 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import Nav from "./Nav";
 import { linkMediaList } from "./routes";
 import FileBrowser from "./components/FileBrowser";
+import TrackControl from "./components/TrackControl";
 
 class App extends React.Component{
 
@@ -31,6 +32,9 @@ class App extends React.Component{
                         onSearch={this.onSearch}
                         onChange={this.onSearchChange}
                     />
+                    <div>
+                        <TrackControl />
+                    </div>
                     <Switch>
                         <Route exact path='/' component={Dashboard} />
                         <Route exact path='/albums' component={Albums} />

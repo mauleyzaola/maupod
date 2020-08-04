@@ -93,6 +93,7 @@ func run() error {
 	return nil
 }
 
+// TODO: implement retry logic in case nats listener is not available yet
 func autoPlayQueue(nc *nats.Conn, config *pb.Configuration) error {
 	var timeout = rules.Timeout(config)
 	output, err := broker.RequestQueueList(nc, &pb.QueueInput{}, timeout)
