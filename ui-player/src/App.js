@@ -12,6 +12,7 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import Nav from "./Nav";
 import { linkMediaList } from "./routes";
 import FileBrowser from "./components/FileBrowser";
+import TrackControl from "./components/TrackControl";
 
 class App extends React.Component{
 
@@ -41,6 +42,9 @@ class App extends React.Component{
                         <Route path='/file-browser' component={FileBrowser} />
                     </Switch>
                 </Router>
+                <div>
+                    <TrackControl />
+                </div>
             </div>
         );
     }
