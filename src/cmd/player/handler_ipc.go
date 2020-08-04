@@ -8,7 +8,6 @@ import (
 
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/pkg/paths"
-
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/nats-io/nats.go"
 )
@@ -28,12 +27,14 @@ func (m *MsgHandler) handlerIPC(msg *nats.Msg) {
 
 	// check ipc has been initialized
 	if val := input.Media.Location; val != "" {
-		filename = paths.FullPath(val)
+		var location = paths.LocationPath(val)
+		filename = paths.FullPath(location)
 		if err = m.InitializeIPC(filename); err != nil {
 			m.base.Logger().Error(err)
 			return
 		}
 	}
+	log.Printf("[DEBUG] location: %s\n", filename)
 	input.Media.Location = filename
 
 	// check the file exists before emit the event to mpv https://github.com/mauleyzaola/maupod/issues/75

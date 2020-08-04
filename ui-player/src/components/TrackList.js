@@ -2,7 +2,7 @@ import React from 'react';
 import {msToString, secondsToDate} from "../helpers";
 import {Link} from "react-router-dom";
 import { linkAlbumView, linkGenreList, linkPerformerList } from "../routes";
-import {TrackPlayControls} from "./Player";
+import {TrackListControls} from "./Player";
 
 const TrackListHeader = () => (
     <thead>
@@ -42,7 +42,7 @@ const TrackListRow = ({row}) => {
             <td>
                 <div className='row'>
                     <div className='col-4'>
-                        <TrackPlayControls media={row}/>
+                        <TrackListControls media={row}/>
                     </div>
                     <div className='col-8'>
                         <span title={row.location}>

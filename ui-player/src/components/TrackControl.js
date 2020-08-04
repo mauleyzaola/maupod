@@ -1,4 +1,5 @@
 import React from 'react';
+import {PlayerPause, PlayerPlay, PlayerPlayNext, PlayerSkip, TrackPlayControls} from "./Player";
 
 class TrackControl extends React.Component{
     state = {
@@ -51,6 +52,7 @@ class TrackControl extends React.Component{
                         <strong>Album: </strong>{media.album} |
                         <strong>Track: </strong>{media.track}
                     </div>
+                    <TrackPlayControls media={media} />
                     <input type='range' className='form-control' min='0' max='100' value={percent} onChange={this.onPositionChange} />
                 </div>
             </div>

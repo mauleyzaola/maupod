@@ -8,9 +8,15 @@ const TrackPlayControls = ({media}) => (
     <div className='form-inline'>
         <PlayerPlay media={media} />
         <PlayerPause media={media} />
+        <PlayerSkip media={media} />
+    </div>
+)
+
+const TrackListControls = ({media}) => (
+    <div className='form-inline'>
+        <PlayerPlay media={media} />
         <PlayerPlayNext media={media} />
         <PlayerPlayLater media={media} />
-        <PlayerSkip media={media} />
     </div>
 )
 
@@ -130,8 +136,10 @@ TrackPlayControls.propTypes = {
 }
 
 export {
-    // PlayerPlay,
-    // PlayerPlayNext,
-    // PlayerPause,
+    PlayerPlay,
+    PlayerPlayNext,
+    PlayerPause,
+    PlayerSkip,
+    TrackListControls,
     TrackPlayControls,
 }
