@@ -32,6 +32,9 @@ class App extends React.Component{
                         onSearch={this.onSearch}
                         onChange={this.onSearchChange}
                     />
+                    <div>
+                        <TrackControl />
+                    </div>
                     <Switch>
                         <Route exact path='/' component={Dashboard} />
                         <Route exact path='/albums' component={Albums} />
@@ -42,9 +45,6 @@ class App extends React.Component{
                         <Route path='/file-browser' component={FileBrowser} />
                     </Switch>
                 </Router>
-                <div>
-                    <TrackControl />
-                </div>
             </div>
         );
     }
