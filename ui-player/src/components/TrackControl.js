@@ -1,5 +1,4 @@
 import React from 'react';
-import {ProgressBar} from "react-bootstrap";
 
 class TrackControl extends React.Component{
     state = {
@@ -25,9 +24,25 @@ class TrackControl extends React.Component{
 
     onMessageReceived = data => this.setState({percent: data.percent, media: data.media})
 
+    onPositionChange = e => {
+        const {  media } = this.state;
+        if(!media.id) return null;
+        let percent = parseFloat(e.target.value);
+        if(percent <0 || percent > 100){
+            console.warn(`percent out of range: ${percent}`)
+            return;
+        }
+        const data = {
+            subject: 'MESSAGE_SOCKET_TRACK_POSITION_PERCENT',
+            media,
+            percent,
+        }
+        this.ws.send(JSON.stringify(data));
+    }
+
     render() {
         const { percent, media } = this.state;
-        if(!media.id) return null;
+        if(!media || !media.id) return null;
         return (
             <div className='row'>
                 <div className='col'>
@@ -36,7 +51,7 @@ class TrackControl extends React.Component{
                         <strong>Album: </strong>{media.album} |
                         <strong>Track: </strong>{media.track}
                     </div>
-                    <ProgressBar now={percent} variant='info' />
+                    <input type='range' className='form-control' min='0' max='100' value={percent} onChange={this.onPositionChange} />
                 </div>
             </div>
         )

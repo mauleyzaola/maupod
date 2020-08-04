@@ -33,6 +33,10 @@ func (m *MsgHandler) Register() error {
 			Subject: strconv.Itoa(int(pb.Message_MESSAGE_IPC)),
 			Handler: m.handlerIPC,
 		},
+		handler.Subscription{
+			Subject: strconv.Itoa(int(pb.Message_MESSAGE_SOCKET_TRACK_POSITION_PERCENT_CHANGE)),
+			Handler: m.handlerPositionPercentChange,
+		},
 	)
 }
 

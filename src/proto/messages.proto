@@ -47,6 +47,7 @@ enum Message {
 
     // real time socket events
     MESSAGE_SOCKET_TRACK_POSITION_PERCENT = 500;
+    MESSAGE_SOCKET_TRACK_POSITION_PERCENT_CHANGE = 501;
 }
 
 enum NamedPosition {
@@ -133,6 +134,11 @@ message ScanDirectoryAudioFilesInput {
     string root = 1;
     google.protobuf.Timestamp scan_date = 2;
     bool force = 3;
+}
+
+message SocketTrackPositionChangeInput {
+    double percent = 1;
+    Media media = 2;
 }
 
 message TrackStartedInput {
