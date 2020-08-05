@@ -80,6 +80,10 @@ func (m *MsgHandler) Register() error {
 			Subject: strconv.Itoa(int(pb.Message_MESSAGE_DIRECTORY_READ)),
 			Handler: m.handlerReadDirectory,
 		},
+		handler.Subscription{
+			Subject: strconv.Itoa(int(pb.Message_MESSAGE_MEDIA_SPECTRUM_GENERATE)),
+			Handler: m.handlerMediaSpectrumGenerate,
+		},
 	)
 }
 

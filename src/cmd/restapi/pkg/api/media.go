@@ -1,7 +1,15 @@
 package api
 
 import (
+	"errors"
 	"net/http"
+
+	"github.com/gorilla/mux"
+	"github.com/mauleyzaola/maupod/src/pkg/helpers"
+
+	"github.com/mauleyzaola/maupod/src/pkg/broker"
+	"github.com/mauleyzaola/maupod/src/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/pkg/rules"
 
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata"
 )
@@ -46,4 +54,37 @@ func (a *ApiServer) AlbumViewListGet(p TransactionExecutorParams) (status int, r
 		return
 	}
 	return
+}
+
+func (a *ApiServer) MediaSpectrumGet() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		ctx := r.Context()
+		conn := a.db
+		id := mux.Vars(r)["id"]
+		media, err := a.mediaStore.Select(ctx, conn, id)
+		if err != nil {
+			helpers.WriteJson(w, err, http.StatusNotFound, nil)
+			return
+		}
+		var input = pb.SpectrumGenerateInput{
+			Media: media,
+		}
+		var output pb.SpectrumGenerateOutput
+		if err = broker.DoRequest(a.nc, pb.Message_MESSAGE_MEDIA_SPECTRUM_GENERATE, &input, &output, rules.Timeout(a.config)); err != nil {
+			helpers.WriteJson(w, err, http.StatusInternalServerError, nil)
+			return
+		}
+		if output.Error != "" {
+			helpers.WriteJson(w, errors.New(output.Error), http.StatusInternalServerError, nil)
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
+		w.Header().Set("content-type", "image/png")
+		if _, err = w.Write(output.Data); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		return
+	}
 }

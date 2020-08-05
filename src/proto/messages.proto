@@ -20,6 +20,7 @@ enum Message {
     MESSAGE_MEDIA_DELETE = 15;
     MESSAGE_TAG_UPDATE = 16;
     MESSAGE_MEDIA_UPDATE = 17;
+    MESSAGE_MEDIA_SPECTRUM_GENERATE = 18;
 
     MESSAGE_IPC = 100;
     MESSAGE_REST_API_READY = 101;
@@ -139,6 +140,16 @@ message ScanDirectoryAudioFilesInput {
 message SocketTrackPositionChangeInput {
     double percent = 1;
     Media media = 2;
+}
+
+message SpectrumGenerateInput {
+    Media media = 1;
+}
+
+message SpectrumGenerateOutput {
+    Media media = 1;
+    bytes data = 2;
+    string error = 3;
 }
 
 message TrackStartedInput {

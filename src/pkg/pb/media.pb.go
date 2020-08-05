@@ -39,11 +39,12 @@ type Media struct {
 	// the full path to the file on the file store
 	Location string `protobuf:"bytes,3,opt,name=location,proto3" json:"location,omitempty"`
 	// date the media file was scanned
-	LastScan              *timestamp.Timestamp `protobuf:"bytes,4,opt,name=last_scan,json=lastScan,proto3" json:"last_scan,omitempty"`
-	Directory             string               `protobuf:"bytes,5,opt,name=directory,proto3" json:"directory,omitempty"`
-	FileExtension         string               `protobuf:"bytes,6,opt,name=file_extension,json=fileExtension,proto3" json:"file_extension,omitempty"`
-	Format                string               `protobuf:"bytes,7,opt,name=format,proto3" json:"format,omitempty"`
-	FileSize              int64                `protobuf:"varint,8,opt,name=file_size,json=fileSize,proto3" json:"file_size,omitempty"`
+	LastScan      *timestamp.Timestamp `protobuf:"bytes,4,opt,name=last_scan,json=lastScan,proto3" json:"last_scan,omitempty"`
+	Directory     string               `protobuf:"bytes,5,opt,name=directory,proto3" json:"directory,omitempty"`
+	FileExtension string               `protobuf:"bytes,6,opt,name=file_extension,json=fileExtension,proto3" json:"file_extension,omitempty"`
+	Format        string               `protobuf:"bytes,7,opt,name=format,proto3" json:"format,omitempty"`
+	FileSize      int64                `protobuf:"varint,8,opt,name=file_size,json=fileSize,proto3" json:"file_size,omitempty"`
+	// duration is calculated as milliseconds
 	Duration              float64              `protobuf:"fixed64,9,opt,name=duration,proto3" json:"duration,omitempty"`
 	OverallBitRateMode    string               `protobuf:"bytes,10,opt,name=overall_bit_rate_mode,json=overallBitRateMode,proto3" json:"overall_bit_rate_mode,omitempty"`
 	OverallBitRate        int64                `protobuf:"varint,11,opt,name=overall_bit_rate,json=overallBitRate,proto3" json:"overall_bit_rate,omitempty"`
