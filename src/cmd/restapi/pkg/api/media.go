@@ -3,6 +3,7 @@ package api
 import (
 	"errors"
 	"net/http"
+	"time"
 
 	"github.com/gorilla/mux"
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
@@ -70,7 +71,7 @@ func (a *ApiServer) MediaSpectrumGet() http.HandlerFunc {
 			Media: media,
 		}
 		var output pb.SpectrumGenerateOutput
-		if err = broker.DoRequest(a.nc, pb.Message_MESSAGE_MEDIA_SPECTRUM_GENERATE, &input, &output, rules.Timeout(a.config)); err != nil {
+		if err = broker.DoRequest(a.nc, pb.Message_MESSAGE_MEDIA_SPECTRUM_GENERATE, &input, &output, rules.Timeout(a.config)+(time.Second*5)); err != nil {
 			helpers.WriteJson(w, err, http.StatusInternalServerError, nil)
 			return
 		}
