@@ -1,12 +1,16 @@
 import React from 'react';
-import {PlayerPause, PlayerPlay, PlayerPlayNext, PlayerSkip, TrackPlayControls} from "./Player";
+import {TrackPlayControls} from "./Player";
+import {spectrumImage} from "../api";
 
 class TrackControl extends React.Component{
     state = {
         progress: 0,
         media: {},
+        spectrum: null,
+        width: 0,
     }
     ws;
+
     componentDidMount() {
         this.ws = new WebSocket('ws://localhost:8080');
         this.ws.addEventListener('message', e => {
@@ -21,9 +25,17 @@ class TrackControl extends React.Component{
                 }
             }catch (e){}
         });
+        window.addEventListener('resize', () => this.setState({width: window.innerWidth}));
+        this.setState({width: window.innerWidth});
     }
 
-    onMessageReceived = data => this.setState({percent: data.percent, media: data.media})
+    onMessageReceived = data => {
+        const { media } = this.state;
+        if(data.media.id && data.media.id !== media.id){
+            spectrumImage(media.id).then(response => this.setState({spectrum: response.data}));
+        }
+        this.setState({percent: data.percent, media: data.media})
+    }
 
     onPositionChange = e => {
         const {  media } = this.state;
@@ -41,8 +53,11 @@ class TrackControl extends React.Component{
         this.ws.send(JSON.stringify(data));
     }
 
+    // TODO: allow to set the position in the spectrum
+    // <input type='range' className='form-control' min='0' max='100' value={percent} onChange={this.onPositionChange} />
+
     render() {
-        const { percent, media } = this.state;
+        const { media, percent, width } = this.state;
         if(!media || !media.id) return null;
         return (
             <div className='row'>
@@ -53,7 +68,7 @@ class TrackControl extends React.Component{
                         <strong>Track: </strong>{media.track}
                     </div>
                     <TrackPlayControls media={media} />
-                    <input type='range' className='form-control' min='0' max='100' value={percent} onChange={this.onPositionChange} />
+                    {media.id ? <img src={`${process.env.REACT_APP_API_URL}/media/${media.id}/spectrum`} width={`${width}px`} height="150px" /> : null}
                 </div>
             </div>
         )
