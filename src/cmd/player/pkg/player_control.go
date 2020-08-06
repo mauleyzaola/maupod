@@ -73,6 +73,10 @@ func (p *PlayerControl) OnSongEnded(m *pb.Media) {
 }
 
 func (p *PlayerControl) OnSongStarted(m *pb.Media) {
+	// TODO: how can this happen? it does :(
+	if m == nil {
+		return
+	}
 	// read state
 	var isNewTrack = p.m == nil || p.m.Id != m.Id
 	var lastPercentPos = p.lastPercentPos

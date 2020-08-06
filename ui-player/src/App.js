@@ -28,22 +28,27 @@ class App extends React.Component{
         return (
             <div className='container-fluid'>
                 <Router>
-                    <Nav
-                        onSearch={this.onSearch}
-                        onChange={this.onSearchChange}
-                    />
-                    <div>
+                    <div className='navigation-bar'>
+                        <Nav
+                            onSearch={this.onSearch}
+                            onChange={this.onSearchChange}
+                        />
+                    </div>
+                    <div className='top-always'>
                         <TrackControl />
                     </div>
-                    <Switch>
-                        <Route exact path='/' component={Dashboard} />
-                        <Route exact path='/albums' component={Albums} />
-                        <Route path='/album' component={Album} />
-                        <Route exact path='/performers' component={Performers} />
-                        <Route exact path='/genres' component={Genres} />
-                        <Route path='/media' component={MediaList} />
-                        <Route path='/file-browser' component={FileBrowser} />
-                    </Switch>
+
+                    <div className='scroll-section'>
+                        <Switch>
+                            <Route exact path='/' component={Dashboard} />
+                            <Route exact path='/albums' component={Albums} />
+                            <Route path='/album' component={Album} />
+                            <Route exact path='/performers' component={Performers} />
+                            <Route exact path='/genres' component={Genres} />
+                            <Route path='/media' component={MediaList} />
+                            <Route path='/file-browser' component={FileBrowser} />
+                        </Switch>
+                    </div>
                 </Router>
             </div>
         );

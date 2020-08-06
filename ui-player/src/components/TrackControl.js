@@ -11,6 +11,8 @@ class TrackControl extends React.Component{
     }
     ws;
 
+    windowSize = () => window.innerWidth - 50;
+
     componentDidMount() {
         this.ws = new WebSocket('ws://localhost:8080');
         this.ws.addEventListener('message', e => {
@@ -25,8 +27,8 @@ class TrackControl extends React.Component{
                 }
             }catch (e){}
         });
-        window.addEventListener('resize', () => this.setState({width: window.innerWidth}));
-        this.setState({width: window.innerWidth});
+        window.addEventListener('resize', () => this.setState({width: this.windowSize()}));
+        this.setState({width: this.windowSize()});
     }
 
     onMessageReceived = data => {
