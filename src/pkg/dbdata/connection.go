@@ -18,7 +18,7 @@ func DbBootstrap(config *pb.Configuration) (*sql.DB, error) {
 	pgConn := config.PgConn
 	dbConn := config.DbConn
 
-	db, err := ConnectPostgres(pgConn, int(config.Retries), time.Duration(config.Delay))
+	db, err := ConnectPostgres(pgConn, int(config.Retries), time.Second*time.Duration(config.Delay))
 	if err != nil {
 		return nil, err
 	}
@@ -34,7 +34,7 @@ func DbBootstrap(config *pb.Configuration) (*sql.DB, error) {
 
 	// create the connection with the actual database
 	log.Println("trying to connect to named database")
-	if db, err = ConnectPostgres(dbConn, int(config.Retries), time.Duration(config.Delay)); err != nil {
+	if db, err = ConnectPostgres(dbConn, int(config.Retries), time.Second*time.Duration(config.Delay)); err != nil {
 		return nil, err
 	}
 

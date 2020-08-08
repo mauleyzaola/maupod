@@ -65,7 +65,7 @@ services:
     environment:
       - POSTGRES_PASSWORD=nevermind
     volumes:
-      - $HOME/data/pg/data:/var/lib/postgresql/data
+      - $HOME/data/maupod/pg/data:/var/lib/postgresql/data
     expose:
       - 5432
     ports:
