@@ -60,11 +60,6 @@ func RequestIPCCommand(nc *nats.Conn, input *pb.IPCInput, timeout time.Duration)
 	return doPublish(nc, pb.Message_MESSAGE_IPC, input)
 }
 
-func RequestRestAPIReady(nc *nats.Conn, timeout time.Duration) error {
-	_, err := nc.Request(strconv.Itoa(int(pb.Message_MESSAGE_REST_API_READY)), nil, timeout)
-	return err
-}
-
 func RequestQueueAdd(nc *nats.Conn, input *pb.QueueInput, timeout time.Duration) (*pb.QueueOutput, error) {
 	var output pb.QueueOutput
 	if err := DoRequest(nc, pb.Message_MESSAGE_QUEUE_ADD, input, &output, timeout); err != nil {

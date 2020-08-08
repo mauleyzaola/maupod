@@ -2,7 +2,10 @@ package broker
 
 import (
 	"errors"
+	"log"
 	"time"
+
+	"github.com/mauleyzaola/maupod/src/pkg/pb"
 
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 
@@ -31,10 +34,10 @@ func ConnectNATS(natsURL string, retries int, delay time.Duration) (*nats.Conn, 
 	return conn, nil
 }
 
-func RestAPIPing(nc *nats.Conn, retries int, delay time.Duration) error {
+func RestAPIPing(nc *nats.Conn, retries int, delay, timeout time.Duration) error {
 	var ok bool
 	fn := func(retry int) bool {
-		if err := RequestRestAPIReady(nc, delay); err != nil {
+		if _, err := MicroServicePing(nc, pb.Message_MESSAGE_MICRO_SERVICE_RESTAPI, timeout); err != nil {
 			return false
 		}
 		ok = true
@@ -46,5 +49,6 @@ func RestAPIPing(nc *nats.Conn, retries int, delay time.Duration) error {
 	if !ok {
 		return errors.New("could not ping RestAPI")
 	}
+	log.Println("[INFO] successfully ping to RestAPI from: ", helpers.AppName())
 	return nil
 }

@@ -64,6 +64,11 @@ func run() error {
 		return err
 	}
 
+	delay := time.Second * time.Duration(config.Delay)
+	if err = broker.RestAPIPing(nc, int(config.Retries), delay, delay); err != nil {
+		return err
+	}
+
 	// TODO: configure this feature somewhere else
 	if err := autoPlayQueue(nc, config); err != nil {
 		log.Println(err)

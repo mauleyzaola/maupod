@@ -22,8 +22,8 @@ func NewMsgHandler(logger types.Logger, nc *nats.Conn) *MsgHandler {
 func (m *MsgHandler) Register() error {
 	return m.base.Register(
 		handler.Subscription{
-			Subject: strconv.Itoa(int(pb.Message_MESSAGE_REST_API_READY)),
-			Handler: m.handlerPing,
+			Subject: strconv.Itoa(int(pb.Message_MESSAGE_MICRO_SERVICE_RESTAPI)),
+			Handler: m.handlerMicroService,
 		},
 	)
 }

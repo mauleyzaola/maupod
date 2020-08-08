@@ -23,7 +23,6 @@ enum Message {
     MESSAGE_MEDIA_SPECTRUM_GENERATE = 18;
 
     MESSAGE_IPC = 100;
-    MESSAGE_REST_API_READY = 101;
 
     // specific to mpv events
     MESSAGE_MPV_EOF_REACHED = 202;
@@ -45,6 +44,14 @@ enum Message {
 
     // file management
     MESSAGE_DIRECTORY_READ = 400;
+
+    // micro service discovery
+    MESSAGE_MICRO_SERVICE_ARTWORK = 420;
+    MESSAGE_MICRO_SERVICE_AUDIOSCAN = 421;
+    MESSAGE_MICRO_SERVICE_MEDIAINFO = 422;
+    MESSAGE_MICRO_SERVICE_PLAYER = 423;
+    MESSAGE_MICRO_SERVICE_RESTAPI = 424;
+    MESSAGE_MICRO_SERVICE_SOCKET = 425;
 
     // real time socket events
     MESSAGE_SOCKET_TRACK_POSITION_PERCENT = 500;
@@ -113,6 +120,14 @@ message MediaInfoOutput {
     Response response = 2;
     google.protobuf.Timestamp last_modified_date = 3;
     string raw = 4;
+}
+
+message MicroServiceDiscoveryInput {
+}
+
+message MicroServiceDiscoveryOutput {
+    bool ok = 1;
+    string name = 2;
 }
 
 message QueueInput {
