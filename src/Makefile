@@ -42,7 +42,7 @@ pg-backup:
 	docker-compose -f dev.docker-compose.yml exec pg pg_dump maupod -U postgres > $(HOME)/Downloads/postgres.maupod.sql
 
 psql:
-	docker-compose -f dev.docker-compose.yml exec pg psql postgresql://postgres:nevermind@pg:5432/maupod
+	docker-compose -f dev.docker-compose.yml exec pg psql postgresql://postgres:nevermind@pg:5499/maupod
 
 test:
 	go test -cover -count 1 ./...
