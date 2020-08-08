@@ -34,6 +34,10 @@ func (m *MsgHandler) Register() error {
 			Subject: strconv.Itoa(int(pb.Message_MESSAGE_TAG_UPDATE)),
 			Handler: m.handlerTagUpdate,
 		},
+		handler.Subscription{
+			Subject: strconv.Itoa(int(pb.Message_MESSAGE_MICRO_SERVICE_ARTWORK)),
+			Handler: m.handlerMicroService,
+		},
 	)
 }
 

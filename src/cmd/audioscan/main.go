@@ -72,7 +72,8 @@ func run() error {
 	}
 	logger.Info("successfully connected to NATS")
 
-	if err = broker.RestAPIPing(nc, int(config.Retries), time.Second*time.Duration(config.Delay)); err != nil {
+	delay := time.Second * time.Duration(config.Delay)
+	if err = broker.RestAPIPing(nc, int(config.Retries), delay, delay); err != nil {
 		return err
 	}
 
