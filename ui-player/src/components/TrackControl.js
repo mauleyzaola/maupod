@@ -6,15 +6,16 @@ class TrackControl extends React.Component{
     state = {
         progress: 0,
         media: {},
-        spectrum: null,
         width: 0,
+        timePlayed: '',
+        timeTotal: '',
     }
     ws;
 
     windowSize = () => window.innerWidth - 50;
 
     componentDidMount() {
-        this.ws = new WebSocket('ws://localhost:8080');
+        this.ws = new WebSocket(`${process.env.REACT_APP_MAUPOD_SOCKET}`);
         this.ws.addEventListener('message', e => {
             try{
                 const data = JSON.parse(e.data);
@@ -31,12 +32,23 @@ class TrackControl extends React.Component{
         this.setState({width: this.windowSize()});
     }
 
+    secondsToDisplay = seconds => {
+        if(!seconds) return '';
+        const t = new Date(seconds * 1000);
+        const secs = t.getSeconds();
+        const mins = t.getMinutes();
+        const offsetSecs = secs < 10 ? '0' : '';
+        const offsetMin = mins < 10 ? '0' : '';
+        return `${offsetMin}${mins}:${offsetSecs}${secs}`;
+    }
+
     onMessageReceived = data => {
-        const { media } = this.state;
-        if(data.media.id && data.media.id !== media.id){
-            spectrumImage(media.id).then(response => this.setState({spectrum: response.data}));
-        }
-        this.setState({percent: data.percent, media: data.media})
+        this.setState({
+            percent: data.percent,
+            media: data.media,
+            timePlayed: this.secondsToDisplay(data.seconds),
+            timeTotal: this.secondsToDisplay(data.seconds_total),
+        });
     }
 
     onPositionChange = e => {
@@ -59,18 +71,19 @@ class TrackControl extends React.Component{
     // <input type='range' className='form-control' min='0' max='100' value={percent} onChange={this.onPositionChange} />
 
     render() {
-        const { media, percent, width } = this.state;
+        const { media, percent, width, timePlayed, timeTotal } = this.state;
         if(!media || !media.id) return null;
         return (
             <div className='row'>
                 <div className='col'>
                     <div>
-                        <strong>Performer: </strong>{media.performer} |
-                        <strong>Album: </strong>{media.album} |
-                        <strong>Track: </strong>{media.track}
+                        <strong>{timePlayed} / {timeTotal} </strong>
+                        {media.performer} |
+                        {media.album} |
+                        {media.track}
                     </div>
                     <TrackPlayControls media={media} />
-                    {media.id ? <img src={`${process.env.REACT_APP_API_URL}/media/${media.id}/spectrum`} width={`${width}px`} height="150px" /> : null}
+                    {media.id ? <img src={`${process.env.REACT_APP_MAUPOD_API}/media/${media.id}/spectrum`} width={`${width}px`} height="150px" /> : null}
                 </div>
             </div>
         )

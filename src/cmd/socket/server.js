@@ -11,11 +11,13 @@ console.log(`started websocket server on: ${JSON.stringify(wsOptions)}`);
 
 nc.subscribe(subjects.MESSAGE_SOCKET_TRACK_POSITION_PERCENT, (msg) => {
     try{
-        const { media, percent } = msg;
+        const { media, percent, seconds, secondsTotal } = msg;
         const data = {
             subject:'MESSAGE_SOCKET_TRACK_POSITION_PERCENT',
-            media,
             percent,
+            seconds,
+            seconds_total: secondsTotal,
+            media,
         }
         wss.clients.forEach(ws => {
             if(ws.isAlive === false) return ws.terminate();
@@ -26,8 +28,6 @@ nc.subscribe(subjects.MESSAGE_SOCKET_TRACK_POSITION_PERCENT, (msg) => {
     }
 })
 
-// TODO: need to call ws.send() passing the payload from NATS
-
 wss.on('connection', ws => {
     const addr = ws._socket.remoteAddress
     console.log(`new connection from ${addr}`);
@@ -36,11 +36,12 @@ wss.on('connection', ws => {
         try {
             const data = JSON.parse(message);
             switch (data.subject){
+                // triggered from the front end when user changes track position
                 case 'MESSAGE_SOCKET_TRACK_POSITION_PERCENT':
                     const { media, percent } = data;
                     const payload = {
-                        media,
                         percent,
+                        media,
                     }
                     nc.publish(subjects.MESSAGE_SOCKET_TRACK_POSITION_PERCENT_CHANGE, payload);
                     break;

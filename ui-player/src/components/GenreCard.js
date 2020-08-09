@@ -5,7 +5,7 @@ import React from "react";
 import PropTypes from 'prop-types';
 
 
-const Thumbnail = ({sha}) => <img className='artwork-xs col-3' alt='cover' src={`http://localhost:9000/${sha}`} />;
+const Thumbnail = ({sha}) => <img className='artwork-xs col-3' alt='cover' src={`${process.env.REACT_APP_MAUPOD_ARTWORK}/${sha}`} />;
 
 const pickTop = (items, top) => items.length < top ? items : items.slice(0,top);
 

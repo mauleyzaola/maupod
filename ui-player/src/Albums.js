@@ -10,7 +10,7 @@ const Thumbnail = ({album}) => {
         return null;
     }
     return (
-        <img className='artwork-small' alt='cover' src={`http://localhost:9000/${album.image_location}`} />
+        <img className='artwork-small' alt='cover' src={`${process.env.REACT_APP_MAUPOD_ARTWORK}/${album.image_location}`} />
     )
 }
 

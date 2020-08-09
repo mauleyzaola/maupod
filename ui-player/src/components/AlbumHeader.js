@@ -8,7 +8,7 @@ const Thumbnail = ({album}) => {
         return null;
     }
     return (
-        <img alt='cover' src={`http://localhost:9000/${album.image_location}`} />
+        <img alt='cover' src={`${process.env.REACT_APP_MAUPOD_ARTWORK}/${album.image_location}`} />
     )
 }
 

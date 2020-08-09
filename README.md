@@ -70,3 +70,9 @@ These packages will make your life easier, although not mandatory
 [Flacon](src/docs/flacon.md)
 
 [Kid3](src/docs/kid3.md)
+
+#### Running Postgres Isolated
+
+```
+docker run --rm --name postgres-maupod -v $HOME/data/maupod/pg/data:/var/lib/postgresql/data -p 5432:5432 -e POSTGRES_PASSWORD=nevermind -d postgres:9.5
+```

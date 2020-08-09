@@ -160,13 +160,25 @@ func ScanDirectoryAudioFiles(
 
 		// if the location is the same and we made it here, that means we need to update the row
 		if val, ok := mediaLocationKeys[location]; ok {
+			// if this is an update we need to read the old sha value from database
+			oldMedia, err := store.Select(ctx, conn, m.Id)
+			if err != nil {
+				return err
+			}
+
 			m.Id = val.Id
 			m.AlbumIdentifier = val.AlbumIdentifier
 			if err = store.Update(ctx, conn, m, updatableFields()...); err != nil {
 				return err
 			}
-			if err = broker.PublishMediaSHAUpdate(nc, m); err != nil {
-				return err
+			if oldMedia.Sha != m.Sha {
+				var input = pb.MediaUpdateSHAInput{
+					OldSHA: oldMedia.Sha,
+					NewSHA: m.Sha,
+				}
+				if err = broker.PublishMediaSHAUpdate(nc, &input); err != nil {
+					return err
+				}
 			}
 		} else {
 			// consider assigning album identifier (experimental feature only on new media)

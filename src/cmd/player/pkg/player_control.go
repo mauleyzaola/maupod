@@ -3,6 +3,8 @@ package pkg
 import (
 	"log"
 
+	"github.com/mauleyzaola/maupod/src/pkg/rules"
+
 	"github.com/mauleyzaola/maupod/src/pkg/paths"
 
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
@@ -122,6 +124,9 @@ func (p *PlayerControl) OnTimePosChanged(v float64) {
 }
 
 func (p *PlayerControl) onPercentPosChanged(media *pb.Media, v float64) {
+	if media == nil {
+		return
+	}
 	p.lastPercentPos = v
 	p.OnPercentPosChanged(media, v)
 }
@@ -141,10 +146,17 @@ func (p *PlayerControl) OnPercentPosChanged(media *pb.Media, v float64) {
 	// location should be relative
 	tmpMedia := *media
 	tmpMedia.Location = paths.LocationPath(tmpMedia.Location)
+	secondsTotal, err := rules.MediaTotalSeconds(media)
+	if err != nil {
+		log.Println(err)
+		return
+	}
 	// we need to send json here, so easier to deal for node
 	if err := p.publishFnJSON(pb.Message_MESSAGE_SOCKET_TRACK_POSITION_PERCENT, &pb.TrackPositionInput{
-		Media:   &tmpMedia,
-		Percent: float32(v),
+		Media:        &tmpMedia,
+		Percent:      float32(v),
+		Seconds:      float32(p.lastTimePos),
+		SecondsTotal: float32(secondsTotal.Seconds()),
 	}); err != nil {
 		log.Println(err)
 	}

@@ -2,6 +2,7 @@ package api
 
 import (
 	"errors"
+	"log"
 	"net/http"
 	"time"
 
@@ -72,6 +73,7 @@ func (a *ApiServer) MediaSpectrumGet() http.HandlerFunc {
 		}
 		var output pb.SpectrumGenerateOutput
 		if err = broker.DoRequest(a.nc, pb.Message_MESSAGE_MEDIA_SPECTRUM_GENERATE, &input, &output, rules.Timeout(a.config)+(time.Second*5)); err != nil {
+			log.Println(err)
 			helpers.WriteJson(w, err, http.StatusInternalServerError, nil)
 			return
 		}
@@ -83,6 +85,7 @@ func (a *ApiServer) MediaSpectrumGet() http.HandlerFunc {
 		w.WriteHeader(http.StatusOK)
 		w.Header().Set("content-type", "image/png")
 		if _, err = w.Write(output.Data); err != nil {
+			log.Println(err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}

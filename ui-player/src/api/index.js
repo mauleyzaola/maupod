@@ -2,7 +2,7 @@ import Axios from "axios";
 import querystring from 'querystring';
 
 const axios = Axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
+    baseURL: process.env.REACT_APP_MAUPOD_API,
     timeout: 2000,
     headers: {
         'Accept': 'application/json',

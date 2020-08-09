@@ -122,6 +122,11 @@ message MediaInfoOutput {
     string raw = 4;
 }
 
+message MediaUpdateSHAInput {
+    string oldSHA = 1;
+    string newSHA = 2;
+}
+
 message MicroServiceDiscoveryInput {
 }
 
@@ -185,6 +190,8 @@ message TrackPlayedInput {
 message TrackPositionInput {
     Media media = 1;
     float percent = 2;
+    float seconds = 3;
+    float secondsTotal = 4;
 }
 
 message TrackSkippedInput {

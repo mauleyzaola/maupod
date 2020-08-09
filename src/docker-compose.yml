@@ -51,8 +51,8 @@ services:
     expose:
       - 8000
     ports:
-      - 8888:8000
-      - 9000:9000
+      - 7400:8000
+      - 7401:9000
 
   nats-server:
     image: nats:2.1

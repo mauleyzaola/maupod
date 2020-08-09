@@ -13,8 +13,8 @@ import (
 )
 
 func (m *MsgHandler) handlerUpdateSHA(msg *nats.Msg) {
-	var media pb.Media
-	err := helpers.ProtoUnmarshal(msg.Data, &media)
+	var input pb.MediaUpdateSHAInput
+	err := helpers.ProtoUnmarshal(msg.Data, &input)
 	if err != nil {
 		log.Println(err)
 		return
@@ -24,19 +24,17 @@ func (m *MsgHandler) handlerUpdateSHA(msg *nats.Msg) {
 	var mods []qm.QueryMod
 	var where = orm.MediaEventWhere
 	var cols = orm.MediaEventColumns
-	mods = append(mods, where.MediaID.EQ(media.Id))
+	mods = append(mods, where.Sha.EQ(input.OldSHA))
 	events, err := orm.MediaEvents(mods...).All(ctx, conn)
 	if err != nil {
 		log.Println(err)
 		return
 	}
 	for _, v := range events {
-		if v.Sha != media.Sha {
-			v.Sha = media.Sha
-			if _, err = v.Update(ctx, conn, boil.Whitelist(cols.Sha)); err != nil {
-				log.Println(err)
-				return
-			}
+		v.Sha = input.NewSHA
+		if _, err = v.Update(ctx, conn, boil.Whitelist(cols.Sha)); err != nil {
+			log.Println(err)
+			return
 		}
 	}
 }

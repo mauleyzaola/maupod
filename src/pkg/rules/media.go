@@ -55,3 +55,11 @@ func MediaPercentToSeconds(m *pb.Media, percent float64) (*time.Duration, error)
 	var duration = time.Millisecond * time.Duration(percentPlayed)
 	return &duration, nil
 }
+
+func MediaTotalSeconds(m *pb.Media) (*time.Duration, error) {
+	if m.Duration == 0 {
+		return nil, errors.New("missing duration, cannot calculate percent")
+	}
+	var duration = time.Millisecond * time.Duration(m.Duration)
+	return &duration, nil
+}

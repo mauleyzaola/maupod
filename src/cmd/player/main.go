@@ -6,6 +6,8 @@ import (
 	"os/signal"
 	"time"
 
+	"github.com/mauleyzaola/maupod/src/pkg/helpers"
+
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/mauleyzaola/maupod/src/pkg/rules"
@@ -64,9 +66,20 @@ func run() error {
 		return err
 	}
 
-	delay := time.Second * time.Duration(config.Delay)
-	if err = broker.RestAPIPing(nc, int(config.Retries), delay, delay); err != nil {
-		return err
+	// check for dependent micro services to be up
+	timeout := time.Second * time.Duration(config.Delay)
+	var dependentMicroServices = []pb.Message{
+		pb.Message_MESSAGE_MICRO_SERVICE_RESTAPI,
+		pb.Message_MESSAGE_MICRO_SERVICE_MEDIAINFO,
+		pb.Message_MESSAGE_MICRO_SERVICE_SOCKET,
+	}
+	for _, v := range dependentMicroServices {
+		helpers.RetryFunc(v.String(), int(config.Retries), timeout, func(retryCount int) bool {
+			if _, err := broker.MicroServicePing(nc, pb.Message_MESSAGE_MICRO_SERVICE_RESTAPI, timeout); err != nil {
+				return false
+			}
+			return true
+		})
 	}
 
 	// TODO: configure this feature somewhere else

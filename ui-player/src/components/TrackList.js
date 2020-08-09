@@ -31,7 +31,7 @@ const TrackListRow = ({row}) => {
         if(!row.image_location){
             return null;
         }
-        return <img style={{width: '30px'}}  alt='cover' src={`http://localhost:9000/${row.image_location}`} />;
+        return <img style={{width: '30px'}}  alt='cover' src={`${process.env.REACT_APP_MAUPOD_ARTWORK}/${row.image_location}`} />;
     }
     return (
         <tr>
