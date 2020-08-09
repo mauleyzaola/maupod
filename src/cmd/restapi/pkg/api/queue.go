@@ -35,16 +35,16 @@ func (a *ApiServer) QueuePost(p TransactionExecutorParams) (status int, result i
 }
 
 func (a *ApiServer) QueueDelete(p TransactionExecutorParams) (status int, result interface{}, err error) {
-	var input pb.QueueInput
-	if err = p.Decode(&input); err != nil {
-		status = http.StatusBadRequest
-		return
+	var input = pb.QueueInput{
+		Media: &pb.Media{
+			Id: p.Param("id"),
+		},
 	}
-	output, err := broker.RequestQueueAdd(a.nc, &input, rules.Timeout(a.config))
+	output, err := broker.RequestQueueRemove(a.nc, &input, rules.Timeout(a.config))
 	if err != nil {
 		status = http.StatusBadRequest
 		return
 	}
-	result = output.Rows
+	result = output
 	return
 }

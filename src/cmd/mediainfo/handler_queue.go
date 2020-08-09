@@ -77,7 +77,7 @@ func (m *MsgHandler) handlerQueueList(msg *nats.Msg) {
 			log.Println(err)
 		}
 	}()
-	output.Rows = m.queueItems
+	output.Rows = mediasToQueues(m.queueItems)
 }
 
 func (m *MsgHandler) handlerQueueAdd(msg *nats.Msg) {
@@ -124,7 +124,7 @@ func (m *MsgHandler) handlerQueueAdd(msg *nats.Msg) {
 		}
 	}
 	m.queueItems = list
-	output.Rows = list
+	output.Rows = mediasToQueues(list)
 	return
 }
 
@@ -152,7 +152,19 @@ func (m *MsgHandler) handlerQueueRemove(msg *nats.Msg) {
 		return
 	}
 	m.queueItems = list
-	output.Rows = list
+	output.Rows = mediasToQueues(list)
+}
+
+func mediasToQueues(medias types.Medias) []*pb.Queue {
+	var result []*pb.Queue
+	for i, v := range medias {
+		result = append(result, &pb.Queue{
+			Id:       helpers.NewUUID(),
+			Media:    v,
+			Position: int32(i),
+		})
+	}
+	return result
 }
 
 func (m *MsgHandler) queueSave() error {

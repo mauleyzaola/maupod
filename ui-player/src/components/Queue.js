@@ -1,9 +1,10 @@
-import React from 'react';
-import {queueList} from "../api";
+    import React from 'react';
+import {queueList, queueRemove} from "../api";
 import {AlbumLink} from "./TrackList";
 import {msToString, secondsToDate} from "../helpers";
 import {Link} from "react-router-dom";
 import {linkGenreList, linkPerformerList} from "../routes";
+import {FaMinusSquare} from "react-icons/fa/index";
 
 const TrackListHeader = () => (
     <thead>
@@ -18,11 +19,12 @@ const TrackListHeader = () => (
         <th>Year</th>
         <th>Last Modified</th>
         <th>Format</th>
+        <th></th>
     </tr>
     </thead>
 )
 
-const TrackListRow = ({row}) => {
+const TrackListRow = ({row, onDelete}) => {
     row.recorded_date = row.recorded_date || '';
     const modifiedDate = row.modified_date ? secondsToDate(row.modified_date.seconds).toLocaleDateString() : '';
     return (
@@ -47,6 +49,14 @@ const TrackListRow = ({row}) => {
             <td>{row.recorded_date}</td>
             <td>{modifiedDate}</td>
             <td>{row.format}</td>
+            <td>
+                <span
+                   title='remove track from queue'
+                    onClick={() => onDelete(row)}
+                >
+                    <FaMinusSquare/>
+                </span>
+            </td>
         </tr>
     )
 }
@@ -64,6 +74,9 @@ class Queue extends React.Component{
 
     loadData = () => queueList().then(response => this.setState({rows: response.data.rows || []}));
 
+    onDelete = row => queueRemove(row)
+        .then(response => this.setState({rows: response.data.rows }));
+
     render() {
         const { rows } = this.state;
         return (
@@ -73,7 +86,7 @@ class Queue extends React.Component{
                 <table className='table table-bordered table-hover table-striped'>
                     <TrackListHeader />
                     <tbody>
-                    {rows.map(row => <TrackListRow key={row.id} row={row} />)}
+                    {rows.map(row => <TrackListRow key={row.id} row={row.media} onDelete={this.onDelete} />)}
                     </tbody>
                 </table>
             </div>

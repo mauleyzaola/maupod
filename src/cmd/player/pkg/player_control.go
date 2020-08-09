@@ -52,9 +52,9 @@ func (p *PlayerControl) OnSongEnded(m *pb.Media) {
 	}
 
 	// play next song in the queue
-	var media = output.Rows[0]
+	var input = output.Rows[0]
 	var ipcInput = pb.IPCInput{
-		Media:   media,
+		Media:   input.Media,
 		Command: pb.Message_IPC_PLAY,
 	}
 	if err := p.publishFn(pb.Message_MESSAGE_IPC, &ipcInput); err != nil {
@@ -63,9 +63,9 @@ func (p *PlayerControl) OnSongEnded(m *pb.Media) {
 	}
 
 	// remove the first element from the queue
-	log.Println("[DEBUG] remove from queue: ", media.Track)
+	log.Println("[DEBUG] remove from queue: ", input.Media.Track)
 	var queueInput = &pb.QueueInput{
-		Media: media,
+		Media: input.Media,
 		Index: 0,
 	}
 	if err := p.publishFn(pb.Message_MESSAGE_QUEUE_REMOVE, queueInput); err != nil {
