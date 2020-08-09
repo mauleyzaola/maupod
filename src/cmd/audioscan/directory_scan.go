@@ -14,7 +14,6 @@ import (
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/mauleyzaola/maupod/src/pkg/rules"
-	"github.com/mauleyzaola/maupod/src/pkg/types"
 	"github.com/nats-io/nats.go"
 	"github.com/volatiletech/sqlboiler/boil"
 )
@@ -79,7 +78,6 @@ func ScanDirectoryAudioFiles(
 	ctx context.Context,
 	conn boil.ContextExecutor,
 	nc *nats.Conn,
-	logger types.Logger,
 	scanDate time.Time,
 	store *dbdata.MediaStore,
 	root string,
@@ -121,7 +119,7 @@ func ScanDirectoryAudioFiles(
 		return false
 	}
 
-	logger.Info("[DEBUG] started scanning")
+	log.Println("[DEBUG] started scanning")
 	if err = helpers.WalkFiles(paths.FullPath(root), walker); err != nil {
 		log.Println(err)
 		return err
@@ -161,8 +159,9 @@ func ScanDirectoryAudioFiles(
 		// if the location is the same and we made it here, that means we need to update the row
 		if val, ok := mediaLocationKeys[location]; ok {
 			// if this is an update we need to read the old sha value from database
-			oldMedia, err := store.Select(ctx, conn, m.Id)
+			oldMedia, err := store.FindMedia(ctx, conn, &pb.Media{Location: m.Location})
 			if err != nil {
+				log.Println(m.Id, err)
 				return err
 			}
 
@@ -184,10 +183,12 @@ func ScanDirectoryAudioFiles(
 			// consider assigning album identifier (experimental feature only on new media)
 			var albumIdentifier string
 			if albumIdentifier, err = AlbumGroupDetection(ctx, conn, m); err != nil {
+				log.Println(err)
 				return err
 			}
 			m.AlbumIdentifier = albumIdentifier
 			if err = store.Insert(ctx, conn, m); err != nil {
+				log.Println(err)
 				return err
 			}
 		}
@@ -200,7 +201,7 @@ func ScanDirectoryAudioFiles(
 		}
 	}
 
-	logger.Infof("[INFO] files: %d  elapsed: %s\n", len(files), time.Since(start))
+	log.Printf("[INFO] files: %d  elapsed: %s\n", len(files), time.Since(start))
 
 	return nil
 }

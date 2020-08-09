@@ -40,6 +40,7 @@ const mediaList = (data) => axios.get(`/media`, {
     params: data,
 });
 const queueAdd = ({media, index = -1, named_position}) => axios.post(`/queue`, {media: cleanMedia(media), index, named_position});
+const queueList = () => axios.get(`/queue`);
 const objectToQueryString = data => querystring.stringify(data);
 const spectrumImage = (id) => axios.get(`/media/${id}/spectrum`);
 
@@ -55,5 +56,6 @@ export {
     mediaList,
     objectToQueryString,
     queueAdd,
+    queueList,
     spectrumImage,
 }

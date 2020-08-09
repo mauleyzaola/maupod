@@ -111,11 +111,10 @@ func (p *PlayerControl) onTimePosChanged(v float64) {
 	if v == 0 {
 		return
 	}
-
+	p.lastTimePos = v
 	diff := v - p.lastTimePos
 	if diff >= timePosThresholdSecs {
 		p.OnTimePosChanged(v)
-		p.lastTimePos = v
 	}
 }
 

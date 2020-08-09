@@ -70,6 +70,7 @@ const TrackListRow = ({row}) => {
 }
 
 export {
+    AlbumLink,
     TrackListHeader,
     TrackListRow,
 }

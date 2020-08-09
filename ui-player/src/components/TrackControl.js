@@ -33,7 +33,6 @@ class TrackControl extends React.Component{
     }
 
     secondsToDisplay = seconds => {
-        if(!seconds) return '';
         const t = new Date(seconds * 1000);
         const secs = t.getSeconds();
         const mins = t.getMinutes();
