@@ -1,6 +1,5 @@
 import React from 'react';
 import {TrackPlayControls} from "./Player";
-import {spectrumImage} from "../api";
 
 class TrackControl extends React.Component{
     state = {
@@ -70,7 +69,8 @@ class TrackControl extends React.Component{
     // <input type='range' className='form-control' min='0' max='100' value={percent} onChange={this.onPositionChange} />
 
     render() {
-        const { media, percent, width, timePlayed, timeTotal } = this.state;
+        const { media, percent, timePlayed, timeTotal } = this.state;
+        const { width } = this.state;
         if(!media || !media.id) return null;
         return (
             <div className='row'>

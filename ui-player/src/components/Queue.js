@@ -59,7 +59,7 @@ class Queue extends React.Component{
     }
 
     componentDidMount() {
-        this.loadData();
+        return this.loadData();
     }
 
     loadData = () => queueList().then(response => this.setState({rows: response.data.rows || []}));
