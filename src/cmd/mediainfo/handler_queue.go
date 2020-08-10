@@ -4,6 +4,8 @@ import (
 	"context"
 	"log"
 
+	"github.com/mauleyzaola/maupod/src/pkg/broker"
+
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata/conversion"
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata/orm"
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
@@ -77,7 +79,7 @@ func (m *MsgHandler) handlerQueueList(msg *nats.Msg) {
 			log.Println(err)
 		}
 	}()
-	output.Rows = m.queueItems
+	output.Rows = mediasToQueues(m.queueItems)
 }
 
 func (m *MsgHandler) handlerQueueAdd(msg *nats.Msg) {
@@ -124,8 +126,20 @@ func (m *MsgHandler) handlerQueueAdd(msg *nats.Msg) {
 		}
 	}
 	m.queueItems = list
-	output.Rows = list
+	output.Rows = mediasToQueues(list)
+
+	// trigger a notification that queue has been changed
+	defer onQueueNotifyChanged(m.base.NATS())
+
 	return
+}
+
+func onQueueNotifyChanged(nc *nats.Conn) {
+	var input pb.QueueChangedInput
+	if err := broker.PublishBrokerJSON(nc, pb.Message_MESSAGE_SOCKET_QUEUE_CHANGE, &input); err != nil {
+		log.Println(err)
+		return
+	}
 }
 
 func (m *MsgHandler) handlerQueueRemove(msg *nats.Msg) {
@@ -152,7 +166,24 @@ func (m *MsgHandler) handlerQueueRemove(msg *nats.Msg) {
 		return
 	}
 	m.queueItems = list
-	output.Rows = list
+	output.Rows = mediasToQueues(list)
+
+	// trigger a notification that queue has been changed
+	defer onQueueNotifyChanged(m.base.NATS())
+
+	return
+}
+
+func mediasToQueues(medias types.Medias) []*pb.Queue {
+	var result []*pb.Queue
+	for i, v := range medias {
+		result = append(result, &pb.Queue{
+			Id:       helpers.NewUUID(),
+			Media:    v,
+			Position: int32(i),
+		})
+	}
+	return result
 }
 
 func (m *MsgHandler) queueSave() error {

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"encoding/json"
+	"log"
 	"strconv"
 	"time"
 
@@ -70,11 +70,11 @@ func (m *MsgHandler) InitializeIPC(filename string) error {
 		return broker.DoRequest(m.base.NATS(), subject, input, output, time.Second)
 	}
 	var publishFnJSON broker.PublisherFuncJSON = func(subject pb.Message, payload interface{}) error {
-		data, err := json.Marshal(payload)
-		if err != nil {
-			return err
+		val, ok := payload.(proto.Message)
+		if !ok {
+			log.Println("[ERROR] cannot cast to pb.Message: ", payload)
 		}
-		return m.base.NATS().Publish(strconv.Itoa(int(subject)), data)
+		return broker.PublishBrokerJSON(m.base.NATS(), subject, val)
 	}
 	control := pkg.NewPlayerControl(publishFn, publishFnJSON, requestFn)
 	if m.ipc, err = pkg.NewIPC(processor, control); err != nil {

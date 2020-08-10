@@ -56,6 +56,7 @@ enum Message {
     // real time socket events
     MESSAGE_SOCKET_TRACK_POSITION_PERCENT = 500;
     MESSAGE_SOCKET_TRACK_POSITION_PERCENT_CHANGE = 501;
+    MESSAGE_SOCKET_QUEUE_CHANGE = 502;
 }
 
 enum NamedPosition {
@@ -135,6 +136,12 @@ message MicroServiceDiscoveryOutput {
     string name = 2;
 }
 
+message Queue {
+    string id = 1;
+    Media media = 2;
+    int32 position = 3;
+}
+
 message QueueInput {
     Media media = 1;
     int64 index = 2;
@@ -142,8 +149,12 @@ message QueueInput {
 }
 
 message QueueOutput {
-    repeated Media rows = 1;
+    repeated Queue rows = 1;
     string error = 2;
+}
+
+message QueueChangedInput {
+
 }
 
 message Response {

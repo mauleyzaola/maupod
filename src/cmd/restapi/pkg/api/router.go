@@ -39,7 +39,7 @@ func SetupRoutes(a *ApiServer, output io.Writer) http.Handler {
 
 	baseRouter.HandleFunc("/queue", chainGlueCors(a.QueueGet)).Methods(http.MethodOptions, http.MethodGet)
 	baseRouter.HandleFunc("/queue", chainGlueCors(a.QueuePost)).Methods(http.MethodOptions, http.MethodPost)
-	baseRouter.HandleFunc("/queue", chainGlueCors(a.QueueDelete)).Methods(http.MethodOptions, http.MethodDelete)
+	baseRouter.HandleFunc("/queue/{index}", chainGlueCors(a.QueueDelete)).Methods(http.MethodOptions, http.MethodDelete)
 
 	baseRouter.HandleFunc("/system/ping", handlerPing).Methods(http.MethodOptions, http.MethodGet)
 

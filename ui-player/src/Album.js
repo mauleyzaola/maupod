@@ -1,7 +1,6 @@
 import React from 'react';
 import AlbumHeader from "./components/AlbumHeader";
-import {decodeURL} from "./api";
-import { albumViewList, mediaList } from "./api";
+import API from "./api";
 import {msToString } from "./helpers";
 import {TrackListControls} from "./components/Player";
 
@@ -101,13 +100,13 @@ class Album extends React.Component{
 
     loadData = search => {
         let album = null;
-        albumViewList(search)
+        API.albumViewList(search)
             .then(response => {
                 const data = response.data || [];
                 if(data.length !== 1) return;
                 album  = data[0];
             })
-            .then(() => mediaList({ sort:'track_position', direction: 'asc', ...search}))
+            .then(() => API.mediaList({ sort:'track_position', direction: 'asc', ...search}))
             .then(res => res.data || [])
             .then(rows => {
                 const isCompilation = this.isCompilation(rows);
@@ -116,7 +115,7 @@ class Album extends React.Component{
     }
 
     componentDidMount() {
-        const uri = decodeURL(window.location.search);
+        const uri = API.decodeURL(window.location.search);
         this.loadData(uri);
     }
 

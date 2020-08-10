@@ -1,5 +1,5 @@
 import React from 'react';
-import {distinctListGet} from "./api";
+import API from "./api";
 import { Link } from "react-router-dom";
 import {linkAlbumList} from "./routes";
 import { groupOnFirstChar } from "./helpers";
@@ -29,7 +29,7 @@ class Performers extends React.Component{
     }
 
     componentDidMount() {
-        distinctListGet({
+        API.distinctListGet({
             field:'performer',
             filter:{
                 direction: 'asc',

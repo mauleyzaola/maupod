@@ -1,5 +1,5 @@
 import React from 'react';
-import {albumViewList, decodeURL} from "./api";
+import API from "./api";
 import {linkAlbumView, linkGenreList, linkPerformerList} from "./routes";
 import { Link } from "react-router-dom";
 import {msToString} from "./helpers";
@@ -70,10 +70,10 @@ class Albums extends React.Component{
         }
     }
 
-    loadData = data =>  albumViewList(data).then(res => res.data || []).then(rows => this.setState({rows}));
+    loadData = data =>  API.albumViewList(data).then(res => res.data || []).then(rows => this.setState({rows}));
 
     componentDidMount() {
-        const data = decodeURL(this.props.location.search);
+        const data = API.decodeURL(this.props.location.search);
         if(!data.limit){
             data.limit = 100;
         }
@@ -84,7 +84,7 @@ class Albums extends React.Component{
         if(JSON.stringify(prevProps.location) === JSON.stringify(this.props.location)){
             return;
         }
-        this.loadData(decodeURL(this.props.location.search));
+        this.loadData(API.decodeURL(this.props.location.search));
     }
 
 

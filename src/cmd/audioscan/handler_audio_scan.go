@@ -33,7 +33,6 @@ func (m *MsgHandler) handlerAudioScan(msg *nats.Msg) {
 		ctx,
 		conn,
 		m.base.NATS(),
-		m.base.Logger(),
 		helpers.TsToTime2(input.ScanDate),
 		&dbdata.MediaStore{},
 		input.Root,

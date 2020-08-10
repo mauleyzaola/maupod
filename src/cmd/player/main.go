@@ -121,10 +121,10 @@ func autoPlayQueue(nc *nats.Conn, config *pb.Configuration) error {
 	if len(output.Rows) == 0 {
 		return nil
 	}
-	nextMedia := output.Rows[0]
+	next := output.Rows[0]
 	// send a nats message
 	var input = &pb.IPCInput{
-		Media:   nextMedia,
+		Media:   next.Media,
 		Value:   "",
 		Command: pb.Message_IPC_PLAY,
 	}
@@ -132,7 +132,7 @@ func autoPlayQueue(nc *nats.Conn, config *pb.Configuration) error {
 		return err
 	}
 	if _, err = broker.RequestQueueRemove(nc, &pb.QueueInput{
-		Media: nextMedia,
+		Media: next.Media,
 		Index: 0,
 	}, timeout); err != nil {
 		return err

@@ -40,10 +40,12 @@ const mediaList = (data) => axios.get(`/media`, {
     params: data,
 });
 const queueAdd = ({media, index = -1, named_position}) => axios.post(`/queue`, {media: cleanMedia(media), index, named_position});
+const queueList = () => axios.get(`/queue`);
+const queueRemove = index => axios.delete(`/queue/${index}`);
 const objectToQueryString = data => querystring.stringify(data);
 const spectrumImage = (id) => axios.get(`/media/${id}/spectrum`);
 
-export {
+export default {
     audioScan,
     albumViewList,
     decodeURL,
@@ -55,5 +57,7 @@ export {
     mediaList,
     objectToQueryString,
     queueAdd,
+    queueList,
+    queueRemove,
     spectrumImage,
 }

@@ -1,6 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import {TrackPlayControls} from "./Player";
-import {spectrumImage} from "../api";
+import {handleLoadQueue} from "../actions/queue";
 
 class TrackControl extends React.Component{
     state = {
@@ -23,17 +24,21 @@ class TrackControl extends React.Component{
                     case 'MESSAGE_SOCKET_TRACK_POSITION_PERCENT':
                         this.onMessageReceived(data);
                         break;
+                    case 'MESSAGE_SOCKET_QUEUE_CHANGE':
+                        this.props.dispatch(handleLoadQueue());
+                        break;
                     default:
                         break;
                 }
-            }catch (e){}
+            }catch (e){
+                console.warn(e);
+            }
         });
         window.addEventListener('resize', () => this.setState({width: this.windowSize()}));
         this.setState({width: this.windowSize()});
     }
 
     secondsToDisplay = seconds => {
-        if(!seconds) return '';
         const t = new Date(seconds * 1000);
         const secs = t.getSeconds();
         const mins = t.getMinutes();
@@ -71,7 +76,8 @@ class TrackControl extends React.Component{
     // <input type='range' className='form-control' min='0' max='100' value={percent} onChange={this.onPositionChange} />
 
     render() {
-        const { media, percent, width, timePlayed, timeTotal } = this.state;
+        const { media, timePlayed, timeTotal } = this.state;
+        const { width } = this.state;
         if(!media || !media.id) return null;
         return (
             <div className='row'>
@@ -83,11 +89,15 @@ class TrackControl extends React.Component{
                         {media.track}
                     </div>
                     <TrackPlayControls media={media} />
-                    {media.id ? <img src={`${process.env.REACT_APP_MAUPOD_API}/media/${media.id}/spectrum`} width={`${width}px`} height="150px" /> : null}
+                    {media.id ? <img
+                        src={`${process.env.REACT_APP_MAUPOD_API}/media/${media.id}/spectrum`} width={`${width}px`} height="150px"
+                        alt='could not load spectrum from server'
+                    /> : null}
                 </div>
             </div>
         )
     }
 }
 
-export default TrackControl;
+// TODO: handle external events using redux, for now props are empty and all is handled locally
+export default connect((state) => ({ }))(TrackControl);
