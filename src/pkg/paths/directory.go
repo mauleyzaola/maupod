@@ -6,9 +6,11 @@ import (
 	"strings"
 )
 
+const MediaStoreEnvName = "MAUPOD_MEDIA_STORE"
+
 // RootDirectory returns the root directory for calculating the location on the media files
 func RootDirectory() string {
-	return os.Getenv("MEDIA_STORE")
+	return os.Getenv(MediaStoreEnvName)
 }
 
 // FullPath returns the full path to a media file location, based on the root specified in the environment

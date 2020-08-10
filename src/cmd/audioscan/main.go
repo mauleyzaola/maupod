@@ -7,6 +7,8 @@ import (
 	"os/signal"
 	"time"
 
+	"github.com/mauleyzaola/maupod/src/pkg/paths"
+
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
 
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
@@ -52,7 +54,7 @@ func run() error {
 	}
 
 	// create directory if not exists
-	if val := os.Getenv("MEDIA_STORE"); val != "" {
+	if val := os.Getenv(paths.MediaStoreEnvName); val != "" {
 		config.MediaStores = []*pb.FileStore{
 			{
 				Type:     pb.FileStore_FILE_SYSTEM,
