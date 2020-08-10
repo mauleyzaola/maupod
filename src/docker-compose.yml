@@ -47,7 +47,7 @@ services:
       dockerfile: dockerfiles/dev.restapi.Dockerfile
     volumes:
       - ./:/go/src/github.com/mauleyzaola/maupod/src/server
-      - $HOME/Downloads/artwork:/artwork
+      - $MAUPOD_ARTWORK:/artwork
     expose:
       - 8000
     ports:
