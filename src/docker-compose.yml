@@ -15,31 +15,31 @@ services:
       context: .
       dockerfile: dockerfiles/dev.artwork.Dockerfile
     environment:
-      - MEDIA_STORE=/music-store
+      - MAUPOD_MEDIA_STORE=/music-store
     volumes:
       - ./:/go/src/github.com/mauleyzaola/maupod/src/server
-      - $MEDIA_STORE:/music-store
-      - $HOME/Downloads/artwork:/artwork
+      - $MAUPOD_MEDIA_STORE:/music-store
+      - $MAUPOD_ARTWORK:/artwork
 
   maupod-audioscan:
     build:
       context: .
       dockerfile: dockerfiles/dev.audioscan.Dockerfile
     environment:
-      - MEDIA_STORE=/music-store
+      - MAUPOD_MEDIA_STORE=/music-store
     volumes:
       - ./:/go/src/github.com/mauleyzaola/maupod/src/server
-      - $MEDIA_STORE:/music-store
+      - $MAUPOD_MEDIA_STORE:/music-store
 
   maupod-mediainfo:
     build:
       context: .
       dockerfile: dockerfiles/dev.mediainfo.Dockerfile
     environment:
-      - MEDIA_STORE=/music-store
+      - MAUPOD_MEDIA_STORE=/music-store
     volumes:
       - ./:/go/src/github.com/mauleyzaola/maupod/src/server
-      - $MEDIA_STORE:/music-store
+      - $MAUPOD_MEDIA_STORE:/music-store
 
   maupod-restapi:
     build:

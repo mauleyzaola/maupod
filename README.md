@@ -18,19 +18,24 @@ These are a set of applications that eventually should accomplish:
 For the time being, only in development mode. There are no releases yet, 
 so the procedure is kind of tricky
 
-This environment variable needs to point to the directory where your media files live
+Set the following environment variables in your `~/.bashrc` or `~/.bash_profile`
 
 ```
-export MEDIA_STORE="/media/mau/music-library/music"
+export MAUPOD_BASE_IP_ADDRESS=192.168.0.135
+export MAUPOD_MEDIA_STORE=/mnt/music-library
+export MAUPOD_ARTWORK="$MAUPOD_MEDIA_STORE/artwork"
+export REACT_APP_MAUPOD_API="http://$MAUPOD_BASE_IP_ADDRESS:7400"
+export REACT_APP_MAUPOD_ARTWORK="http://$MAUPOD_BASE_IP_ADDRESS:7401"
+export REACT_APP_MAUPOD_SOCKET="ws://$MAUPOD_BASE_IP_ADDRESS:8080"
+export HOST="$MAUPOD_BASE_IP_ADDRESS"
 ```
 
-And this other needs to point to the ip of the backend
+In this example my ip address is `192.168.0.135` and my music library is located at this path: `/mnt/music-library`. Change these variables to match your environment
 
-```
-export REACT_APP_API_URL="http://localhost:8888"
-```
+It is important you keep the other values unchanged as above, otherwise maupod won't work
 
-In one terminal 
+
+In one terminal go to `src/` directory in the repo
 
 ```
 make dev
@@ -41,17 +46,14 @@ Once that is done, run in another terminal
 make dev-ui
 ```
 
-Browser will automatically start at http://localhost:3000
-
-#### Artwork
-
-If you want to enable this feature, you'll need to configure a valid directory in the `src/server/docker-compose.yml` file in the `maupod-restapi` service
-
-Default is `~/Downloads/artwork`
+And finally, on a third terminal, run this
 
 ```
-- $HOME/Downloads/artwork:/artwork
+./maupod-player
 ```
+
+Browser should automatically start at http://192.168.0.135:3000 (whatever your ip address was defined above)
+
 
 ### Development
 
