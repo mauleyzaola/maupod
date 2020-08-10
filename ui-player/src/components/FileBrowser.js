@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {audioScan, decodeURL, directoryRead} from "../api";
+import API from "../api";
 import {Link} from 'react-router-dom';
 import { FaFolder, FaMusic } from "react-icons/fa/index";
 
@@ -47,17 +47,17 @@ class FileBrowser extends React.Component{
         if(JSON.stringify(prevProps.location) === JSON.stringify(this.props.location)){
             return;
         }
-        this.loadData(decodeURL(this.props.location.search))
+        this.loadData(API.decodeURL(this.props.location.search))
             .then(() => {});
     }
 
     componentDidMount() {
-        this.loadData(decodeURL(this.props.location.search))
+        this.loadData(API.decodeURL(this.props.location.search))
             .then(() => {});
     }
 
     loadData = async data => {
-        const files = await directoryRead(data);
+        const files = await API.directoryRead(data);
         this.setState({files});
     }
 
@@ -72,9 +72,9 @@ class FileBrowser extends React.Component{
     }
 
     runAudioScan = () => {
-        const data = decodeURL(this.props.location.search);
+        const data = API.decodeURL(this.props.location.search);
         data.force = true;
-        audioScan(data).then(() => console.log('Request was successful'))
+        API.audioScan(data).then(() => console.log('Request was successful'))
     }
 
     handleScanClick = () => this.runAudioScan();

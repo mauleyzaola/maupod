@@ -28,6 +28,20 @@ nc.subscribe(subjects.MESSAGE_SOCKET_TRACK_POSITION_PERCENT, (msg) => {
     }
 })
 
+nc.subscribe(subjects.MESSAGE_SOCKET_QUEUE_CHANGE, (msg) => {
+  try {
+      wss.clients.forEach(ws => {
+          if(ws.isAlive === false) return ws.terminate();
+          ws.send(JSON.stringify({
+              subject: 'MESSAGE_SOCKET_QUEUE_CHANGE',
+          }));
+      })
+  }  catch (e){
+      console.log(e);
+  }
+})
+
+
 wss.on('connection', ws => {
     const addr = ws._socket.remoteAddress
     console.log(`new connection from ${addr}`);

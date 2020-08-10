@@ -1,5 +1,5 @@
 import React from 'react';
-import { decodeURL, mediaList } from "./api";
+import API from "./api";
 import { TrackListHeader, TrackListRow } from "./components/TrackList";
 
 class MediaList extends React.Component{
@@ -11,12 +11,12 @@ class MediaList extends React.Component{
     }
 
     componentDidMount() {
-        const uri = decodeURL(window.location.search);
+        const uri = API.decodeURL(window.location.search);
         this.loadData(uri);
     }
 
     loadData = search => {
-        mediaList(search)
+        API.mediaList(search)
             .then(res => res.data || [])
             .then(rows => this.setState({rows}))
     }
@@ -25,7 +25,7 @@ class MediaList extends React.Component{
         if(JSON.stringify(prevProps.location) === JSON.stringify(this.props.location)){
             return;
         }
-        this.loadData(decodeURL(this.props.location.search));
+        this.loadData(API.decodeURL(this.props.location.search));
     }
     
     render() {

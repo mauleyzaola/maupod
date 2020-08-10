@@ -1,6 +1,7 @@
 package broker
 
 import (
+	"encoding/json"
 	"strconv"
 
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
@@ -35,4 +36,12 @@ func PublishMediaTagUpdate(nc *nats.Conn, media *pb.Media) error {
 
 func PublishMediaSHAUpdate(nc *nats.Conn, input *pb.MediaUpdateSHAInput) error {
 	return PublishBroker(nc, pb.Message_MESSAGE_MEDIA_UPDATE_SHA, input)
+}
+
+func PublishBrokerJSON(nc *nats.Conn, subject pb.Message, input proto.Message) error {
+	data, err := json.Marshal(input)
+	if err != nil {
+		return err
+	}
+	return nc.Publish(strconv.Itoa(int(subject)), data)
 }

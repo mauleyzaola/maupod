@@ -56,6 +56,7 @@ enum Message {
     // real time socket events
     MESSAGE_SOCKET_TRACK_POSITION_PERCENT = 500;
     MESSAGE_SOCKET_TRACK_POSITION_PERCENT_CHANGE = 501;
+    MESSAGE_SOCKET_QUEUE_CHANGE = 502;
 }
 
 enum NamedPosition {
@@ -150,6 +151,10 @@ message QueueInput {
 message QueueOutput {
     repeated Queue rows = 1;
     string error = 2;
+}
+
+message QueueChangedInput {
+
 }
 
 message Response {

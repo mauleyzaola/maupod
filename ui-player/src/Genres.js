@@ -1,5 +1,5 @@
 import React from 'react';
-import {genreArtworkList, genreList} from "./api";
+import API from "./api";
 import GenreCard from "./components/GenreCard";
 
 
@@ -13,13 +13,13 @@ class Genres extends React.Component{
 
     componentDidMount() {
         let rows = [];
-        genreList({
+        API.genreList({
             direction: 'asc',
             sort: 'genre',
         })
             .then(res => res.data || [])
             .then(data => rows = data)
-            .then(() => genreArtworkList())
+            .then(() => API.genreArtworkList())
             .then(response => {
                 const artworks = response.data;
                 for(let i = 0; i < rows.length; i++){

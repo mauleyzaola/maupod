@@ -1,10 +1,11 @@
-    import React from 'react';
-import {queueList, queueRemove} from "../api";
+import React from 'react';
+import { connect } from 'react-redux';
 import {AlbumLink} from "./TrackList";
 import {msToString, secondsToDate} from "../helpers";
 import {Link} from "react-router-dom";
 import {linkGenreList, linkPerformerList} from "../routes";
 import {FaMinusSquare} from "react-icons/fa/index";
+import {handleDeleteQueue, handleLoadQueue} from "../actions/queue";
 
 const TrackListHeader = () => (
     <thead>
@@ -24,7 +25,7 @@ const TrackListHeader = () => (
     </thead>
 )
 
-const TrackListRow = ({row, onDelete}) => {
+const TrackListRow = ({index, row, onDelete}) => {
     row.recorded_date = row.recorded_date || '';
     const modifiedDate = row.modified_date ? secondsToDate(row.modified_date.seconds).toLocaleDateString() : '';
     return (
@@ -52,7 +53,7 @@ const TrackListRow = ({row, onDelete}) => {
             <td>
                 <span
                    title='remove track from queue'
-                    onClick={() => onDelete(row)}
+                    onClick={() => onDelete(index)}
                 >
                     <FaMinusSquare/>
                 </span>
@@ -64,21 +65,14 @@ const TrackListRow = ({row, onDelete}) => {
 
 // TODO: this list should be updated when a track is either added or removed from the queue
 class Queue extends React.Component{
-    state = {
-        rows: [],
-    }
-
     componentDidMount() {
         return this.loadData();
     }
-
-    loadData = () => queueList().then(response => this.setState({rows: response.data.rows || []}));
-
-    onDelete = row => queueRemove(row)
-        .then(response => this.setState({rows: response.data.rows }));
+    loadData = () => this.props.dispatch(handleLoadQueue());
+    onDelete = index => this.props.dispatch(handleDeleteQueue({index}));
 
     render() {
-        const { rows } = this.state;
+        const { queues } = this.props;
         return (
             <div>
                 <h2>Queue List</h2>
@@ -86,7 +80,7 @@ class Queue extends React.Component{
                 <table className='table table-bordered table-hover table-striped'>
                     <TrackListHeader />
                     <tbody>
-                    {rows.map(row => <TrackListRow key={row.id} row={row.media} onDelete={this.onDelete} />)}
+                    {queues.map((row, index) => <TrackListRow key={row.id} row={row.media} index={index} onDelete={this.onDelete} />)}
                     </tbody>
                 </table>
             </div>
@@ -94,4 +88,6 @@ class Queue extends React.Component{
     }
 }
 
-export default Queue;
+export default connect((state) => ({
+    queues: state.queues
+}))(Queue);

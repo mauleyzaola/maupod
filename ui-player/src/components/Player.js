@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FaForward, FaPlay, FaPause, FaAngleDoubleUp, FaAngleDoubleDown } from "react-icons/all";
 import {IPC_PAUSE, IPC_PLAY, IPC_SKIP, POSITION_BOTTOM, POSITION_TOP} from "../consts";
-import {ipcCommand, queueAdd} from "../api";
+import API from "../api";
 
 const TrackPlayControls = ({media}) => (
     <div className='form-inline'>
@@ -22,7 +22,7 @@ const TrackListControls = ({media}) => (
 
 class PlayerPlay extends React.Component{
     onClick = (media) => {
-        ipcCommand(({ command: IPC_PLAY, media}))
+        API.ipcCommand(({ command: IPC_PLAY, media}))
             .then(() => {})
     }
 
@@ -41,7 +41,7 @@ class PlayerPlay extends React.Component{
 
 class PlayerPause extends React.Component{
     onClick = (media) => {
-        ipcCommand(({ command: IPC_PAUSE, media}))
+        API.ipcCommand(({ command: IPC_PAUSE, media}))
             .then(() => {})
     }
 
@@ -60,7 +60,7 @@ class PlayerPause extends React.Component{
 
 class PlayerPlayNext extends React.Component{
     onClick = media => {
-        queueAdd({media: media, named_position: POSITION_TOP})
+        API.queueAdd({media: media, named_position: POSITION_TOP})
             .then(() => {})
     }
 
@@ -79,7 +79,7 @@ class PlayerPlayNext extends React.Component{
 
 class PlayerPlayLater extends React.Component{
     onClick = media => {
-        queueAdd({media: media, named_position: POSITION_BOTTOM})
+        API.queueAdd({media: media, named_position: POSITION_BOTTOM})
             .then(() => {})
     }
 
@@ -98,7 +98,7 @@ class PlayerPlayLater extends React.Component{
 
 class PlayerSkip extends React.Component{
     onClick = media => {
-        ipcCommand(({ command: IPC_SKIP, media}))
+        API.ipcCommand(({ command: IPC_SKIP, media}))
             .then(() => {})
     }
 

@@ -1,10 +1,10 @@
-import {objectToQueryString} from "./api";
+import API from "./api";
 
-const linkAlbumList = media => `/albums?${objectToQueryString({format:media.format, performer: media.performer, genre: media.genre,} )}`;
-const linkAlbumView = media => `/album?${objectToQueryString({album_identifier:media.album_identifier} )}`;
-const linkGenreList = media => `/albums?${objectToQueryString({genre:media.genre} )}`;
-const linkMediaList = media => `/media?${objectToQueryString(media)}`;
-const linkPerformerList = media => `/albums?${objectToQueryString({performer:media.performer} )}`;
+const linkAlbumList = media => `/albums?${API.objectToQueryString({format:media.format, performer: media.performer, genre: media.genre,} )}`;
+const linkAlbumView = media => `/album?${API.objectToQueryString({album_identifier:media.album_identifier} )}`;
+const linkGenreList = media => `/albums?${API.objectToQueryString({genre:media.genre} )}`;
+const linkMediaList = media => `/media?${API.objectToQueryString(media)}`;
+const linkPerformerList = media => `/albums?${API.objectToQueryString({performer:media.performer} )}`;
 
 export {
     linkAlbumList,
