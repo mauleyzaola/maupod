@@ -161,8 +161,14 @@ func (m *MsgHandler) handlerQueueRemove(msg *nats.Msg) {
 			log.Println(err)
 		}
 	}()
+	if err := helpers.ProtoUnmarshal(msg.Data, &input); err != nil {
+		output.Error = err.Error()
+		log.Println(err)
+		return
+	}
 	list := m.queueItems
 	if list, err = list.RemoveAt(int(input.Index)); err != nil {
+		output.Error = err.Error()
 		return
 	}
 	m.queueItems = list
