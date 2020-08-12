@@ -17,7 +17,7 @@ services:
     environment:
       - MAUPOD_MEDIA_STORE=/music-store
     volumes:
-      - ./:/go/src/github.com/mauleyzaola/maupod/src/server
+      - ./:/go/src/github.com/mauleyzaola/maupod/src
       - $MAUPOD_MEDIA_STORE:/music-store
       - $MAUPOD_ARTWORK:/artwork
 
@@ -28,7 +28,7 @@ services:
     environment:
       - MAUPOD_MEDIA_STORE=/music-store
     volumes:
-      - ./:/go/src/github.com/mauleyzaola/maupod/src/server
+      - ./:/go/src/github.com/mauleyzaola/maupod/src
       - $MAUPOD_MEDIA_STORE:/music-store
 
   maupod-mediainfo:
@@ -38,7 +38,7 @@ services:
     environment:
       - MAUPOD_MEDIA_STORE=/music-store
     volumes:
-      - ./:/go/src/github.com/mauleyzaola/maupod/src/server
+      - ./:/go/src/github.com/mauleyzaola/maupod/src
       - $MAUPOD_MEDIA_STORE:/music-store
 
   maupod-restapi:
@@ -46,7 +46,7 @@ services:
       context: .
       dockerfile: dockerfiles/dev.restapi.Dockerfile
     volumes:
-      - ./:/go/src/github.com/mauleyzaola/maupod/src/server
+      - ./:/go/src/github.com/mauleyzaola/maupod/src
       - $MAUPOD_ARTWORK:/artwork
     expose:
       - 8000

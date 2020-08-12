@@ -9,5 +9,5 @@ ENV LANG en_US.UTF-8
 RUN ["go", "get", "-v", "github.com/githubnemo/CompileDaemon"]
 
 FROM golang-dev
-WORKDIR /go/src/github.com/mauleyzaola/maupod/src/server
+WORKDIR /go/src/github.com/mauleyzaola/maupod/src
 ENTRYPOINT CompileDaemon -directory=. -log-prefix=false -build="go build -o maupod-mediainfo ./cmd/mediainfo" -command="./maupod-mediainfo" -exclude-dir=node_modules
