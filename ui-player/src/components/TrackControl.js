@@ -10,6 +10,10 @@ class TrackControl extends React.Component{
         width: 0,
         timePlayed: '',
         timeTotal: '',
+        cv:{
+            canvasWidth: 800,
+            canvasHeight: 200,
+        }
     }
     ws;
 
@@ -48,12 +52,20 @@ class TrackControl extends React.Component{
     }
 
     onMessageReceived = data => {
+        const { media } = this.state;
         this.setState({
             percent: data.percent,
             media: data.media,
             timePlayed: this.secondsToDisplay(data.seconds),
             timeTotal: this.secondsToDisplay(data.seconds_total),
         });
+        if(data.media.id !== media.id){
+            const img = new Image();
+            img.src = `${process.env.REACT_APP_MAUPOD_API}/media/${data.media.id}/spectrum`;
+            img.onload = () => {
+                console.log('image has been loaded')
+            }
+        }
     }
 
     onPositionChange = e => {
@@ -76,7 +88,7 @@ class TrackControl extends React.Component{
     // <input type='range' className='form-control' min='0' max='100' value={percent} onChange={this.onPositionChange} />
 
     render() {
-        const { media, timePlayed, timeTotal } = this.state;
+        const { cv, media, timePlayed, timeTotal } = this.state;
         const { width } = this.state;
         if(!media || !media.id) return null;
         return (
@@ -93,6 +105,7 @@ class TrackControl extends React.Component{
                         src={`${process.env.REACT_APP_MAUPOD_API}/media/${media.id}/spectrum`} width={`${width}px`} height="150px"
                         alt='could not load spectrum from server'
                     /> : null}
+                    {media.id ? <canvas ref={cv} /> : null}
                 </div>
             </div>
         )
