@@ -1,5 +1,5 @@
 const WebSocket = require('ws')
-const wsOptions = { port: 8080 };
+const wsOptions = { port: `${process.env.MAUPOD_SOCKET_PORT}` };
 const wss = new WebSocket.Server(wsOptions);
 const servers = ['nats://nats-server:4222']
 const NATS = require('nats');
