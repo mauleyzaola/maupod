@@ -29,28 +29,31 @@ class App extends React.Component{
         return (
             <div className='container-fluid'>
                 <Router>
-                    <div className='navigation-bar'>
-                        <Nav
-                            onSearch={this.onSearch}
-                            onChange={this.onSearchChange}
-                        />
+                    <div className="top-half">
+                        <div className='navigation-bar'>
+                            <Nav
+                                onSearch={this.onSearch}
+                                onChange={this.onSearchChange}
+                            />
+                        </div>
+                        <div className='top-always'>
+                            <TrackControl />
+                        </div>
                     </div>
-                    <div className='top-always'>
-                        <TrackControl />
-                    </div>
-
-                    <div className='scroll-section'>
-                        <Switch>
-                            <Route exact path='/' component={Dashboard} />
-                            <Route exact path='/albums' component={Albums} />
-                            <Route path='/album' component={Album} />
-                            <Route exact path='/performers' component={Performers} />
-                            <Route exact path='/genres' component={Genres} />
-                            <Route path='/media' component={MediaList} />
-                            <Route path='/queue' component={Queue} />
-                            <Route path='/file-browser' component={FileBrowser} />
-                        </Switch>
-                    </div>
+                    <div className="bottom-half">
+                        <div className='scroll-section'>
+                            <Switch>
+                                <Route exact path='/' component={Dashboard} />
+                                <Route exact path='/albums' component={Albums} />
+                                <Route path='/album' component={Album} />
+                                <Route exact path='/performers' component={Performers} />
+                                <Route exact path='/genres' component={Genres} />
+                                <Route path='/media' component={MediaList} />
+                                <Route path='/queue' component={Queue} />
+                                <Route path='/file-browser' component={FileBrowser} />
+                            </Switch>
+                        </div>
+                    </div>    
                 </Router>
             </div>
         );

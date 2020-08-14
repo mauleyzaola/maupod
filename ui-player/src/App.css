@@ -35,3 +35,17 @@
     overflow-y: scroll;
     height: 100%;
 }
+
+.top-half {
+    position: absolute;
+    height: 100%;
+}
+
+.bottom-half {
+    position: fixed;
+    height: 70%;
+    width: 100%;
+}
+
+
+
