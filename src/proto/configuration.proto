@@ -1,6 +1,6 @@
 syntax = "proto3";
 package pb;
-option go_package = "github.com/mauleyzaola/maupod/src/server/pb";
+option go_package = "github.com/mauleyzaola/maupod/src/pb";
 
 import "file_store.proto";
 

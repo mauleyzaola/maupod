@@ -32,6 +32,8 @@ func init() {
 
 	_ = viper.ReadInConfig()
 	viper.AutomaticEnv()
+
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
 }
 
 func run() error {

@@ -10,10 +10,9 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/mauleyzaola/maupod/src/pkg/broker"
-
 	_ "github.com/lib/pq"
 	"github.com/mauleyzaola/maupod/src/cmd/restapi/pkg/api"
+	"github.com/mauleyzaola/maupod/src/pkg/broker"
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata"
 	"github.com/mauleyzaola/maupod/src/pkg/rules"
 	"github.com/mauleyzaola/maupod/src/pkg/simplelog"
@@ -37,6 +36,8 @@ func init() {
 
 	_ = viper.ReadInConfig()
 	viper.AutomaticEnv()
+
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
 }
 
 func run() error {

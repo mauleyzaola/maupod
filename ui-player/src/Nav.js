@@ -43,7 +43,7 @@ class Nav extends React.Component{
                     </ul>
                     <form className="form-inline my-2 my-lg-0" onSubmit={e => {
                         e.preventDefault();
-                        this.props.onSearch(e);
+                        this.props.onSubmit(e);
                         this.setState({query:''});
                     }}>
                         <input
@@ -65,5 +65,5 @@ export default Nav;
 
 Nav.propTypes = {
     onChange: PropTypes.func.isRequired,
-    onSearch: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func.isRequired,
 }
