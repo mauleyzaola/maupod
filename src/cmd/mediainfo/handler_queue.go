@@ -70,6 +70,9 @@ func (m *MsgHandler) handlerQueueList(msg *nats.Msg) {
 	var output pb.QueueOutput
 
 	defer func() {
+		if msg.Reply==""{
+			return
+		}
 		data, err := helpers.ProtoMarshal(&output)
 		if err != nil {
 			log.Println(err)
@@ -90,6 +93,9 @@ func (m *MsgHandler) handlerQueueAdd(msg *nats.Msg) {
 	defer func() {
 		if err = m.queueSave(); err != nil {
 			log.Println(err)
+			return
+		}
+		if msg.Reply==""{
 			return
 		}
 		data, err := helpers.ProtoMarshal(&output)
@@ -150,6 +156,9 @@ func (m *MsgHandler) handlerQueueRemove(msg *nats.Msg) {
 	defer func() {
 		if err = m.queueSave(); err != nil {
 			log.Println(err)
+			return
+		}
+		if msg.Reply==""{
 			return
 		}
 		data, err := helpers.ProtoMarshal(&output)

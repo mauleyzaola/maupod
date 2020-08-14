@@ -24,6 +24,10 @@ func (m *MsgHandler) handlerMediaInfo(msg *nats.Msg) {
 	}
 
 	defer func() {
+		if msg.Reply==""{
+			return
+		}
+
 		var localErr error
 		var data []byte
 
