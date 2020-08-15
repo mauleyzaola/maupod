@@ -30,7 +30,7 @@ const TrackListRow = ({index, row, onDelete}) => {
     const modifiedDate = row.modified_date ? secondsToDate(row.modified_date.seconds).toLocaleDateString() : '';
     return (
         <tr>
-            <td>{row.track_position}</td>
+            <td>{index + 1}</td>
             <td>
                 <span title={row.location}>
                     {row.track}

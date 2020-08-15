@@ -8,7 +8,7 @@ import Performers from './Performers'
 import Genres from "./Genres";
 import Dashboard from "./Dashboard";
 import MediaList from "./MediaList";
-import {Redirect, Route, Switch} from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
 import Nav from "./Nav";
 import { linkMediaList } from "./routes";
 import FileBrowser from "./components/FileBrowser";

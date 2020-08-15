@@ -10,12 +10,10 @@ class TrackControl extends React.Component{
         width: 0,
         timePlayed: '',
         timeTotal: '',
-        cv:{
-            canvasWidth: 800,
-            canvasHeight: 200,
-        }
     }
     ws;
+    ctx;
+    imageData;
 
     windowSize = () => window.innerWidth - 50;
 
@@ -61,21 +59,41 @@ class TrackControl extends React.Component{
         });
         if(data.media.id !== media.id){
             const img = new Image();
-            img.src = `${process.env.REACT_APP_MAUPOD_API}/media/${data.media.id}/spectrum`;
-            img.onload = () => {
-                console.log('image has been loaded')
-            }
+            img.crossOrigin = '';
+            img.src=`${process.env.REACT_APP_MAUPOD_API}/media/${data.media.id}/spectrum`
+            const canvas = document.getElementById('canvas');
+            canvas.width = 1920;
+            this.ctx = canvas.getContext('2d');
+            img.addEventListener('load', () => {
+                this.ctx.drawImage(img, 0, 0, 1920, 150);
+                const image = this.ctx.getImageData(0,0,1920/2,150);
+                this.imageData = image.data;
+                // const length = this.imageData.length;
+                // for(let i = 0; i < length; i += 4){
+                //     const color = this.imageData[i].toString();
+                // }
+                // this.ctx.putImageData(image,0,0);
+            })
+        }else if(this.imageData && false){
+            // for(let i = 3; i < length; i += 4){
+                // this.imageData.data[i] = 50;
+            // }
+            // this.ctx.putImageData(this.imageData,0,0);
         }
     }
+    /*
+    declare var ImageData: {
+    prototype: ImageData;
+    new(width: number, height: number): ImageData;
+    new(array: Uint8ClampedArray, width: number, height?: number): ImageData;
+};
+
+     */
 
     onPositionChange = e => {
         const {  media } = this.state;
         if(!media.id) return null;
         let percent = parseFloat(e.target.value);
-        if(percent <0 || percent > 100){
-            console.warn(`percent out of range: ${percent}`)
-            return;
-        }
         const data = {
             subject: 'MESSAGE_SOCKET_TRACK_POSITION_PERCENT',
             media,
@@ -88,7 +106,7 @@ class TrackControl extends React.Component{
     // <input type='range' className='form-control' min='0' max='100' value={percent} onChange={this.onPositionChange} />
 
     render() {
-        const { cv, media, timePlayed, timeTotal } = this.state;
+        const { media, timePlayed, timeTotal } = this.state;
         const { width } = this.state;
         if(!media || !media.id) return null;
         return (
@@ -101,11 +119,11 @@ class TrackControl extends React.Component{
                         {media.track}
                     </div>
                     <TrackPlayControls media={media} />
-                    {media.id ? <img
-                        src={`${process.env.REACT_APP_MAUPOD_API}/media/${media.id}/spectrum`} width={`${width}px`} height="150px"
-                        alt='could not load spectrum from server'
-                    /> : null}
-                    {media.id ? <canvas ref={cv} /> : null}
+                    <div id='spectrum_div'>
+                    </div>
+                    <div>
+                        <canvas id='canvas'/>
+                    </div>
                 </div>
             </div>
         )
