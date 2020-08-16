@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {TrackPlayControls} from "./Player";
 import {handleLoadQueue} from "../actions/queue";
+import {applyBlur, CANVAS_WIDTH, loadCanvasImage} from "../canvas";
 
 class TrackControl extends React.Component{
     state = {
@@ -12,8 +13,6 @@ class TrackControl extends React.Component{
         timeTotal: '',
     }
     ws;
-    ctx;
-    imageData;
 
     windowSize = () => window.innerWidth - 50;
 
@@ -28,6 +27,9 @@ class TrackControl extends React.Component{
                         break;
                     case 'MESSAGE_SOCKET_QUEUE_CHANGE':
                         this.props.dispatch(handleLoadQueue());
+                        break;
+                    case 'MESSAGE_SOCKET_PLAY_TRACK':
+                        this.drawTrackSpectrum(data.media);
                         break;
                     default:
                         break;
@@ -49,46 +51,32 @@ class TrackControl extends React.Component{
         return `${offsetMin}${mins}:${offsetSecs}${secs}`;
     }
 
+    drawTrackSpectrum = media => {
+        const canvas = document.getElementById('canvas');
+        loadCanvasImage({
+            canvas,
+            src: `${process.env.REACT_APP_MAUPOD_API}/media/${media.id}/spectrum`,
+        })
+    }
+
     onMessageReceived = data => {
         const { media } = this.state;
+        const { percent, seconds, seconds_total } = data;
         this.setState({
             percent: data.percent,
             media: data.media,
-            timePlayed: this.secondsToDisplay(data.seconds),
-            timeTotal: this.secondsToDisplay(data.seconds_total),
+            timePlayed: this.secondsToDisplay(seconds),
+            timeTotal: this.secondsToDisplay(seconds_total),
         });
         if(data.media.id !== media.id){
-            const img = new Image();
-            img.crossOrigin = '';
-            img.src=`${process.env.REACT_APP_MAUPOD_API}/media/${data.media.id}/spectrum`
-            const canvas = document.getElementById('canvas');
-            canvas.width = 1920;
-            this.ctx = canvas.getContext('2d');
-            img.addEventListener('load', () => {
-                this.ctx.drawImage(img, 0, 0, 1920, 150);
-                const image = this.ctx.getImageData(0,0,1920/2,150);
-                this.imageData = image.data;
-                // const length = this.imageData.length;
-                // for(let i = 0; i < length; i += 4){
-                //     const color = this.imageData[i].toString();
-                // }
-                // this.ctx.putImageData(image,0,0);
-            })
-        }else if(this.imageData && false){
-            // for(let i = 3; i < length; i += 4){
-                // this.imageData.data[i] = 50;
-            // }
-            // this.ctx.putImageData(this.imageData,0,0);
+            this.drawTrackSpectrum(data.media);
+        } else{
+            // TODO: handle play song from the start, probably another message?
+            const x1 = 0;
+            const x2 = CANVAS_WIDTH * percent / 100;
+            applyBlur({x1,x2});
         }
     }
-    /*
-    declare var ImageData: {
-    prototype: ImageData;
-    new(width: number, height: number): ImageData;
-    new(array: Uint8ClampedArray, width: number, height?: number): ImageData;
-};
-
-     */
 
     onPositionChange = e => {
         const {  media } = this.state;
@@ -103,11 +91,10 @@ class TrackControl extends React.Component{
     }
 
     // TODO: allow to set the position in the spectrum
-    // <input type='range' className='form-control' min='0' max='100' value={percent} onChange={this.onPositionChange} />
 
     render() {
         const { media, timePlayed, timeTotal } = this.state;
-        const { width } = this.state;
+        // const { width } = this.state;
         if(!media || !media.id) return null;
         return (
             <div className='row'>
