@@ -40,7 +40,7 @@ class App extends React.Component{
                             <TrackControl />
                         </div>
                     </div>
-                    <div className="bottom-half">
+                    
                         <div className='scroll-section'>
                             <Switch>
                                 <Route exact path='/' component={Dashboard} />
@@ -53,7 +53,7 @@ class App extends React.Component{
                                 <Route path='/file-browser' component={FileBrowser} />
                             </Switch>
                         </div>
-                    </div>    
+                       
                 </Router>
             </div>
         );

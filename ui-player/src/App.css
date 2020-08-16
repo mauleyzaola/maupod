@@ -24,28 +24,19 @@
 .top-always {
     position: fixed;
     height: 260px;
-    top: 70px;
+    top: 100px;
 }
 
 /* TODO: avoid overlapping*/
 .scroll-section {
-    position: absolute;
+    position: fixed;
     top: 260px;
     width: 100%;
     overflow-y: scroll;
-    height: 100%;
-}
-
-.top-half {
-    position: absolute;
-    height: 100%;
-}
-
-.bottom-half {
-    position: fixed;
     height: 70%;
-    width: 100%;
 }
 
-
-
+.top {
+    position: static;
+    height: 100%;
+}
