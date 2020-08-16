@@ -8,10 +8,13 @@ const darkGreen = parseInt('84', 16);
 const darkBlue = parseInt('9e', 16);
 
 // these are the colors from the original spectrum
-// const black = 0;
-// const red = 70;
-// const green = 194;
-// const blue = 230;
+const black = 0;
+const red = 70;
+const green = 194;
+const blue = 230;
+
+const paintedColors = { red, green, blue };
+const blurredColors = { red: darkRed, green: darkGreen, blue: darkBlue };
 
 let ctx;
 
@@ -36,9 +39,9 @@ const loadCanvasImage = ({canvas, src}) => {
 // blurRange will blur a section of the canvas in from x1 to x2 across the canvas width
 const blurRange = ({dataItems, x1, x2}) => {
     for (let y = 0; y < CANVAS_HEIGHT; y++) {
-        for (let x = x1; x <= x2; x++) {
+        for (let x = x1; x <= CANVAS_WIDTH; x++) {
             const values = getColorIndicesForCoord(x, y, CANVAS_WIDTH);
-            reverseColorIndices(dataItems, values);
+            setColorIndices(dataItems, values, x < x2 ? blurredColors : paintedColors );
         }
     }
     return dataItems;
@@ -59,17 +62,17 @@ const getColorIndicesForCoord = (x, y, width) => {
     return [red, red + 1, red + 2, red + 3];
 };
 
-const isBlack = ([r,g,b,a]) => r+g+b+a === 0;
+const isBlack = ([r,g,b,a]) => r+g+b+a === black;
 
-const reverseColorIndices = (items, [r,g,b,a]) => {
+const setColorIndices = (items, [r,g,b,a], {red, green, blue}) => {
     let values = [items[r],items[g],items[b]];
     if(isBlack(values)){
         return values;
     }
     // if the color is not black, we assume we need to blur
-    items[r] = darkRed;
-    items[g] = darkGreen;
-    items[b] = darkBlue;
+    items[r] = red;
+    items[g] = green;
+    items[b] = blue;
     // alpha remains the same, so image is still transparent and can play well with any background color
     return values
 }

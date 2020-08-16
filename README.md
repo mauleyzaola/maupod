@@ -44,7 +44,7 @@ make dev
 
 Once that is done, run in another terminal
 ```
-make dev-ui
+make browser
 ```
 
 And finally, on a third terminal, run this
