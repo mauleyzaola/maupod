@@ -79,9 +79,17 @@ class TrackControl extends React.Component{
     }
 
     onPositionChange = e => {
+        // TODO: a good improvement could be sending if we need to redraw the spectrum (moving backward) or not (moving forward)
+        // for the time being it is fine as it is now
+        const positionX = parseFloat(e.clientX);
+        if(positionX < 0 || positionX > CANVAS_WIDTH){
+            console.warn(`clicked out of range of canvas width`);
+            return;
+        }
+
         const {  media } = this.state;
         if(!media.id) return null;
-        let percent = parseFloat(e.target.value);
+        let percent = parseFloat(positionX / CANVAS_WIDTH) * 100;
         const data = {
             subject: 'MESSAGE_SOCKET_TRACK_POSITION_PERCENT',
             media,
@@ -89,8 +97,6 @@ class TrackControl extends React.Component{
         }
         this.ws.send(JSON.stringify(data));
     }
-
-    // TODO: allow to set the position in the spectrum
 
     render() {
         const { media, timePlayed, timeTotal } = this.state;
@@ -109,7 +115,7 @@ class TrackControl extends React.Component{
                     <div id='spectrum_div'>
                     </div>
                     <div>
-                        <canvas id='canvas'/>
+                        <canvas id='canvas' onClick={this.onPositionChange} />
                     </div>
                 </div>
             </div>
