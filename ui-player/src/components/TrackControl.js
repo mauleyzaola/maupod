@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {TrackPlayControls} from "./Player";
 import {handleLoadQueue} from "../actions/queue";
+import {applyBlur, CANVAS_WIDTH, loadCanvasImage} from "../canvas";
 
 class TrackControl extends React.Component{
     state = {
@@ -27,6 +28,9 @@ class TrackControl extends React.Component{
                     case 'MESSAGE_SOCKET_QUEUE_CHANGE':
                         this.props.dispatch(handleLoadQueue());
                         break;
+                    case 'MESSAGE_SOCKET_PLAY_TRACK':
+                        this.drawTrackSpectrum(data.media);
+                        break;
                     default:
                         break;
                 }
@@ -47,23 +51,45 @@ class TrackControl extends React.Component{
         return `${offsetMin}${mins}:${offsetSecs}${secs}`;
     }
 
+    drawTrackSpectrum = media => {
+        const canvas = document.getElementById('canvas');
+        loadCanvasImage({
+            canvas,
+            src: `${process.env.REACT_APP_MAUPOD_API}/media/${media.id}/spectrum`,
+        })
+    }
+
     onMessageReceived = data => {
+        const { media } = this.state;
+        const { percent, seconds, seconds_total } = data;
         this.setState({
             percent: data.percent,
             media: data.media,
-            timePlayed: this.secondsToDisplay(data.seconds),
-            timeTotal: this.secondsToDisplay(data.seconds_total),
+            timePlayed: this.secondsToDisplay(seconds),
+            timeTotal: this.secondsToDisplay(seconds_total),
         });
+        if(data.media.id !== media.id){
+            this.drawTrackSpectrum(data.media);
+        } else{
+            // TODO: handle play song from the start, probably another message?
+            const x1 = 0;
+            const x2 = CANVAS_WIDTH * percent / 100;
+            applyBlur({x1,x2});
+        }
     }
 
     onPositionChange = e => {
-        const {  media } = this.state;
-        if(!media.id) return null;
-        let percent = parseFloat(e.target.value);
-        if(percent <0 || percent > 100){
-            console.warn(`percent out of range: ${percent}`)
+        // TODO: a good improvement could be sending if we need to redraw the spectrum (moving backward) or not (moving forward)
+        // for the time being it is fine as it is now
+        const positionX = parseFloat(e.clientX);
+        if(positionX < 0 || positionX > CANVAS_WIDTH){
+            console.warn(`clicked out of range of canvas width`);
             return;
         }
+
+        const {  media } = this.state;
+        if(!media.id) return null;
+        let percent = parseFloat(positionX / CANVAS_WIDTH) * 100;
         const data = {
             subject: 'MESSAGE_SOCKET_TRACK_POSITION_PERCENT',
             media,
@@ -72,12 +98,9 @@ class TrackControl extends React.Component{
         this.ws.send(JSON.stringify(data));
     }
 
-    // TODO: allow to set the position in the spectrum
-    // <input type='range' className='form-control' min='0' max='100' value={percent} onChange={this.onPositionChange} />
-
     render() {
         const { media, timePlayed, timeTotal } = this.state;
-        const { width } = this.state;
+        // const { width } = this.state;
         if(!media || !media.id) return null;
         return (
             <div className='row'>
@@ -89,10 +112,11 @@ class TrackControl extends React.Component{
                         {media.track}
                     </div>
                     <TrackPlayControls media={media} />
-                    {media.id ? <img
-                        src={`${process.env.REACT_APP_MAUPOD_API}/media/${media.id}/spectrum`} width={`${width}px`} height="150px"
-                        alt='could not load spectrum from server'
-                    /> : null}
+                    <div id='spectrum_div'>
+                    </div>
+                    <div>
+                        <canvas id='canvas' onClick={this.onPositionChange} />
+                    </div>
                 </div>
             </div>
         )

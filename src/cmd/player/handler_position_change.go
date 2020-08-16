@@ -4,8 +4,9 @@ import (
 	"encoding/json"
 	"log"
 
+	"github.com/mauleyzaola/maupod/src/pkg/broker"
+
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
-	"github.com/mauleyzaola/maupod/src/pkg/rules"
 	"github.com/nats-io/nats.go"
 )
 
@@ -17,13 +18,14 @@ func (m *MsgHandler) handlerPositionPercentChange(msg *nats.Msg) {
 		log.Println(err)
 		return
 	}
-	duration, err := rules.MediaPercentToSeconds(input.Media, input.Percent)
-	if err != nil {
+
+	if err = m.ipc.SeekAbsolute(input.Percent); err != nil {
 		log.Println(err)
 		return
 	}
-	if err = m.ipc.SeekExact(int(duration.Seconds())); err != nil {
+
+	// need to trigger another track play event, so UI redraws the spectrum
+	if err = broker.PublishBrokerJSON(m.base.NATS(), pb.Message_MESSAGE_SOCKET_PLAY_TRACK, &pb.PlayTrackInput{Media: input.Media}); err != nil {
 		log.Println(err)
-		return
 	}
 }
