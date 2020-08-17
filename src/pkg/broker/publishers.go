@@ -27,7 +27,7 @@ func PublishMediaInfoDelete(nc *nats.Conn, input *pb.MediaInfoInput) error {
 }
 
 func PublishMediaUpdateDb(nc *nats.Conn, media *pb.Media) error {
-	return PublishBroker(nc, pb.Message_MESSAGE_MEDIA_UPDATE, media)
+	return PublishBroker(nc, pb.Message_MESSAGE_MEDIA_UPDATE, &pb.MediaInfoInput{Media: media})
 }
 
 func PublishMediaTagUpdate(nc *nats.Conn, media *pb.Media) error {

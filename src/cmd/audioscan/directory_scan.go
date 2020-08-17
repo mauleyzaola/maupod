@@ -193,6 +193,8 @@ func ScanDirectoryAudioFiles(
 		}
 
 		// send message for extracting artwork if album has identifier
+		// this will only look for image files in the same directory of the audio files
+		// no scanning of audio files content should be done
 		if m.AlbumIdentifier != "" {
 			if err = broker.PublishBroker(nc, pb.Message_MESSAGE_ARTWORK_SCAN, &pb.ArtworkExtractInput{Media: m, ScanDate: helpers.TimeToTs2(scanDate)}); err != nil {
 				log.Println(err)

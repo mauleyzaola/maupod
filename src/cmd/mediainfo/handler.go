@@ -84,6 +84,10 @@ func (m *MsgHandler) Register() error {
 			Subject: strconv.Itoa(int(pb.Message_MESSAGE_MEDIA_SPECTRUM_GENERATE)),
 			Handler: m.handlerMediaSpectrumGenerate,
 		},
+		handler.Subscription{
+			Subject: strconv.Itoa(int(pb.Message_MESSAGE_MEDIA_DB_SELECT)),
+			Handler: m.handlerMediaInfoDBSelect,
+		},
 	)
 }
 
