@@ -26,7 +26,7 @@ const loadCanvasImage = ({canvas, src}) => {
         const img = new Image()
         img.crossOrigin = '';
         img.src = src;
-        canvas.width = CANVAS_WIDTH;
+        canvas.width = CANVAS_WIDTH - 10;
         ctx = canvas.getContext('2d');
         img.addEventListener('load', () => {
             ctx.drawImage(img, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
