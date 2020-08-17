@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"log"
 
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata"
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata/orm"
@@ -15,7 +16,7 @@ func (m *MsgHandler) handlerMediaUpdateArtwork(msg *nats.Msg) {
 	var input pb.ArtworkUpdateInput
 	err := helpers.ProtoUnmarshal(msg.Data, &input)
 	if err != nil {
-		m.base.Logger().Error(err)
+		log.Println(err)
 		return
 	}
 	ctx := context.Background()
@@ -23,7 +24,7 @@ func (m *MsgHandler) handlerMediaUpdateArtwork(msg *nats.Msg) {
 	store := &dbdata.MediaStore{}
 
 	if err = ArtworkDbUpdate(ctx, conn, input.Media, store); err != nil {
-		m.base.Logger().Error(err)
+		log.Println(err)
 	}
 }
 

@@ -6,15 +6,12 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/mauleyzaola/maupod/src/pkg/helpers"
-
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
+	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/mauleyzaola/maupod/src/pkg/rules"
-	"github.com/mauleyzaola/maupod/src/pkg/simplelog"
 	"github.com/mauleyzaola/maupod/src/pkg/types"
 	"github.com/nats-io/nats.go"
-	"github.com/spf13/viper"
 )
 
 func main() {
@@ -26,24 +23,10 @@ func main() {
 }
 
 func init() {
-	log.SetFlags(log.LstdFlags | log.Lmicroseconds | log.Lshortfile)
-	log.SetOutput(os.Stdout)
-
-	viper.AddConfigPath(".")
-	viper.SetConfigType("yaml")
-	viper.SetConfigName(".maupod")
-
-	_ = viper.ReadInConfig()
-	viper.AutomaticEnv()
-
-	log.SetFlags(log.LstdFlags | log.Lshortfile)
+	helpers.AppInit()
 }
 
 func run() error {
-	var logger types.Logger
-	logger = &simplelog.Log{}
-	logger.Init()
-
 	config, err := rules.ConfigurationParse()
 	if err != nil {
 		return err
@@ -60,10 +43,10 @@ func run() error {
 	if err != nil {
 		return err
 	}
-	logger.Info("successfully connected to NATS")
+	log.Println("successfully connected to NATS")
 
 	var hnd types.Broker
-	hnd = NewMsgHandler(logger, nc)
+	hnd = NewMsgHandler(nc)
 	if err = hnd.Register(); err != nil {
 		return err
 	}

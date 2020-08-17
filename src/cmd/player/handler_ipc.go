@@ -30,7 +30,7 @@ func (m *MsgHandler) handlerIPC(msg *nats.Msg) {
 		var location = paths.LocationPath(val)
 		filename = paths.FullPath(location)
 		if err = m.InitializeIPC(filename); err != nil {
-			m.base.Logger().Error(err)
+			log.Println(err)
 			return
 		}
 	}
@@ -46,21 +46,21 @@ func (m *MsgHandler) handlerIPC(msg *nats.Msg) {
 	switch input.Command {
 	case pb.Message_IPC_PLAY:
 		if err = m.ipc.Load(input.Media); err != nil {
-			m.base.Logger().Error(err)
+			log.Println(err)
 			return
 		}
 		if err = m.ipc.Play(); err != nil {
-			m.base.Logger().Error(err)
+			log.Println(err)
 			return
 		}
 	case pb.Message_IPC_PAUSE:
 		if err = m.ipc.PauseToggle(); err != nil {
-			m.base.Logger().Error(err)
+			log.Println(err)
 			return
 		}
 	case pb.Message_IPC_LOAD:
 		if err = m.ipc.Load(input.Media); err != nil {
-			m.base.Logger().Error(err)
+			log.Println(err)
 			return
 		}
 	case pb.Message_IPC_SKIP:
@@ -71,16 +71,16 @@ func (m *MsgHandler) handlerIPC(msg *nats.Msg) {
 	case pb.Message_IPC_VOLUME:
 		val, err := strconv.ParseInt(input.Value, 10, 64)
 		if err != nil {
-			m.base.Logger().Error(err)
+			log.Println(err)
 			return
 		}
 		if err = m.ipc.Volume(int(val)); err != nil {
-			m.base.Logger().Error(err)
+			log.Println(err)
 			return
 		}
 	default:
 		err = fmt.Errorf("unsupported command: %v", input.Command)
-		m.base.Logger().Error(err)
+		log.Println(err)
 		return
 	}
 

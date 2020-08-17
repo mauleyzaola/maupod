@@ -2,11 +2,11 @@ package main
 
 import (
 	"database/sql"
+	"log"
 	"strconv"
 
 	"github.com/mauleyzaola/maupod/src/pkg/handler"
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
-	"github.com/mauleyzaola/maupod/src/pkg/types"
 	"github.com/nats-io/nats.go"
 )
 
@@ -16,9 +16,9 @@ type MsgHandler struct {
 	config *pb.Configuration
 }
 
-func NewMsgHandler(db *sql.DB, config *pb.Configuration, logger types.Logger, nc *nats.Conn) *MsgHandler {
+func NewMsgHandler(db *sql.DB, config *pb.Configuration, nc *nats.Conn) *MsgHandler {
 	return &MsgHandler{
-		base:   handler.NewMsgHandler(logger, nc),
+		base:   handler.NewMsgHandler(nc),
 		db:     db,
 		config: config,
 	}
@@ -44,6 +44,6 @@ func (m *MsgHandler) Register() error {
 func (m *MsgHandler) Close() {
 	m.base.Close()
 	if err := m.db.Close(); err != nil {
-		m.base.Logger().Error(err)
+		log.Println(err)
 	}
 }

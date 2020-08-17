@@ -3,9 +3,8 @@ package main
 import (
 	"log"
 
-	"github.com/mauleyzaola/maupod/src/pkg/helpers"
-
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
+	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 	"github.com/nats-io/nats.go"
 )
 
