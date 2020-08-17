@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import API from "./api";
 import { TrackListHeader, TrackListRow } from "./components/TrackList";
 
@@ -43,4 +44,4 @@ class MediaList extends React.Component{
     }
 }
 
-export default MediaList;
+export default connect((state) => ({ }))(MediaList);

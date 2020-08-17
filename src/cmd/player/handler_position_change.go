@@ -5,7 +5,6 @@ import (
 	"log"
 
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
-	"github.com/mauleyzaola/maupod/src/pkg/rules"
 	"github.com/nats-io/nats.go"
 )
 
@@ -17,12 +16,8 @@ func (m *MsgHandler) handlerPositionPercentChange(msg *nats.Msg) {
 		log.Println(err)
 		return
 	}
-	duration, err := rules.MediaPercentToSeconds(input.Media, input.Percent)
-	if err != nil {
-		log.Println(err)
-		return
-	}
-	if err = m.ipc.SeekExact(int(duration.Seconds())); err != nil {
+
+	if err = m.ipc.SeekAbsolute(input.Percent); err != nil {
 		log.Println(err)
 		return
 	}

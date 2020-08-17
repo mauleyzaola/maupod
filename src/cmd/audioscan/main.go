@@ -7,18 +7,14 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/mauleyzaola/maupod/src/pkg/paths"
-
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
-
-	"github.com/mauleyzaola/maupod/src/pkg/broker"
-
 	_ "github.com/lib/pq"
+	"github.com/mauleyzaola/maupod/src/pkg/broker"
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata"
+	"github.com/mauleyzaola/maupod/src/pkg/helpers"
+	"github.com/mauleyzaola/maupod/src/pkg/paths"
+	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/mauleyzaola/maupod/src/pkg/rules"
-	"github.com/mauleyzaola/maupod/src/pkg/simplelog"
 	"github.com/mauleyzaola/maupod/src/pkg/types"
-	"github.com/spf13/viper"
 )
 
 func main() {
@@ -30,19 +26,10 @@ func main() {
 }
 
 func init() {
-	viper.AddConfigPath(".")
-	viper.SetConfigType("yaml")
-	viper.SetConfigName(".maupod")
-
-	_ = viper.ReadInConfig()
-	viper.AutomaticEnv()
+	helpers.AppInit()
 }
 
 func run() error {
-
-	var logger types.Logger
-	logger = &simplelog.Log{}
-	logger.Init()
 
 	config, err := rules.ConfigurationParse()
 	if err != nil {
@@ -72,7 +59,7 @@ func run() error {
 	if err != nil {
 		return err
 	}
-	logger.Info("successfully connected to NATS")
+	log.Println("successfully connected to NATS")
 
 	delay := time.Second * time.Duration(config.Delay)
 	if err = broker.RestAPIPing(nc, int(config.Retries), delay, delay); err != nil {
@@ -85,7 +72,7 @@ func run() error {
 	}
 
 	var hnd types.Broker
-	hnd = NewMsgHandler(config, db, logger, nc)
+	hnd = NewMsgHandler(config, db, nc)
 	if err = hnd.Register(); err != nil {
 		return err
 	}

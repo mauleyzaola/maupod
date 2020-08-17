@@ -104,6 +104,8 @@ func (p *PlayerControl) OnSongStarted(m *pb.Media) {
 			_ = p.publishFn(pb.Message_MESSAGE_EVENT_ON_TRACK_SKIP_COUNT_INCREASE, input)
 		}
 	}
+	// send message to the UI through websockets
+	_=p.publishFnJSON(pb.Message_MESSAGE_SOCKET_PLAY_TRACK, &pb.PlayTrackInput{Media: m})
 }
 
 func (p *PlayerControl) onTimePosChanged(v float64) {

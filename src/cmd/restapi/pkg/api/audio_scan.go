@@ -4,10 +4,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/mauleyzaola/maupod/src/pkg/paths"
-
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
+	"github.com/mauleyzaola/maupod/src/pkg/paths"
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
 )
 

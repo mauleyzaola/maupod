@@ -1,6 +1,6 @@
 syntax = "proto3";
 package pb;
-option go_package = "github.com/mauleyzaola/maupod/src/server/pb";
+option go_package = "github.com/mauleyzaola/maupod/src/pb";
 import "google/protobuf/timestamp.proto";
 import "media.proto";
 
@@ -57,6 +57,7 @@ enum Message {
     MESSAGE_SOCKET_TRACK_POSITION_PERCENT = 500;
     MESSAGE_SOCKET_TRACK_POSITION_PERCENT_CHANGE = 501;
     MESSAGE_SOCKET_QUEUE_CHANGE = 502;
+    MESSAGE_SOCKET_PLAY_TRACK = 503;
 }
 
 enum NamedPosition {
@@ -134,6 +135,10 @@ message MicroServiceDiscoveryInput {
 message MicroServiceDiscoveryOutput {
     bool ok = 1;
     string name = 2;
+}
+
+message PlayTrackInput {
+    Media media = 1;
 }
 
 message Queue {

@@ -1,5 +1,5 @@
 const WebSocket = require('ws')
-const wsOptions = { port: 8080 };
+const wsOptions = { port: `${process.env.MAUPOD_SOCKET_PORT}` };
 const wss = new WebSocket.Server(wsOptions);
 const servers = ['nats://nats-server:4222']
 const NATS = require('nats');
@@ -9,16 +9,8 @@ const subjects = messages.Message;
 
 console.log(`started websocket server on: ${JSON.stringify(wsOptions)}`);
 
-nc.subscribe(subjects.MESSAGE_SOCKET_TRACK_POSITION_PERCENT, (msg) => {
+const broadcastMessage = data => {
     try{
-        const { media, percent, seconds, secondsTotal } = msg;
-        const data = {
-            subject:'MESSAGE_SOCKET_TRACK_POSITION_PERCENT',
-            percent,
-            seconds,
-            seconds_total: secondsTotal,
-            media,
-        }
         wss.clients.forEach(ws => {
             if(ws.isAlive === false) return ws.terminate();
             ws.send(JSON.stringify(data));
@@ -26,19 +18,32 @@ nc.subscribe(subjects.MESSAGE_SOCKET_TRACK_POSITION_PERCENT, (msg) => {
     }catch (e){
         console.log(e);
     }
+}
+
+nc.subscribe(subjects.MESSAGE_SOCKET_TRACK_POSITION_PERCENT, (msg) => {
+    const { media, percent, seconds, secondsTotal } = msg;
+    const data = {
+        subject:'MESSAGE_SOCKET_TRACK_POSITION_PERCENT',
+        percent,
+        seconds,
+        seconds_total: secondsTotal,
+        media,
+    }
+    broadcastMessage(data);
 })
 
 nc.subscribe(subjects.MESSAGE_SOCKET_QUEUE_CHANGE, (msg) => {
-  try {
-      wss.clients.forEach(ws => {
-          if(ws.isAlive === false) return ws.terminate();
-          ws.send(JSON.stringify({
-              subject: 'MESSAGE_SOCKET_QUEUE_CHANGE',
-          }));
-      })
-  }  catch (e){
-      console.log(e);
-  }
+    broadcastMessage({
+        subject: 'MESSAGE_SOCKET_QUEUE_CHANGE',
+    });
+})
+
+nc.subscribe(subjects.MESSAGE_SOCKET_PLAY_TRACK, (msg) => {
+    const { media } = msg;
+    broadcastMessage({
+        subject: 'MESSAGE_SOCKET_PLAY_TRACK',
+        media,
+    });
 })
 
 

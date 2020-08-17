@@ -20,5 +20,5 @@ func MigrateDbFromPath(db *sql.DB, driver, dir string) (int, error) {
 }
 
 func PathBackend() string {
-	return filepath.Join(os.Getenv("GOPATH"), "src", "github.com", "mauleyzaola", "maupod", "src", "server")
+	return filepath.Join(os.Getenv("GOPATH"), "src", "github.com", "mauleyzaola", "maupod", "src")
 }

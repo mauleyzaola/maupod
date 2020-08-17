@@ -21,6 +21,9 @@ func (m *MsgHandler) handlerMediaSpectrumGenerate(msg *nats.Msg) {
 	var err error
 
 	defer func() {
+		if msg.Reply==""{
+			return
+		}
 		data, err := helpers.ProtoMarshal(&output)
 		if err != nil {
 			log.Println(err)

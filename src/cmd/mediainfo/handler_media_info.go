@@ -1,13 +1,13 @@
 package main
 
 import (
+	"log"
 	"os"
 	"path/filepath"
 
-	"github.com/mauleyzaola/maupod/src/pkg/paths"
-
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/pkg/information"
+	"github.com/mauleyzaola/maupod/src/pkg/paths"
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/nats-io/nats.go"
 )
@@ -24,32 +24,36 @@ func (m *MsgHandler) handlerMediaInfo(msg *nats.Msg) {
 	}
 
 	defer func() {
+		if msg.Reply == "" {
+			return
+		}
+
 		var localErr error
 		var data []byte
 
 		if data, localErr = helpers.ProtoMarshal(output); localErr != nil {
-			m.base.Logger().Error(localErr)
+			log.Println(localErr)
 			return
 		}
 		if localErr = msg.Respond(data); localErr != nil {
-			m.base.Logger().Error(localErr)
+			log.Println(localErr)
 			return
 		}
 	}()
 
 	if err = helpers.ProtoUnmarshal(msg.Data, &input); err != nil {
-		m.base.Logger().Error(err)
+		log.Println(err)
 		output.Response.Ok = false
 		output.Response.Error = err.Error()
 		return
 	}
-	m.base.Logger().Info("received media info message: " + input.String())
+	log.Println("received media info message: " + input.String())
 
 	var fullPath = paths.FullPath(input.FileName)
 	var location = paths.LocationPath(fullPath)
 	raw, err := information.MediaInfoFromFile(fullPath)
 	if err != nil {
-		m.base.Logger().Error(err)
+		log.Println(err)
 		output.Response.Ok = false
 		output.Response.Error = err.Error()
 		return
@@ -59,7 +63,7 @@ func (m *MsgHandler) handlerMediaInfo(msg *nats.Msg) {
 
 	result, err := information.MediaFromRaw(rawStr)
 	if err != nil {
-		m.base.Logger().Error(err)
+		log.Println(err)
 		output.Response.Ok = false
 		output.Response.Error = err.Error()
 		return
@@ -67,7 +71,7 @@ func (m *MsgHandler) handlerMediaInfo(msg *nats.Msg) {
 
 	info, err := os.Stat(fullPath)
 	if err != nil {
-		m.base.Logger().Error(err)
+		log.Println(err)
 		output.Response.Ok = false
 		output.Response.Error = err.Error()
 		return

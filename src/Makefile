@@ -1,3 +1,6 @@
+browser:
+	$(MAKE) -C ../ui-player browser
+
 build-dev: build-player
 	@echo "[INFO] building micro services in development mode"
 
@@ -11,7 +14,6 @@ clean: down
 dev: build-dev up logs
 
 dev-ui:
-	# this value should be in the environment instead
 	$(MAKE) -C ../ui-player dev
 
 down:

@@ -10,15 +10,13 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/mauleyzaola/maupod/src/pkg/broker"
-
 	_ "github.com/lib/pq"
 	"github.com/mauleyzaola/maupod/src/cmd/restapi/pkg/api"
+	"github.com/mauleyzaola/maupod/src/pkg/broker"
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata"
+	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/pkg/rules"
-	"github.com/mauleyzaola/maupod/src/pkg/simplelog"
 	"github.com/mauleyzaola/maupod/src/pkg/types"
-	"github.com/spf13/viper"
 )
 
 func main() {
@@ -30,21 +28,10 @@ func main() {
 }
 
 func init() {
-	log.SetFlags(log.Lshortfile | log.Ltime | log.Ldate)
-	viper.AddConfigPath(".")
-	viper.SetConfigType("yaml")
-	viper.SetConfigName(".maupod")
-
-	_ = viper.ReadInConfig()
-	viper.AutomaticEnv()
+	helpers.AppInit()
 }
 
 func run() error {
-
-	var logger types.Logger
-	logger = &simplelog.Log{}
-	logger.Init()
-
 	config, err := rules.ConfigurationParse()
 	if err != nil {
 		return err
@@ -58,7 +45,7 @@ func run() error {
 	if err != nil {
 		return err
 	}
-	logger.Info("successfully connected to NATS")
+	log.Println("successfully connected to NATS")
 
 	var db *sql.DB
 	if db, err = dbdata.DbBootstrap(config); err != nil {
@@ -66,7 +53,7 @@ func run() error {
 	}
 	defer func() {
 		if err = db.Close(); err != nil {
-			logger.Error(err)
+			log.Println(err)
 		}
 	}()
 
@@ -94,13 +81,13 @@ func run() error {
 		fileServer := http.FileServer(http.Dir(config.ArtworkStore.Location))
 		go func() {
 			const port = ":9000"
-			logger.Info("starting file server at " + port + " from: " + config.ArtworkStore.Location)
+			log.Println("starting file server at " + port + " from: " + config.ArtworkStore.Location)
 			log.Fatal(http.ListenAndServe(port, fileServer))
 		}()
 	}
 
 	var hnd types.Broker
-	hnd = NewMsgHandler(logger, nc)
+	hnd = NewMsgHandler(nc)
 	if err = hnd.Register(); err != nil {
 		return err
 	}
@@ -115,11 +102,11 @@ func run() error {
 	signal.Notify(signalChan, os.Interrupt)
 	go func() {
 		cleanup := func() {
-			logger.Info("received an interrupt signal, cleaning resources...")
+			log.Println("received an interrupt signal, cleaning resources...")
 			if err = server.Shutdown(ctx); err != nil {
 				log.Println(err)
 			}
-			logger.Info("completed cleaning up resources")
+			log.Println("completed cleaning up resources")
 			cleanupDone <- true
 		}
 	loop:

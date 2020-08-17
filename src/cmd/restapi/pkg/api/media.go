@@ -7,13 +7,11 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
-	"github.com/mauleyzaola/maupod/src/pkg/helpers"
-
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
+	"github.com/mauleyzaola/maupod/src/pkg/dbdata"
+	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/mauleyzaola/maupod/src/pkg/rules"
-
-	"github.com/mauleyzaola/maupod/src/pkg/dbdata"
 )
 
 func (a *ApiServer) DistinctListGet(p TransactionExecutorParams) (status int, result interface{}, err error) {

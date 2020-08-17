@@ -1,7 +1,6 @@
 package api
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
@@ -16,8 +15,6 @@ func (a *ApiServer) DirectoryReadGet(p TransactionExecutorParams) (status int, r
 		status = http.StatusBadRequest
 		return
 	}
-
-	log.Println("xxx input.Root: ", input.Root)
 
 	if result, err = broker.RequestFileBrowserDirectory(a.nc, &input, rules.Timeout(a.config)); err != nil {
 		status = http.StatusInternalServerError

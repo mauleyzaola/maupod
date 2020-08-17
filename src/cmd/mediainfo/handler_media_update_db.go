@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"log"
 
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata"
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata/orm"
@@ -15,7 +16,7 @@ func (m *MsgHandler) handlerMediaUpdateDb(msg *nats.Msg) {
 	var input pb.MediaInfoInput
 
 	if err = helpers.ProtoUnmarshal(msg.Data, &input); err != nil {
-		m.base.Logger().Error(err)
+		log.Println(err)
 		return
 	}
 
@@ -26,7 +27,7 @@ func (m *MsgHandler) handlerMediaUpdateDb(msg *nats.Msg) {
 	var cols = orm.MediumColumns
 	var fields = []string{cols.TrackNameTotal, cols.Track, cols.TrackPosition, cols.Album, cols.Track, cols.Comment, cols.Genre, cols.Performer, cols.ModifiedDate}
 	if err = store.Update(ctx, conn, input.Media, fields...); err != nil {
-		m.base.Logger().Error(err)
+		log.Println(err)
 		return
 	}
 

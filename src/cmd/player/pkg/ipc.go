@@ -25,7 +25,7 @@ const (
 	cmdLoadfile CommandEnum = iota
 	cmdPause
 	cmdSeekOffset
-	cmdSeekExact
+	cmdSeekAbsolute
 	cmdVolume
 	cmdSpeed
 	cmdPlay
@@ -201,9 +201,9 @@ func (m *IPC) Seek(secs int) error {
 	return err
 }
 
-func (m *IPC) SeekExact(secs int) error {
-	cmd := cmdSeekExact
-	_, err := m.connection.Call(cmd.String(), secs, "exact")
+func (m *IPC) SeekAbsolute(percent float64) error {
+	cmd := cmdSeekAbsolute
+	_, err := m.connection.Call(cmd.String(), percent, "absolute-percent")
 	return err
 }
 
