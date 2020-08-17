@@ -4,6 +4,7 @@ go 1.14
 
 require (
 	github.com/DexterLB/mpvipc v0.0.0-20190216161438-2a226fa01bbd
+	github.com/anthonynsimon/bild v0.12.0
 	github.com/friendsofgo/errors v0.9.2
 	github.com/garyburd/redigo v1.6.0 // indirect
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
@@ -23,7 +24,6 @@ require (
 	github.com/volatiletech/strmangle v0.0.1
 	google.golang.org/protobuf v1.23.0
 	gopkg.in/bsm/ratelimit.v1 v1.0.0-20160220154919-db14e161995a // indirect
-	gopkg.in/gographics/imagick.v2 v2.6.0
 	gopkg.in/natefinch/npipe.v2 v2.0.0-20160621034901-c1b8fa8bdcce // indirect
 	gopkg.in/redis.v4 v4.2.4
 )

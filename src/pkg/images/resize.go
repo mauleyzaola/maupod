@@ -3,10 +3,12 @@ package images
 import (
 	"bufio"
 	"io"
+	"log"
 	"strconv"
 
+	"github.com/anthonynsimon/bild/imgio"
+	"github.com/anthonynsimon/bild/transform"
 	"github.com/mauleyzaola/maupod/src/pkg/information"
-	"gopkg.in/gographics/imagick.v2/imagick"
 )
 
 func Size(r io.Reader) (x, y int, err error) {
@@ -34,16 +36,13 @@ func Size(r io.Reader) (x, y int, err error) {
 }
 
 func ImageResize(source, target string, width, height int) error {
-	imagick.Initialize()
-	defer imagick.Terminate()
-	mw := imagick.NewMagickWand()
-	if err := mw.ReadImage(source); err != nil {
+	img,err:=imgio.Open(source)
+	if err!=nil{
 		return err
 	}
-	if err := mw.ResizeImage(uint(width), uint(height), imagick.FILTER_LANCZOS, 1); err != nil {
-		return err
-	}
-	if err := mw.WriteImage(target); err != nil {
+	resized:=transform.Resize(img,width,height,transform.Linear)
+	if err=imgio.Save(target,resized,imgio.PNGEncoder());err!=nil{
+		log.Print(err)
 		return err
 	}
 	return nil
