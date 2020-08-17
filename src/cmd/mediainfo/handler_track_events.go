@@ -16,7 +16,7 @@ func (m *MsgHandler) handlerTrackPlayCountIncrease(msg *nats.Msg) {
 	var input pb.TrackPlayedInput
 	err := helpers.ProtoUnmarshal(msg.Data, &input)
 	if err != nil {
-		m.base.Logger().Error(err)
+		log.Println(err)
 		return
 	}
 	if !checkShaExists(input.Media) {
@@ -24,17 +24,17 @@ func (m *MsgHandler) handlerTrackPlayCountIncrease(msg *nats.Msg) {
 	}
 	ctx := context.Background()
 	if err = insertEvent(ctx, m.db, pb.Message_MESSAGE_EVENT_ON_TRACK_PLAY_COUNT_INCREASE, input.Media); err != nil {
-		m.base.Logger().Error(err)
+		log.Println(err)
 		return
 	}
-	m.base.Logger().Info("handlerTrackPlayCountIncrease: " + input.Media.Track)
+	log.Println("handlerTrackPlayCountIncrease: " + input.Media.Track)
 }
 
 func (m *MsgHandler) handlerTrackSkipped(msg *nats.Msg) {
 	var input pb.TrackSkippedInput
 	err := helpers.ProtoUnmarshal(msg.Data, &input)
 	if err != nil {
-		m.base.Logger().Error(err)
+		log.Println(err)
 		return
 	}
 	if !checkShaExists(input.Media) {
@@ -42,10 +42,10 @@ func (m *MsgHandler) handlerTrackSkipped(msg *nats.Msg) {
 	}
 	ctx := context.Background()
 	if err = insertEvent(ctx, m.db, pb.Message_MESSAGE_EVENT_ON_TRACK_SKIP_COUNT_INCREASE, input.Media); err != nil {
-		m.base.Logger().Error(err)
+		log.Println(err)
 		return
 	}
-	m.base.Logger().Info("handlerTrackSkipped: " + input.Media.Track)
+	log.Println("handlerTrackSkipped: " + input.Media.Track)
 }
 
 func insertEvent(ctx context.Context, conn boil.ContextExecutor, event pb.Message, media *pb.Media) error {

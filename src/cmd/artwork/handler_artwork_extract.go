@@ -12,17 +12,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/mauleyzaola/maupod/src/pkg/paths"
-
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
-
+	"github.com/mauleyzaola/maupod/src/pkg/helpers"
+	"github.com/mauleyzaola/maupod/src/pkg/images"
+	"github.com/mauleyzaola/maupod/src/pkg/paths"
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/mauleyzaola/maupod/src/pkg/rules"
-
-	"github.com/mauleyzaola/maupod/src/pkg/helpers"
-
-	"github.com/mauleyzaola/maupod/src/pkg/images"
-
 	"github.com/nats-io/nats.go"
 )
 

@@ -5,7 +5,6 @@ import (
 	"log"
 
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
-
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata/conversion"
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata/orm"
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
@@ -70,7 +69,7 @@ func (m *MsgHandler) handlerQueueList(msg *nats.Msg) {
 	var output pb.QueueOutput
 
 	defer func() {
-		if msg.Reply==""{
+		if msg.Reply == "" {
 			return
 		}
 		data, err := helpers.ProtoMarshal(&output)
@@ -95,7 +94,7 @@ func (m *MsgHandler) handlerQueueAdd(msg *nats.Msg) {
 			log.Println(err)
 			return
 		}
-		if msg.Reply==""{
+		if msg.Reply == "" {
 			return
 		}
 		data, err := helpers.ProtoMarshal(&output)
@@ -158,7 +157,7 @@ func (m *MsgHandler) handlerQueueRemove(msg *nats.Msg) {
 			log.Println(err)
 			return
 		}
-		if msg.Reply==""{
+		if msg.Reply == "" {
 			return
 		}
 		data, err := helpers.ProtoMarshal(&output)

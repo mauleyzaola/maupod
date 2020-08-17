@@ -1,6 +1,8 @@
 package main
 
 import (
+	"log"
+
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/mauleyzaola/maupod/src/pkg/taggers"
@@ -12,18 +14,18 @@ func (m *MsgHandler) handlerTagUpdate(msg *nats.Msg) {
 	var input pb.MediaInfoInput
 
 	if err = helpers.ProtoUnmarshal(msg.Data, &input); err != nil {
-		m.base.Logger().Error(err)
+		log.Println(err)
 		return
 	}
 
 	tagger, err := taggers.TaggerFactory(input.Media.Location)
 	if err != nil {
-		m.base.Logger().Error(err)
+		log.Println(err)
 		return
 	}
 
 	if err = tagger.Tag(input.Media, input.Media.Location); err != nil {
-		m.base.Logger().Error(err)
+		log.Println(err)
 		return
 	}
 	return

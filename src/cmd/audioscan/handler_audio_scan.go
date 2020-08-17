@@ -16,12 +16,12 @@ func (m *MsgHandler) handlerAudioScan(msg *nats.Msg) {
 	var input pb.ScanDirectoryAudioFilesInput
 	err := helpers.ProtoUnmarshal(msg.Data, &input)
 	if err != nil {
-		m.base.Logger().Error(err)
+		log.Println(err)
 		return
 	}
 
 	defer func() {
-		m.base.Logger().Info("[INFO] elapsed time: " + time.Since(start).String())
+		log.Println("[INFO] elapsed time: " + time.Since(start).String())
 	}()
 
 	log.Println("received audio scan message: " + input.String())
@@ -39,7 +39,7 @@ func (m *MsgHandler) handlerAudioScan(msg *nats.Msg) {
 		m.config,
 		input.Force,
 	); err != nil {
-		m.base.Logger().Error(err)
+		log.Println(err)
 		return
 	}
 }

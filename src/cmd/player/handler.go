@@ -9,7 +9,6 @@ import (
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
 	"github.com/mauleyzaola/maupod/src/pkg/handler"
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
-	"github.com/mauleyzaola/maupod/src/pkg/types"
 	"github.com/nats-io/nats.go"
 	"google.golang.org/protobuf/proto"
 )
@@ -20,9 +19,9 @@ type MsgHandler struct {
 	isInitialized bool
 }
 
-func NewMsgHandler(logger types.Logger, nc *nats.Conn) *MsgHandler {
+func NewMsgHandler(nc *nats.Conn) *MsgHandler {
 	return &MsgHandler{
-		base:          handler.NewMsgHandler(logger, nc),
+		base:          handler.NewMsgHandler(nc),
 		isInitialized: false,
 	}
 }
@@ -47,7 +46,7 @@ func (m *MsgHandler) Register() error {
 func (m *MsgHandler) Close() {
 	if m.isInitialized {
 		if err := m.ipc.Terminate(); err != nil {
-			m.base.Logger().Error(err)
+			log.Println(err)
 		}
 	}
 	m.base.Close()

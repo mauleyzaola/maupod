@@ -19,14 +19,14 @@ type MsgHandler struct {
 	queueItems types.Medias
 }
 
-func NewMsgHandler(config *pb.Configuration, logger types.Logger, nc *nats.Conn, db *sql.DB) *MsgHandler {
+func NewMsgHandler(config *pb.Configuration, nc *nats.Conn, db *sql.DB) *MsgHandler {
 	queueItems, err := queueList(context.Background(), db)
 	if err != nil {
 		log.Println("[ERROR] queueList() ", err)
 	}
 
 	return &MsgHandler{
-		base:       handler.NewMsgHandler(logger, nc),
+		base:       handler.NewMsgHandler(nc),
 		config:     config,
 		db:         db,
 		queueItems: queueItems,
