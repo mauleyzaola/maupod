@@ -4,6 +4,8 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+
+	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 )
 
 func TestImageResize(t *testing.T) {
@@ -22,7 +24,7 @@ func TestImageResize(t *testing.T) {
 			name: "600x600 to 500x500",
 			args: args{
 				source: "./test_data/600x600.png",
-				target: filepath.Join(os.TempDir(), "output.jpg"),
+				target: filepath.Join(os.TempDir(), helpers.NewUUID()),
 				width:  200,
 				height: 200,
 			},
