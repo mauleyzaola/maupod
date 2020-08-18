@@ -142,6 +142,7 @@ class Album extends React.Component{
                     </tbody>
                 </table>
                 {rows.length > 0 && <button
+                    type='button'
                     className='btn btn-warning'
                     onClick={this.onArtworkScan}
                 >Scan Artwork</button>}

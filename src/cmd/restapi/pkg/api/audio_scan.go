@@ -1,7 +1,6 @@
 package api
 
 import (
-	"log"
 	"net/http"
 	"time"
 
@@ -41,7 +40,10 @@ func (a *ApiServer) ArtworkScanPost(p TransactionExecutorParams) (status int, re
 
 	// if root is provided we consider a directory, otherwise a media object should be passed
 	if input.Root != "" {
-		log.Println("TODO: deal with directories")
+		if err = broker.PublishBroker(a.nc, pb.Message_MESSAGE_MEDIA_EXTRACT_ARTWORK_FROM_DIRECTORIES, &input); err != nil {
+			status = http.StatusBadRequest
+			return
+		}
 	} else {
 		if err = broker.PublishBroker(a.nc, pb.Message_MESSAGE_MEDIA_EXTRACT_ARTWORK_FROM_FILE, &input); err != nil {
 			status = http.StatusBadRequest

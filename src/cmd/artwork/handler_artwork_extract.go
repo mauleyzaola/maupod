@@ -25,6 +25,51 @@ import (
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 )
 
+func (m *MsgHandler) handlerArtworkExtractDirectories(msg *nats.Msg) {
+	var err error
+	var input pb.ArtworkExtractInput
+	if err = helpers.ProtoUnmarshal(msg.Data, &input); err != nil {
+		log.Println(err)
+		return
+	}
+
+	// key is directory value is the first valid location
+	var dirFirstTrackMap = make(map[string]string)
+	var files []string
+
+	root := paths.FullPath(input.Root)
+	fn := func(name string, isDir bool) (stop bool) {
+		var location = paths.LocationPath(name)
+		var dir = filepath.Dir(location)
+		if !rules.FileIsValidExtension(m.config, location) {
+			return false
+		}
+		if _, ok := dirFirstTrackMap[dir]; ok {
+			return false
+		}
+		dirFirstTrackMap[dir] = location
+		files = append(files, location)
+		return false
+	}
+	if err = helpers.WalkFiles(root, fn); err != nil {
+		log.Println(err)
+		return
+	}
+	log.Printf("found %d directories with valid files\n", len(dirFirstTrackMap))
+
+	// we assign the root of each file and let the other subscriber find its related media
+	for _, v := range files {
+		fileInput := &pb.ArtworkExtractInput{
+			Root: v,
+		}
+		if err = broker.PublishBroker(m.base.NATS(), pb.Message_MESSAGE_MEDIA_EXTRACT_ARTWORK_FROM_FILE, fileInput); err != nil {
+			log.Println(err)
+			return
+		}
+	}
+	return
+}
+
 // handlerArtworkExtractWithinAudioFiles will try to look up into audio files content for images
 func (m *MsgHandler) handlerArtworkExtractWithinAudioFiles(msg *nats.Msg) {
 	var err error
@@ -38,6 +83,11 @@ func (m *MsgHandler) handlerArtworkExtractWithinAudioFiles(msg *nats.Msg) {
 	// read media information from db
 	var mediaInfoInput = &pb.MediaInfoInput{
 		Media: input.Media,
+	}
+	if mediaInfoInput.Media == nil {
+		mediaInfoInput.Media = &pb.Media{
+			Location: input.Root,
+		}
 	}
 
 	mediaInfoOutput, err := broker.RequestMediaInfoScanFromDB(m.base.NATS(), mediaInfoInput, rules.Timeout(m.config))

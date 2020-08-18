@@ -45,16 +45,17 @@ func (m *MsgHandler) handlerMediaInfoDBSelect(msg *nats.Msg) {
 		return
 	}
 
-	if input.Media.Id == "" {
+	if input.Media == nil {
 		output.Response.Ok = false
-		output.Response.Error = "missing media.Id"
+		output.Response.Error = "missing media"
 		return
 	}
 
 	ctx := context.Background()
 	conn := m.db
 	store := &dbdata.MediaStore{}
-	mediaInfo, err := store.Select(ctx, conn, input.Media.Id)
+
+	mediaInfo, err := store.FindMedia(ctx, conn, input.Media)
 	if err != nil {
 		output.Response.Ok = false
 		output.Response.Error = err.Error()
