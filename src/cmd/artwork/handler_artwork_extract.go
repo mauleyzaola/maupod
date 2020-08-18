@@ -12,9 +12,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/mauleyzaola/maupod/src/pkg/dbdata/conversion"
-
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
+	"github.com/mauleyzaola/maupod/src/pkg/dbdata/conversion"
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata/orm"
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/pkg/images"
@@ -64,7 +63,6 @@ func (m *MsgHandler) handlerArtworkExtractDirectories(msg *nats.Msg) {
 		}
 		if err = broker.PublishBroker(m.base.NATS(), pb.Message_MESSAGE_MEDIA_EXTRACT_ARTWORK_FROM_FILE, fileInput); err != nil {
 			log.Println(err)
-			return
 		}
 	}
 	return
@@ -79,15 +77,17 @@ func (m *MsgHandler) handlerArtworkExtractWithinAudioFiles(msg *nats.Msg) {
 		return
 	}
 
+	if input.Media == nil {
+		input.Media = &pb.Media{}
+	}
+
 	// check if artwork exist for this album, and exit if it does
 	// read media information from db
 	var mediaInfoInput = &pb.MediaInfoInput{
 		Media: input.Media,
 	}
-	if mediaInfoInput.Media == nil {
-		mediaInfoInput.Media = &pb.Media{
-			Location: input.Root,
-		}
+	if input.Root != "" {
+		mediaInfoInput.Media.Location = input.Root
 	}
 
 	mediaInfoOutput, err := broker.RequestMediaInfoScanFromDB(m.base.NATS(), mediaInfoInput, rules.Timeout(m.config))

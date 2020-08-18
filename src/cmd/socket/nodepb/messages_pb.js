@@ -1970,8 +1970,7 @@ proto.pb.MediaInfoInput.prototype.toObject = function(opt_includeInstance) {
 proto.pb.MediaInfoInput.toObject = function(includeInstance, msg) {
   var f, obj = {
     fileName: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    media: (f = msg.getMedia()) && media_pb.Media.toObject(includeInstance, f),
-    location: jspb.Message.getFieldWithDefault(msg, 3, "")
+    media: (f = msg.getMedia()) && media_pb.Media.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -2017,10 +2016,6 @@ proto.pb.MediaInfoInput.deserializeBinaryFromReader = function(msg, reader) {
       reader.readMessage(value,media_pb.Media.deserializeBinaryFromReader);
       msg.setMedia(value);
       break;
-    case 3:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setLocation(value);
-      break;
     default:
       reader.skipField();
       break;
@@ -2063,13 +2058,6 @@ proto.pb.MediaInfoInput.serializeBinaryToWriter = function(message, writer) {
       2,
       f,
       media_pb.Media.serializeBinaryToWriter
-    );
-  }
-  f = message.getLocation();
-  if (f.length > 0) {
-    writer.writeString(
-      3,
-      f
     );
   }
 };
@@ -2127,24 +2115,6 @@ proto.pb.MediaInfoInput.prototype.clearMedia = function() {
  */
 proto.pb.MediaInfoInput.prototype.hasMedia = function() {
   return jspb.Message.getField(this, 2) != null;
-};
-
-
-/**
- * optional string location = 3;
- * @return {string}
- */
-proto.pb.MediaInfoInput.prototype.getLocation = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.pb.MediaInfoInput} returns this
- */
-proto.pb.MediaInfoInput.prototype.setLocation = function(value) {
-  return jspb.Message.setProto3StringField(this, 3, value);
 };
 
 
