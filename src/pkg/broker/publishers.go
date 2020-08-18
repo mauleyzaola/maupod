@@ -45,3 +45,7 @@ func PublishBrokerJSON(nc *nats.Conn, subject pb.Message, input proto.Message) e
 	}
 	return nc.Publish(strconv.Itoa(int(subject)), data)
 }
+
+func PublishMediaArtworkUpdate(nc *nats.Conn, media *pb.Media) error {
+	return PublishBroker(nc, pb.Message_MESSAGE_MEDIA_UPDATE_ARTWORK, &pb.ArtworkUpdateInput{Media: media})
+}
