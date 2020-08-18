@@ -20,12 +20,21 @@ func (m *MsgHandler) handlerMediaUpdateDb(msg *nats.Msg) {
 		return
 	}
 
+	if input.Media == nil {
+		log.Println("[ERROR] missing media parameter")
+		return
+	}
+	if input.Media.Id == "" {
+		log.Println("[ERROR] cannot update media row: missing media.ID")
+		return
+	}
+
 	ctx := context.Background()
 	conn := m.db
 	store := dbdata.MediaStore{}
 	input.Media.ModifiedDate = helpers.TimeToTs(helpers.Now())
 	var cols = orm.MediumColumns
-	var fields = []string{cols.TrackNameTotal, cols.Track, cols.TrackPosition, cols.Album, cols.Track, cols.Comment, cols.Genre, cols.Performer, cols.ModifiedDate}
+	var fields = []string{cols.TrackNameTotal, cols.Track, cols.TrackPosition, cols.Album, cols.Comment, cols.Genre, cols.Performer, cols.ModifiedDate}
 	if err = store.Update(ctx, conn, input.Media, fields...); err != nil {
 		log.Println(err)
 		return

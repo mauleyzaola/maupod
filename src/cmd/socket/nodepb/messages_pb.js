@@ -646,7 +646,8 @@ proto.pb.ArtworkExtractInput.prototype.toObject = function(opt_includeInstance) 
 proto.pb.ArtworkExtractInput.toObject = function(includeInstance, msg) {
   var f, obj = {
     media: (f = msg.getMedia()) && media_pb.Media.toObject(includeInstance, f),
-    scanDate: (f = msg.getScanDate()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f)
+    scanDate: (f = msg.getScanDate()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    root: jspb.Message.getFieldWithDefault(msg, 3, "")
   };
 
   if (includeInstance) {
@@ -693,6 +694,10 @@ proto.pb.ArtworkExtractInput.deserializeBinaryFromReader = function(msg, reader)
       reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
       msg.setScanDate(value);
       break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setRoot(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -736,6 +741,13 @@ proto.pb.ArtworkExtractInput.serializeBinaryToWriter = function(message, writer)
       2,
       f,
       google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getRoot();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
     );
   }
 };
@@ -812,6 +824,24 @@ proto.pb.ArtworkExtractInput.prototype.clearScanDate = function() {
  */
 proto.pb.ArtworkExtractInput.prototype.hasScanDate = function() {
   return jspb.Message.getField(this, 2) != null;
+};
+
+
+/**
+ * optional string root = 3;
+ * @return {string}
+ */
+proto.pb.ArtworkExtractInput.prototype.getRoot = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.pb.ArtworkExtractInput} returns this
+ */
+proto.pb.ArtworkExtractInput.prototype.setRoot = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
 };
 
 
@@ -1940,7 +1970,8 @@ proto.pb.MediaInfoInput.prototype.toObject = function(opt_includeInstance) {
 proto.pb.MediaInfoInput.toObject = function(includeInstance, msg) {
   var f, obj = {
     fileName: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    media: (f = msg.getMedia()) && media_pb.Media.toObject(includeInstance, f)
+    media: (f = msg.getMedia()) && media_pb.Media.toObject(includeInstance, f),
+    location: jspb.Message.getFieldWithDefault(msg, 3, "")
   };
 
   if (includeInstance) {
@@ -1986,6 +2017,10 @@ proto.pb.MediaInfoInput.deserializeBinaryFromReader = function(msg, reader) {
       reader.readMessage(value,media_pb.Media.deserializeBinaryFromReader);
       msg.setMedia(value);
       break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setLocation(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -2028,6 +2063,13 @@ proto.pb.MediaInfoInput.serializeBinaryToWriter = function(message, writer) {
       2,
       f,
       media_pb.Media.serializeBinaryToWriter
+    );
+  }
+  f = message.getLocation();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
     );
   }
 };
@@ -2085,6 +2127,24 @@ proto.pb.MediaInfoInput.prototype.clearMedia = function() {
  */
 proto.pb.MediaInfoInput.prototype.hasMedia = function() {
   return jspb.Message.getField(this, 2) != null;
+};
+
+
+/**
+ * optional string location = 3;
+ * @return {string}
+ */
+proto.pb.MediaInfoInput.prototype.getLocation = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.pb.MediaInfoInput} returns this
+ */
+proto.pb.MediaInfoInput.prototype.setLocation = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
 };
 
 
@@ -5661,6 +5721,9 @@ proto.pb.Message = {
   MESSAGE_TAG_UPDATE: 16,
   MESSAGE_MEDIA_UPDATE: 17,
   MESSAGE_MEDIA_SPECTRUM_GENERATE: 18,
+  MESSAGE_MEDIA_DB_SELECT: 19,
+  MESSAGE_MEDIA_EXTRACT_ARTWORK_FROM_FILE: 20,
+  MESSAGE_MEDIA_EXTRACT_ARTWORK_FROM_DIRECTORIES: 21,
   MESSAGE_IPC: 100,
   MESSAGE_MPV_EOF_REACHED: 202,
   MESSAGE_MPV_PERCENT_POS: 203,

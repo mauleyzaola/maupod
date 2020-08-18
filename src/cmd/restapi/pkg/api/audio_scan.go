@@ -31,5 +31,24 @@ func (a *ApiServer) AudioScanPost(p TransactionExecutorParams) (status int, resu
 }
 
 func (a *ApiServer) ArtworkScanPost(p TransactionExecutorParams) (status int, result interface{}, err error) {
+	var input pb.ArtworkExtractInput
+
+	if err = p.Decode(&input); err != nil {
+		status = http.StatusBadRequest
+		return
+	}
+
+	// if root is provided we consider a directory, otherwise a media object should be passed
+	if input.Root != "" {
+		if err = broker.PublishBroker(a.nc, pb.Message_MESSAGE_MEDIA_EXTRACT_ARTWORK_FROM_DIRECTORIES, &input); err != nil {
+			status = http.StatusBadRequest
+			return
+		}
+	} else {
+		if err = broker.PublishBroker(a.nc, pb.Message_MESSAGE_MEDIA_EXTRACT_ARTWORK_FROM_FILE, &input); err != nil {
+			status = http.StatusBadRequest
+			return
+		}
+	}
 	return
 }

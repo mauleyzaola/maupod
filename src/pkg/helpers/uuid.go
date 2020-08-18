@@ -5,9 +5,5 @@ import (
 )
 
 func NewUUID() string {
-	val, err := uuid.NewUUID()
-	if err != nil {
-		return ""
-	}
-	return val.String()
+	return uuid.New().String()
 }
