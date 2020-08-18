@@ -112,8 +112,6 @@ class TrackControl extends React.Component{
                         {media.track}
                     </div>
                     <TrackPlayControls media={media} />
-                    <div id='spectrum_div'>
-                    </div>
                     <div>
                         <canvas id='canvas' onClick={this.onPositionChange} />
                     </div>

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"log"
 	"os"
 	"os/signal"
@@ -105,6 +106,9 @@ func autoPlayQueue(nc *nats.Conn, config *pb.Configuration) error {
 	}
 	if len(output.Rows) == 0 {
 		return nil
+	}
+	if output.Error != "" {
+		return errors.New(output.Error)
 	}
 	next := output.Rows[0]
 	// send a nats message
