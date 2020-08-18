@@ -80,6 +80,7 @@ enum RemoteCommand {
 message ArtworkExtractInput {
     Media media = 1;
     google.protobuf.Timestamp scan_date = 2;
+    string root = 3;
 }
 
 message ArtworkUpdateInput {
