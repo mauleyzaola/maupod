@@ -35,8 +35,3 @@
     overflow-y: scroll;
     height: 70%;
 }
-
-.top {
-    position: static;
-    height: 100%;
-}
