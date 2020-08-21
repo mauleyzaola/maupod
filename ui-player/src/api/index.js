@@ -17,11 +17,10 @@ const cleanMedia = media => {
 
 
 const audioScan = data => axios.post(`/audio/scan`, data);
-
 const albumViewList = data => axios.get(`/media/albums`, {
     params: data,
 })
-
+const artworkScan = data => axios.post(`/artwork/scan`, data);
 const decodeURL = search => querystring.decode(search.replace('?',''));
 const directoryRead = async data => {
     const response = await axios.post(`/file-browser/directory`, data);
@@ -48,6 +47,7 @@ const spectrumImage = (id) => axios.get(`/media/${id}/spectrum`);
 export default {
     audioScan,
     albumViewList,
+    artworkScan,
     decodeURL,
     directoryRead,
     distinctListGet,

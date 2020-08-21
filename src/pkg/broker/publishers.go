@@ -27,7 +27,7 @@ func PublishMediaInfoDelete(nc *nats.Conn, input *pb.MediaInfoInput) error {
 }
 
 func PublishMediaUpdateDb(nc *nats.Conn, media *pb.Media) error {
-	return PublishBroker(nc, pb.Message_MESSAGE_MEDIA_UPDATE, media)
+	return PublishBroker(nc, pb.Message_MESSAGE_MEDIA_UPDATE, &pb.MediaInfoInput{Media: media})
 }
 
 func PublishMediaTagUpdate(nc *nats.Conn, media *pb.Media) error {
@@ -44,4 +44,8 @@ func PublishBrokerJSON(nc *nats.Conn, subject pb.Message, input proto.Message) e
 		return err
 	}
 	return nc.Publish(strconv.Itoa(int(subject)), data)
+}
+
+func PublishMediaArtworkUpdate(nc *nats.Conn, media *pb.Media) error {
+	return PublishBroker(nc, pb.Message_MESSAGE_MEDIA_UPDATE_ARTWORK, &pb.ArtworkUpdateInput{Media: media})
 }
