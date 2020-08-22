@@ -1,6 +1,6 @@
 pgconn: user=postgres host=pg password=nevermind sslmode=disable
 dbconn: user=postgres host=pg dbname=maupod password=nevermind sslmode=disable
-retries: 100
+retries: 500
 delay: 1
 natsurl: nats://nats-server:4222
 extensions:

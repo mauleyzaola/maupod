@@ -28,11 +28,11 @@ dev-ui:
 	$(MAKE) -C ../ui-player dev
 
 down:
-	docker-compose stop
-	docker-compose down
+	docker-compose -f dev.docker-compose.yml stop
+	docker-compose -f dev.docker-compose.yml down
 
 logs:
-	docker-compose logs -f --tail 20
+	docker-compose -f dev.docker-compose.yml logs -f --tail 20
 
 force:
 prepare-proto: force
@@ -51,14 +51,14 @@ proto-node: prepare-proto-node
 	protoc --proto_path=proto --js_out=import_style=commonjs,binary:cmd/socket/nodepb ./proto/*
 
 pg-backup:
-	docker-compose exec pg pg_dump maupod -U postgres > $(HOME)/Downloads/postgres.maupod.sql
+	docker-compose -f dev.docker-compose.yml exec pg pg_dump maupod -U postgres > $(HOME)/Downloads/postgres.maupod.sql
 
 psql:
-	docker-compose exec pg psql postgresql://postgres:nevermind@pg:5432/maupod
+	docker-compose -f dev.docker-compose.yml exec pg psql postgresql://postgres:nevermind@pg:5432/maupod
 
 test:
-	go test -cover -count 1 ./...
+	go test -cover ./...
 
 up:
 	@echo "[INFO] starting docker-compose micro services"
-	docker-compose up --build -d
+	docker-compose -f dev.docker-compose.yml up --build -d
