@@ -57,11 +57,10 @@ func run() error {
 	var dependentMicroServices = []pb.Message{
 		pb.Message_MESSAGE_MICRO_SERVICE_RESTAPI,
 		pb.Message_MESSAGE_MICRO_SERVICE_MEDIAINFO,
-		pb.Message_MESSAGE_MICRO_SERVICE_SOCKET,
 	}
 	for _, v := range dependentMicroServices {
 		helpers.RetryFunc(v.String(), int(config.Retries), timeout, func(retryCount int) bool {
-			if _, err := broker.MicroServicePing(nc, pb.Message_MESSAGE_MICRO_SERVICE_RESTAPI, timeout); err != nil {
+			if _, err := broker.MicroServicePing(nc, v, timeout); err != nil {
 				return false
 			}
 			return true
