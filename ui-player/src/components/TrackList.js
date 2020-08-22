@@ -24,7 +24,7 @@ const TrackListHeader = () => (
 
 const AlbumLink = ({r}) => r.album_identifier ? <Link to={linkAlbumView(r)}>{r.album}</Link> : <span>{r.album}</span>;
 
-const TrackListRow = ({row}) => {
+const TrackListRow = ({i, row}) => {
     row.recorded_date = row.recorded_date || '';
     const modifiedDate = row.modified_date ? secondsToDate(row.modified_date.seconds).toLocaleDateString() : '';
     const Thumbnail = () => {
@@ -38,7 +38,7 @@ const TrackListRow = ({row}) => {
             <td>
                 <Thumbnail />
             </td>
-            <td>{row.track_position}</td>
+            <td>{i+1}</td>
             <td>
                 <div className='row'>
                     <div className='col-4'>

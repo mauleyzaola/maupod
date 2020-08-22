@@ -36,7 +36,7 @@ class MediaList extends React.Component{
                 <table className='table table-bordered table-hover table-striped'>
                     <TrackListHeader />
                     <tbody>
-                    {rows.map(row => <TrackListRow key={row.id} row={row} />)}
+                    {rows.map((row, i) => <TrackListRow key={row.id} row={row} i={i} />)}
                     </tbody>
                 </table>
             </div>
