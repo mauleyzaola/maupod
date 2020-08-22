@@ -62,7 +62,7 @@ proto-node: prepare-proto-node
 	protoc --proto_path=proto --js_out=import_style=commonjs,binary:cmd/socket/nodepb ./proto/*
 
 pg-backup:
-	docker-compose -f ./dockerfiles/dev.docker-compose.yml exec pg pg_dump maupod -U postgres > $(HOME)/Downloads/postgres.maupod.sql
+	docker-compose exec pg pg_dump maupod -U postgres > $(HOME)/Downloads/postgres.maupod.sql
 
 psql:
 	docker-compose -f ./dockerfiles/dev.docker-compose.yml exec pg psql postgresql://postgres:nevermind@pg:5432/maupod
