@@ -4,6 +4,10 @@ browser:
 build-dev: build-player
 	@echo "[INFO] building micro services in development mode"
 
+build-dockers:
+	@echo "[INFO] building micro services in production mode"
+	bash -x ./scripts/build_docker.sh
+
 build-player:
 	@echo "[INFO] building player in host"
 	go build -o maupod-player ./cmd/player
