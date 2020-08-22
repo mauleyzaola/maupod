@@ -228,5 +228,5 @@ func (m *IPC) Skip() {
 	if m.lastMedia == nil {
 		return
 	}
-	m.control.OnSongEnded(m.lastMedia)
+	m.control.OnSongEnded(m.lastMedia, true)
 }

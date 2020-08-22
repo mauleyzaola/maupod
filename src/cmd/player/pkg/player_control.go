@@ -14,7 +14,7 @@ import (
 
 const (
 	timePosThresholdSecs = 0.5
-	percentToBeCompleted = 50
+	percentToBeCompleted = 95
 	percentToBeSkipped   = 5
 )
 
@@ -38,7 +38,23 @@ func NewPlayerControl(publishFn broker.PublisherFunc, publishFnJSON broker.Publi
 	return p
 }
 
-func (p *PlayerControl) OnSongEnded(m *pb.Media) {
+func (p *PlayerControl) OnSongEnded(m *pb.Media, isSkip bool) {
+	// check if track has completely played
+	if !isSkip {
+		// send message to notify track has completely played
+		_ = p.publishFn(pb.Message_MESSAGE_EVENT_ON_TRACK_PLAY_COUNT_INCREASE, &pb.TrackPlayedInput{
+			Media:     m,
+			Timestamp: helpers.TimeToTs(helpers.Now()),
+		})
+		p.lastIsCompleted = true
+
+	} else {
+		//  send message to notify track has been skipped
+		_ = p.publishFn(pb.Message_MESSAGE_EVENT_ON_TRACK_SKIP_COUNT_INCREASE, &pb.TrackPlayedInput{
+			Media:     m,
+			Timestamp: helpers.TimeToTs(helpers.Now()),
+		})
+	}
 	var output pb.QueueOutput
 	if err := p.requestFn(pb.Message_MESSAGE_QUEUE_LIST, &pb.QueueInput{}, &output); err != nil {
 		log.Println(err)
@@ -79,9 +95,6 @@ func (p *PlayerControl) OnSongStarted(m *pb.Media) {
 	if m == nil {
 		return
 	}
-	// read state
-	var isNewTrack = p.m == nil || p.m.Id != m.Id
-	var lastPercentPos = p.lastPercentPos
 
 	// initialize values
 	p.lastPercentPos = 0
@@ -95,17 +108,8 @@ func (p *PlayerControl) OnSongStarted(m *pb.Media) {
 	}
 	_ = p.publishFn(pb.Message_MESSAGE_EVENT_ON_TRACK_STARTED, input)
 
-	if isNewTrack {
-		if lastPercentPos >= percentToBeSkipped && lastPercentPos < percentToBeCompleted {
-			input := &pb.TrackSkippedInput{
-				Media:     m,
-				Timestamp: helpers.TimeToTs(helpers.Now()),
-			}
-			_ = p.publishFn(pb.Message_MESSAGE_EVENT_ON_TRACK_SKIP_COUNT_INCREASE, input)
-		}
-	}
 	// send message to the UI through websockets
-	_=p.publishFnJSON(pb.Message_MESSAGE_SOCKET_PLAY_TRACK, &pb.PlayTrackInput{Media: m})
+	_ = p.publishFnJSON(pb.Message_MESSAGE_SOCKET_PLAY_TRACK, &pb.PlayTrackInput{Media: m})
 }
 
 func (p *PlayerControl) onTimePosChanged(v float64) {
@@ -133,17 +137,6 @@ func (p *PlayerControl) onPercentPosChanged(media *pb.Media, v float64) {
 }
 
 func (p *PlayerControl) OnPercentPosChanged(media *pb.Media, v float64) {
-	// check percente position to know if track has completed playing
-	if !p.lastIsCompleted {
-		if v >= percentToBeCompleted {
-			_ = p.publishFn(pb.Message_MESSAGE_EVENT_ON_TRACK_PLAY_COUNT_INCREASE, &pb.TrackPlayedInput{
-				Media:     media,
-				Timestamp: helpers.TimeToTs(helpers.Now()),
-			})
-			p.lastIsCompleted = true
-		}
-	}
-
 	// location should be relative
 	tmpMedia := *media
 	tmpMedia.Location = paths.LocationPath(tmpMedia.Location)
