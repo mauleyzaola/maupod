@@ -67,7 +67,7 @@ pg-backup:
 psql:
 	docker-compose -f dev.docker-compose.yml exec pg psql postgresql://postgres:nevermind@pg:5432/maupod
 
-server: up logs
+server: dev-build up logs
 
 logs:
 	docker-compose logs -f
