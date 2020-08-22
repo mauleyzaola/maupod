@@ -1,4 +1,4 @@
-FROM base-maupod:latest
+FROM base-maupod-audio:latest
 ENV LANG en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8 \
     GOPATH="/go" \

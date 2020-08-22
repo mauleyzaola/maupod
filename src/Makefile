@@ -18,15 +18,15 @@ dev-build:
 dev-clean: clean-binaries
 
 dev-down:
-	docker-compose -f dev.docker-compose.yml stop
-	docker-compose -f dev.docker-compose.yml down
+	docker-compose -f ./dockerfiles/dev.docker-compose.yml stop
+	docker-compose -f ./dockerfiles/dev.docker-compose.yml down
 
 dev-logs:
-	docker-compose -f dev.docker-compose.yml logs -f --tail 20
+	docker-compose -f ./dockerfiles/dev.docker-compose.yml logs -f --tail 20
 
 dev-up:
 	@echo "[INFO] starting docker-compose micro services"
-	docker-compose -f dev.docker-compose.yml up --build -d
+	docker-compose -f ./dockerfiles/dev.docker-compose.yml up --build -d
 
 dev-ui:
 	$(MAKE) -C ../ui-player dev
@@ -62,10 +62,10 @@ proto-node: prepare-proto-node
 	protoc --proto_path=proto --js_out=import_style=commonjs,binary:cmd/socket/nodepb ./proto/*
 
 pg-backup:
-	docker-compose -f dev.docker-compose.yml exec pg pg_dump maupod -U postgres > $(HOME)/Downloads/postgres.maupod.sql
+	docker-compose -f ./dockerfiles/dev.docker-compose.yml exec pg pg_dump maupod -U postgres > $(HOME)/Downloads/postgres.maupod.sql
 
 psql:
-	docker-compose -f dev.docker-compose.yml exec pg psql postgresql://postgres:nevermind@pg:5432/maupod
+	docker-compose -f ./dockerfiles/dev.docker-compose.yml exec pg psql postgresql://postgres:nevermind@pg:5432/maupod
 
 server: dev-build up logs
 
@@ -74,6 +74,9 @@ logs:
 
 up:
 	docker-compose up -d --build
+
+update:
+	bash -x ./scripts/pull_docker.sh
 
 test:
 	go test -cover ./...
