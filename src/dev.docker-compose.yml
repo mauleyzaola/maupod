@@ -12,30 +12,42 @@ services:
     - $MAUPOD_SOCKET_PORT:${MAUPOD_SOCKET_PORT}
 
   maupod-artwork:
-    image: mauleyzaola/maupod-artwork
+    build:
+      context: .
+      dockerfile: dockerfiles/dev.artwork.Dockerfile
     environment:
       - MAUPOD_MEDIA_STORE=/music-store
     volumes:
+      - ./:/go/src/github.com/mauleyzaola/maupod/src
       - $MAUPOD_MEDIA_STORE:/music-store
       - $MAUPOD_ARTWORK:/artwork
 
   maupod-audioscan:
-    image: mauleyzaola/maupod-audioscan
+    build:
+      context: .
+      dockerfile: dockerfiles/dev.audioscan.Dockerfile
     environment:
       - MAUPOD_MEDIA_STORE=/music-store
     volumes:
+      - ./:/go/src/github.com/mauleyzaola/maupod/src
       - $MAUPOD_MEDIA_STORE:/music-store
 
   maupod-mediainfo:
-    image: mauleyzaola/maupod-mediainfo
+    build:
+      context: .
+      dockerfile: dockerfiles/dev.mediainfo.Dockerfile
     environment:
       - MAUPOD_MEDIA_STORE=/music-store
     volumes:
+      - ./:/go/src/github.com/mauleyzaola/maupod/src
       - $MAUPOD_MEDIA_STORE:/music-store
 
   maupod-restapi:
-    image: mauleyzaola/maupod-restapi
+    build:
+      context: .
+      dockerfile: dockerfiles/dev.restapi.Dockerfile
     volumes:
+      - ./:/go/src/github.com/mauleyzaola/maupod/src
       - $MAUPOD_ARTWORK:/artwork
     expose:
       - 8000

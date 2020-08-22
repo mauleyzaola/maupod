@@ -49,6 +49,7 @@ func run() error {
 
 	var db *sql.DB
 	if db, err = dbdata.DbBootstrap(config); err != nil {
+		log.Println(err)
 		return err
 	}
 	defer func() {

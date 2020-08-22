@@ -3,8 +3,8 @@
 These are a set of applications that eventually should accomplish:
 
 - [x] Automatic Media Management
-- [ ] Web UI for media streaming
-- [ ] Remote control for media player
+- [x] Web UI for media streaming
+- [x] Remote control for media player
 
 ## Requirements
 
@@ -39,7 +39,7 @@ It is important you keep the other values unchanged as above, otherwise maupod w
 In one terminal go to `src/` directory in the repo
 
 ```
-make dev
+make server
 ```
 
 Once that is done, run in another terminal
@@ -54,6 +54,8 @@ And finally, on a third terminal, run this
 ```
 
 Browser should automatically start at http://192.168.0.135:3000 (whatever your ip address was defined above)
+
+To stop the `make server` command run `make clean`
 
 
 ### Development

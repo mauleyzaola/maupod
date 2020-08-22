@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -54,18 +55,27 @@ func run() error {
 
 	// check for dependent micro services to be up
 	timeout := time.Second * time.Duration(config.Delay)
-	var dependentMicroServices = []pb.Message{
-		pb.Message_MESSAGE_MICRO_SERVICE_RESTAPI,
-		pb.Message_MESSAGE_MICRO_SERVICE_MEDIAINFO,
+	var dependentMicroServices = map[pb.Message]bool{
+		pb.Message_MESSAGE_MICRO_SERVICE_RESTAPI:   false,
+		pb.Message_MESSAGE_MICRO_SERVICE_MEDIAINFO: false,
 	}
-	for _, v := range dependentMicroServices {
-		helpers.RetryFunc(v.String(), int(config.Retries), timeout, func(retryCount int) bool {
-			if _, err := broker.MicroServicePing(nc, v, timeout); err != nil {
+
+	for k := range dependentMicroServices {
+		helpers.RetryFunc(k.String(), int(config.Retries), timeout, func(retryCount int) bool {
+			if _, err := broker.MicroServicePing(nc, k, timeout); err != nil {
 				return false
 			}
+			dependentMicroServices[k] = true
 			return true
 		})
 	}
+	for k, v := range dependentMicroServices {
+		if !v {
+			err = fmt.Errorf("[ERROR] could not establish connection to micro service: %s\n", k)
+			return err
+		}
+	}
+	log.Println("[INFO] all micro services are up")
 
 	// TODO: configure this feature somewhere else
 	if err := autoPlayQueue(nc, config); err != nil {
