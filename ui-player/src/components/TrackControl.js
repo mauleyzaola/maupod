@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import {TrackPlayControls} from "./Player";
 import {handleLoadQueue} from "../actions/queue";
 import {applyBlur, CANVAS_WIDTH, loadCanvasImage} from "../canvas";
+import {linkAlbumList, linkAlbumView, linkPerformerList} from "../routes";
+import {Link} from "react-router-dom";
 
 class TrackControl extends React.Component{
     state = {
@@ -71,7 +73,6 @@ class TrackControl extends React.Component{
         if(data.media.id !== media.id){
             this.drawTrackSpectrum(data.media);
         } else{
-            // TODO: handle play song from the start, probably another message?
             const x1 = 0;
             const x2 = CANVAS_WIDTH * percent / 100;
             applyBlur({x1,x2});
@@ -79,8 +80,6 @@ class TrackControl extends React.Component{
     }
 
     onPositionChange = e => {
-        // TODO: a good improvement could be sending if we need to redraw the spectrum (moving backward) or not (moving forward)
-        // for the time being it is fine as it is now
         const positionX = parseFloat(e.clientX);
         if(positionX < 0 || positionX > CANVAS_WIDTH){
             console.warn(`clicked out of range of canvas width`);
@@ -100,15 +99,14 @@ class TrackControl extends React.Component{
 
     render() {
         const { media, timePlayed, timeTotal } = this.state;
-        // const { width } = this.state;
         if(!media || !media.id) return null;
         return (
             <div className='row'>
                 <div className='col'>
                     <div>
                         <strong>{timePlayed} / {timeTotal} </strong>
-                        {media.performer} |
-                        {media.album} |
+                        <Link to={linkPerformerList(media)}>{media.performer}</Link> |
+                        <Link to={linkAlbumView(media)}>{media.album}</Link> |
                         {media.track}
                     </div>
                     <TrackPlayControls media={media} />
