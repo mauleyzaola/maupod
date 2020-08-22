@@ -4,9 +4,10 @@ browser:
 build-dev: build-player
 	@echo "[INFO] building micro services in development mode"
 
-build-dockers:
+build-dockers: test
 	@echo "[INFO] building micro services in production mode"
 	bash -x ./scripts/build_docker.sh
+	$(MAKE) -C . clean-binaries
 
 build-player:
 	@echo "[INFO] building player in host"
@@ -14,6 +15,12 @@ build-player:
 
 clean: down
 	rm -f ./maupod-*
+
+clean-binaries:
+	rm -f maupod-*
+
+clean-dockers: clean-binaries
+	docker image ls mauleyzaola/maupod-* -q | xargs docker rmi
 
 dev: build-dev up logs
 

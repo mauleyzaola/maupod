@@ -6,3 +6,6 @@ maupod-*
 
 # binaries
 /maupod-player
+
+# other ignored files
+zoneinfo.zip
