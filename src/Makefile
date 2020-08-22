@@ -53,7 +53,6 @@ prepare-proto-node: force
 
 prod: dockers
 	bash -x ./scripts/push_docker.sh
-	$(MAKE) -C . clean-dockers
 
 proto: proto-node prepare-proto
 	protoc --proto_path=proto --go_out=pkg/pb --go_opt=paths=source_relative ./proto/*
