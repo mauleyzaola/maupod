@@ -1,38 +1,46 @@
 browser:
 	$(MAKE) -C ../ui-player browser
 
-build-dev: build-player
-	@echo "[INFO] building micro services in development mode"
-
-build-dockers: test
-	@echo "[INFO] building micro services in production mode"
-	bash -x ./scripts/build_docker.sh
-	$(MAKE) -C . clean-binaries
-
-build-player:
-	@echo "[INFO] building player in host"
-	go build -o maupod-player ./cmd/player
-
 clean: down
-	rm -f ./maupod-*
 
 clean-binaries:
 	rm -f maupod-*
 
 clean-dockers: clean-binaries
+	docker image prune -f
 	docker image ls mauleyzaola/maupod-* -q | xargs docker rmi
 
-dev: build-dev up logs
+dev: dev-build dev-up dev-logs
+
+dev-build:
+	go build -o maupod-player ./cmd/player
+
+dev-clean: clean-binaries
+
+dev-down:
+	docker-compose -f dev.docker-compose.yml stop
+	docker-compose -f dev.docker-compose.yml down
+
+dev-logs:
+	docker-compose -f dev.docker-compose.yml logs -f --tail 20
+
+dev-up:
+	@echo "[INFO] starting docker-compose micro services"
+	docker-compose -f dev.docker-compose.yml up --build -d
 
 dev-ui:
 	$(MAKE) -C ../ui-player dev
 
-down:
-	docker-compose -f dev.docker-compose.yml stop
-	docker-compose -f dev.docker-compose.yml down
+dockers: test
+	@echo "[INFO] building micro services in production mode"
+	docker build -f ./dockerfiles/base.Dockerfile . --tag "base-maupod:latest"
+	docker build -f ./dockerfiles/base.audio.Dockerfile . --tag "base-maupod-audio:latest"
+	bash -x ./scripts/build_docker.sh
+	$(MAKE) -C . clean-binaries
 
-logs:
-	docker-compose -f dev.docker-compose.yml logs -f --tail 20
+down:
+	docker-compose stop
+	docker-compose down
 
 force:
 prepare-proto: force
@@ -42,6 +50,10 @@ prepare-proto: force
 prepare-proto-node: force
 	rm -rf ./cmd/socket/nodepb
 	mkdir -p ./cmd/socket/nodepb
+
+prod: dockers
+	bash -x ./scripts/push_docker.sh
+	$(MAKE) -C . clean-dockers
 
 proto: proto-node prepare-proto
 	protoc --proto_path=proto --go_out=pkg/pb --go_opt=paths=source_relative ./proto/*
@@ -56,9 +68,13 @@ pg-backup:
 psql:
 	docker-compose -f dev.docker-compose.yml exec pg psql postgresql://postgres:nevermind@pg:5432/maupod
 
-test:
-	go test -cover ./...
+server: up logs
+
+logs:
+	docker-compose logs -f
 
 up:
-	@echo "[INFO] starting docker-compose micro services"
-	docker-compose -f dev.docker-compose.yml up --build -d
+	docker-compose up -d --build
+
+test:
+	go test -cover ./...

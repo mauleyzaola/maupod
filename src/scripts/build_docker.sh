@@ -27,7 +27,6 @@ prefix="./cmd/"
 
 for dir in ./cmd/*; do
     if [[ -f $dir ]]; then
-        echo "[INFO] $dir is not a directory, skipping..."
         continue
     fi
 
@@ -36,7 +35,6 @@ for dir in ./cmd/*; do
 
     # check the docker file exist for this directory
     if [[ ! -f  "$dockerfile" ]]; then
-        echo "[WARNING] cannot stat $name.Dockerfile, skipping..."
         continue
     fi
 
@@ -48,4 +46,3 @@ for dir in ./cmd/*; do
 done
 
 # remove unused docker images
-# docker image prune -f

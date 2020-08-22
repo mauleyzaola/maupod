@@ -1,0 +1,62 @@
+version: "3.7"
+services:
+  maupod-socket:
+    build:
+      context: .
+      dockerfile: dockerfiles/dev.socket.Dockerfile
+    depends_on:
+      - nats-server
+    environment:
+      MAUPOD_SOCKET_PORT: ${MAUPOD_SOCKET_PORT}
+    ports:
+    - $MAUPOD_SOCKET_PORT:${MAUPOD_SOCKET_PORT}
+
+  maupod-artwork:
+    image: mauleyzaola/maupod-artwork
+    environment:
+      - MAUPOD_MEDIA_STORE=/music-store
+    volumes:
+      - $MAUPOD_MEDIA_STORE:/music-store
+      - $MAUPOD_ARTWORK:/artwork
+
+  maupod-audioscan:
+    image: mauleyzaola/maupod-audioscan
+    environment:
+      - MAUPOD_MEDIA_STORE=/music-store
+    volumes:
+      - $MAUPOD_MEDIA_STORE:/music-store
+
+  maupod-mediainfo:
+    image: mauleyzaola/maupod-mediainfo
+    environment:
+      - MAUPOD_MEDIA_STORE=/music-store
+    volumes:
+      - $MAUPOD_MEDIA_STORE:/music-store
+
+  maupod-restapi:
+    image: mauleyzaola/maupod-restapi
+    volumes:
+      - $MAUPOD_ARTWORK:/artwork
+    expose:
+      - 8000
+    ports:
+      - 7400:8000
+      - 7401:9000
+
+  nats-server:
+    image: nats:2.1
+    restart: always
+    ports:
+      - 4244:4222
+
+  pg:
+    image: postgres:9.5
+    environment:
+      - POSTGRES_PASSWORD=nevermind
+    volumes:
+      - $HOME/data/maupod/pg/data:/var/lib/postgresql/data
+    expose:
+      - 5432
+    ports:
+      - 5499:5432
+

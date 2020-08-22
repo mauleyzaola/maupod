@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"errors"
 	"log"
-	"path/filepath"
 	"time"
 
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
@@ -39,7 +38,8 @@ func DbBootstrap(config *pb.Configuration) (*sql.DB, error) {
 	}
 
 	// run sql migrations
-	count, err := MigrateDbFromPath(db, "postgres", filepath.Join("assets", "db-migrations"))
+	var migrationDir = "/go/src/github.com/mauleyzaola/maupod/src/assets/db-migrations"
+	count, err := MigrateDbFromPath(db, "postgres", migrationDir)
 	if err != nil {
 		log.Println(err)
 		return nil, err
