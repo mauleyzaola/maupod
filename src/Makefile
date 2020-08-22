@@ -76,6 +76,7 @@ up:
 	docker-compose up -d --build
 
 update:
+	git pull
 	bash -x ./scripts/pull_docker.sh
 
 test:
