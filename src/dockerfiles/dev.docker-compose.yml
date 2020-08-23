@@ -2,7 +2,7 @@ version: "3.7"
 services:
   maupod-socket:
     build:
-      context: .
+      context: ../
       dockerfile: dockerfiles/dev.socket.Dockerfile
     depends_on:
       - nats-server
@@ -13,7 +13,7 @@ services:
 
   maupod-artwork:
     build:
-      context: .
+      context: ../
       dockerfile: dockerfiles/dev.artwork.Dockerfile
     environment:
       - MAUPOD_MEDIA_STORE=/music-store
@@ -24,7 +24,7 @@ services:
 
   maupod-audioscan:
     build:
-      context: .
+      context: ../
       dockerfile: dockerfiles/dev.audioscan.Dockerfile
     environment:
       - MAUPOD_MEDIA_STORE=/music-store
@@ -34,7 +34,7 @@ services:
 
   maupod-mediainfo:
     build:
-      context: .
+      context: ../
       dockerfile: dockerfiles/dev.mediainfo.Dockerfile
     environment:
       - MAUPOD_MEDIA_STORE=/music-store
@@ -44,7 +44,7 @@ services:
 
   maupod-restapi:
     build:
-      context: .
+      context: ../
       dockerfile: dockerfiles/dev.restapi.Dockerfile
     volumes:
       - ./:/go/src/github.com/mauleyzaola/maupod/src

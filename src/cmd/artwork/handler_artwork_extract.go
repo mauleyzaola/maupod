@@ -24,6 +24,9 @@ import (
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 )
 
+// TODO: this is kind of spaguetti code, all these artwork stuff should be encapsulated within a struct
+// so we could allow methods such as myArtwork.FindInFolder("/my/path").Resize(500,500).Save("/artwork/123.png")
+
 func (m *MsgHandler) handlerArtworkExtractDirectories(msg *nats.Msg) {
 	var err error
 	var input pb.ArtworkExtractInput
