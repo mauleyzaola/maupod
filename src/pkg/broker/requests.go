@@ -56,8 +56,8 @@ func RequestMediaInfoScan(nc *nats.Conn, filename string, timeout time.Duration)
 	return &output, nil
 }
 
-func RequestMediaInfoScanFromDB(nc *nats.Conn, input *pb.MediaInfoInput, timeout time.Duration) (*pb.MediaInfoOutput, error) {
-	var output pb.MediaInfoOutput
+func RequestMediaInfoScanFromDB(nc *nats.Conn, input *pb.MediaInfoInput, timeout time.Duration) (*pb.MediaInfosOutput, error) {
+	var output pb.MediaInfosOutput
 	if err := DoRequest(nc, pb.Message_MESSAGE_MEDIA_DB_SELECT, input, &output, timeout); err != nil {
 		return nil, err
 	}
@@ -67,10 +67,6 @@ func RequestMediaInfoScanFromDB(nc *nats.Conn, input *pb.MediaInfoInput, timeout
 	if !output.Response.Ok {
 		return nil, errors.New(output.Response.Error)
 	}
-	if output.Media == nil {
-		return nil, errors.New("mediainfo returned a nil object")
-	}
-
 	return &output, nil
 }
 

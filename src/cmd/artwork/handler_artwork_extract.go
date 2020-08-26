@@ -21,9 +21,6 @@ import (
 	"github.com/nats-io/nats.go"
 )
 
-// TODO: this is kind of spaguetti code, all these artwork stuff should be encapsulated within a struct
-// so we could allow methods such as myArtwork.FindInFolder("/my/path").Resize(500,500).Save("/artwork/123.png")
-
 func (m *MsgHandler) handlerArtworkExtractDirectories(msg *nats.Msg) {
 	var err error
 	var input pb.ArtworkExtractInput
@@ -37,6 +34,7 @@ func (m *MsgHandler) handlerArtworkExtractDirectories(msg *nats.Msg) {
 		log.Println(err)
 		return
 	}
+	log.Printf("found %d directories with valid files\n", len(trackFiles))
 
 	for _, trackFile := range trackFiles {
 		fileInput := &pb.ArtworkExtractInput{
@@ -47,43 +45,6 @@ func (m *MsgHandler) handlerArtworkExtractDirectories(msg *nats.Msg) {
 			return
 		}
 	}
-
-	// key is directory value is the first valid location
-	/*
-		var dirFirstTrackMap = make(map[string]string)
-		var files []string
-
-		root := paths.FullPath(input.Root)
-		fn := func(name string, isDir bool) (stop bool) {
-			var location = paths.LocationPath(name)
-			var dir = filepath.Dir(location)
-			if !rules.FileIsValidExtension(m.config, location) {
-				return false
-			}
-			if _, ok := dirFirstTrackMap[dir]; ok {
-				return false
-			}
-			dirFirstTrackMap[dir] = location
-			files = append(files, location)
-			return false
-		}
-		if err = helpers.WalkFiles(root, fn); err != nil {
-			log.Println(err)
-			return
-		}
-		log.Printf("found %d directories with valid files\n", len(dirFirstTrackMap))
-
-		// we assign the root of each file and let the other subscriber find its related media
-		for _, v := range files {
-			fileInput := &pb.ArtworkExtractInput{
-				Root: v,
-			}
-			if err = broker.PublishBroker(m.base.NATS(), pb.Message_MESSAGE_MEDIA_EXTRACT_ARTWORK_FROM_FILE, fileInput); err != nil {
-				log.Println(err)
-			}
-		}
-		return
-	*/
 }
 
 // handlerArtworkExtractWithinAudioFiles will try to look up into audio files content for images
@@ -99,37 +60,39 @@ func (m *MsgHandler) handlerArtworkExtractWithinAudioFiles(msg *nats.Msg) {
 		input.Media = &pb.Media{}
 	}
 
-	// check if artwork exist for this album, and exit if it does
-	// read media information from db
-	var mediaInfoInput = &pb.MediaInfoInput{
-		Media: input.Media,
-	}
+	var media = input.Media
 	if input.Root != "" {
-		mediaInfoInput.Media.Location = input.Root
+		media.Location = input.Root
 	}
 
-	mediaInfoOutput, err := broker.RequestMediaInfoScanFromDB(m.base.NATS(), mediaInfoInput, rules.Timeout(m.config))
+	albumTracks, err := LookupAlbumTracks(m.base.NATS(), m.config, media)
 	if err != nil {
 		log.Println(err)
 		return
 	}
 
-	var media = mediaInfoOutput.Media
-
-	if ma.ArtworkFileExist(m.config, media) {
-		log.Println("artwork file already exist")
+	var artworkUpdate = struct {
+		ImageLocation string
+	}{}
+	for _, track := range albumTracks {
+		if ArtworkFileExist(m.config, track) {
+			log.Println("artwork file already exist")
+			artworkUpdate.ImageLocation = track.ImageLocation
+			return
+		}
+	}
+	// if artwork was found for any track, update the other tracks with the same artwork info and exit
+	if artworkUpdate.ImageLocation != "" {
+		for _, track := range albumTracks {
+			track.ImageLocation = artworkUpdate.ImageLocation
+			if err = PublishSaveArtworkTrack(m.base.NATS(), track); err != nil {
+				log.Println(err)
+				return
+			}
+		}
 		return
 	}
 
-	if err = ma.
-		LookupTracks(media).
-		LookupEmbeddedArtwork(media).
-		WriteArtwork().
-		SaveArtwork().
-		Error(); err != nil {
-		return
-	}
-	return
 	/*
 		var media = mediaInfoOutput.Media
 		if artworkFileExist(m.config, media) {

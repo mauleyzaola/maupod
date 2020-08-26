@@ -14,7 +14,7 @@ func (m *MsgHandler) handlerMediaInfoDBSelect(msg *nats.Msg) {
 	var err error
 	var input pb.MediaInfoInput
 
-	output := &pb.MediaInfoOutput{
+	output := &pb.MediaInfosOutput{
 		Response: &pb.Response{
 			Ok:    false,
 			Error: "",
@@ -55,13 +55,13 @@ func (m *MsgHandler) handlerMediaInfoDBSelect(msg *nats.Msg) {
 	conn := m.db
 	store := &dbdata.MediaStore{}
 
-	mediaInfo, err := store.FindMedia(ctx, conn, input.Media)
+	medias, err := store.FindMedias(ctx, conn, input.Media, 0)
 	if err != nil {
 		output.Response.Ok = false
 		output.Response.Error = err.Error()
 		return
 	}
 	output.Response.Ok = true
-	output.Media = mediaInfo
+	output.Medias = medias
 	return
 }

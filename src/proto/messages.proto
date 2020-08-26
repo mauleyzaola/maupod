@@ -128,6 +128,11 @@ message MediaInfoOutput {
     string raw = 4;
 }
 
+message MediaInfosOutput {
+    repeated Media medias = 1;
+    Response response = 2;
+}
+
 message MediaUpdateSHAInput {
     string oldSHA = 1;
     string newSHA = 2;

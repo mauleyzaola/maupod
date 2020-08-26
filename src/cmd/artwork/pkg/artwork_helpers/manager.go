@@ -1,8 +1,19 @@
 package artwork_helpers
 
 import (
+	"errors"
+	"fmt"
 	"io"
+	"log"
 	"os"
+	"path/filepath"
+
+	"github.com/mauleyzaola/maupod/src/pkg/broker"
+	"github.com/nats-io/nats.go"
+
+	"github.com/mauleyzaola/maupod/src/pkg/helpers"
+	"github.com/mauleyzaola/maupod/src/pkg/paths"
+	"github.com/mauleyzaola/maupod/src/pkg/rules"
 
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
 )
@@ -61,15 +72,59 @@ func FindArtworkInDirectory(media *pb.Media) bool {
 	panic("not implemented")
 }
 
-// FindFirstTrackSubdirectories will return all the slibing directories it can find from the root
-// all of which should contain at least one track
+// FindFirstTrackSubdirectories will return all the sibling directories it can find from the root
+// all of which should contain at least one track with a valid extension, based in provided configuration
 func FindFirstTrackSubdirectories(config *pb.Configuration, root string) ([]string, error) {
-	panic("not implemented")
+	var dirFirstTrackMap = make(map[string]string)
+	var files []string
+
+	fn := func(name string, isDir bool) (stop bool) {
+		var location = paths.LocationPath(name)
+		var dir = filepath.Dir(location)
+		if !rules.FileIsValidExtension(config, location) {
+			return false
+		}
+		if _, ok := dirFirstTrackMap[dir]; ok {
+			return false
+		}
+		dirFirstTrackMap[dir] = location
+		files = append(files, location)
+		return false
+	}
+	if err := helpers.WalkFiles(root, fn); err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	return files, nil
 }
 
-// LookupTracks will return all the media tracks from the same album
-func LookupTracks(media *pb.Media) ([]*pb.Media, error) {
-	panic("not implemented")
+// LookupAlbumTracks will return all the media tracks from the same album
+func LookupAlbumTracks(nc *nats.Conn, config *pb.Configuration, media *pb.Media) ([]*pb.Media, error) {
+	var mediaInfoInput = &pb.MediaInfoInput{
+		FileName: media.Location,
+		Media:    media,
+	}
+	mediaInfoOutput, err := broker.RequestMediaInfoScanFromDB(nc, mediaInfoInput, rules.Timeout(config))
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	medias := mediaInfoOutput.Medias
+	if len(medias) == 0 {
+		return nil, errors.New("no media found with provided filters")
+	} else if len(medias) != 1 {
+		return nil, fmt.Errorf("more than one media found: %d with provided filters", len(medias))
+	}
+	media = medias[0]
+	mediaInfoInput = &pb.MediaInfoInput{
+		Media: &pb.Media{AlbumIdentifier: media.AlbumIdentifier},
+	}
+	mediaInfoOutput, err = broker.RequestMediaInfoScanFromDB(nc, mediaInfoInput, rules.Timeout(config))
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	return mediaInfoOutput.Medias, nil
 }
 
 func LookupEmbeddedArtwork(media *pb.Media) (ReadDestroyer, error) {
@@ -78,4 +133,8 @@ func LookupEmbeddedArtwork(media *pb.Media) (ReadDestroyer, error) {
 
 func SaveArtwork() {
 	panic("not implemented")
+}
+
+func PublishSaveArtworkTrack(nc *nats.Conn, media *pb.Media) error {
+	return broker.PublishMediaArtworkUpdate(nc, media)
 }
