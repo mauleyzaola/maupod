@@ -75,7 +75,7 @@ logs:
 up:
 	docker-compose up -d --build
 
-update:
+update: clean
 	git pull
 	bash -x ./scripts/pull_docker.sh
 

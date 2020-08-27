@@ -1,12 +1,16 @@
 package artwork_helpers
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
 	"io"
 	"log"
 	"os"
 	"path/filepath"
+	"time"
+
+	"github.com/mauleyzaola/maupod/src/pkg/images"
 
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
 	"github.com/nats-io/nats.go"
@@ -47,14 +51,33 @@ func ExtractArtworkFromAudioFile(media *pb.Media) (io.ReadCloser, error) {
 }
 
 // IsArtworkValidSize will return true if image complies with requested image features
+// filename should be an existent absolute path to the image
 // for the time being: at least 500x500 pixeles and to be square (same width and height)
-func IsArtworkValidSize(config *pb.Configuration, reader io.Reader) (ok bool, err error) {
-	panic("not implemented")
+func IsArtworkValidSize(nc *nats.Conn, filename string, minWidth int) error {
+	output, err := broker.RequestMediaInfoScan(nc, filename, time.Second*3)
+	if err != nil {
+		return err
+	}
+	x, y, err := images.Size(bytes.NewBufferString(output.Raw))
+	if err != nil {
+		return err
+	}
+
+	// check symmetry
+	if x != y {
+		return fmt.Errorf("invalid image shape: %dx%d", x, y)
+	}
+
+	// check min width
+	if x < minWidth {
+		return fmt.Errorf("image too small: %dx%d", x, y)
+	}
+	return nil
 }
 
 // ArtworkFullPath returns the absolute path on this micro service for an artwork file
 func ArtworkFullPath(media *pb.Media) string {
-	panic("not implemented")
+	return paths.LocationPath(media.Location)
 }
 
 // ArtworkSave will save the artwork from a reader, based on the media file provided
@@ -63,8 +86,9 @@ func ArtworkSave(media *pb.Media, reader io.Reader) error {
 }
 
 // ArtworkFileExist will check if the artwork file already exists
-func ArtworkFileExist(config *pb.Configuration, media *pb.Media) bool {
-	panic("not implemented")
+func ArtworkFileExist(media *pb.Media) bool {
+	_, err := os.Stat(rules.ArtworkFileName(media))
+	return err == nil
 }
 
 // FindArtworkInDirectory will return true if the artwork file for the media, exists
@@ -137,4 +161,13 @@ func SaveArtwork() {
 
 func PublishSaveArtworkTrack(nc *nats.Conn, media *pb.Media) error {
 	return broker.PublishMediaArtworkUpdate(nc, media)
+}
+
+func ArtworkResizeFile(source, target string, imageSize int) error {
+	var bigSize = imageSize
+	err := images.ImageResize(source, target, bigSize, bigSize)
+	if err != nil {
+		return err
+	}
+	return nil
 }

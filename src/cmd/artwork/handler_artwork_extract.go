@@ -1,15 +1,12 @@
 package main
 
 import (
-	"bytes"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
-	"time"
 
 	. "github.com/mauleyzaola/maupod/src/cmd/artwork/pkg/artwork_helpers"
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
@@ -71,18 +68,28 @@ func (m *MsgHandler) handlerArtworkExtractWithinAudioFiles(msg *nats.Msg) {
 		return
 	}
 
+	if len(albumTracks) == 0 {
+		log.Println("[WARNING] album has no tracks")
+		return
+	}
+
+	// TODO: extract this logic to a function and reuse in other similar message receivers
 	var artworkUpdate = struct {
 		ImageLocation string
 	}{}
+	var artworkExists bool
+	// search for any image location on any track of the same album
 	for _, track := range albumTracks {
-		if ArtworkFileExist(m.config, track) {
-			log.Println("artwork file already exist")
+		if artworkExists = ArtworkFileExist(track); artworkExists {
+			// assign to media in case we need to process the artwork below
+			media = track
 			artworkUpdate.ImageLocation = track.ImageLocation
-			return
+			break
 		}
 	}
+
 	// if artwork was found for any track, update the other tracks with the same artwork info and exit
-	if artworkUpdate.ImageLocation != "" {
+	if artworkExists {
 		for _, track := range albumTracks {
 			track.ImageLocation = artworkUpdate.ImageLocation
 			if err = PublishSaveArtworkTrack(m.base.NATS(), track); err != nil {
@@ -90,99 +97,34 @@ func (m *MsgHandler) handlerArtworkExtractWithinAudioFiles(msg *nats.Msg) {
 				return
 			}
 		}
+		log.Println(err)
+	}
+	// END: extract this logic to a function and reuse in other similar message receivers
+
+	// no other tracks were found with artwork, then scan audio file and search for images
+	var mediaFullPath = paths.FullPath(media.Location)
+	var artworkFullPath = artworkFullPath(m.config, media)
+	if err = images.ExtractImageFromMedia(mediaFullPath, artworkFullPath); err != nil {
+		log.Println(err)
+		return
+	}
+	// check for image size to be ok
+	if err = IsArtworkValidSize(m.base.NATS(), artworkFullPath, int(m.config.ArtworkBigSize)); err != nil {
+		log.Println(err)
 		return
 	}
 
-	/*
-		var media = mediaInfoOutput.Media
-		if artworkFileExist(m.config, media) {
-			log.Println("artwork file already exist")
-			return
-		}
+	// if all went fine, create the artwork image
+	if err = ArtworkResizeFile(artworkFullPath, artworkFullPath, int(m.config.ArtworkBigSize)); err != nil {
+		log.Println(err)
+		return
+	}
 
-		// check for other tracks in the same album which have artwork and copy
-		var ctx = context.Background()
-		var conn = m.db
-		var mods []qm.QueryMod
-		var where = orm.MediumWhere
-		mods = append(mods, where.AlbumIdentifier.EQ(media.AlbumIdentifier))
-		tracksSameAlbum, err := orm.Media(mods...).All(ctx, conn)
+	// if we got this far, assign the artwork value to the track
+	media.ImageLocation = rules.ArtworkFileName(media)
 
-		if err != nil {
-			log.Println(err)
-			return
-		}
-
-		var foundImageLocation string
-		for _, v := range tracksSameAlbum {
-			if v.ImageLocation != "" {
-				// check artwork file exist
-				currentTrack := conversion.MediaFromORM(v)
-				if _, err = os.Stat(rules.ArtworkFileName(currentTrack)); err != nil {
-					v.ImageLocation = ""
-					continue
-				}
-				foundImageLocation = v.ImageLocation
-				break
-			}
-		}
-
-		var nowPtr = helpers.Now()
-
-		// media was found in another track of the same album?
-		if foundImageLocation != "" {
-			// update the image information to copy from the other found track
-			for _, v := range tracksSameAlbum {
-				if v.ImageLocation == foundImageLocation {
-					continue
-				}
-				currTrack := conversion.MediaFromORM(v)
-				currTrack.ImageLocation = foundImageLocation
-				currTrack.LastImageScan = helpers.TimeToTs(nowPtr)
-				if err = broker.PublishMediaArtworkUpdate(m.base.NATS(), currTrack); err != nil {
-					log.Println(err)
-					return
-				}
-			}
-			log.Println("found other tracks from same album with artwork, updated missing ones")
-			return
-		}
-
-		// no other tracks were found with artwork, then scan audio file and search for images
-		var mediaFullPath = paths.FullPath(media.Location)
-		var artworkFullPath = artworkFullPath(m.config, media)
-		if err = images.ExtractImageFromMedia(mediaFullPath, artworkFullPath); err != nil {
-			log.Println(err)
-			return
-		}
-		// check for image size to be ok
-		if err = imageValidSize(m.base.NATS(), artworkFullPath, int(m.config.ArtworkBigSize)); err != nil {
-			log.Println(err)
-			return
-		}
-
-		// if all went fine, create the artwork image
-		if err = imageWriteArtwork(artworkFullPath, artworkFullPath, int(m.config.ArtworkBigSize)); err != nil {
-			log.Println(err)
-			return
-		}
-
-		// if we got this far, assign the artwork value to the track
-		media.ImageLocation = rules.ArtworkFileName(media)
-
-		// assign to all tracks in the album
-		for _, v := range tracksSameAlbum {
-			currTrack := conversion.MediaFromORM(v)
-			currTrack.ImageLocation = media.ImageLocation
-			currTrack.LastImageScan = helpers.TimeToTs(nowPtr)
-			if err = broker.PublishMediaArtworkUpdate(m.base.NATS(), currTrack); err != nil {
-				log.Println(err)
-				return
-			}
-		}
-
-		log.Println("[DEBUG] completed artwork extraction from media for album_identifier: ", media.AlbumIdentifier)
-	*/
+	// TODO: update image in db for each track
+	// TODO: assign image location to the rest of the tracks
 }
 
 // handlerArtworkExtract this will only look for image files in the same directory of the audio files
@@ -257,34 +199,6 @@ func artworkFullPath(config *pb.Configuration, media *pb.Media) string {
 	var dir = config.ArtworkStore.Location
 	var imageLocation = rules.ArtworkFileName(media)
 	return filepath.Join(dir, imageLocation)
-}
-
-func imageWriteArtwork(source, target string, imageSize int) error {
-	var bigSize = imageSize
-	err := images.ImageResize(source, target, bigSize, bigSize)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func imageValidSize(nc *nats.Conn, filename string, minWidth int) error {
-	output, err := broker.RequestMediaInfoScan(nc, paths.LocationPath(filename), time.Second*3)
-	x, y, err := images.Size(bytes.NewBufferString(output.Raw))
-	if err != nil {
-		return err
-	}
-
-	// check symmetry
-	if x != y {
-		return fmt.Errorf("invalid image shape: %dx%d", x, y)
-	}
-
-	// check min width
-	if x < minWidth {
-		return fmt.Errorf("image too small: %dx%d", x, y)
-	}
-	return nil
 }
 
 func findArtworkSameDirectory(location string) string {
