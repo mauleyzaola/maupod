@@ -76,7 +76,8 @@ func IsArtworkValidSize(nc *nats.Conn, filename string, minWidth int) error {
 }
 
 // ArtworkFullPath returns the absolute path on this micro service for an artwork file
-func ArtworkFullPath(media *pb.Media) string {
+func ArtworkFullPath(config *pb.Configuration, media *pb.Media) string {
+	filename:=filepath.Join(config.ArtworkStore.Location, rules.ArtworkFileName(media))
 	return paths.LocationPath(media.Location)
 }
 
@@ -86,8 +87,9 @@ func ArtworkSave(media *pb.Media, reader io.Reader) error {
 }
 
 // ArtworkFileExist will check if the artwork file already exists
-func ArtworkFileExist(media *pb.Media) bool {
-	_, err := os.Stat(rules.ArtworkFileName(media))
+func ArtworkFileExist(config *pb.Configuration, media *pb.Media) bool {
+	filename:=filepath.Join(config.ArtworkStore.Location, rules.ArtworkFileName(media))
+	_, err := os.Stat(filename)
 	return err == nil
 }
 

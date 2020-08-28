@@ -123,8 +123,14 @@ func (m *MsgHandler) handlerArtworkExtractWithinAudioFiles(msg *nats.Msg) {
 	// if we got this far, assign the artwork value to the track
 	media.ImageLocation = rules.ArtworkFileName(media)
 
-	// TODO: update image in db for each track
-	// TODO: assign image location to the rest of the tracks
+	// update image in db for each track
+	for _, track := range albumTracks {
+		track.ImageLocation = media.ImageLocation
+		if err = PublishSaveArtworkTrack(m.base.NATS(), track); err != nil {
+			log.Println(err)
+			return
+		}
+	}
 }
 
 // handlerArtworkExtract this will only look for image files in the same directory of the audio files
@@ -160,13 +166,13 @@ func (m *MsgHandler) handlerArtworkExtract(msg *nats.Msg) {
 	}
 
 	// check if artwork already exist for the same album
-	if artworkFileExist(m.config, input.Media) {
+	if ArtworkFileExist(m.config, input.Media) {
 		log.Printf("track: %s album: %s already exists artwork\n", input.Media.Track, input.Media.Album)
 		input.Media.ImageLocation = rules.ArtworkFileName(input.Media)
 		return
 	}
 
-	var artworkPath = artworkFullPath(m.config, input.Media)
+	var artworkPath = ArtworkFullPath(m.config, input.Media)
 	var coverLocation string
 	// check for the image in the same directory of the audio file
 	if coverLocation = findArtworkSameDirectory(paths.FullPath(input.Media.Location)); coverLocation == "" {
@@ -189,17 +195,6 @@ func (m *MsgHandler) handlerArtworkExtract(msg *nats.Msg) {
 	return
 }
 
-func artworkFileExist(config *pb.Configuration, media *pb.Media) bool {
-	var artworkPath = artworkFullPath(config, media)
-	_, err := os.Stat(artworkPath)
-	return err == nil
-}
-
-func artworkFullPath(config *pb.Configuration, media *pb.Media) string {
-	var dir = config.ArtworkStore.Location
-	var imageLocation = rules.ArtworkFileName(media)
-	return filepath.Join(dir, imageLocation)
-}
 
 func findArtworkSameDirectory(location string) string {
 	const (
