@@ -61,8 +61,11 @@ proto-node: prepare-proto-node
     # commonjs was the only way of make it work from nodejs with generated js files
 	protoc --proto_path=proto --js_out=import_style=commonjs,binary:cmd/socket/nodepb ./proto/*
 
-pg-backup:
+pg-backup: 
 	docker-compose exec pg pg_dump maupod -U postgres > $(HOME)/Downloads/postgres.maupod.sql
+
+pg-restore: clean
+	bash -x ./scripts/pg_restore.sh
 
 psql:
 	docker-compose -f ./dev.docker-compose.yml exec pg psql postgresql://postgres:nevermind@pg:5432/maupod
