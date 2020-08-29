@@ -41,6 +41,7 @@ services:
     volumes:
       - ./:/go/src/github.com/mauleyzaola/maupod/src
       - $MAUPOD_MEDIA_STORE:/music-store
+      - $MAUPOD_ARTWORK:/artwork
 
   maupod-restapi:
     build:

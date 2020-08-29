@@ -112,6 +112,8 @@ func (s *MediaStore) ModsFind(media *pb.Media) ([]qm.QueryMod, error) {
 		mods = append(mods, where.ID.EQ(media.Id))
 	} else if media.Sha != "" {
 		mods = append(mods, where.Sha.EQ(media.Sha))
+	} else if media.AlbumIdentifier != "" {
+		mods = append(mods, where.AlbumIdentifier.EQ(media.AlbumIdentifier))
 	} else {
 		return nil, errors.New("could not find any criteria for finding media")
 	}

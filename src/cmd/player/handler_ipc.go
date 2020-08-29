@@ -28,7 +28,7 @@ func (m *MsgHandler) handlerIPC(msg *nats.Msg) {
 	// check ipc has been initialized
 	if val := input.Media.Location; val != "" {
 		var location = paths.LocationPath(val)
-		filename = paths.FullPath(location)
+		filename = paths.MediaFullPathAudioFile(location)
 		if err = m.InitializeIPC(filename); err != nil {
 			log.Println(err)
 			return

@@ -38,14 +38,6 @@ func (m *MsgHandler) Register() error {
 			Subject: strconv.Itoa(int(pb.Message_MESSAGE_MICRO_SERVICE_ARTWORK)),
 			Handler: m.handlerMicroService,
 		},
-		handler.Subscription{
-			Subject: strconv.Itoa(int(pb.Message_MESSAGE_MEDIA_EXTRACT_ARTWORK_FROM_FILE)),
-			Handler: m.handlerArtworkExtractWithinAudioFiles,
-		},
-		handler.Subscription{
-			Subject: strconv.Itoa(int(pb.Message_MESSAGE_MEDIA_EXTRACT_ARTWORK_FROM_DIRECTORIES)),
-			Handler: m.handlerArtworkExtractDirectories,
-		},
 	)
 }
 

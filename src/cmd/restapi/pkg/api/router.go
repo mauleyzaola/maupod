@@ -23,7 +23,6 @@ func SetupRoutes(a *ApiServer, output io.Writer) http.Handler {
 	http.Handle("/", baseRouter)
 
 	baseRouter.HandleFunc("/audio/scan", chainGlueCors(a.AudioScanPost)).Methods(http.MethodOptions, http.MethodPost)
-	baseRouter.HandleFunc("/artwork/scan", chainGlueCors(a.ArtworkScanPost)).Methods(http.MethodOptions, http.MethodPost)
 
 	baseRouter.HandleFunc("/genres", chainGlueCors(a.GenresListGet)).Methods(http.MethodOptions, http.MethodGet)
 	baseRouter.HandleFunc("/genres/artwork", chainGlueCors(a.GenreArtworksGet)).Methods(http.MethodOptions, http.MethodGet)

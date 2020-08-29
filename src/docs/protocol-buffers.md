@@ -43,7 +43,7 @@ As for the go plugin we can install it directly in the `$GOBIN` path
 
 ```
 cd
-go get -v google.golang.org/protobuf
+go get -v google.golang.org/protobuf/cmd/...
 cd $GOPATH/src/google.golang.org/protobuf/cmd/protoc-gen-go/
 go install
 ```

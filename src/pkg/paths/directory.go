@@ -13,8 +13,8 @@ func RootDirectory() string {
 	return os.Getenv(MediaStoreEnvName)
 }
 
-// FullPath returns the full path to a media file location, based on the root specified in the environment
-func FullPath(location string) string {
+// MediaFullPathAudioFile returns the full path to a media file location, based on the root specified in the environment
+func MediaFullPathAudioFile(location string) string {
 	return filepath.Join(RootDirectory(), location)
 }
 
