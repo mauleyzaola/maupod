@@ -23,7 +23,6 @@ enum Message {
     MESSAGE_MEDIA_SPECTRUM_GENERATE = 18;
     MESSAGE_MEDIA_DB_SELECT = 19;
     MESSAGE_MEDIA_EXTRACT_ARTWORK_FROM_FILE = 20;
-    MESSAGE_MEDIA_EXTRACT_ARTWORK_FROM_DIRECTORIES = 21;
 
     MESSAGE_IPC = 100;
 
@@ -81,7 +80,6 @@ enum RemoteCommand {
 message ArtworkExtractInput {
     Media media = 1;
     google.protobuf.Timestamp scan_date = 2;
-    string root = 3;
 }
 
 message ArtworkUpdateInput {

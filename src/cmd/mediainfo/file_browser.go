@@ -33,7 +33,7 @@ func (m *MsgHandler) handlerReadDirectory(msg *nats.Msg) {
 		output.Error = err.Error()
 		return
 	}
-	var root = paths.FullPath(input.Root)
+	var root = paths.MediaFullPathAudioFile(input.Root)
 	infos, err := ioutil.ReadDir(root)
 	if err != nil {
 		output.Error = err.Error()

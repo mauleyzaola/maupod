@@ -21,7 +21,7 @@ func (m *MsgHandler) handlerMediaSpectrumGenerate(msg *nats.Msg) {
 	var err error
 
 	defer func() {
-		if msg.Reply==""{
+		if msg.Reply == "" {
 			return
 		}
 		data, err := helpers.ProtoMarshal(&output)
@@ -40,7 +40,7 @@ func (m *MsgHandler) handlerMediaSpectrumGenerate(msg *nats.Msg) {
 		return
 	}
 	w := &bytes.Buffer{}
-	if err = generateSpectrum(w, paths.FullPath(input.Media.Location)); err != nil {
+	if err = generateSpectrum(w, paths.MediaFullPathAudioFile(input.Media.Location)); err != nil {
 		output.Error = err.Error()
 		return
 	}

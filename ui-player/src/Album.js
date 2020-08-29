@@ -127,8 +127,6 @@ class Album extends React.Component{
         }
     }
 
-    onArtworkScan = () => API.artworkScan({media:this.state.rows[0]})
-        .then(() => console.log('artwork scan dispatched'));
 
     render() {
         const { album, rows, isCompilation } = this.state;
@@ -141,11 +139,6 @@ class Album extends React.Component{
                     {rows.map(row => <TrackListRow key={row.id} row={row} isCompilation={isCompilation} />)}
                     </tbody>
                 </table>
-                {rows.length > 0 && <button
-                    type='button'
-                    className='btn btn-warning'
-                    onClick={this.onArtworkScan}
-                >Scan Artwork</button>}
             </div>
         );
     }

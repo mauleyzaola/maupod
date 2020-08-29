@@ -17,6 +17,7 @@ func ExtractImageFromMedia(source, target string) error {
 		"-i",
 		source,
 		target,
+		"-y",
 	}
 	cmd := exec.Command(ffmpeg, p...)
 	data, err := cmd.CombinedOutput()

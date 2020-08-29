@@ -49,8 +49,15 @@ func (m *MsgHandler) handlerMediaInfo(msg *nats.Msg) {
 	}
 	log.Println("received media info message: " + input.String())
 
-	var fullPath = paths.FullPath(input.FileName)
+	var fullPath = input.FileName
 	var location = paths.LocationPath(fullPath)
+
+	if _, err = os.Stat(fullPath); err != nil {
+		output.Response.Ok = false
+		output.Response.Error = err.Error()
+		return
+	}
+
 	raw, err := information.MediaInfoFromFile(fullPath)
 	if err != nil {
 		log.Println(err)

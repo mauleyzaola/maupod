@@ -119,7 +119,7 @@ func ScanDirectoryAudioFiles(
 	}
 
 	log.Println("[DEBUG] started scanning")
-	if err = helpers.WalkFiles(paths.FullPath(root), walker); err != nil {
+	if err = helpers.WalkFiles(paths.MediaFullPathAudioFile(root), walker); err != nil {
 		log.Println(err)
 		return err
 	}
@@ -127,10 +127,10 @@ func ScanDirectoryAudioFiles(
 	var timeout = time.Second * time.Duration(config.Delay)
 	for _, f := range files {
 		var location = paths.LocationPath(f)
-		var fullPath = paths.FullPath(location)
+		var fullPath = paths.MediaFullPathAudioFile(location)
 		var m *pb.Media
 		var output *pb.MediaInfoOutput
-		if output, err = broker.RequestMediaInfoScan(nc, location, timeout); err != nil {
+		if output, err = broker.RequestMediaInfoScan(nc, fullPath, timeout); err != nil {
 			log.Println(err)
 			continue
 		}
@@ -196,7 +196,11 @@ func ScanDirectoryAudioFiles(
 		// this will only look for image files in the same directory of the audio files
 		// no scanning of audio files content should be done
 		if m.AlbumIdentifier != "" {
-			if err = broker.PublishBroker(nc, pb.Message_MESSAGE_ARTWORK_SCAN, &pb.ArtworkExtractInput{Media: m, ScanDate: helpers.TimeToTs2(scanDate)}); err != nil {
+			if err = broker.PublishBroker(nc, pb.Message_MESSAGE_ARTWORK_SCAN,
+				&pb.ArtworkExtractInput{
+					Media:    m,
+					ScanDate: helpers.TimeToTs2(scanDate),
+				}); err != nil {
 				log.Println(err)
 			}
 		}

@@ -79,13 +79,6 @@ class FileBrowser extends React.Component{
 
     handleScanClick = () => this.runAudioScan();
 
-    onArtworkScan = () => {
-        const data = API.decodeURL(this.props.location.search);
-        API.artworkScan(data)
-            .then(() => console.log('artwork scan dispatched'));
-    }
-
-
     render() {
         const { files } = this.state;
         return (
@@ -93,12 +86,7 @@ class FileBrowser extends React.Component{
                 <FileList files={files} onClick={this.onClick} />
                 <form>
                     <div className='form-group'>
-                        <button type='button' className='btn btn-info' onClick={this.handleScanClick}>Scan Audio Files</button>
-                        <button
-                            type='button'   
-                            className='btn btn-warning'
-                            onClick={this.onArtworkScan}
-                        >Scan Artwork</button>
+                        <button type='button' className='btn btn-info' onClick={this.handleScanClick}>Scan Files</button>
                     </div>
                 </form>
             </div>
