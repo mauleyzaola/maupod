@@ -138,6 +138,7 @@ func (m *MsgHandler) handlerArtworkExtract(msg *nats.Msg) {
 		log.Println(err)
 		return
 	}
+	var media = input.Media
 
 	//we need to update the database when this function exits, one way or another
 	defer func() {
@@ -145,44 +146,48 @@ func (m *MsgHandler) handlerArtworkExtract(msg *nats.Msg) {
 		if err != nil {
 			return
 		}
-		if payload, err = helpers.ProtoMarshal(&pb.ArtworkUpdateInput{Media: input.Media}); err != nil {
+		if payload, err = helpers.ProtoMarshal(&pb.ArtworkUpdateInput{Media: media}); err != nil {
 			log.Println(err)
 			return
 		}
+		PublishSaveArtworkTrack(m.base.NATS(), media)
 		if err = m.base.NATS().Publish(strconv.Itoa(int(pb.Message_MESSAGE_MEDIA_UPDATE_ARTWORK)), payload); err != nil {
 			log.Println(err)
 			return
 		}
 	}()
 
-	input.Media.LastImageScan = helpers.TimeToTs(helpers.Now())
-	if input.Media.AlbumIdentifier == "" {
+	media.LastImageScan = helpers.TimeToTs(helpers.Now())
+	if media.AlbumIdentifier == "" {
 		// the album identifier is a 1:1 match with the image file, if not present, cannot process artwork
 		return
 	}
 
 	// check if artwork already exist for the same album
 	if ArtworkFileExist(m.config, input.Media) {
-		log.Printf("track: %s album: %s already exists artwork\n", input.Media.Track, input.Media.Album)
-		input.Media.ImageLocation = rules.ArtworkFileName(input.Media)
+		log.Printf("track: %s album: %s already exists artwork\n", media.Track, media.Album)
+		media.ImageLocation = rules.ArtworkFileName(media)
 		return
 	}
 
 	var artworkPath = ArtworkFullPath(m.config, input.Media)
 	var coverLocation string
 	// check for the image in the same directory of the audio file
-	coverFile, err := FindArtworkInDirectory(input.Media)
+	coverFiles, err := FindArtworkInDirectory(input.Media)
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	coverLocation = *coverFile
-
-	// check shape and size are valid
+	// check shape and size are valid for each of the valid artwork files
 	minWidth := int(m.config.ArtworkBigSize)
-	if err = IsArtworkValidSize(m.base.NATS(), coverLocation, minWidth); err != nil {
-		log.Println(err)
-		return
+	for _, v := range coverFiles {
+		if err = IsArtworkValidSize(m.base.NATS(), v, minWidth); err != nil {
+			log.Println(err)
+			continue
+		}
+		coverLocation = v
+		log.Println("[INFO] found valid artworkfile: ", coverLocation)
+		break
 	}
 
 	if err = ArtworkResizeFile(coverLocation, artworkPath, minWidth); err != nil {
@@ -191,7 +196,6 @@ func (m *MsgHandler) handlerArtworkExtract(msg *nats.Msg) {
 	}
 
 	// if we got this far, assign the artwork value to the track
-	input.Media.ImageLocation = rules.ArtworkFileName(input.Media)
-	// TODO: write to db the changes
+	media.ImageLocation = rules.ArtworkFileName(media)
 	return
 }
