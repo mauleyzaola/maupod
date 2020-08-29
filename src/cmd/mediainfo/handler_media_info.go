@@ -50,7 +50,6 @@ func (m *MsgHandler) handlerMediaInfo(msg *nats.Msg) {
 	log.Println("received media info message: " + input.String())
 
 	var fullPath = input.FileName
-	var location = paths.LocationPath(fullPath)
 
 	if _, err = os.Stat(fullPath); err != nil {
 		output.Response.Ok = false
@@ -83,6 +82,7 @@ func (m *MsgHandler) handlerMediaInfo(msg *nats.Msg) {
 		output.Response.Error = err.Error()
 		return
 	}
+	var location = paths.LocationPath(fullPath)
 	output.LastModifiedDate = helpers.TimeToTs2(info.ModTime())
 	output.Media = result
 	output.Media.FolderName = filepath.Dir(location)

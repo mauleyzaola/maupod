@@ -32,6 +32,7 @@ services:
       - MAUPOD_MEDIA_STORE=/music-store
     volumes:
       - $MAUPOD_MEDIA_STORE:/music-store
+      - $MAUPOD_ARTWORK:/artwork
 
   maupod-restapi:
     image: mauleyzaola/maupod-restapi

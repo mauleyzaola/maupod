@@ -95,31 +95,6 @@ func FindArtworkFilesInDirectory(dir string) ([]string, error) {
 	return result, nil
 }
 
-// FindFirstTrackSubdirectories will return all the sibling directories it can find from the root
-// all of which should contain at least one track with a valid extension, based in provided configuration
-func FindFirstTrackSubdirectories(config *pb.Configuration, root string) ([]string, error) {
-	var dirFirstTrackMap = make(map[string]string)
-	var files []string
-
-	fn := func(name string, isDir bool) (stop bool) {
-		var dir = filepath.Dir(name)
-		if !rules.FileIsValidExtension(config, name) {
-			return false
-		}
-		if _, ok := dirFirstTrackMap[dir]; ok {
-			return false
-		}
-		dirFirstTrackMap[dir] = name
-		files = append(files, name)
-		return false
-	}
-	if err := helpers.WalkFiles(root, fn); err != nil {
-		log.Println(err)
-		return nil, err
-	}
-	return files, nil
-}
-
 // LookupAlbumTracks will return all the media tracks from the same album
 func LookupAlbumTracks(nc *nats.Conn, config *pb.Configuration, media *pb.Media) ([]*pb.Media, error) {
 	var mediaInfoInput = &pb.MediaInfoInput{
@@ -176,83 +151,49 @@ func ExtractArtworkFromAudioFile(nc *nats.Conn, config *pb.Configuration, audioF
 
 // ExtractWithinAudioFile will try to extract the image from the audio file
 func ExtractWithinAudioFile(nc *nats.Conn, config *pb.Configuration, media *pb.Media) error {
-	// TODO: extract this logic to a function and reuse in other similar message receivers
+	var err error
+	// search for any image location on any track of the same album
+	artworkExists := ArtworkFileExist(config, media)
+
+	// if artwork was found, return
+	if artworkExists {
+		log.Println("[INFO] artwork already exists")
+		return nil
+	}
+
+	// check for first audio file with artwork in the same album
+	// if there is artwork, copy to temp directory and check its size is valid
+	// the first valid artwork will become the album artwork
 	albumTracks, err := LookupAlbumTracks(nc, config, media)
 	if err != nil {
 		log.Println(err)
 		return err
 	}
-
-	if len(albumTracks) == 0 {
-		err = errors.New("[ERROR] album has no tracks")
-		log.Println(err)
-		return err
-	}
-
-	var artworkUpdate = struct {
-		ImageLocation string
-	}{}
-	var artworkExists bool
-	// search for any image location on any track of the same album
-	for _, track := range albumTracks {
-		if artworkExists = ArtworkFileExist(config, track); artworkExists {
-			// assign to media in case we need to process the artwork below
-			media = track
-			artworkUpdate.ImageLocation = track.ImageLocation
-			break
-		}
-	}
-
-	// if artwork was found for any track, update the other tracks with the same artwork info and exit
-	lastImageScanDate := helpers.TimeToTs(helpers.Now())
-	if artworkExists {
-		for _, track := range albumTracks {
-			track.ImageLocation = artworkUpdate.ImageLocation
-			track.LastImageScan = lastImageScanDate
-			if err = PublishSaveArtworkTrack(nc, track); err != nil {
-				log.Println(err)
-				return err
-			}
-		}
-		log.Println(err)
-	}
-	// END: extract this logic to a function and reuse in other similar message receivers
-
-	// no other tracks were found with artwork, then scan audio file and search for images
-	var mediaFullPath = paths.MediaFullPathAudioFile(media.Location)
-	var artworkFullPath = ArtworkFullPath(config, media)
-	if err = images.ExtractImageFromMedia(mediaFullPath, artworkFullPath); err != nil {
-		log.Println(err)
-		return err
-	}
-	// check for image size to be ok
-	if err = IsArtworkValidSize(nc, artworkFullPath, int(config.ArtworkBigSize)); err != nil {
-		log.Println(err)
-		return err
-	}
-
-	// if all went fine, create the artwork image
 	width := int(config.ArtworkBigSize)
 	height := width
-	if err = ArtworkResizeFile(artworkFullPath, artworkFullPath, width, height); err != nil {
-		log.Println(err)
-		return err
-	}
-
-	// if we got this far, assign the artwork value to the track
-	media.ImageLocation = rules.ArtworkFileName(media)
-
-	// update image in db for each track
-	log.Println("[INFO] update image data for all album tracks")
+	var artworkFullPath = ArtworkFullPath(config, media)
 	for _, track := range albumTracks {
-		track.ImageLocation = media.ImageLocation
-		track.LastImageScan = lastImageScanDate
-		if err = PublishSaveArtworkTrack(nc, track); err != nil {
+		if err = images.ExtractImageFromMedia(paths.MediaFullPathAudioFile(track.Location), artworkFullPath); err != nil {
+			log.Println(err)
+			continue
+		}
+		if err = IsArtworkValidSize(nc, artworkFullPath, width); err != nil {
+			log.Println("[ERROR] image is not valid size: ", err)
+			if err = os.Remove(artworkFullPath); err != nil {
+				log.Println(err)
+			}
+			continue
+		}
+
+		// if all went fine, create the artwork image
+		if err = ArtworkResizeFile(artworkFullPath, artworkFullPath, width, height); err != nil {
 			log.Println(err)
 			return err
 		}
+
+		return nil
 	}
-	return nil
+	return errors.New("[WARNING] could not find any artwork in audio files")
 }
 
 func ExtractFromCoverFile(nc *nats.Conn, config *pb.Configuration, media *pb.Media) error {
@@ -265,35 +206,9 @@ func ExtractFromCoverFile(nc *nats.Conn, config *pb.Configuration, media *pb.Med
 		return err
 	}
 
-	defer func() {
-		lastImageScanDate := helpers.TimeToTs(helpers.Now())
-		media.LastImageScan = lastImageScanDate
-		if media.ImageLocation != "" {
-			var albumTracks []*pb.Media
-			if albumTracks, err = LookupAlbumTracks(nc, config, media); err != nil {
-				log.Println(err)
-				return
-			}
-			for _, track := range albumTracks {
-				track.ImageLocation = media.ImageLocation
-				track.LastImageScan = lastImageScanDate
-				if err = PublishSaveArtworkTrack(nc, track); err != nil {
-					log.Println(err)
-					return
-				}
-			}
-		} else {
-			if err = PublishSaveArtworkTrack(nc, media); err != nil {
-				log.Println(err)
-				return
-			}
-		}
-	}()
-
 	// check if artwork already exist for the same album in the /artwork directory
 	if ArtworkFileExist(config, media) {
 		log.Printf("track: %s album: %s already exists artwork\n", media.Track, media.Album)
-		media.ImageLocation = rules.ArtworkFileName(media)
 		return nil
 	}
 
@@ -331,7 +246,5 @@ func ExtractFromCoverFile(nc *nats.Conn, config *pb.Configuration, media *pb.Med
 		return err
 	}
 
-	// if we got this far, assign the artwork value to the track
-	media.ImageLocation = rules.ArtworkFileName(media)
 	return nil
 }
