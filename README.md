@@ -78,6 +78,18 @@ These packages will make your life easier, although not mandatory
 
 #### Running Postgres Isolated
 
+Install postgres client
+
+On Mac OS
+```
+brew update && brew install postgresql
+```
+
+On Ubuntu
+```
+sudo apt-get update && sudo apt-get install -y postgresql-client-common
+```
+
 ```
 docker run --rm --name postgres-maupod -v $HOME/data/maupod/pg/data:/var/lib/postgresql/data -p 5432:5432 -e POSTGRES_PASSWORD=nevermind -d postgres:9.5
 ```

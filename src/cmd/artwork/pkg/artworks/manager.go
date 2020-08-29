@@ -80,13 +80,15 @@ func FindArtworkFilesInDirectory(dir string) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	var validImageFiles = helpers.StringSlice([]string{pngExt, jpgExt})
+	var keys = make(map[string]struct{})
+	keys[pngExt] = struct{}{}
+	keys[jpgExt] = struct{}{}
 	var ext string
 	var result []string
 	for _, v := range files {
 		ext = filepath.Ext(v.Name())
 		ext = strings.ToLower(ext)
-		if !validImageFiles.ContainsAny(ext) {
+		if _, ok := keys[ext]; !ok {
 			continue
 		}
 		result = append(result, filepath.Join(dir, v.Name()))
@@ -161,39 +163,28 @@ func ExtractWithinAudioFile(nc *nats.Conn, config *pb.Configuration, media *pb.M
 		return nil
 	}
 
-	// check for first audio file with artwork in the same album
-	// if there is artwork, copy to temp directory and check its size is valid
-	// the first valid artwork will become the album artwork
-	albumTracks, err := LookupAlbumTracks(nc, config, media)
-	if err != nil {
-		log.Println(err)
-		return err
-	}
 	width := int(config.ArtworkBigSize)
 	height := width
 	var artworkFullPath = ArtworkFullPath(config, media)
-	for _, track := range albumTracks {
-		if err = images.ExtractImageFromMedia(paths.MediaFullPathAudioFile(track.Location), artworkFullPath); err != nil {
-			log.Println(err)
-			continue
-		}
-		if err = IsArtworkValidSize(nc, artworkFullPath, width); err != nil {
-			log.Println("[ERROR] image is not valid size: ", err)
-			if err = os.Remove(artworkFullPath); err != nil {
-				log.Println(err)
-			}
-			continue
-		}
-
-		// if all went fine, create the artwork image
-		if err = ArtworkResizeFile(artworkFullPath, artworkFullPath, width, height); err != nil {
-			log.Println(err)
-			return err
-		}
-
-		return nil
+	if err = images.ExtractImageFromMedia(paths.MediaFullPathAudioFile(media.Location), artworkFullPath); err != nil {
+		log.Println(err)
+		return err
 	}
-	return errors.New("[WARNING] could not find any artwork in audio files")
+	if err = IsArtworkValidSize(nc, artworkFullPath, width); err != nil {
+		log.Println("[ERROR] image is not valid size: ", err)
+		if err = os.Remove(artworkFullPath); err != nil {
+			log.Println(err)
+		}
+		return err
+	}
+
+	// if all went fine, create the artwork image
+	if err = ArtworkResizeFile(artworkFullPath, artworkFullPath, width, height); err != nil {
+		log.Println(err)
+		return err
+	}
+
+	return nil
 }
 
 func ExtractFromCoverFile(nc *nats.Conn, config *pb.Configuration, media *pb.Media) error {
