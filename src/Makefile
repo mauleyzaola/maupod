@@ -64,6 +64,9 @@ proto-node: prepare-proto-node
 pg-backup:
 	docker-compose exec pg pg_dump maupod -U postgres > $(HOME)/Downloads/postgres.maupod.sql
 
+pg-restore: clean
+	bash -x ./scripts/pg_restore.sh
+
 psql:
 	docker-compose -f ./dev.docker-compose.yml exec pg psql postgresql://postgres:nevermind@pg:5432/maupod
 
