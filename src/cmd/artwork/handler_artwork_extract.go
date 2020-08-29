@@ -1,12 +1,8 @@
 package main
 
 import (
-	"io/ioutil"
 	"log"
-	"os"
-	"path/filepath"
 	"strconv"
-	"strings"
 
 	. "github.com/mauleyzaola/maupod/src/cmd/artwork/pkg/artwork_helpers"
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
@@ -80,7 +76,7 @@ func (m *MsgHandler) handlerArtworkExtractWithinAudioFiles(msg *nats.Msg) {
 	var artworkExists bool
 	// search for any image location on any track of the same album
 	for _, track := range albumTracks {
-		if artworkExists = ArtworkFileExist(track); artworkExists {
+		if artworkExists = ArtworkFileExist(m.config, track); artworkExists {
 			// assign to media in case we need to process the artwork below
 			media = track
 			artworkUpdate.ImageLocation = track.ImageLocation
@@ -103,7 +99,7 @@ func (m *MsgHandler) handlerArtworkExtractWithinAudioFiles(msg *nats.Msg) {
 
 	// no other tracks were found with artwork, then scan audio file and search for images
 	var mediaFullPath = paths.FullPath(media.Location)
-	var artworkFullPath = artworkFullPath(m.config, media)
+	var artworkFullPath = ArtworkFullPath(m.config, media)
 	if err = images.ExtractImageFromMedia(mediaFullPath, artworkFullPath); err != nil {
 		log.Println(err)
 		return
@@ -175,53 +171,27 @@ func (m *MsgHandler) handlerArtworkExtract(msg *nats.Msg) {
 	var artworkPath = ArtworkFullPath(m.config, input.Media)
 	var coverLocation string
 	// check for the image in the same directory of the audio file
-	if coverLocation = findArtworkSameDirectory(paths.FullPath(input.Media.Location)); coverLocation == "" {
+	coverFile, err := FindArtworkInDirectory(input.Media)
+	if err != nil {
+		log.Println(err)
 		return
 	}
+	coverLocation = *coverFile
 
 	// check shape and size are valid
-	if err = imageValidSize(m.base.NATS(), coverLocation, int(m.config.ArtworkBigSize)); err != nil {
+	minWidth := int(m.config.ArtworkBigSize)
+	if err = IsArtworkValidSize(m.base.NATS(), coverLocation, minWidth); err != nil {
 		log.Println(err)
 		return
 	}
 
-	if err = imageWriteArtwork(coverLocation, artworkPath, int(m.config.ArtworkBigSize)); err != nil {
+	if err = ArtworkResizeFile(coverLocation, artworkPath, minWidth); err != nil {
 		log.Println(err)
 		return
 	}
 
 	// if we got this far, assign the artwork value to the track
 	input.Media.ImageLocation = rules.ArtworkFileName(input.Media)
+	// TODO: write to db the changes
 	return
-}
-
-
-func findArtworkSameDirectory(location string) string {
-	const (
-		pngExt = ".png"
-		jpgExt = ".jpg"
-	)
-
-	dir := filepath.Dir(location)
-	files, err := ioutil.ReadDir(dir)
-	if err != nil {
-		return ""
-	}
-	var validImageFiles = helpers.StringSlice([]string{pngExt, jpgExt})
-	var matchedFile os.FileInfo
-	var ext string
-	for _, v := range files {
-		ext = filepath.Ext(v.Name())
-		ext = strings.ToLower(ext)
-		if !validImageFiles.ContainsAny(ext) {
-			continue
-		}
-		matchedFile = v
-		break
-	}
-	if matchedFile == nil {
-		return ""
-	}
-
-	return filepath.Join(dir, matchedFile.Name())
 }

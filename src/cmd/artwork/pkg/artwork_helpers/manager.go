@@ -5,9 +5,11 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/mauleyzaola/maupod/src/pkg/images"
@@ -21,6 +23,8 @@ import (
 
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
 )
+
+var ErrNoFileFound = errors.New("no file found")
 
 type ReadDestroyer interface {
 	io.ReadCloser
@@ -77,8 +81,8 @@ func IsArtworkValidSize(nc *nats.Conn, filename string, minWidth int) error {
 
 // ArtworkFullPath returns the absolute path on this micro service for an artwork file
 func ArtworkFullPath(config *pb.Configuration, media *pb.Media) string {
-	filename:=filepath.Join(config.ArtworkStore.Location, rules.ArtworkFileName(media))
-	return paths.LocationPath(media.Location)
+	filename := filepath.Join(config.ArtworkStore.Location, rules.ArtworkFileName(media))
+	return paths.LocationPath(filename)
 }
 
 // ArtworkSave will save the artwork from a reader, based on the media file provided
@@ -88,14 +92,41 @@ func ArtworkSave(media *pb.Media, reader io.Reader) error {
 
 // ArtworkFileExist will check if the artwork file already exists
 func ArtworkFileExist(config *pb.Configuration, media *pb.Media) bool {
-	filename:=filepath.Join(config.ArtworkStore.Location, rules.ArtworkFileName(media))
+	filename := filepath.Join(config.ArtworkStore.Location, rules.ArtworkFileName(media))
 	_, err := os.Stat(filename)
 	return err == nil
 }
 
-// FindArtworkInDirectory will return true if the artwork file for the media, exists
-func FindArtworkInDirectory(media *pb.Media) bool {
-	panic("not implemented")
+// FindArtworkInDirectory will return the first matching filename which is a valid artwork file
+func FindArtworkInDirectory(media *pb.Media) (*string, error) {
+	const (
+		pngExt = ".png"
+		jpgExt = ".jpg"
+	)
+
+	dir := filepath.Dir(paths.FullPath(media.Location))
+	files, err := ioutil.ReadDir(dir)
+	if err != nil {
+		return nil, err
+	}
+	var validImageFiles = helpers.StringSlice([]string{pngExt, jpgExt})
+	var matchedFile os.FileInfo
+	var ext string
+	for _, v := range files {
+		ext = filepath.Ext(v.Name())
+		ext = strings.ToLower(ext)
+		if !validImageFiles.ContainsAny(ext) {
+			continue
+		}
+		matchedFile = v
+		break
+	}
+	if matchedFile == nil {
+		return nil, ErrNoFileFound
+	}
+
+	var result = filepath.Join(dir, matchedFile.Name())
+	return &result, nil
 }
 
 // FindFirstTrackSubdirectories will return all the sibling directories it can find from the root
