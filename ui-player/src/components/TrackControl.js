@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import {TrackPlayControls} from "./Player";
 import {handleLoadQueue} from "../actions/queue";
 import {applyBlur, CANVAS_WIDTH, loadCanvasImage} from "../canvas";
-import {linkAlbumList, linkAlbumView, linkPerformerList} from "../routes";
+import { linkAlbumView, linkPerformerList } from "../routes";
 import {Link} from "react-router-dom";
 
 class TrackControl extends React.Component{
