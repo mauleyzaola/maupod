@@ -14,6 +14,7 @@ import { linkMediaList } from "./routes";
 import FileBrowser from "./components/FileBrowser";
 import TrackControl from "./components/TrackControl";
 import Queue from "./components/Queue";
+import Setup from "./components/Setup";
 
 class App extends React.Component{
     onSubmit = e => {
@@ -44,6 +45,7 @@ class App extends React.Component{
                         <Route path='/media' component={MediaList} />
                         <Route path='/queue' component={Queue} />
                         <Route path='/file-browser' component={FileBrowser} />
+                        <Route path='/setup' component={Setup} />
                     </Switch>
                 </div>
             </div>

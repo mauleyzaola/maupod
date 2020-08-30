@@ -29,6 +29,9 @@ func SetupRoutes(a *ApiServer, output io.Writer) http.Handler {
 
 	baseRouter.HandleFunc("/ipc", chainGlueCors(a.IPCPost)).Methods(http.MethodOptions, http.MethodPost)
 
+	baseRouter.HandleFunc("/events", chainFn(a.MediaEventsGet(), cors)).Methods(http.MethodOptions, http.MethodGet)
+	baseRouter.HandleFunc("/events", chainFn(a.MediaEventsPost(), cors)).Methods(http.MethodOptions, http.MethodPost)
+
 	baseRouter.HandleFunc("/file-browser/directory", chainGlueCors(a.DirectoryReadGet)).Methods(http.MethodOptions, http.MethodPost)
 
 	baseRouter.HandleFunc("/media/{field}/distinct", chainGlueCors(a.DistinctListGet)).Methods(http.MethodOptions, http.MethodGet)
