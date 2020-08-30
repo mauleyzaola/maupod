@@ -8,6 +8,9 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/mauleyzaola/maupod/src/pkg/broker"
+	"github.com/mauleyzaola/maupod/src/pkg/pb"
+
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata/orm"
@@ -48,6 +51,8 @@ func (a *ApiServer) MediaEventsPost() http.HandlerFunc {
 		defer func() {
 			_ = file.Close()
 		}()
+		nc := a.nc
+		var lineCount int
 		scanner := bufio.NewScanner(file)
 		for scanner.Scan() {
 			var e *orm.MediaEvent
@@ -57,10 +62,26 @@ func (a *ApiServer) MediaEventsPost() http.HandlerFunc {
 				helpers.WriteJson(w, err, http.StatusBadRequest, nil)
 				return
 			}
-			fmt.Fprintf(w, "id: %s sha: %s ts: %s event: %d\n", e.ID, e.Sha, e.TS, e.Event)
+			input := &pb.MediaEventInput{
+				Id:    e.ID,
+				Sha:   e.Sha,
+				Ts:    helpers.TimeToTs(&e.TS),
+				Event: pb.Message(e.Event),
+			}
+			if err = broker.PublishMediaEventUpsert(nc, input); err != nil {
+				helpers.WriteJson(w, err, http.StatusInternalServerError, nil)
+				return
+			}
+			lineCount++
 		}
 
-		//helpers.WriteJson(w, nil, http.StatusAccepted, nil)
+		helpers.WriteJson(w, nil, http.StatusAccepted, struct {
+			Ok        bool `json:"ok"`
+			LineCount int  `json:"line_count"`
+		}{
+			Ok:        true,
+			LineCount: lineCount,
+		})
 	}
 }
 

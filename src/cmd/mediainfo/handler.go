@@ -92,6 +92,10 @@ func (m *MsgHandler) Register() error {
 			Subject: strconv.Itoa(int(pb.Message_MESSAGE_MICRO_SERVICE_MEDIAINFO)),
 			Handler: m.handlerMicroService,
 		},
+		handler.Subscription{
+			Subject: strconv.Itoa(int(pb.Message_MESSAGE_UPSERT_MEDIA_EVENT)),
+			Handler: m.handlerMediaEventUpsert,
+		},
 	)
 }
 
