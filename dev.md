@@ -80,7 +80,7 @@ automatically download and configure golang for you
 wget -O - https://raw.githubusercontent.com/mauleyzaola/scripts/master/go/go.install.sh | sh
 ```
 
-For the postgres client, install these packages
+For the make and postgres client, install these packages
 
 ```
 sudo apt-get update && sudo apt-get install -y postgresql-client-common software-properties-common python g++ make cmake
