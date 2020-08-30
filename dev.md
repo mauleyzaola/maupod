@@ -112,6 +112,8 @@ MAUPOD_MEDIA_STORE
 
 The rest are inferred automatically
 
+Also, make sure you don't change the port numbers, otherwise docker won't be able to map them correctly
+
 ## Starting in Development Mode
 
 Browse to `src/` direectory and run `make dev`. This command will build the docker images for developing the backend. Consider hot loading is
@@ -121,4 +123,4 @@ Browse to `src/` directory and run `make browser` if you're using a Desktop OS o
 
 UI is coded in React, and hot reloading feature works like backend does. This allows you to see the changes as you save automatically in the browser
 
-If the browser didn't start automatically, you can go to `localhost:9990` or `your-ip-address:9990` to see the UI
+If the browser didn't start automatically, you can go to `http://localhost:9990` or `http://your-ip-address:9990` to see the UI
