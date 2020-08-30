@@ -40,6 +40,9 @@ class Nav extends React.Component{
                         <li className="nav-item">
                             <Link className="nav-link" to='/file-browser'>File Browser</Link>
                         </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to='/setup'>Setup</Link>
+                        </li>
                     </ul>
                     <form className="form-inline my-2 my-lg-0" onSubmit={e => {
                         e.preventDefault();

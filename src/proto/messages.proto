@@ -23,6 +23,7 @@ enum Message {
     MESSAGE_MEDIA_SPECTRUM_GENERATE = 18;
     MESSAGE_MEDIA_DB_SELECT = 19;
     MESSAGE_MEDIA_EXTRACT_ARTWORK_FROM_FILE = 20;
+    MESSAGE_UPSERT_MEDIA_EVENT = 21;
 
     MESSAGE_IPC = 100;
 
@@ -112,6 +113,13 @@ message FileItem {
     int64 size = 3;
     string name = 4;
     string id = 5;
+}
+
+message MediaEventInput {
+    string id = 1;
+    string sha = 2;
+    google.protobuf.Timestamp ts = 3;
+    Message event = 4;
 }
 
 message MediaInfoInput {

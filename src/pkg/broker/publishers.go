@@ -49,3 +49,7 @@ func PublishBrokerJSON(nc *nats.Conn, subject pb.Message, input proto.Message) e
 func PublishMediaArtworkUpdate(nc *nats.Conn, media *pb.Media) error {
 	return PublishBroker(nc, pb.Message_MESSAGE_MEDIA_UPDATE_ARTWORK, &pb.ArtworkUpdateInput{Media: media})
 }
+
+func PublishMediaEventUpsert(nc *nats.Conn, input *pb.MediaEventInput) error {
+	return PublishBroker(nc, pb.Message_MESSAGE_UPSERT_MEDIA_EVENT, input)
+}
