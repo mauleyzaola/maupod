@@ -185,10 +185,6 @@ func (m *IPC) IsPaused() bool {
 func (m *IPC) Terminate() error {
 	log.Println("received termination signal")
 	_ = m.Pause()
-	sleep(defaultStartupSecs)
-	defer func() {
-		_ = m.connection.Close()
-	}()
 	if m.processor != nil {
 		return m.processor.Close()
 	}
