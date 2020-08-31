@@ -1,30 +1,11 @@
 # SERVER
 
-Maupod server has various services described below
+## Slack Notifications
 
-## Artwork
+You would need to install the (Github Integration)[https://github.com/integrations/slack]
 
-TODO
-
-## Audioscan
-
-TODO
-
-## Mediainfo
-
-TODO
-
-## Restapi
-
-Restful web server
-
-### Examples
-
-Get all media from performer *depeche mode* in album *ultra*
+Then run this to subscribe
 
 ```
-curl -XGET -G "http://localhost:8888/media" \
- --data-urlencode 'performer=depeche mode' \
- --data-urlencode 'album=ultra' \
- | jq '. | length'
+/github subscribe mauleyzaola/maupod reviews comments commits branches commits:all
 ```

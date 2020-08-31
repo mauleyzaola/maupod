@@ -46,3 +46,5 @@ for dir in ./cmd/*; do
 done
 
 # remove unused docker images
+
+docker image prune -f

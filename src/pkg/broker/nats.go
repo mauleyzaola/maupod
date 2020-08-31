@@ -24,6 +24,7 @@ func ConnectNATS(natsURL string, retries int, delay time.Duration) (*nats.Conn, 
 		}
 		return conn != nil
 	}
+	log.Println("starting connection to NATS at: ", natsURL)
 	ok, err := helpers.RetryFunc("connecting to NATS", retries, delay, fn)
 	if err != nil {
 		return nil, err
