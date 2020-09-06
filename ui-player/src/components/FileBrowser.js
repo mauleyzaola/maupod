@@ -73,7 +73,8 @@ class FileBrowser extends React.Component{
 
     runAudioScan = () => {
         const data = API.decodeURL(this.props.location.search);
-        data.force = true;
+        // we don't want to force because it will re-scan all the files, even those which haven't changed since last scan
+        // data.force = true;
         API.audioScan(data).then(() => console.log('Request was successful'))
     }
 

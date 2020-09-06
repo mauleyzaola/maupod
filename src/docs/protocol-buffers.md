@@ -23,6 +23,7 @@ sudo apt-get install autoconf automake libtool curl make g++ unzip -y
 git clone https://github.com/protocolbuffers/protobuf.git
 cd protobuf
 git submodule update --init --recursive
+git checkout v3.13.0
 ./autogen.sh
 ./configure
 make
@@ -43,7 +44,11 @@ As for the go plugin we can install it directly in the `$GOBIN` path
 
 ```
 cd
+go get -v google.golang.org/grpc/cmd/protoc-gen-go-grpc
 go get -v google.golang.org/protobuf/cmd/...
 cd $GOPATH/src/google.golang.org/protobuf/cmd/protoc-gen-go/
+git checkout v1.25.0
+go install
+cd $GOPATH/src/google.golang.org/grpc/cmd/protoc-gen-go-grpc
 go install
 ```

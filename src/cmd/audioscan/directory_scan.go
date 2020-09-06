@@ -106,11 +106,15 @@ func ScanDirectoryAudioFiles(
 		}
 
 		if !force {
+			var relativePath=paths.LocationPath(filename)
 			// a bit of speed improvement, avoid a second time scanning the same file unless it has been changed in the file system
-			if val, ok := mediaLocationKeys[filename]; ok {
+			if val, ok := mediaLocationKeys[relativePath]; ok {
 				if !rules.NeedsMediaUpdate(val) {
+					log.Println("[INFO] no need to scan this file: ", relativePath)
 					return false
 				}
+			}else{
+				log.Println("[INFO] location not found in db: ", relativePath)
 			}
 		}
 
