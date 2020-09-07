@@ -24,6 +24,7 @@ enum Message {
     MESSAGE_MEDIA_DB_SELECT = 19;
     MESSAGE_MEDIA_EXTRACT_ARTWORK_FROM_FILE = 20;
     MESSAGE_UPSERT_MEDIA_EVENT = 21;
+    MESSAGE_ARTWORK_FIND_ALBUM_COVER = 22;
 
     MESSAGE_IPC = 100;
 
@@ -76,6 +77,16 @@ enum RemoteCommand {
     REMOTE_PLAY = 0;
     REMOTE_PAUSE = 1;
     REMOTE_VOLUME = 2;
+}
+
+message ArtworkFindAlbumCoverInput {
+    Media media = 1;
+}
+
+message AlbumFindAlbumCoverProcess {}
+
+message ArtworkFindAlbumCoverOutput {
+    string error = 1;
 }
 
 message ArtworkExtractInput {
