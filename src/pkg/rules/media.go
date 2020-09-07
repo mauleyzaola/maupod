@@ -3,6 +3,9 @@ package rules
 import (
 	"errors"
 	"fmt"
+	"github.com/mauleyzaola/maupod/src/pkg/helpers"
+	"github.com/mauleyzaola/maupod/src/pkg/paths"
+	"log"
 	"os"
 	"time"
 
@@ -14,20 +17,23 @@ func FileInfo(m *pb.Media) (os.FileInfo, error) {
 	if m.Location == "" {
 		return nil, errors.New("missing location")
 	}
-	return os.Stat(m.Location)
+	var fullPath = paths.MediaFullPathAudioFile(m.Location)
+	return os.Stat(fullPath)
 }
 
 // Needs update compares the file system modified date vs database value
 func NeedsMediaUpdate(m *pb.Media) bool {
 	info, err := FileInfo(m)
 	if err != nil {
+		log.Println("[ERROR] ", err)
 		return false
 	}
 	if m.LastScan == nil {
 		return true
 	}
-	diffSeconds := m.LastScan.Seconds - info.ModTime().Unix()
-	return diffSeconds < 0
+
+	var lastScan=helpers.TsToTime(m.LastScan)
+	return lastScan.Before(info.ModTime())
 }
 
 func MediaCheckMinimalData(m *pb.Media) error {
