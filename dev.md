@@ -86,6 +86,30 @@ For the make and postgres client, install these packages
 sudo apt-get update && sudo apt-get install -y postgresql-client-common software-properties-common python g++ make cmake
 ```
 
+###  Protobuf
+
+Please stick to these versions so we don't check in a bunch of stuff in the repo
+
+```
+cd
+GO111MODULE=off go get -v google.golang.org/grpc/cmd/protoc-gen-go-grpc
+GO111MODULE=off go get -v google.golang.org/protobuf/cmd/...
+cd $GOPATH/src/google.golang.org/protobuf/cmd/protoc-gen-go/
+git checkout v1.25.0
+go install
+cd $GOPATH/src/google.golang.org/grpc/cmd/protoc-gen-go-grpc
+go install
+```
+
+You can check the right version using these commands
+```
+$ protoc-gen-go --version
+protoc-gen-go v1.25.0
+
+$ protoc --version
+libprotoc 3.13.0
+```
+
 ## Environment Variables
 
 Maupod applications rely on environment in order to determine the ip address of the UI and Backend. Also to configure the root directory
