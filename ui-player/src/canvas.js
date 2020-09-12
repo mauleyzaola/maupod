@@ -1,5 +1,5 @@
 
-const CANVAS_WIDTH = 1920;
+let   CANVAS_WIDTH = 1920;
 const CANVAS_HEIGHT = 150;
 
 // these are the colors when track has been played
@@ -19,7 +19,8 @@ const blurredColors = { red: darkRed, green: darkGreen, blue: darkBlue };
 let ctx;
 
 // loadDataItems will draw a canvas and instantiate the context for it from an image source
-const loadCanvasImage = ({canvas, src}) => {
+const loadCanvasImage = ({canvas, src, width}) => {
+    CANVAS_WIDTH = width;
     try{
         if(!canvas) throw Error('missing canvas parameter');
         if(!src) throw Error('missing src parameter');
@@ -28,6 +29,7 @@ const loadCanvasImage = ({canvas, src}) => {
         img.src = src;
         canvas.width = CANVAS_WIDTH - 10;
         ctx = canvas.getContext('2d');
+        
         img.addEventListener('load', () => {
             ctx.drawImage(img, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         })

@@ -44,7 +44,7 @@ down:
 
 force:
 prepare-proto: force
-	rm -rf ./pkg/pb
+	sudo rm -rf ./pkg/pb
 	mkdir -p ./pkg/pb
 
 prepare-proto-node: force

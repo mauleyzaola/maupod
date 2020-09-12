@@ -91,6 +91,7 @@ sudo apt-get update && sudo apt-get install -y postgresql-client-common software
 Please stick to these versions so we don't check in a bunch of stuff in the repo
 
 ```
+brew update && brew install protobuf
 cd
 GO111MODULE=off go get -v google.golang.org/grpc/cmd/protoc-gen-go-grpc
 GO111MODULE=off go get -v google.golang.org/protobuf/cmd/...

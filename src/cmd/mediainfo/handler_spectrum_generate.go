@@ -40,7 +40,7 @@ func (m *MsgHandler) handlerMediaSpectrumGenerate(msg *nats.Msg) {
 		return
 	}
 	w := &bytes.Buffer{}
-	if err = generateSpectrum(w, paths.MediaFullPathAudioFile(input.Media.Location)); err != nil {
+	if err = generateSpectrum(w, paths.MediaFullPathAudioFile(input.Media.Location), int(input.Width), int(input.Height)); err != nil {
 		output.Error = err.Error()
 		return
 	}
@@ -51,17 +51,19 @@ func (m *MsgHandler) handlerMediaSpectrumGenerate(msg *nats.Msg) {
 
 // TODO: allow to set the color
 // TODO: allow to set the width and height
-func generateSpectrum(w io.Writer, filename string) error {
+func generateSpectrum(w io.Writer, filename string, width, heigth int) error {
 	const ffmpegProgram = "ffmpeg"
 	if !helpers.ProgramExists(ffmpegProgram) {
 		return fmt.Errorf("could not find program: %s in path", ffmpegProgram)
 	}
 	destination := filepath.Join(os.TempDir(), helpers.NewUUID()) + ".png"
+
 	var p = []string{
 		"-i",
 		filename,
 		"-lavfi",
-		"showwavespic=split_channels=0:s=1920x1080:colors=48c3e8",
+		//"showwavespic=split_channels=0:s=1920x108:colors=48c3e8",
+		fmt.Sprintf("showwavespic=split_channels=0:s=%dx%d:colors=48c3e8", width, heigth),
 		destination,
 	}
 	cmd := exec.Command(ffmpegProgram, p...)
