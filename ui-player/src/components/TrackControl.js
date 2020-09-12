@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {TrackPlayControls} from "./Player";
 import {handleLoadQueue} from "../actions/queue";
-import {applyBlur, CANVAS_WIDTH, loadCanvasImage} from "../canvas";
+import {applyBlur,CANVAS_HEIGHT, CANVAS_WIDTH, loadCanvasImage} from "../canvas";
 import { linkAlbumView, linkPerformerList } from "../routes";
 import {Link} from "react-router-dom";
 
@@ -55,9 +55,12 @@ class TrackControl extends React.Component{
 
     drawTrackSpectrum = media => {
         const canvas = document.getElementById('canvas');
+        const winWidth =  window.innerWidth;
+
         loadCanvasImage({
             canvas,
-            src: `${process.env.REACT_APP_MAUPOD_API}/media/${media.id}/spectrum`,
+            src: `${process.env.REACT_APP_MAUPOD_API}/media/${media.id}/spectrum?width=${winWidth}&height=${CANVAS_HEIGHT}`,
+            winWidth
         })
     }
 
@@ -111,7 +114,7 @@ class TrackControl extends React.Component{
                     </div>
                     <TrackPlayControls media={media} />
                     <div>
-                        <canvas id='canvas' onClick={this.onPositionChange} />
+                        <canvas id='canvas' onClick={this.onPositionChange} className='canvash' />
                     </div>
                 </div>
             </div>
