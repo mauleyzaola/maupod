@@ -19,8 +19,8 @@ const blurredColors = { red: darkRed, green: darkGreen, blue: darkBlue };
 let ctx;
 
 // loadDataItems will draw a canvas and instantiate the context for it from an image source
-const loadCanvasImage = ({canvas, src, winWidth}) => {
-    CANVAS_WIDTH = winWidth;
+const loadCanvasImage = ({canvas, src, width}) => {
+    CANVAS_WIDTH = width;
     try{
         if(!canvas) throw Error('missing canvas parameter');
         if(!src) throw Error('missing src parameter');

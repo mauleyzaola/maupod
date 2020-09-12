@@ -55,12 +55,12 @@ class TrackControl extends React.Component{
 
     drawTrackSpectrum = media => {
         const canvas = document.getElementById('canvas');
-        const winWidth =  window.innerWidth;
+        const width =  window.innerWidth;
 
         loadCanvasImage({
             canvas,
-            src: `${process.env.REACT_APP_MAUPOD_API}/media/${media.id}/spectrum?width=${winWidth}&height=${CANVAS_HEIGHT}`,
-            winWidth
+            src: `${process.env.REACT_APP_MAUPOD_API}/media/${media.id}/spectrum?width=${width}&height=${CANVAS_HEIGHT}`,
+            width
         })
     }
 
