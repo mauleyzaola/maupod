@@ -4,6 +4,7 @@ import (
 	"errors"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/gorilla/mux"
@@ -66,8 +67,21 @@ func (a *ApiServer) MediaSpectrumGet() http.HandlerFunc {
 			helpers.WriteJson(w, err, http.StatusNotFound, nil)
 			return
 		}
+		height, err := strconv.Atoi(r.URL.Query().Get("height"))
+		if err != nil {
+			helpers.WriteJson(w, err, http.StatusBadRequest, nil)
+			return
+		}
+		width, err := strconv.Atoi(r.URL.Query().Get("width"))
+		if err != nil {
+			helpers.WriteJson(w, err, http.StatusBadRequest, nil)
+			return
+		}
+
 		var input = pb.SpectrumGenerateInput{
-			Media: media,
+			Media:  media,
+			Width:  int64(width),
+			Height: int64(height),
 		}
 		var output pb.SpectrumGenerateOutput
 		if err = broker.DoRequest(a.nc, pb.Message_MESSAGE_MEDIA_SPECTRUM_GENERATE, &input, &output, rules.Timeout(a.config)+(time.Second*5)); err != nil {

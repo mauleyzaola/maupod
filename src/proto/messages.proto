@@ -195,6 +195,8 @@ message SocketTrackPositionChangeInput {
 
 message SpectrumGenerateInput {
     Media media = 1;
+    int64 width = 2;
+    int64 height = 3;
 }
 
 message SpectrumGenerateOutput {
