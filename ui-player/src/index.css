@@ -5,4 +5,17 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+
+}
+
+.canvash {
+  width: 95%;
+}
+
+@media only screen and ( min-width: 400px ) {
+  .canvash {
+    width: 100%;
+  }
+
 }

@@ -5184,7 +5184,9 @@ proto.pb.SpectrumGenerateInput.prototype.toObject = function(opt_includeInstance
  */
 proto.pb.SpectrumGenerateInput.toObject = function(includeInstance, msg) {
   var f, obj = {
-    media: (f = msg.getMedia()) && media_pb.Media.toObject(includeInstance, f)
+    media: (f = msg.getMedia()) && media_pb.Media.toObject(includeInstance, f),
+    width: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    height: jspb.Message.getFieldWithDefault(msg, 3, 0)
   };
 
   if (includeInstance) {
@@ -5226,6 +5228,14 @@ proto.pb.SpectrumGenerateInput.deserializeBinaryFromReader = function(msg, reade
       reader.readMessage(value,media_pb.Media.deserializeBinaryFromReader);
       msg.setMedia(value);
       break;
+    case 2:
+      var value = /** @type {number} */ (reader.readInt64());
+      msg.setWidth(value);
+      break;
+    case 3:
+      var value = /** @type {number} */ (reader.readInt64());
+      msg.setHeight(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -5261,6 +5271,20 @@ proto.pb.SpectrumGenerateInput.serializeBinaryToWriter = function(message, write
       1,
       f,
       media_pb.Media.serializeBinaryToWriter
+    );
+  }
+  f = message.getWidth();
+  if (f !== 0) {
+    writer.writeInt64(
+      2,
+      f
+    );
+  }
+  f = message.getHeight();
+  if (f !== 0) {
+    writer.writeInt64(
+      3,
+      f
     );
   }
 };
@@ -5300,6 +5324,42 @@ proto.pb.SpectrumGenerateInput.prototype.clearMedia = function() {
  */
 proto.pb.SpectrumGenerateInput.prototype.hasMedia = function() {
   return jspb.Message.getField(this, 1) != null;
+};
+
+
+/**
+ * optional int64 width = 2;
+ * @return {number}
+ */
+proto.pb.SpectrumGenerateInput.prototype.getWidth = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.pb.SpectrumGenerateInput} returns this
+ */
+proto.pb.SpectrumGenerateInput.prototype.setWidth = function(value) {
+  return jspb.Message.setProto3IntField(this, 2, value);
+};
+
+
+/**
+ * optional int64 height = 3;
+ * @return {number}
+ */
+proto.pb.SpectrumGenerateInput.prototype.getHeight = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.pb.SpectrumGenerateInput} returns this
+ */
+proto.pb.SpectrumGenerateInput.prototype.setHeight = function(value) {
+  return jspb.Message.setProto3IntField(this, 3, value);
 };
 
 
