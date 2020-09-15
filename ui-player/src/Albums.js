@@ -4,7 +4,6 @@ import {linkAlbumView, linkGenreList, linkPerformerList} from "./routes";
 import { Link } from "react-router-dom";
 import {msToString} from "./helpers";
 
-
 const Thumbnail = ({album}) => {
     if(!album.image_location){
         //return null;
@@ -22,25 +21,26 @@ const Thumbnail = ({album}) => {
 const AlbumCard = ({r}) => {
     return (
 
-        <div className='album-card col-2'>
-            <div className="card bg-primary p-0 mx-2 w-5 ">
+        <div className='album-card col-2 ml-1 card-deck'>
+            <div className="card border-secondary bg-dark p-0 mx-2 w-5 rounded-2">
                 <div className='card-img-top'>      
                             <Thumbnail album={r} />
                 </div>       
-                <div class="card-body p-1 text bg-dark ">
+                <div class="card-body p-1 text bg-dark h-50">
+
                     <div className='row'>
-                        <div className='col mx-1 font-italic '>
+                        <div className='col mx-1 font-italic text-nowrap'>
                         {r.recorded_date ? `${r.recorded_date}` : "unknown"}
                         </div>
-                        <div className='col font-italic'>
-                        {r.track_name_total ? `Track's: ${r.track_name_total}` : null}
+                        <div className='col font-italic text-nowrap'>
+                        {r.track_name_total ? `Tracks: ${r.track_name_total}` : null}
                         </div>
                     </div>               
-                    <div className='mx-1'>
-                        <h5 className="card-title p-0 my-0 w-20 ">
-                        <Link to={linkAlbumView(r)}>
+                    <div className='mx-1 text-truncate'>
+                    
+                            <Link data-tip data-for="fullNameAlbum" to={linkAlbumView(r)}>
                             {r.album}</Link>
-                        </h5>
+                            
                     </div>
                     <div className='mx-1 text-muted '>
                         <Link to={linkPerformerList(r)}>
@@ -49,6 +49,11 @@ const AlbumCard = ({r}) => {
                     </div>
 
                 </div> 
+                <div class="card-footer">
+                <small className="text-muted h-5">
+                        {r.duration ? `Duration: ${msToString(r.duration)}` : null}
+                    </small>
+                </div>
             </div>
         </div>   
         
