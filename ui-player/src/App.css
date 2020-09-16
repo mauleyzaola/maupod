@@ -15,10 +15,13 @@
     display: block;
 }
 
-
 .navigation-bar {
     position: fixed;
     width: 100%;
+}
+
+.no-rounded {
+    border-radius: 0;
 }
 
 .top-always {
