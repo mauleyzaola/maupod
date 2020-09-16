@@ -5,20 +5,23 @@
 .artwork-xs {
     padding: 2px;
     height: 60px;
-    width: 60px;
+    width: 60px;    
 }
-
 
 .artwork-small {
-    padding: 2px;
-    height: 150px;
-    width: 150px;
+    padding: 0px;
+    height: 100%;
+    width: 100%;
+    display: block;
 }
-
 
 .navigation-bar {
     position: fixed;
     width: 100%;
+}
+
+.no-rounded {
+    border-radius: 0;
 }
 
 .top-always {
