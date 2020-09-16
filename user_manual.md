@@ -7,21 +7,27 @@
 2. Valid formats for artwork images: `JPEG` (*`JPG`*) and `PNG`.
 3. Valid size for artwork images: minimum `500x500px` (`height` and `whith` must be equal sizes; and the same image will be resized by `Maupod` for `Albums` and `Genere` display). 
 
+### Player Controls
+
+Timer
+Performer (clickable name of the artist that takes you to )
+Album 
+
+
 ### Navigation Bar
 
 ![alt text](assets/images/maupod-navbar.png)
 
 
-1. [Dashboard](dashboard)
-2. [Albums](albums)
-3. [Generes](generes)
-4. [Performers](performers)
-5. [Queue](queue)
-6. [File Browser](file-browser)
+1. [Dashboard](#dashboard)
+2. [Albums](#albums)
+3. [Generes](#generes)
+4. [Performers](#performers)
+5. [Queue](#queue)
+6. [File Browser](#file-browser)
 7. [Setup](#setup)
 8. [Search](#search)
 9. [Extra](#extra)
-
 
 
 ## <a name="dashboard">1. Dashboard</a>
