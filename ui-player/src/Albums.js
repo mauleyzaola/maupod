@@ -5,13 +5,7 @@ import { Link } from "react-router-dom";
 import {msToString} from "./helpers";
 
 const Thumbnail = ({album}) => {
-    if(!album.image_location){
-        //return null;
-
-        return (
-          <img alt='cover' className='artwork-small' src={`${process.env.REACT_APP_MAUPOD_ARTWORK}/unknown.png`} />
-        )
-    }
+    if(!album.image_location) return null;
     return (
         <img alt='cover' className='artwork-small' src={`${process.env.REACT_APP_MAUPOD_ARTWORK}/${album.image_location}`} />
     )
