@@ -85,9 +85,7 @@ psql:
 
 server: dev-build up logs
 
-swagger: force
-	docker-compose -f swagger.docker-compose.yml up -d
-	sleep 2
+swagger:
 	$(xopen) "http://localhost:8888"
 
 up:
