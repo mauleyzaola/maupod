@@ -1,0 +1,11 @@
+version: "3.7"
+services:
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    container_name: swagger-ui
+    ports:
+      - "8888:8080"
+    volumes:
+      - ./docs/swagger:/usr/share/nginx/html/swagger
+    environment:
+      API_URL: swagger/endpoints.yml

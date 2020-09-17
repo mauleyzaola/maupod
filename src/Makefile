@@ -1,3 +1,12 @@
+os_name = $(shell uname -s | tr A-Z a-z)
+pwd = $(shell pwd)
+xopen =
+ifeq ($(os_name),linux)
+	xopen="xdg-open"
+else ifeq ($(os_name),darwin)
+	xopen="open"
+endif
+
 browser:
 	$(MAKE) -C ../ui-player browser
 
@@ -40,9 +49,13 @@ dockers: test
 
 down:
 	docker-compose stop
-	docker-compose down
+	docker-compose down --remove-orphans
 
 force:
+
+logs:
+	docker-compose logs -f
+
 prepare-proto: force
 	sudo rm -rf ./pkg/pb
 	mkdir -p ./pkg/pb
@@ -72,8 +85,10 @@ psql:
 
 server: dev-build up logs
 
-logs:
-	docker-compose logs -f
+swagger: force
+	docker-compose -f swagger.docker-compose.yml up -d
+	sleep 2
+	$(xopen) "http://localhost:8888"
 
 up:
 	docker-compose up -d --build
