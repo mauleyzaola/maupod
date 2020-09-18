@@ -42,7 +42,7 @@ func SetupRoutes(a *ApiServer, output io.Writer) http.Handler {
 	baseRouter.HandleFunc("/queue", chainGlueCors(a.QueuePost)).Methods(http.MethodOptions, http.MethodPost)
 	baseRouter.HandleFunc("/queue/{index}", chainGlueCors(a.QueueDelete)).Methods(http.MethodOptions, http.MethodDelete)
 
-	baseRouter.HandleFunc("/system/ping", handlerPing).Methods(http.MethodOptions, http.MethodGet)
+	baseRouter.HandleFunc("/system/ping", chainFn(handlerPing, cors)).Methods(http.MethodOptions, http.MethodGet)
 
 	if output != nil {
 		return handlers.CombinedLoggingHandler(output, baseRouter)
@@ -51,7 +51,7 @@ func SetupRoutes(a *ApiServer, output io.Writer) http.Handler {
 }
 
 func handlerPing(w http.ResponseWriter, r *http.Request) {
-	helpers.WriteJson(w,nil,http.StatusOK, struct {
+	helpers.WriteJson(w, nil, http.StatusOK, struct {
 		Message string `json:"message"`
 	}{
 		Message: "pong",
