@@ -13,6 +13,6 @@ message PlaylistItem
 {
     string id = 1;
     PlayList playlist = 2;
-    int64 position = 3;
+    int32 position = 3;
     Media media = 4;
 }
