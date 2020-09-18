@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"io"
 	"net/http"
 
@@ -52,5 +51,9 @@ func SetupRoutes(a *ApiServer, output io.Writer) http.Handler {
 }
 
 func handlerPing(w http.ResponseWriter, r *http.Request) {
-	_, _ = fmt.Fprintln(w, "pong")
+	helpers.WriteJson(w,nil,http.StatusOK, struct {
+		Message string `json:"message"`
+	}{
+		Message: "pong",
+	})
 }
