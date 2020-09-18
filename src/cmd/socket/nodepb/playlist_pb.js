@@ -300,7 +300,7 @@ proto.pb.PlaylistItem.deserializeBinaryFromReader = function(msg, reader) {
       msg.setPlaylist(value);
       break;
     case 3:
-      var value = /** @type {number} */ (reader.readInt64());
+      var value = /** @type {number} */ (reader.readInt32());
       msg.setPosition(value);
       break;
     case 4:
@@ -354,7 +354,7 @@ proto.pb.PlaylistItem.serializeBinaryToWriter = function(message, writer) {
   }
   f = message.getPosition();
   if (f !== 0) {
-    writer.writeInt64(
+    writer.writeInt32(
       3,
       f
     );
@@ -426,7 +426,7 @@ proto.pb.PlaylistItem.prototype.hasPlaylist = function() {
 
 
 /**
- * optional int64 position = 3;
+ * optional int32 position = 3;
  * @return {number}
  */
 proto.pb.PlaylistItem.prototype.getPosition = function() {
