@@ -150,7 +150,7 @@ UI is coded in React, and hot reloading feature works like backend does. This al
 
 If the browser didn't start automatically, you can go to `http://localhost:9990` or `http://your-ip-address:9990` to see the UI
 
-# sql-migrate
+## sql-migrate
  Install this tool to run sql migrations in dev environments 
 ```
 cd
