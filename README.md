@@ -90,6 +90,8 @@ On Ubuntu
 sudo apt-get update && sudo apt-get install -y postgresql-client-common
 ```
 
+Run postgresql from same `maupod` directories (make sure you are not running anything else otherwise postgres may have issues with archive files)
+
 ```
 docker run --rm --name postgres-maupod -v $HOME/data/maupod/pg/data:/var/lib/postgresql/data -p 5432:5432 -e POSTGRES_PASSWORD=nevermind -d postgres:9.5
 ```

@@ -1,0 +1,32 @@
+openapi: 3.0.2
+info:
+  title: "Maupod API"
+  version: "v0.0.1"
+
+servers:
+  - url: "http://localhost:7400"
+
+tags:
+  - name: system
+
+paths:
+  /system/ping:
+    get:
+      tags:
+        - system
+      summary: Checks server is up
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PingOutput'
+
+components:
+  schemas:
+    PingOutput:
+      type: object
+      properties:
+        message:
+          type: string

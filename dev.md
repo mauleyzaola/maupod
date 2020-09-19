@@ -149,3 +149,22 @@ Browse to `src/` directory and run `make browser` if you're using a Desktop OS o
 UI is coded in React, and hot reloading feature works like backend does. This allows you to see the changes as you save automatically in the browser
 
 If the browser didn't start automatically, you can go to `http://localhost:9990` or `http://your-ip-address:9990` to see the UI
+
+## sql-migrate
+ Install this tool to run sql migrations in dev environments 
+```
+cd
+GO111MODULE=on go get -u github.com/rubenv/sql-migrate/...
+```
+
+## sqlboiler (orm)
+​
+Install this program to generate golang code based on postgresql objects
+​
+```
+cd
+go get -v github.com/mauleyzaola/sqlboiler
+cd $GOPATH/src/github.com/mauleyzaola/sqlboiler
+./install.sh
+```
+

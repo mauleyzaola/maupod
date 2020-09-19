@@ -1,0 +1,18 @@
+syntax = "proto3";
+package pb;
+option go_package = "github.com/mauleyzaola/maupod/src/pb";
+
+import "media.proto";
+
+message PlayList{
+    string id = 1;
+    string name = 2;
+}
+
+message PlaylistItem
+{
+    string id = 1;
+    PlayList playlist = 2;
+    int32 position = 3;
+    Media media = 4;
+}

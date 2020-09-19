@@ -27,20 +27,18 @@ func ChainMiddleware(h http.HandlerFunc, m ...Middleware) http.HandlerFunc {
 
 func MiddlewareCORS(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var allowedHeaders = []string{
-			"Content-Type, token",
-		}
-		var allowedMethods = []string{
-			http.MethodDelete,
-			http.MethodGet,
-			http.MethodPatch,
-			http.MethodPost,
-			http.MethodPut,
-			http.MethodOptions,
-		}
 		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Header().Set("Access-Control-Allow-Methods", strings.Join(allowedMethods, ","))
-		w.Header().Set("Access-Control-Allow-Headers", strings.Join(allowedHeaders, ","))
+		w.Header().Set("Access-Control-Allow-Methods",
+			strings.Join(
+				[]string{
+					http.MethodGet,
+					http.MethodPost,
+					http.MethodDelete,
+					http.MethodPut,
+					http.MethodPatch,
+					http.MethodOptions,
+				}, ","))
+		w.Header().Set("Access-Control-Allow-Headers", "*")
 		w.Header().Set("Access-Control-Max-Age", "86400")
 
 		if r.Method == http.MethodOptions {
