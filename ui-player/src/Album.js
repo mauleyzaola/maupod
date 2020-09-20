@@ -10,7 +10,7 @@ const CoverLine = ({c, onClick}) => (
             <img src={c.cover_image} className="card-img-topx" alt="..." width="200" />
                 <div className="card-body">
                     <p className="card-text small">TODO: display original size and filter valid ones</p>
-                    <a href="#" onClick={() => onClick(c)} className="btn btn-primary">Select</a>
+                    <button onClick={() => onClick(c)} className="btn btn-primary">Select</button>
                 </div>
         </div>
     </div>
@@ -145,7 +145,14 @@ class Album extends React.Component{
         const type = 'master';
         const data = { artist, year, title, type };
         API.providerMetadataCovers({params: data})
-            .then(response => this.setState({covers: response.data}))
+            .then(response => {
+                let { covers } = this.state;
+                covers = response.data;
+                this.setState({covers});
+                if(covers.length === 0){
+                    alert(`provider returned no cover images`);
+                }
+            })
             .catch(error => {
                 if(error.response && error.response.data){
                     // TODO: make this better, like a notification alert in the ui
@@ -163,9 +170,14 @@ class Album extends React.Component{
             },
             data:{
                 uri: c.cover_image,
+                force: true, // overwrite current artwork if exists
             }
         })
-            .then(response => console.log(response.data))
+            .then(response => {
+                const { album } = this.state;
+                album.image_location = `${album.album_identifier}.png`;
+                this.setState({album});
+            } )
             .catch(error => {
                 if(error.response && error.response.data){
                     // TODO: make this better, like a notification alert in the ui

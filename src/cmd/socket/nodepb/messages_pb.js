@@ -734,7 +734,8 @@ proto.pb.ArtworkDownloadInput.prototype.toObject = function(opt_includeInstance)
 proto.pb.ArtworkDownloadInput.toObject = function(includeInstance, msg) {
   var f, obj = {
     albumIdentifier: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    uri: jspb.Message.getFieldWithDefault(msg, 2, "")
+    uri: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    force: jspb.Message.getBooleanFieldWithDefault(msg, 3, false)
   };
 
   if (includeInstance) {
@@ -779,6 +780,10 @@ proto.pb.ArtworkDownloadInput.deserializeBinaryFromReader = function(msg, reader
       var value = /** @type {string} */ (reader.readString());
       msg.setUri(value);
       break;
+    case 3:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setForce(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -822,6 +827,13 @@ proto.pb.ArtworkDownloadInput.serializeBinaryToWriter = function(message, writer
       f
     );
   }
+  f = message.getForce();
+  if (f) {
+    writer.writeBool(
+      3,
+      f
+    );
+  }
 };
 
 
@@ -858,6 +870,24 @@ proto.pb.ArtworkDownloadInput.prototype.getUri = function() {
  */
 proto.pb.ArtworkDownloadInput.prototype.setUri = function(value) {
   return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional bool force = 3;
+ * @return {boolean}
+ */
+proto.pb.ArtworkDownloadInput.prototype.getForce = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 3, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.pb.ArtworkDownloadInput} returns this
+ */
+proto.pb.ArtworkDownloadInput.prototype.setForce = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 3, value);
 };
 
 

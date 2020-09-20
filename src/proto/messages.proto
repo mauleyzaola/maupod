@@ -83,6 +83,7 @@ enum RemoteCommand {
 message ArtworkDownloadInput {
     string album_identifier = 1;
     string uri = 2;
+    bool force = 3;
 }
 
 message ArtworkDownloadOutput {

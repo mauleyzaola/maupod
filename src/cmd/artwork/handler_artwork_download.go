@@ -1,9 +1,14 @@
 package main
 
 import (
+	"bytes"
+	"errors"
+	"fmt"
 	"io/ioutil"
 	"log"
-	"net/http"
+	"os"
+	"os/exec"
+	"path/filepath"
 	"time"
 
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
@@ -51,19 +56,21 @@ func (m *MsgHandler) handlerArtworkDownload(msg *nats.Msg) {
 	}
 
 	//  download the image from the uri
-	client := &http.Client{
-		Timeout: rules.Timeout(m.config),
-	}
-	response, err := client.Get(input.Uri)
-	if err != nil {
+	tmpFileName := filepath.Join(os.TempDir(), helpers.NewUUID())
+	if err = downloadFile(input.Uri, tmpFileName); err != nil {
+		log.Println(err)
 		output.Error = err.Error()
 		return
 	}
-	log.Println("querying provider for image at uri: ", input.Uri)
+	data, err := ioutil.ReadFile(tmpFileName)
+	if err != nil {
+		log.Println(err)
+		output.Error = err.Error()
+		return
+	}
 	defer func() {
-		if err = response.Body.Close(); err != nil {
+		if err = os.Remove(tmpFileName); err != nil {
 			log.Println(err)
-			return
 		}
 	}()
 	var nc = m.base.NATS()
@@ -76,11 +83,13 @@ func (m *MsgHandler) handlerArtworkDownload(msg *nats.Msg) {
 		Media: baseMedia,
 	}, rules.Timeout(m.config))
 	if err != nil {
+		log.Println(err)
 		output.Error = err.Error()
 		return
 	}
-	data, err := ioutil.ReadAll(response.Body)
-	if err != nil {
+	log.Printf("[DEBUG] found %d tracks in album\n", len(medium.Medias))
+	if len(medium.Medias) == 0 {
+		err = errors.New("no tracks found in album")
 		log.Println(err)
 		output.Error = err.Error()
 		return
@@ -91,7 +100,8 @@ func (m *MsgHandler) handlerArtworkDownload(msg *nats.Msg) {
 		if i != 0 {
 			continue
 		}
-		if err = artworks.UpdateArtworkCoverFile(nc, m.config, media, data); err != nil {
+		if err = artworks.UpdateArtworkCoverFile(nc, m.config, media, data, input.Force); err != nil {
+			log.Println(err)
 			output.Error = err.Error()
 			return
 		}
@@ -102,8 +112,32 @@ func (m *MsgHandler) handlerArtworkDownload(msg *nats.Msg) {
 		media.ImageLocation = newImageLocation
 		media.LastImageScan = helpers.TimeToTs2(now)
 		if err = broker.PublishMediaArtworkUpdate(nc, media); err != nil {
+			log.Println(err)
 			output.Error = err.Error()
 			return
 		}
 	}
+}
+
+func downloadFile(uri, destination string) error {
+	log.Println("querying provider for image at uri: ", uri)
+	const programName = "wget"
+	if !helpers.ProgramExists(programName) {
+		return fmt.Errorf("could not find program: %s in path", programName)
+	}
+	var p = []string{
+		uri,
+		"-O",
+	}
+	p = append(p, destination)
+	cmd := exec.Command(programName, p...)
+	output := &bytes.Buffer{}
+	errOutput := &bytes.Buffer{}
+	cmd.Stdout = output
+	cmd.Stderr = errOutput
+	err := cmd.Run()
+	if err != nil {
+		return fmt.Errorf("%s %s : %v", output.String(), errOutput.String(), err)
+	}
+	return nil
 }

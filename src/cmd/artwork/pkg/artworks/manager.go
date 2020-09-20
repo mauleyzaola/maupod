@@ -202,9 +202,15 @@ func ExtractFromCoverFile(nc *nats.Conn, config *pb.Configuration, media *pb.Med
 }
 
 // TODO: use this function for the other artwork methods as well
-// UpdateArtworkCoverFile will try to update the artwork for one media file
-func UpdateArtworkCoverFile(nc *nats.Conn, config *pb.Configuration, media *pb.Media, artworkData []byte) error {
+// UpdateArtworkCoverFile will try to update the artwork for one media file, if force is true it will overwrite the current artwork
+func UpdateArtworkCoverFile(nc *nats.Conn, config *pb.Configuration, media *pb.Media, artworkData []byte, force bool) error {
 	var err error
+
+	if len(artworkData) == 0 {
+		err = errors.New("artwork data is empty")
+		log.Println(err)
+		return err
+	}
 
 	media.LastImageScan = helpers.TimeToTs(helpers.Now())
 	if media.AlbumIdentifier == "" {
@@ -214,12 +220,30 @@ func UpdateArtworkCoverFile(nc *nats.Conn, config *pb.Configuration, media *pb.M
 	}
 
 	var artworkPath = ArtworkFullPath(config, media)
-	artworkPath = strings.TrimSuffix(artworkPath, ".png") + ".jpg"
-	var coverLocation string
+	var tmpArtworkFile = filepath.Join(config.ArtworkStore.Location, helpers.NewUUID()+".png")
 
-	if _, err = os.Stat(artworkPath); err == nil {
-		// artwork already exists, do nothing
-		return nil
+	if !force {
+		if _, err = os.Stat(artworkPath); err == nil {
+			// artwork already exists, do nothing
+			log.Println("artwork already exists")
+			return nil
+		}
+	}
+
+	if err = ioutil.WriteFile(tmpArtworkFile, artworkData, os.ModePerm); err != nil {
+		log.Println(err)
+		return err
+	}
+	defer func() {
+		_ = os.Remove(tmpArtworkFile)
+	}()
+
+	// check shape and size are valid for each of the valid artwork files
+	width := int(config.ArtworkBigSize)
+	height := width
+	if err = IsArtworkValidSize(nc, tmpArtworkFile, width); err != nil {
+		log.Println(err)
+		return err
 	}
 
 	artworkFile, err := os.OpenFile(artworkPath, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, os.ModePerm)
@@ -231,7 +255,7 @@ func UpdateArtworkCoverFile(nc *nats.Conn, config *pb.Configuration, media *pb.M
 		return err
 	}
 
-	log.Println("xxx artworkData length: ", len(artworkData))
+	log.Println("[DEBUG] storing file at path: ", artworkPath)
 	if _, err = io.Copy(artworkFile, bytes.NewReader(artworkData)); err != nil {
 		log.Println(err)
 		return err
@@ -241,24 +265,8 @@ func UpdateArtworkCoverFile(nc *nats.Conn, config *pb.Configuration, media *pb.M
 		return err
 	}
 
-	removeFile := func() {
-		if err = os.Remove(artworkPath); err != nil {
-			log.Println(err)
-		}
-	}
-
-	// check shape and size are valid for each of the valid artwork files
-	width := int(config.ArtworkBigSize)
-	height := width
-	if err = IsArtworkValidSize(nc, artworkPath, width); err != nil {
+	if err = ArtworkResizeFile(tmpArtworkFile, artworkPath, width, height); err != nil {
 		log.Println(err)
-		removeFile()
-		return err
-	}
-
-	if err = ArtworkResizeFile(coverLocation, artworkPath, width, height); err != nil {
-		log.Println(err)
-		removeFile()
 		return err
 	}
 
