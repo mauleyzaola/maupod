@@ -38,6 +38,7 @@ const mediaList = (data) => axios.get(`/media`, {
     params: data,
 });
 const providerMetadataCovers = ({params}) => axios.get(`/providers/metadata/cover`, {params});
+const providerMetadataCoverPut = ({params, data}) => axios.put(`/providers/metadata/cover/${params.album_identifier}`, data);
 const queueAdd = ({media, index = -1, named_position}) => axios.post(`/queue`, {media: cleanMedia(media), index, named_position});
 const queueList = () => axios.get(`/queue`);
 const queueRemove = index => axios.delete(`/queue/${index}`);
@@ -56,6 +57,7 @@ export default {
     mediaList,
     objectToQueryString,
     providerMetadataCovers,
+    providerMetadataCoverPut,
     queueAdd,
     queueList,
     queueRemove,

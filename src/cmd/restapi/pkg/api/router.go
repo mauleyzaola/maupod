@@ -39,6 +39,7 @@ func SetupRoutes(a *ApiServer, output io.Writer) http.Handler {
 	baseRouter.HandleFunc("/media/{id}/spectrum", chainFn(a.MediaSpectrumGet(), cors)).Methods(http.MethodOptions, http.MethodGet)
 
 	baseRouter.HandleFunc("/providers/metadata/cover", chainGlueCors(a.ProviderMetaCoverGet)).Methods(http.MethodOptions, http.MethodGet)
+	baseRouter.HandleFunc("/providers/metadata/cover/{album_identifier}", chainGlueCors(a.ProviderMetaCoverPut)).Methods(http.MethodOptions, http.MethodPut)
 
 	baseRouter.HandleFunc("/queue", chainGlueCors(a.QueueGet)).Methods(http.MethodOptions, http.MethodGet)
 	baseRouter.HandleFunc("/queue", chainGlueCors(a.QueuePost)).Methods(http.MethodOptions, http.MethodPost)

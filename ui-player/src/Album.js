@@ -4,8 +4,16 @@ import API from "./api";
 import {msToString } from "./helpers";
 import {TrackListControls} from "./components/Player";
 
-const CoverLine = ({c}) => (
-    <div><img src={c.cover_image} alt="cover" width="500"/></div>
+const CoverLine = ({c, onClick}) => (
+    <div className="cover-item">
+        <div className="card">
+            <img src={c.cover_image} className="card-img-topx" alt="..." width="200" />
+                <div className="card-body">
+                    <p className="card-text small">TODO: display original size and filter valid ones</p>
+                    <a href="#" onClick={() => onClick(c)} className="btn btn-primary">Select</a>
+                </div>
+        </div>
+    </div>
 )
 
 
@@ -133,13 +141,37 @@ class Album extends React.Component{
         e.preventDefault();
         const { rows } = this.state;
         if(rows.length === 0) return;
-        document.x = rows[0]
         let { performer: artist, recorded_date: year, album: title } = rows[0];
         const type = 'master';
         const data = { artist, year, title, type };
-        API.providerMetadataCovers({params: data}).then(response => {
-            this.setState({covers: response.data})
-        });
+        API.providerMetadataCovers({params: data})
+            .then(response => this.setState({covers: response.data}))
+            .catch(error => {
+                if(error.response && error.response.data){
+                    // TODO: make this better, like a notification alert in the ui
+                    alert(JSON.stringify(error.response.data))
+                }
+            })
+    }
+
+    onCoverClick = c => {
+        const { album, rows } = this.state;
+        let { album_identifier } = album;
+        API.providerMetadataCoverPut({
+            params: {
+                album_identifier,
+            },
+            data:{
+                uri: c.cover_image,
+            }
+        })
+            .then(response => console.log(response.data))
+            .catch(error => {
+                if(error.response && error.response.data){
+                    // TODO: make this better, like a notification alert in the ui
+                    alert(JSON.stringify(error.response.data))
+                }
+            })
     }
 
 
@@ -165,8 +197,8 @@ class Album extends React.Component{
                             <button className="btn btn-info" type="submit">Lookup Covers</button>
                         </form>
                         {covers.length !== 0 &&
-                            <div>
-                                {covers.map(c => <CoverLine key={c.uuid} c={c} />)}
+                            <div className="card-group">
+                                {covers.map(c => <CoverLine key={c.uuid} c={c} onClick={this.onCoverClick} />)}
                             </div>
                         }
                     </div>
