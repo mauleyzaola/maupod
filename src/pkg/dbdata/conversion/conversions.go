@@ -9,6 +9,48 @@ import (
 	"github.com/volatiletech/null/v8"
 )
 
+// covert playlist back and forth
+func PlaylistToORM(v *pb.PlayList) *orm.Playlist {
+	return &orm.Playlist{
+		ID:   v.Id,
+		Name: v.Name,
+	}
+}
+
+func PlaylistFromORM(v *orm.Playlist) *pb.PlayList {
+	return &pb.PlayList{
+		Id:   v.ID,
+		Name: v.Name,
+	}
+}
+
+func PlaylistsFromORM(a ...*orm.Playlist) []*pb.PlayList {
+	var result []*pb.PlayList
+	for _, v := range a {
+		result = append(result, PlaylistFromORM(v))
+	}
+	return result
+}
+
+// TODO: ismael
+func PlaylistItemToORM(v *pb.PlaylistItem) *orm.PlaylistItem {
+	panic("not implemented")
+}
+
+// TODO: ismael
+func PlaylistItemFromORM(v *orm.PlaylistItem) *pb.PlaylistItem {
+	panic("not implemented")
+}
+
+func PlaylistItemsFromORM(a ...*orm.PlaylistItem) []*pb.PlaylistItem {
+	var result []*pb.PlaylistItem
+	for _, v := range a {
+		result = append(result, PlaylistItemFromORM(v))
+	}
+	return result
+}
+
+// covert media back and forth
 func MediaToORM(v *pb.Media) *orm.Medium {
 	return &orm.Medium{
 		Album:                 v.Album,
