@@ -32,7 +32,6 @@ func PlaylistsFromORM(a ...*orm.Playlist) []*pb.PlayList {
 	return result
 }
 
-// TODO: ismael
 func PlaylistItemToORM(v *pb.PlaylistItem) *orm.PlaylistItem {
 	return &orm.PlaylistItem{
 		ID:         v.Id,
@@ -42,13 +41,16 @@ func PlaylistItemToORM(v *pb.PlaylistItem) *orm.PlaylistItem {
 	}
 }
 
-// TODO: ismael
 func PlaylistItemFromORM(v *orm.PlaylistItem) *pb.PlaylistItem {
 	return &pb.PlaylistItem{
-		Id:       v.ID,
-		Playlist: v.PlaylistID,
+		Id: v.ID,
+		Playlist: &pb.PlayList{
+			Id: v.PlaylistID,
+		},
 		Position: int32(v.Position),
-		Media:    v.MediaID,
+		Media: &pb.Media{
+			Id: v.MediaID,
+		},
 	}
 }
 
