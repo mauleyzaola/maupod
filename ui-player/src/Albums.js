@@ -20,7 +20,7 @@ const AlbumCard = ({r}) => {
                 <div className='card-img-top'>      
                             <Thumbnail album={r} />
                 </div>       
-                <div class="card-body p-1 text bg-dark h-50">
+                <div className="card-body p-1 text bg-dark h-50">
                     <div className='row'>
                         <div className='col mx-1 font-italic text-nowrap small'>
                         {r.recorded_date ? `${r.recorded_date}` : "unknown"}
@@ -40,7 +40,7 @@ const AlbumCard = ({r}) => {
                     </div>
 
                 </div> 
-                <div class="card-footer">
+                <div className="card-footer">
                     <div className="row">
                         <div className="col">
                             <small className="text-muted h-5">
