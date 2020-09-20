@@ -131,7 +131,7 @@ The `Queue List` displays the next information:
 3. `Performer` (clickable, and takes you to the artist's all albums page).
 4. `Genere` (clickable, and takes you to that genere's all performers page).
 5. `Duration` (hours, minutes, seconds).
-6. `Album` (Clickable album's name, and takes you to thet album's individual page).
+6. `Album` (Clickable album's name, and takes you to that album's individual page).
 7. `Sampling Rate` (number).
 8. `Year` (of the `Album`).
 9. `Last Modified` (day, month, year).
@@ -196,7 +196,7 @@ NOTE: `Music Timeline` and `Control Buttons` only appears if there's a song play
 
 ## <a name="setup">7. Setup</a>
 
-`Maupod` keeps track on the users music playing record in order to create `Playlists` and keep count of `Most played Songs`; thus, allowing the user to `Export` or `Import` his favorite `Track Record` onto other computers or devices.
+`Maupod` keeps track on the users music playing record in order to create `Playlists` and keep count of `Most played Songs`; thus, allowing the user to `Export` or `Import` his favorite music playing record from one computer or device to another.
 
 ![alt text](assets/images/setup-01.png)
 
@@ -256,10 +256,10 @@ After any `Query` is performed, all results are presented on a list, that includ
     * `Play` (click and the `Track` will be played right away).
     * `Play Next` (click and the `Track` will be added on to the `Queue List`, to be played next).
     * `Play Later` (click and the `Track` will be added on to the `Queue List`, to be played later, meaning it goes to the end of the list).
-4. `Performer` 
-5. `Genere` 
+4. `Performer` (clickable, and takes you to the artist's all albums page).
+5. `Genere` (clickable, and takes you to that genere's all performers page).
 6. `Duration` (hours, minutes, seconds).
-7. `Album` 
+7. `Album` (Clickable album's name, and takes you to that album's individual page).
 8. `Sampling Rate` (number).
 9. `Year` (of the `Album`).
 10. `Last Modified` (day, month, year).
