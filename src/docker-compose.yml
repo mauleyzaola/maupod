@@ -38,6 +38,8 @@ services:
     image: mauleyzaola/maupod-restapi
     volumes:
       - $MAUPOD_ARTWORK:/artwork
+    environment:
+      CONSUMER_TOKEN: ${CONSUMER_TOKEN}
     expose:
       - 8000
     ports:
