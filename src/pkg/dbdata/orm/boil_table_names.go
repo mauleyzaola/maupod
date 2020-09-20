@@ -4,15 +4,19 @@
 package orm
 
 var TableNames = struct {
-	Media      string
-	MediaEvent string
-	MediaQueue string
-	ViewAlbums string
-	ViewGenres string
+	Media        string
+	MediaEvent   string
+	MediaQueue   string
+	Playlist     string
+	PlaylistItem string
+	ViewAlbums   string
+	ViewGenres   string
 }{
-	Media:      "media",
-	MediaEvent: "media_event",
-	MediaQueue: "media_queue",
-	ViewAlbums: "view_albums",
-	ViewGenres: "view_genres",
+	Media:        "media",
+	MediaEvent:   "media_event",
+	MediaQueue:   "media_queue",
+	Playlist:     "playlist",
+	PlaylistItem: "playlist_item",
+	ViewAlbums:   "view_albums",
+	ViewGenres:   "view_genres",
 }
