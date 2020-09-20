@@ -15,6 +15,19 @@
     display: block;
 }
 
+.cover-item {
+    opacity: .6;
+    padding: 10px;
+}
+
+.cover-item image{
+}
+
+.cover-item:hover {
+    opacity: inherit;
+    cursor: pointer;
+}
+
 .navigation-bar {
     position: fixed;
     width: 100%;

@@ -95,3 +95,16 @@ Run postgresql from same `maupod` directories (make sure you are not running any
 ```
 docker run --rm --name postgres-maupod -v $HOME/data/maupod/pg/data:/var/lib/postgresql/data -p 5432:5432 -e POSTGRES_PASSWORD=nevermind -d postgres:9.5
 ```
+
+### Additional Features
+
+#### Cover Images
+
+Automatic album cover retreival can be enabled using [discogs api](https://www.discogs.com/developers)
+
+For this to work, make sure you set this environment variable
+```
+export CONSUMER_TOKEN=your-token-value-goes-here
+```
+
+You will need to generate a token and assign it to the variable

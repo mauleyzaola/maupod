@@ -8,6 +8,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"os"
@@ -97,35 +98,6 @@ func FindArtworkFilesInDirectory(dir string) ([]string, error) {
 	return result, nil
 }
 
-// LookupAlbumTracks will return all the media tracks from the same album
-func LookupAlbumTracks(nc *nats.Conn, config *pb.Configuration, media *pb.Media) ([]*pb.Media, error) {
-	var mediaInfoInput = &pb.MediaInfoInput{
-		FileName: media.Location,
-		Media:    media,
-	}
-	mediaInfoOutput, err := broker.RequestMediaInfoScanFromDB(nc, mediaInfoInput, rules.Timeout(config))
-	if err != nil {
-		log.Println(err)
-		return nil, err
-	}
-	medias := mediaInfoOutput.Medias
-	if len(medias) == 0 {
-		return nil, errors.New("no media found with provided filters")
-	} else if len(medias) != 1 {
-		return nil, fmt.Errorf("more than one media found: %d with provided filters", len(medias))
-	}
-	media = medias[0]
-	mediaInfoInput = &pb.MediaInfoInput{
-		Media: &pb.Media{AlbumIdentifier: media.AlbumIdentifier},
-	}
-	mediaInfoOutput, err = broker.RequestMediaInfoScanFromDB(nc, mediaInfoInput, rules.Timeout(config))
-	if err != nil {
-		log.Println(err)
-		return nil, err
-	}
-	return mediaInfoOutput.Medias, nil
-}
-
 // PublishSaveArtworkTrack will send a message to update the db with the artwork related info in the media
 func PublishSaveArtworkTrack(nc *nats.Conn, media *pb.Media) error {
 	return broker.PublishMediaArtworkUpdate(nc, media)
@@ -138,17 +110,6 @@ func ArtworkResizeFile(source, target string, width, height int) error {
 		return err
 	}
 	return nil
-}
-
-// extractArtworkFromAudioFile will try to extract the artwork image from an audio file
-// and store in a temp location which is returned as filename if success
-func ExtractArtworkFromAudioFile(nc *nats.Conn, config *pb.Configuration, audioFile string) (filename string, err error) {
-	filename = filepath.Join(os.TempDir(), helpers.NewUUID()+".png")
-	if err = images.ExtractImageFromMedia(audioFile, filename); err != nil {
-		filename = ""
-		return
-	}
-	return
 }
 
 // ExtractWithinAudioFile will try to extract the image from the audio file
@@ -233,6 +194,78 @@ func ExtractFromCoverFile(nc *nats.Conn, config *pb.Configuration, media *pb.Med
 		return err
 	}
 	if err = ArtworkResizeFile(coverLocation, artworkPath, width, height); err != nil {
+		log.Println(err)
+		return err
+	}
+
+	return nil
+}
+
+// TODO: use this function for the other artwork methods as well
+// UpdateArtworkCoverFile will try to update the artwork for one media file, if force is true it will overwrite the current artwork
+func UpdateArtworkCoverFile(nc *nats.Conn, config *pb.Configuration, media *pb.Media, artworkData []byte, force bool) error {
+	var err error
+
+	if len(artworkData) == 0 {
+		err = errors.New("artwork data is empty")
+		log.Println(err)
+		return err
+	}
+
+	media.LastImageScan = helpers.TimeToTs(helpers.Now())
+	if media.AlbumIdentifier == "" {
+		// the album identifier is a 1:1 match with the image file, if not present, cannot process artwork
+		err = errors.New("[ERROR] no album identifier detected in media")
+		return err
+	}
+
+	var artworkPath = ArtworkFullPath(config, media)
+	var tmpArtworkFile = filepath.Join(config.ArtworkStore.Location, helpers.NewUUID()+".png")
+
+	if !force {
+		if _, err = os.Stat(artworkPath); err == nil {
+			// artwork already exists, do nothing
+			log.Println("artwork already exists")
+			return nil
+		}
+	}
+
+	if err = ioutil.WriteFile(tmpArtworkFile, artworkData, os.ModePerm); err != nil {
+		log.Println(err)
+		return err
+	}
+	defer func() {
+		_ = os.Remove(tmpArtworkFile)
+	}()
+
+	// check shape and size are valid for each of the valid artwork files
+	width := int(config.ArtworkBigSize)
+	height := width
+	if err = IsArtworkValidSize(nc, tmpArtworkFile, width); err != nil {
+		log.Println(err)
+		return err
+	}
+
+	artworkFile, err := os.OpenFile(artworkPath, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, os.ModePerm)
+	if err != nil {
+		log.Println(err)
+		if err = os.Remove(artworkPath); err != nil {
+			log.Println(err)
+		}
+		return err
+	}
+
+	log.Println("[DEBUG] storing file at path: ", artworkPath)
+	if _, err = io.Copy(artworkFile, bytes.NewReader(artworkData)); err != nil {
+		log.Println(err)
+		return err
+	}
+	if err = artworkFile.Close(); err != nil {
+		log.Println(err)
+		return err
+	}
+
+	if err = ArtworkResizeFile(tmpArtworkFile, artworkPath, width, height); err != nil {
 		log.Println(err)
 		return err
 	}

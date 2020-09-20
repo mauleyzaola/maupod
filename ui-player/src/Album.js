@@ -4,6 +4,18 @@ import API from "./api";
 import {msToString } from "./helpers";
 import {TrackListControls} from "./components/Player";
 
+const CoverLine = ({c, onClick}) => (
+    <div className="cover-item">
+        <div className="card">
+            <img src={c.cover_image} className="card-img-topx" alt="..." width="200" />
+                <div className="card-body">
+                    <p className="card-text small">TODO: display original size and filter valid ones</p>
+                    <button onClick={() => onClick(c)} className="btn btn-primary">Select</button>
+                </div>
+        </div>
+    </div>
+)
+
 
 const TrackListHeader = ({isCompilation}) => {
     if(isCompilation) {
@@ -73,14 +85,12 @@ const TrackListRow = ({isCompilation, row}) => {
 
 
 class Album extends React.Component{
-    constructor(props) {
-        super(props);
-        this.state = {
-            album:null,
-            rows: [],
-            genre: '',
-            isCompilation: false,
-        }
+    state = {
+        album:null,
+        rows: [],
+        genre: '',
+        isCompilation: false,
+        covers: [],
     }
 
     isCompilation = (rows) => {
@@ -127,18 +137,84 @@ class Album extends React.Component{
         }
     }
 
+    onCoverFormSubmit = e => {
+        e.preventDefault();
+        const { rows } = this.state;
+        if(rows.length === 0) return;
+        let { performer: artist, recorded_date: year, album: title } = rows[0];
+        const type = 'master';
+        const data = { artist, year, title, type };
+        API.providerMetadataCovers({params: data})
+            .then(response => {
+                let { covers } = this.state;
+                covers = response.data;
+                this.setState({covers});
+                if(covers.length === 0){
+                    alert(`provider returned no cover images`);
+                }
+            })
+            .catch(error => {
+                if(error.response && error.response.data){
+                    // TODO: make this better, like a notification alert in the ui
+                    alert(JSON.stringify(error.response.data))
+                }
+            })
+    }
+
+    onCoverClick = c => {
+        const { album, rows } = this.state;
+        let { album_identifier } = album;
+        API.providerMetadataCoverPut({
+            params: {
+                album_identifier,
+            },
+            data:{
+                uri: c.cover_image,
+                force: true, // overwrite current artwork if exists
+            }
+        })
+            .then(response => {
+                const { album } = this.state;
+                album.image_location = `${album.album_identifier}.png`;
+                this.setState({album});
+            } )
+            .catch(error => {
+                if(error.response && error.response.data){
+                    // TODO: make this better, like a notification alert in the ui
+                    alert(JSON.stringify(error.response.data))
+                }
+            })
+    }
+
 
     render() {
-        const { album, rows, isCompilation } = this.state;
+        const { album, covers, rows, isCompilation } = this.state;
         return (
             <div>
                 <AlbumHeader album={album} />
-                <table className='table table-bordered table-hover table-striped'>
-                    <TrackListHeader isCompilation={isCompilation}/>
-                    <tbody>
-                    {rows.map(row => <TrackListRow key={row.id} row={row} isCompilation={isCompilation} />)}
-                    </tbody>
-                </table>
+                <div className="row">
+                    <div className="col">
+                        <table className='table table-bordered table-hover table-striped'>
+                            <TrackListHeader isCompilation={isCompilation}/>
+                            <tbody>
+                            {rows.map(row => <TrackListRow key={row.id} row={row} isCompilation={isCompilation} />)}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col">
+                        <h4>Find Album Cover</h4>
+                        <form onSubmit={this.onCoverFormSubmit}>
+                            <button className="btn btn-info" type="submit">Lookup Covers</button>
+                        </form>
+                        {covers.length !== 0 &&
+                            <div className="card-group">
+                                {covers.map(c => <CoverLine key={c.uuid} c={c} onClick={this.onCoverClick} />)}
+                            </div>
+                        }
+                    </div>
+                </div>
             </div>
         );
     }

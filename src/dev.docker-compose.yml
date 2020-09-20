@@ -50,6 +50,8 @@ services:
     volumes:
       - ./:/go/src/github.com/mauleyzaola/maupod/src
       - $MAUPOD_ARTWORK:/artwork
+    environment:
+      CONSUMER_TOKEN: ${CONSUMER_TOKEN}
     expose:
       - 8000
     ports:
