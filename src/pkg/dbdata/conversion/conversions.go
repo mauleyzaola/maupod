@@ -34,12 +34,22 @@ func PlaylistsFromORM(a ...*orm.Playlist) []*pb.PlayList {
 
 // TODO: ismael
 func PlaylistItemToORM(v *pb.PlaylistItem) *orm.PlaylistItem {
-	panic("not implemented")
+	return &orm.PlaylistItem{
+		ID:         v.Id,
+		PlaylistID: v.Playlist.Id,
+		Position:   int(v.Position),
+		MediaID:    v.Media.Id,
+	}
 }
 
 // TODO: ismael
 func PlaylistItemFromORM(v *orm.PlaylistItem) *pb.PlaylistItem {
-	panic("not implemented")
+	return &pb.PlaylistItem{
+		Id:       v.ID,
+		Playlist: v.PlaylistID,
+		Position: int32(v.Position),
+		Media:    v.MediaID,
+	}
 }
 
 func PlaylistItemsFromORM(a ...*orm.PlaylistItem) []*pb.PlaylistItem {
