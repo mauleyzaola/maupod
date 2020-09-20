@@ -4,6 +4,10 @@ import API from "./api";
 import {msToString } from "./helpers";
 import {TrackListControls} from "./components/Player";
 
+const CoverLine = ({c}) => (
+    <div><img src={c.cover_image} alt="cover" width="500"/></div>
+)
+
 
 const TrackListHeader = ({isCompilation}) => {
     if(isCompilation) {
@@ -73,14 +77,12 @@ const TrackListRow = ({isCompilation, row}) => {
 
 
 class Album extends React.Component{
-    constructor(props) {
-        super(props);
-        this.state = {
-            album:null,
-            rows: [],
-            genre: '',
-            isCompilation: false,
-        }
+    state = {
+        album:null,
+        rows: [],
+        genre: '',
+        isCompilation: false,
+        covers: [],
     }
 
     isCompilation = (rows) => {
@@ -127,18 +129,48 @@ class Album extends React.Component{
         }
     }
 
+    onCoverFormSubmit = e => {
+        e.preventDefault();
+        const { rows } = this.state;
+        if(rows.length === 0) return;
+        document.x = rows[0]
+        let { performer: artist, recorded_date: year, album: title } = rows[0];
+        const type = 'master';
+        const data = { artist, year, title, type };
+        API.providerMetadataCovers({params: data}).then(response => {
+            this.setState({covers: response.data})
+        });
+    }
+
 
     render() {
-        const { album, rows, isCompilation } = this.state;
+        const { album, covers, rows, isCompilation } = this.state;
         return (
             <div>
                 <AlbumHeader album={album} />
-                <table className='table table-bordered table-hover table-striped'>
-                    <TrackListHeader isCompilation={isCompilation}/>
-                    <tbody>
-                    {rows.map(row => <TrackListRow key={row.id} row={row} isCompilation={isCompilation} />)}
-                    </tbody>
-                </table>
+                <div className="row">
+                    <div className="col">
+                        <table className='table table-bordered table-hover table-striped'>
+                            <TrackListHeader isCompilation={isCompilation}/>
+                            <tbody>
+                            {rows.map(row => <TrackListRow key={row.id} row={row} isCompilation={isCompilation} />)}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col">
+                        <h4>Find Album Cover</h4>
+                        <form onSubmit={this.onCoverFormSubmit}>
+                            <button className="btn btn-info" type="submit">Lookup Covers</button>
+                        </form>
+                        {covers.length !== 0 &&
+                            <div>
+                                {covers.map(c => <CoverLine key={c.uuid} c={c} />)}
+                            </div>
+                        }
+                    </div>
+                </div>
             </div>
         );
     }
