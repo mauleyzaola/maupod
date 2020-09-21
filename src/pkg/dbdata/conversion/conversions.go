@@ -32,6 +32,7 @@ func PlaylistsFromORM(a ...*orm.Playlist) []*pb.PlayList {
 	return result
 }
 
+// covert playlistItemcls back and forth
 func PlaylistItemToORM(v *pb.PlaylistItem) *orm.PlaylistItem {
 	return &orm.PlaylistItem{
 		ID:         v.Id,
