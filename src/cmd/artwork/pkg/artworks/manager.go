@@ -16,16 +16,13 @@ import (
 	"strings"
 	"time"
 
-	"github.com/mauleyzaola/maupod/src/pkg/images"
-
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
-	"github.com/nats-io/nats.go"
-
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
+	"github.com/mauleyzaola/maupod/src/pkg/images"
 	"github.com/mauleyzaola/maupod/src/pkg/paths"
-	"github.com/mauleyzaola/maupod/src/pkg/rules"
-
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/pkg/rules"
+	"github.com/nats-io/nats.go"
 )
 
 func ArtworkPathFromEnvironment() string {
@@ -36,13 +33,9 @@ func ArtworkPathFromEnvironment() string {
 // filename should be an existent absolute path to the image
 // for the time being: at least 500x500 pixeles and to be square (same width and height)
 func IsArtworkValidSize(nc *nats.Conn, filename string, minWidth int) error {
-	// TODO: pass timeout as parameter
-	output, err := broker.RequestMediaInfoScan(nc, filename, time.Second*3)
+	x, y, err := ArtworkSize(nc, filename)
 	if err != nil {
-		return err
-	}
-	x, y, err := images.Size(bytes.NewBufferString(output.Raw))
-	if err != nil {
+		log.Println(err)
 		return err
 	}
 
@@ -56,6 +49,15 @@ func IsArtworkValidSize(nc *nats.Conn, filename string, minWidth int) error {
 		return fmt.Errorf("image too small: %dx%d", x, y)
 	}
 	return nil
+}
+
+func ArtworkSize(nc *nats.Conn, filename string) (x, y int, err error) {
+	output, err := broker.RequestMediaInfoScan(nc, filename, time.Second*3)
+	if err != nil {
+		return
+	}
+	x, y, err = images.Size(bytes.NewBufferString(output.Raw))
+	return
 }
 
 // ArtworkFullPath returns the absolute path on this micro service for an artwork file, based on a media object
@@ -241,9 +243,13 @@ func UpdateArtworkCoverFile(nc *nats.Conn, config *pb.Configuration, media *pb.M
 	// check shape and size are valid for each of the valid artwork files
 	width := int(config.ArtworkBigSize)
 	height := width
-	if err = IsArtworkValidSize(nc, tmpArtworkFile, width); err != nil {
+	x, y, err := ArtworkSize(nc, tmpArtworkFile)
+	if err != nil {
 		log.Println(err)
 		return err
+	}
+	if x < width || y < width {
+		return fmt.Errorf("image too small, need at least: %dx%d pixels", width, width)
 	}
 
 	artworkFile, err := os.OpenFile(artworkPath, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, os.ModePerm)
@@ -255,7 +261,6 @@ func UpdateArtworkCoverFile(nc *nats.Conn, config *pb.Configuration, media *pb.M
 		return err
 	}
 
-	log.Println("[DEBUG] storing file at path: ", artworkPath)
 	if _, err = io.Copy(artworkFile, bytes.NewReader(artworkData)); err != nil {
 		log.Println(err)
 		return err
@@ -265,6 +270,7 @@ func UpdateArtworkCoverFile(nc *nats.Conn, config *pb.Configuration, media *pb.M
 		return err
 	}
 
+	// TODO: identify if the image can be cropped instead of resized
 	if err = ArtworkResizeFile(tmpArtworkFile, artworkPath, width, height); err != nil {
 		log.Println(err)
 		return err
