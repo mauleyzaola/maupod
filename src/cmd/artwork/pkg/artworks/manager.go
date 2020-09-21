@@ -114,6 +114,15 @@ func ArtworkResizeFile(source, target string, width, height int) error {
 	return nil
 }
 
+// ArtworkCropFile will read the source file and write the target file as a portion of source
+func ArtworkCropFile(source, target string, toX, toY int) error {
+	err := images.ImageCrop(source, target, toX, toY)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // ExtractWithinAudioFile will try to extract the image from the audio file
 func ExtractWithinAudioFile(nc *nats.Conn, config *pb.Configuration, media *pb.Media) error {
 	var err error
@@ -249,7 +258,7 @@ func UpdateArtworkCoverFile(nc *nats.Conn, config *pb.Configuration, media *pb.M
 		return err
 	}
 	if x < width || y < width {
-		return fmt.Errorf("image too small, need at least: %dx%d pixels", width, width)
+		return fmt.Errorf("image too small, need at least: %dx%d pixels, got %dx%d instead", width, width, x, y)
 	}
 
 	artworkFile, err := os.OpenFile(artworkPath, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, os.ModePerm)
@@ -270,10 +279,19 @@ func UpdateArtworkCoverFile(nc *nats.Conn, config *pb.Configuration, media *pb.M
 		return err
 	}
 
-	// TODO: identify if the image can be cropped instead of resized
-	if err = ArtworkResizeFile(tmpArtworkFile, artworkPath, width, height); err != nil {
-		log.Println(err)
-		return err
+	// identify if the image can be cropped instead of resized
+	if x != y {
+		if err = ArtworkCropFile(tmpArtworkFile, artworkPath, width, height); err != nil {
+			log.Println(err)
+			return err
+		}
+		log.Printf("[INFO] artwork cropped to x: %d y:%d pixles\n", width, height)
+	} else {
+		if err = ArtworkResizeFile(tmpArtworkFile, artworkPath, width, height); err != nil {
+			log.Println(err)
+			return err
+		}
+		log.Printf("[INFO] artwork resized to x: %d y:%d pixels\n", width, height)
 	}
 
 	return nil
