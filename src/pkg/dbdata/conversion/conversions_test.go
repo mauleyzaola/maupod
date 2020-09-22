@@ -126,6 +126,30 @@ var sampleMedia = &pb.Media{
 	AlbumIdentifier:       "52",
 }
 
+//Object Playlist
+var samplePlaylistORM = &orm.Playlist{
+	ID:   "1",
+	Name: "Playlist Rock",
+}
+var samplePlaylistPB = &pb.PlayList{
+	Id:   "1",
+	Name: "Playlist Rock",
+}
+
+//Object PlaylistItem
+var samplePlaylistItemORM = &orm.PlaylistItem{
+	ID:         "1",
+	PlaylistID: "1",
+	Position:   1,
+	MediaID:    "12345678",
+}
+var samplePlaylistItemPB = &pb.PlaylistItem{
+	Id:       "1",
+	Playlist: &pb.PlayList{Id: "1"},
+	Position: 1,
+	Media:    &pb.Media{Id: "12345678"},
+}
+
 func TestMediaToORM(t *testing.T) {
 	type args struct {
 		v *pb.Media
@@ -297,6 +321,167 @@ func TestMediasFromORM(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := MediasFromORM(tt.args.a...); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("MediasFromORM() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+//Function PlayList
+func TestPlaylistToORM(t *testing.T) {
+	type args struct {
+		v *pb.PlayList
+	}
+	tests := []struct {
+		name string
+		args args
+		want *orm.Playlist
+	}{
+		{
+			name: "check all fields are present",
+			args: args{v: samplePlaylistPB},
+			want: samplePlaylistORM,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			g := PlaylistToORM(tt.args.v)
+			w := tt.want
+
+			assert.EqualValues(t, w.ID, g.ID)
+			assert.EqualValues(t, w.Name, g.Name)
+		})
+	}
+}
+func TestPlaylistFromORM(t *testing.T) {
+	type args struct {
+		v *orm.Playlist
+	}
+	tests := []struct {
+		name string
+		args args
+		want *pb.PlayList
+	}{
+		{
+			name: "check all fields are present",
+			args: args{v: samplePlaylistORM},
+			want: samplePlaylistPB,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			g := PlaylistFromORM(tt.args.v)
+			w := tt.want
+
+			assert.EqualValues(t, w.Id, g.Id)
+			assert.EqualValues(t, w.Name, g.Name)
+		})
+	}
+}
+func TestPlayListsFromORM(t *testing.T) {
+	type args struct {
+		a []*orm.Playlist
+	}
+	tests := []struct {
+		name string
+		args args
+		want []*pb.PlayList
+	}{
+		{
+			name: "check mapping matches one item",
+			args: args{a: []*orm.Playlist{samplePlaylistORM}},
+			want: []*pb.PlayList{samplePlaylistPB},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := PlaylistsFromORM(tt.args.a...); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("PlaylistsFromORM() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestPlaylistItemToORM(t *testing.T) {
+	type args struct {
+		v *pb.PlaylistItem
+	}
+	tests := []struct {
+		name string
+		args args
+		want *orm.PlaylistItem
+	}{
+		{
+			name: "check all fields are present",
+			args: args{v: samplePlaylistItemPB},
+			want: samplePlaylistItemORM,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			g := PlaylistItemToORM(tt.args.v)
+			w := tt.want
+
+			assert.EqualValues(t, w.ID, g.ID)
+			assert.EqualValues(t, w.PlaylistID, g.PlaylistID)
+			assert.EqualValues(t, w.Position, g.Position)
+			assert.EqualValues(t, w.MediaID, g.MediaID)
+
+		})
+	}
+}
+func TestPlaylistItemFromORM(t *testing.T) {
+	type args struct {
+		v *orm.PlaylistItem
+	}
+	tests := []struct {
+		name string
+		args args
+		want *pb.PlaylistItem
+	}{
+		{
+			name: "check all fields are present",
+			args: args{v: samplePlaylistItemORM},
+			want: samplePlaylistItemPB,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			g := PlaylistItemFromORM(tt.args.v)
+			w := tt.want
+
+			assert.EqualValues(t, w.Id, g.Id)
+			assert.EqualValues(t, w.Playlist, g.Playlist)
+			assert.EqualValues(t, w.Position, g.Position)
+			assert.EqualValues(t, w.Media, g.Media)
+
+		})
+
+	}
+}
+
+func TestPlaylistItemsFromORM(t *testing.T) {
+	type args struct {
+		a []*orm.PlaylistItem
+	}
+	tests := []struct {
+		name string
+		args args
+		want []*pb.PlaylistItem
+	}{
+		{
+			name: "check mapping matches one item",
+			args: args{a: []*orm.PlaylistItem{samplePlaylistItemORM}},
+			want: []*pb.PlaylistItem{samplePlaylistItemPB},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := PlaylistItemsFromORM(tt.args.a...); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("PlaylistItemsFromORM() = %v, want %v", got, tt.want)
 			}
 		})
 	}
