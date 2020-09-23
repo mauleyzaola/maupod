@@ -16,3 +16,8 @@ message PlaylistItem
     int32 position = 3;
     Media media = 4;
 }
+
+message PlaylistDeleteInput {
+    string id = 1;
+    bool forceDeleteChildren = 2;
+}
