@@ -38,6 +38,16 @@ func SetupRoutes(a *ApiServer, output io.Writer) http.Handler {
 	baseRouter.HandleFunc("/media/albums", chainGlueCors(a.AlbumViewListGet)).Methods(http.MethodOptions, http.MethodGet)
 	baseRouter.HandleFunc("/media/{id}/spectrum", chainFn(a.MediaSpectrumGet(), cors)).Methods(http.MethodOptions, http.MethodGet)
 
+	baseRouter.HandleFunc("/playlists/{id}", chainGlueCors(a.PlaylistGet)).Methods(http.MethodOptions, http.MethodGet)
+	baseRouter.HandleFunc("/playlists", chainGlueCors(a.PlaylistsGet)).Methods(http.MethodOptions, http.MethodGet)
+	baseRouter.HandleFunc("/playlists", chainGlueCors(a.PlaylistPost)).Methods(http.MethodOptions, http.MethodPost)
+	baseRouter.HandleFunc("/playlists/{id}", chainGlueCors(a.PlaylistPut)).Methods(http.MethodOptions, http.MethodPut)
+	baseRouter.HandleFunc("/playlists/{id}", chainGlueCors(a.PlaylistDelete)).Methods(http.MethodOptions, http.MethodDelete)
+	baseRouter.HandleFunc("/playlists/{id}/items", chainGlueCors(a.PlaylistItemPost)).Methods(http.MethodOptions, http.MethodPost)
+	baseRouter.HandleFunc("/playlists/{id}/items/{position}", chainGlueCors(a.PlaylistItemDelete)).Methods(http.MethodOptions, http.MethodDelete)
+	baseRouter.HandleFunc("/playlists/{id}/items/{position}", chainGlueCors(a.PlaylistItemPut)).Methods(http.MethodOptions, http.MethodPut)
+	baseRouter.HandleFunc("/playlists/{id}/items", chainGlueCors(a.PlaylistItemPut)).Methods(http.MethodOptions, http.MethodGet)
+
 	baseRouter.HandleFunc("/providers/metadata/cover", chainGlueCors(a.ProviderMetaCoverGet)).Methods(http.MethodOptions, http.MethodGet)
 	baseRouter.HandleFunc("/providers/metadata/cover/{album_identifier}", chainGlueCors(a.ProviderMetaCoverPut)).Methods(http.MethodOptions, http.MethodPut)
 

@@ -26,11 +26,11 @@ func NewApiServer(config *pb.Configuration, db *sql.DB, nc *nats.Conn) (*ApiServ
 		config:     config,
 		db:         db,
 		decoder:    schema.NewDecoder(),
-		mediaStore: &dbdata.MediaStore{},
+		mediaStore: dbdata.NewMediaStore(),
 		nc:         nc,
 	}
 
-	s.mediaStore = &dbdata.MediaStore{}
+	s.mediaStore = dbdata.NewMediaStore()
 
 	return s, nil
 }
