@@ -21,7 +21,7 @@ func (m *MsgHandler) handlerMediaUpdateArtwork(msg *nats.Msg) {
 	}
 	ctx := context.Background()
 	conn := m.db
-	store := &dbdata.MediaStore{}
+	store := dbdata.NewMediaStore()
 
 	if err = ArtworkDbUpdate(ctx, conn, input.Media, store); err != nil {
 		log.Println(err)

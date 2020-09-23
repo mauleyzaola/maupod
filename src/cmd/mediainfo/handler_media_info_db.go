@@ -53,7 +53,7 @@ func (m *MsgHandler) handlerMediaInfoDBSelect(msg *nats.Msg) {
 
 	ctx := context.Background()
 	conn := m.db
-	store := &dbdata.MediaStore{}
+	store := dbdata.NewMediaStore()
 
 	medias, err := store.FindMedias(ctx, conn, input.Media, 0)
 	if err != nil {

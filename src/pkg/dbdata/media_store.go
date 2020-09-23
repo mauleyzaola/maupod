@@ -13,6 +13,10 @@ import (
 
 type MediaStore struct{}
 
+func NewMediaStore() *MediaStore {
+	return &MediaStore{}
+}
+
 func (s *MediaStore) Insert(ctx context.Context, conn boil.ContextExecutor, media *pb.Media) error {
 	row := conversion.MediaToORM(media)
 	return row.Insert(ctx, conn, boil.Infer())
@@ -208,4 +212,14 @@ func (s *MediaStore) AlbumListView(ctx context.Context, conn boil.ContextExecuto
 		return nil, err
 	}
 	return conversion.ViewAlbumsToMedia(rows...), nil
+}
+
+func (s *MediaStore) PlaylistMods(filter QueryFilter) []qm.QueryMod {
+	var mods []qm.QueryMod
+	var cols = orm.PlaylistColumns
+	mods = filter.Mods()
+	if filter.Query != "" {
+		mods = append(mods, filter.ModOr(cols.Name))
+	}
+	return mods
 }

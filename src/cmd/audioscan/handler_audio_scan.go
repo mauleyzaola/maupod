@@ -20,7 +20,6 @@ func (m *MsgHandler) handlerAudioScan(msg *nats.Msg) {
 		return
 	}
 
-
 	defer func() {
 		log.Println("[INFO] elapsed time: " + time.Since(start).String())
 	}()
@@ -35,7 +34,7 @@ func (m *MsgHandler) handlerAudioScan(msg *nats.Msg) {
 		conn,
 		m.base.NATS(),
 		helpers.TsToTime2(input.ScanDate),
-		&dbdata.MediaStore{},
+		dbdata.NewMediaStore(),
 		input.Root,
 		m.config,
 		input.Force,
