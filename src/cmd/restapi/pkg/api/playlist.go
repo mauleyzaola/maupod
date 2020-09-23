@@ -4,14 +4,12 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/mauleyzaola/maupod/src/pkg/helpers"
-	"github.com/volatiletech/sqlboiler/v4/boil"
-
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
-
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata"
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata/conversion"
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata/orm"
+	"github.com/mauleyzaola/maupod/src/pkg/helpers"
+	"github.com/mauleyzaola/maupod/src/pkg/pb"
+	"github.com/volatiletech/sqlboiler/v4/boil"
 )
 
 func (a *ApiServer) PlaylistGet(p TransactionExecutorParams) (status int, result interface{}, err error) {
@@ -89,6 +87,34 @@ func (a *ApiServer) PlaylistPut(p TransactionExecutorParams) (status int, result
 }
 
 func (a *ApiServer) PlaylistDelete(p TransactionExecutorParams) (status int, result interface{}, err error) {
+	var input pb.PlaylistDeleteInput
+	if err = p.DecodeQuery(&input); err != nil {
+		status = http.StatusBadRequest
+		return
+	}
+	input.Id = p.Param("id")
+
+	v := orm.Playlist{ID: input.Id}
+
+	if input.ForceDeleteChildren {
+		if _, err = v.PlaylistItems().DeleteAll(p.ctx, p.conn); err != nil {
+			status = http.StatusInternalServerError
+			return
+		}
+	}
+	rowCount, err := v.Delete(p.ctx, p.conn)
+	if err != nil {
+		status = http.StatusBadRequest
+		return
+	}
+	if rowCount == 0 {
+		status = http.StatusNotFound
+		return
+	} else if rowCount != 1 {
+		status = http.StatusConflict
+		return
+	}
+	status = http.StatusNoContent
 	return
 }
 
