@@ -7,11 +7,7 @@ import {TrackListControls} from "./components/Player";
 const CoverLine = ({c, onClick}) => (
     <div className="cover-item">
         <div className="card">
-            <img src={c.cover_image} className="card-img-topx" alt="..." width="200" />
-                <div className="card-body">
-                    <p className="card-text small">TODO: display original size and filter valid ones</p>
-                    <button onClick={() => onClick(c)} className="btn btn-primary">Select</button>
-                </div>
+            <img src={c.cover_image} className="card-img-topx" alt="..." width="200" onClick={() => onClick(c)} />
         </div>
     </div>
 )
@@ -162,7 +158,7 @@ class Album extends React.Component{
     }
 
     onCoverClick = c => {
-        const { album, rows } = this.state;
+        const { album  } = this.state;
         let { album_identifier } = album;
         API.providerMetadataCoverPut({
             params: {
@@ -191,7 +187,16 @@ class Album extends React.Component{
         const { album, covers, rows, isCompilation } = this.state;
         return (
             <div>
-                <AlbumHeader album={album} />
+                <AlbumHeader album={album} onClick={this.onCoverFormSubmit} />
+                <div className="row">
+                    <div className="col">
+                        {covers.length !== 0 &&
+                        <div className="card-group">
+                            {covers.map(c => <CoverLine key={c.uuid} c={c} onClick={this.onCoverClick} />)}
+                        </div>
+                        }
+                    </div>
+                </div>
                 <div className="row">
                     <div className="col">
                         <table className='table table-bordered table-hover table-striped'>
@@ -200,19 +205,6 @@ class Album extends React.Component{
                             {rows.map(row => <TrackListRow key={row.id} row={row} isCompilation={isCompilation} />)}
                             </tbody>
                         </table>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col">
-                        <h4>Find Album Cover</h4>
-                        <form onSubmit={this.onCoverFormSubmit}>
-                            <button className="btn btn-info" type="submit">Lookup Covers</button>
-                        </form>
-                        {covers.length !== 0 &&
-                            <div className="card-group">
-                                {covers.map(c => <CoverLine key={c.uuid} c={c} onClick={this.onCoverClick} />)}
-                            </div>
-                        }
                     </div>
                 </div>
             </div>

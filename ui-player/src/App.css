@@ -20,9 +20,6 @@
     padding: 10px;
 }
 
-.cover-item image{
-}
-
 .cover-item:hover {
     opacity: inherit;
     cursor: pointer;
@@ -35,6 +32,10 @@
 
 .no-rounded {
     border-radius: 0;
+}
+
+.with-pointer {
+    cursor: pointer;
 }
 
 .top-always {

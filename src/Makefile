@@ -56,6 +56,9 @@ force:
 logs:
 	docker-compose logs -f
 
+orm:
+	./orm.sh
+
 prepare-proto: force
 	sudo rm -rf ./pkg/pb
 	mkdir -p ./pkg/pb

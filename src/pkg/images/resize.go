@@ -2,6 +2,7 @@ package images
 
 import (
 	"bufio"
+	"image"
 	"io"
 	"log"
 	"strconv"
@@ -36,12 +37,25 @@ func Size(r io.Reader) (x, y int, err error) {
 }
 
 func ImageResize(source, target string, width, height int) error {
-	img,err:=imgio.Open(source)
-	if err!=nil{
+	img, err := imgio.Open(source)
+	if err != nil {
 		return err
 	}
-	resized:=transform.Resize(img,width,height,transform.Linear)
-	if err=imgio.Save(target,resized,imgio.PNGEncoder());err!=nil{
+	resized := transform.Resize(img, width, height, transform.Linear)
+	if err = imgio.Save(target, resized, imgio.PNGEncoder()); err != nil {
+		log.Print(err)
+		return err
+	}
+	return nil
+}
+
+func ImageCrop(source, target string, width, height int) error {
+	img, err := imgio.Open(source)
+	if err != nil {
+		return err
+	}
+	transformed := transform.Crop(img, image.Rect(0, 0, width, height))
+	if err = imgio.Save(target, transformed, imgio.PNGEncoder()); err != nil {
 		log.Print(err)
 		return err
 	}
