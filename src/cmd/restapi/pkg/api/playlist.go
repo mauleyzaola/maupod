@@ -1,6 +1,7 @@
 package api
 
 import (
+	"context"
 	"errors"
 	"net/http"
 
@@ -119,6 +120,27 @@ func (a *ApiServer) PlaylistDelete(p TransactionExecutorParams) (status int, res
 }
 
 func (a *ApiServer) PlaylistItemPost(p TransactionExecutorParams) (status int, result interface{}, err error) {
+	var item pb.PlaylistItem
+	if err = p.Decode(&item); err != nil {
+		status = http.StatusBadRequest
+		return
+	}
+	item.Playlist = &pb.PlayList{Id: p.Param("id")}
+	if item.Media == nil {
+		err = errors.New("missing media in request")
+		status = http.StatusBadRequest
+		return
+	}
+	item.Id = helpers.NewUUID()
+	v := conversion.PlaylistItemToORM(&item)
+	if err = v.Insert(p.ctx, p.conn, boil.Infer()); err != nil {
+		status = http.StatusInternalServerError
+		return
+	}
+	if err = playlistItemsSetPosition(p.ctx, p.conn, item.Playlist); err != nil {
+		status = http.StatusInternalServerError
+		return
+	}
 	return
 }
 
@@ -132,4 +154,9 @@ func (a *ApiServer) PlaylistItemPut(p TransactionExecutorParams) (status int, re
 
 func (a *ApiServer) PlaylistItems(p TransactionExecutorParams) (status int, result interface{}, err error) {
 	return
+}
+
+// playlistItemsSetPosition will assign the right position to each playlist item
+func playlistItemsSetPosition(ctx context.Context, conn boil.ContextExecutor, playList *pb.PlayList) error {
+	return errors.New("not implemented")
 }
