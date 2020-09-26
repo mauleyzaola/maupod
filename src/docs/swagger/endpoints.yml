@@ -7,9 +7,218 @@ servers:
   - url: "http://localhost:7400"
 
 tags:
+  - name: audio
+    description: "description"
+  - name: events
+    description: "description"
+  - name: file-browser
+    description: "description"
+  - name: genres
+    description: "description" 
+  - name: ipc
+    description: "description" 
+  - name: media
+    description: "description"           
+  - name: providers
+    description: "description"  
+  - name: queue
+    description: "description"         
   - name: system
+    description: "description"            
+
 
 paths:
+  /audio/scan:
+    post:
+      tags:
+        - audio
+      summary: Scan Audio Files
+      responses:
+        200:
+          description: ok
+        400:
+          description: Bad Request
+        500:
+          description: Internal Server Error  
+  /genres:
+    get:
+      tags:
+        - genres
+      summary: Get Genres
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ViewGenre'    
+        500:
+          description: Internal Server Error  
+  /genres/artwork:
+    get:
+      tags:
+        - genres
+      summary: Genres List and Artwork
+      responses:
+        200:
+          description: ok
+          content:
+            text/plain:         
+              schema:
+                type: array
+                items:
+                  type: string          
+        500:
+          description: Internal Server Error           
+                
+  /ipc:
+    post:
+      tags:
+        - ipc
+      summary: Post IPC
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IPCInput'           
+        400:
+          description: Bad Request
+
+  /events:
+    get:
+      tags:
+        - events
+      summary: Get event media
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PingOutput'
+    post:
+      tags:
+        - events
+      summary: Post event media
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PingOutput'
+  /file-browser/directory:
+    post:
+      tags:
+        - file-browser
+      summary: Post directory 
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PingOutput'
+  /media/{field}/distinct:
+    get:
+      tags:
+        - media
+      summary: List
+      parameters:
+        - name: "field"
+          in: "path"
+          required: true
+          type: "string"
+          format:
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                $ref: '#/components/schemas/Media'
+  /media:
+    get:
+      tags:
+        - media
+      summary: media
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Media'
+  /media/albums:
+    get:
+      tags:
+        - media
+      summary: get albums
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                $ref: '#/components/schemas/Media' 
+  /media/{id}/spectrum:
+    get:
+      tags:
+        - media
+      summary: get spectrum imagen
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "string"      
+      responses:
+        200:
+          description: ok
+          # content:
+          #   application/json:
+          #     schema:
+          #       $ref: '#/components/schemas/PingOutput'      
+  /providers/metadata/cover:
+    get:
+      tags:
+        - providers
+      summary: Metadata of all albums
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Result'
+  /providers/metadata/cover/{album_identifier}:
+    put:
+      tags:
+        - providers
+      summary: Metadata of an albums
+      parameters:
+        - name: "album_identifier"
+          in: "path"
+          required: true
+          type: "string"       
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Result'
   /system/ping:
     get:
       tags:
@@ -22,6 +231,49 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PingOutput'
+  /queue:
+    get:
+      tags:
+        - queue
+      summary: returns the list of tracks in the queue  
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QueueOutput'  
+    post:
+      tags:
+        - queue
+      summary: post queue
+      responses:
+        301:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueueInput'
+  /queue/{index}:
+    delete:
+      tags:
+        - queue
+      summary: Delete element queue
+      parameters:
+        - name: "index"
+          in: "path"
+          required: true
+          type: "string"    
+      responses:
+        302:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueueOutput'         
+
 
 components:
   schemas:
@@ -30,3 +282,245 @@ components:
       properties:
         message:
           type: string
+    Media:
+      type: object
+      properties:
+        id:
+          type: string
+        sha:
+         type: string
+         description: the signature of a file to uniquely identify with or without a system
+        location:
+          type: string 
+        last_scan:
+          type: time
+        directory:
+          type: string
+        file_extension:
+          type: string
+        format: 
+          type: string
+        file_size:
+          type: string
+        duration:
+          type: string
+        overall_bit_rate_mode:
+          type: string
+        overall_bit_rate:
+          type: integer   
+        stream_size:
+          type: integer
+        album:
+          type: string
+        title:
+          type: string
+        track:
+          type: string 
+        track_position:
+          type: integer
+        performer:
+          type: string 
+        genre:
+          type: string
+        recorded_date:
+          type: integer 
+        comment:
+          type: string
+        channels:
+          type: string
+        channel_positions:
+          type: string 
+        channel_layout:
+          type: string 
+        sampling_rate:
+          type: integer 
+        sampling_count:
+          type: integer 
+        bit_depth:
+          type: integer 
+        compression_mode:
+          type: string
+        encoded_library_name:
+          type: string
+        encoded_library_version:
+          type: string 
+        bit_rate_mode:
+          type: string 
+        bit_rate:
+          type: integer 
+        track_name_total:
+          type: integer 
+        album_performer:
+          type: string
+        audio_count:
+          type: integer 
+        bit_depth_string:
+          type: string
+        commercial_name:
+          type: string
+        complete_name:
+          type: string 
+        count_of_audio_streams:
+          type: integer 
+        encoded_library_date:
+          type: string 
+        file_name:
+          type: string 
+        folder_name:
+          type: string 
+        format_info:
+          type: string 
+        format_url:
+          type: string 
+        internet_media_type:
+          type: string 
+        kind_of_stream:
+          type: string 
+        part:
+          type: integer 
+        part_total:
+          type: integer 
+        stream_identifier:
+          type: integer 
+        writing_library:
+          type: string 
+        modified_date:
+          type: timestamp 
+        composer:
+          type: string 
+        last_image_scan:
+          type: timestamp   
+        image_location:
+          type: string 
+        album_identifier:
+          type: string 
+    Queue:
+      type: object
+      properties:
+        id:
+          type: string
+        media:
+          $ref: '#/components/schemas/Media'
+        position:
+          type: integer       
+    QueueOutput:
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/Queue'
+        error:
+          type: string
+    QueueInput:
+      type: object
+      properties:
+        media:
+          $ref: '#/components/schemas/Media'
+        index:
+          type: integer
+        named_position:
+          type: integer
+    Result:
+      type: object
+      properties:
+        uuid:
+          type: string
+        country:
+          type: string
+        year:
+          type: string
+        format:
+          type: array
+          items: 
+            type: string
+        label:
+          type: array
+          items: 
+            type: string        
+        type:
+          type: string
+        genre:
+          type: array
+          items: 
+            type: string        
+        style:
+          type: array
+          items: 
+            type: string        
+        id:
+          type: integer
+        barcode:
+          type: array
+          items: 
+            type: string          
+        user_data:
+          $ref: '#/components/schemas/UserData'
+        master_id:
+          type: integer
+        master_url:
+          type: string
+        uri:
+          type: string
+        catno:
+          type: string
+        title:
+          type: string
+        thumb:
+          type: string
+        cover_image:
+          type: string
+        resource_url:
+          type: string
+        comunity:
+          $ref: '#/components/schemas/Community'
+        format_quantity:
+          type: integer
+        formats:                            
+    UserData:
+      type: object
+      properties:
+        in_wantlist:
+          type: boolean
+        in_collection:
+          type: boolean        
+    Community:
+      type: object
+      properties:
+        want:
+          type: integer
+        have:
+          type: integer
+    ViewGenre:
+      type: object
+      properties:
+        genre:
+          type: string
+        performer_count:
+          type: number
+          format: float
+        album_count:
+          type: number
+          format: float
+        duration:
+          type: number
+          format: float
+        total:
+          type: number
+          format: float
+    IPCInput:
+      type: object
+      properties:
+        media:
+          $ref: '#/components/schemas/Media'
+        value:
+          type: string
+        command:
+          $ref: '#/components/schemas/Message'
+    Message:
+      type: object
+      properties:
+        message:
+          type: integer
+          format: int32     
+
