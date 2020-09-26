@@ -42,6 +42,7 @@ func SetupRoutes(a *ApiServer, output io.Writer) http.Handler {
 	baseRouter.HandleFunc("/playlists", chainGlueCors(a.PlaylistsGet)).Methods(http.MethodOptions, http.MethodGet)
 	baseRouter.HandleFunc("/playlists", chainGlueCors(a.PlaylistPost)).Methods(http.MethodOptions, http.MethodPost)
 	baseRouter.HandleFunc("/playlists/{id}", chainGlueCors(a.PlaylistPut)).Methods(http.MethodOptions, http.MethodPut)
+	baseRouter.HandleFunc("/playlists/{id}/items", chainGlueCors(a.PlaylistItems)).Methods(http.MethodOptions, http.MethodGet)
 	baseRouter.HandleFunc("/playlists/{id}", chainGlueCors(a.PlaylistDelete)).Methods(http.MethodOptions, http.MethodDelete)
 	baseRouter.HandleFunc("/playlists/{id}/items", chainGlueCors(a.PlaylistItemPost)).Methods(http.MethodOptions, http.MethodPost)
 	baseRouter.HandleFunc("/playlists/{id}/items/{position}", chainGlueCors(a.PlaylistItemDelete)).Methods(http.MethodOptions, http.MethodDelete)

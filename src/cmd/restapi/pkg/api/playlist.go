@@ -150,6 +150,7 @@ func (a *ApiServer) PlaylistItemPost(p TransactionExecutorParams) (status int, r
 		status = http.StatusInternalServerError
 		return
 	}
+	status = http.StatusCreated
 	return
 }
 
