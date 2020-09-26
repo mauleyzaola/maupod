@@ -24,6 +24,13 @@
 
 1. [Dashboard](#dashboard)
 2. [Albums](#albums)
+    * 2.1. [Albums Library](#albums-library)
+    * 2.2. [Album View](#album-view)
+        * 2.2.1. [Cover Section](#cover-section)
+        * 2.2.2. [Track List](#track-list)
+    * 2.3. [Upload Album Cover from Album View](#upload-cover)
+        * 2.3.1. [Adding Missing Cover from Album View](#addcover-albumview)
+        * 2.3.2 [Replacing Album Cover from Album View](#replacecover-albumview)
 3. [Generes](#generes)
 4. [Performers](#performers)
 5. [Queue](#queue)
@@ -45,7 +52,7 @@ NOTE: `Music Timeline` and `Control Buttons` only appears if there's a song play
 You can have a `General Display` of the `Maupod's Albums Library` or you can open an especific `Album` by clicking it's name and opening it's `Individual Display` page.
 
 
-### 1. Albums Library General Display
+### <a name="albums-library">2.1. Albums Library General Display</a>
 
 The information display on the `Album List` for each `Album` is:
 
@@ -62,11 +69,11 @@ The information display on the `Album List` for each `Album` is:
 ![alt text](assets/images/albums-03.png)
 
 
-### 2. Album Individual Display Page
+### <a name="album-view">2.2. Album View (Individual Display Page)</a>
 
 The information display on the `Album` individual page is:
 
-#### Cover Section
+#### <a name="cover-section">2.2.1. Cover Section</a>
 
 1. `Artwork` (`Album` cover).
 2. `Album` (clickable, and takes you to the album's individual page).
@@ -79,7 +86,7 @@ The information display on the `Album` individual page is:
 
 ![alt text](assets/images/albums-05.png)
 
-#### Track list:
+#### <a name="track-list">2.2.2. Track List</a>
 
 1. `Track Number` (number).
 2. `Track` (`Audio Control` **buttons** and `Track` name).
@@ -92,8 +99,59 @@ The information display on the `Album` individual page is:
 
 ![alt text](assets/images/albums-04.png)
 
-NOTE: `Music Timeline` and `Control Buttons` only appears if there's a song playing, either on `Queue` or on `Album Page`.
+### <a name="upload-cover">2.3. Upload Album Cover from Album View</a>
 
+Maupod allows searching on Internet for the `Album Artwork` by using `https://www.discogs.com/developers`.
+
+You can add a missing `Album` cover or replace it.
+
+![alt text](assets/images/album-cover-album-view-01.png)
+
+#### <a name="addcover-albumview">2.3.1. Adding Missing Cover from Album View</a>
+
+You can add a missing `Album Artwork` directly from the `Album View` by clicking the empty space were `Album` cover should be.
+
+1. Click the album's name with missing cover on `Albums Library` in order to open the `Album View`.
+2.3.2. Click the empty space of the cover section.
+
+![alt text](assets/images/album-cover-album-view-02.png)
+
+3. If `Discogs.com` finds a match for the `Album Artwork`, it will show one or more results for you to choose.
+
+**NOTE**: *If the `Album` doesn't have it's original name (and nothing else), the search will be unsuccessful*.
+
+![alt text](assets/images/album-cover-album-view-03.png)
+
+4. Click the album cover that you find more suitable and 3 things will happen:
+
+* A. Maupod will make a copy and add it to the `Arwork` folder.
+* B. The new album cover will be displayed.
+
+![alt text](assets/images/album-cover-album-view-05.png)
+
+* C. If the choosen album cover doesn't have a size of **500x500 px** or more, an error mesagge will pop out and the cover won't be added at all.
+
+![alt text](assets/images/album-cover-album-view-04.png)
+
+* D. If there are no results for the album's cover search, a message will pop up alerting that provider didn't found any matches.
+
+![alt text](assets/images/album-cover-album-view-06.png)
+
+If either, steps `C` or `D` are positive, then it will be necesarry to find the `Album Artwork` somwhere else and add it directly to the album's folder with a file sized **500x500 px** minimum and named `cover.jpg` or `cover.png`.
+
+#### <a name="replacecover-albumview">2.3.2. Replacing Album Cover from Album View</a>
+
+In order to replace an Album's Artwork you need to:
+
+1. Go to `Albums Library` and click the album's name.
+2. Click the album's `Artwork` and `Discogs.com` will search for other album covers and you will see one or more results.
+
+**NOTE**: *If the `Album` doesn't have it's original name (and nothing else), the search will be unsuccessful*.
+
+![alt text](assets/images/album-cover-album-view-0.png)
+
+
+NOTE: `Music Timeline` and `Control Buttons` only appears if there's a song playing, either on `Queue` or on `Album Page`.
 
 ## <a name="generes">3. Generes</a>
 
@@ -141,7 +199,7 @@ The `Queue List` displays the next information:
 
 ![alt text](assets/images/queue-list-01.png)
 
-NOTE: `Music Timeline` and `Control Buttons` only appears if there's a song playing, either on `Queue` or on `Album Page`.
+NOTE: `Music Timeline` and `Control Buttons` only appears if there's a song playing, either on `Queue`, `Search`or `Album View`.
 
 
 ## <a name="file-browser">6. File Browser</a>
@@ -155,9 +213,9 @@ NOTE: `Music Timeline` and `Control Buttons` only appears if there's a song play
 ![alt text](assets/images/scan-files-button-01.png)
 
 The `Audio File` and `Artwork` scan can be:
-1. Individual `Audio / Artwork` Scan
-2. Group `Audio / Artwork` Scan
-3. Only `Artwork` Scan
+1. Individual `Audio / Artwork` Scan.
+2. Group `Audio / Artwork` Scan.
+3. Only `Artwork` Scan.
 
 ### 1. Individual Scan
 
