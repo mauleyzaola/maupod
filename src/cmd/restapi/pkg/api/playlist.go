@@ -3,7 +3,9 @@ package api
 import (
 	"context"
 	"errors"
+	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata"
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata/conversion"
@@ -11,6 +13,7 @@ import (
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/volatiletech/sqlboiler/v4/boil"
+	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 )
 
 func (a *ApiServer) PlaylistGet(p TransactionExecutorParams) (status int, result interface{}, err error) {
@@ -131,13 +134,19 @@ func (a *ApiServer) PlaylistItemPost(p TransactionExecutorParams) (status int, r
 		status = http.StatusBadRequest
 		return
 	}
-	item.Id = helpers.NewUUID()
-	v := conversion.PlaylistItemToORM(&item)
-	if err = v.Insert(p.ctx, p.conn, boil.Infer()); err != nil {
+	// count the play list items
+	var where = orm.PlaylistItemWhere
+	rowCount, err := orm.PlaylistItems(where.PlaylistID.EQ(item.Playlist.Id)).Count(p.ctx, p.conn)
+	if err != nil {
 		status = http.StatusInternalServerError
 		return
 	}
-	if err = playlistItemsSetPosition(p.ctx, p.conn, item.Playlist); err != nil {
+	// set the new item position to the length of the items for this playlist
+	item.Position = int32(rowCount)
+
+	item.Id = helpers.NewUUID()
+	v := conversion.PlaylistItemToORM(&item)
+	if err = v.Insert(p.ctx, p.conn, boil.Infer()); err != nil {
 		status = http.StatusInternalServerError
 		return
 	}
@@ -145,18 +154,124 @@ func (a *ApiServer) PlaylistItemPost(p TransactionExecutorParams) (status int, r
 }
 
 func (a *ApiServer) PlaylistItemDelete(p TransactionExecutorParams) (status int, result interface{}, err error) {
+	id := p.Param("id")
+	position, err := strconv.Atoi(p.Param("position"))
+	if err != nil {
+		status = http.StatusBadRequest
+		return
+	}
+	// delete the provided item in the playlist
+	var where = orm.PlaylistItemWhere
+	rowCount, err := orm.PlaylistItems(where.PlaylistID.EQ(id), where.Position.EQ(position)).DeleteAll(p.ctx, p.conn)
+	if err != nil {
+		status = http.StatusBadRequest
+		return
+	} else if rowCount == 0 {
+		status = http.StatusBadRequest
+		err = errors.New("wrong position or wrong playlist provided")
+		return
+	} else if rowCount != 1 {
+		status = http.StatusInternalServerError
+		err = fmt.Errorf("expected to affect 1 row, but would affect: %d rows instead", rowCount)
+		return
+	}
+
+	// update the position of the items after the one we deleted
+	var cols = orm.PlaylistItemColumns
+	nextItems, err := orm.PlaylistItems(where.PlaylistID.EQ(id), where.Position.GT(position)).All(p.ctx, p.conn)
+	if err != nil {
+		status = http.StatusInternalServerError
+		return
+	}
+	for _, item := range nextItems {
+		item.Position--
+		if _, err = item.Update(p.ctx, p.conn, boil.Whitelist(cols.Position)); err != nil {
+			status = http.StatusInternalServerError
+			return
+		}
+	}
+
+	status = http.StatusAccepted
 	return
 }
 
 func (a *ApiServer) PlaylistItemPut(p TransactionExecutorParams) (status int, result interface{}, err error) {
+	var input []*pb.PlaylistItem
+	var id = p.Param("id")
+
+	// decode payload
+	if err = p.Decode(&input); err != nil {
+		status = http.StatusBadRequest
+		return
+	}
+
+	// note: this is not the best approach, but it is simple to understand, easy to implement and read
+	// if a playlist has more than a couple of hundreds, we will need to start thinking about a better alternative
+
+	// count the previous items
+	var where = orm.PlaylistItemWhere
+	query := orm.PlaylistItems(where.PlaylistID.EQ(id))
+	rowCount, err := query.Count(p.ctx, p.conn)
+	if err != nil {
+		status = http.StatusInternalServerError
+		return
+	}
+
+	// check provided items count match
+	if expected, actual := int(rowCount), len(input); expected != actual {
+		status = http.StatusBadRequest
+		err = fmt.Errorf("playlist has: %d items but provided items are: %d", expected, actual)
+		return
+	}
+
+	// delete all the previous items
+	if _, err = query.DeleteAll(p.ctx, p.conn); err != nil {
+		status = http.StatusInternalServerError
+		return
+	}
+
+	// insert the provided items in the database considering they are in the right order
+	for i, v := range input {
+		item := conversion.PlaylistItemToORM(v)
+		item.Position = i
+		item.ID = helpers.NewUUID()
+		if err = item.Insert(p.ctx, p.conn, boil.Infer()); err != nil {
+			status = http.StatusBadRequest
+			return
+		}
+	}
 	return
 }
 
 func (a *ApiServer) PlaylistItems(p TransactionExecutorParams) (status int, result interface{}, err error) {
+	if result, err = playlistItemsList(p.ctx, p.conn, p.Param("id")); err != nil {
+		status = http.StatusInternalServerError
+		return
+	}
 	return
 }
 
-// playlistItemsSetPosition will assign the right position to each playlist item
-func playlistItemsSetPosition(ctx context.Context, conn boil.ContextExecutor, playList *pb.PlayList) error {
-	return errors.New("not implemented")
+func playlistItemsList(ctx context.Context, conn boil.ContextExecutor, playlistID string) ([]*pb.PlaylistItem, error) {
+	var mods []qm.QueryMod
+	var cols = orm.PlaylistItemColumns
+	var where = orm.PlaylistItemWhere
+	mods = append(mods, where.PlaylistID.EQ(playlistID))
+	mods = append(mods, qm.OrderBy(cols.Position+" asc"))
+	items, err := orm.PlaylistItems(mods...).All(ctx, conn)
+	if err != nil {
+		return nil, err
+	}
+	var result []*pb.PlaylistItem
+	for i, v := range items {
+		var media *orm.Medium
+		item := conversion.PlaylistItemFromORM(v)
+		item.Position = int32(i)
+		media, err = orm.FindMedium(ctx, conn, item.Media.Id)
+		if err != nil {
+			return nil, err
+		}
+		item.Media = conversion.MediaFromORM(media)
+		result = append(result, item)
+	}
+	return result, nil
 }

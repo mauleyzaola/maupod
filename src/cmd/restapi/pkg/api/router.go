@@ -45,8 +45,7 @@ func SetupRoutes(a *ApiServer, output io.Writer) http.Handler {
 	baseRouter.HandleFunc("/playlists/{id}", chainGlueCors(a.PlaylistDelete)).Methods(http.MethodOptions, http.MethodDelete)
 	baseRouter.HandleFunc("/playlists/{id}/items", chainGlueCors(a.PlaylistItemPost)).Methods(http.MethodOptions, http.MethodPost)
 	baseRouter.HandleFunc("/playlists/{id}/items/{position}", chainGlueCors(a.PlaylistItemDelete)).Methods(http.MethodOptions, http.MethodDelete)
-	baseRouter.HandleFunc("/playlists/{id}/items/{position}", chainGlueCors(a.PlaylistItemPut)).Methods(http.MethodOptions, http.MethodPut)
-	baseRouter.HandleFunc("/playlists/{id}/items", chainGlueCors(a.PlaylistItemPut)).Methods(http.MethodOptions, http.MethodGet)
+	baseRouter.HandleFunc("/playlists/{id}/items", chainGlueCors(a.PlaylistItemPut)).Methods(http.MethodOptions, http.MethodPut)
 
 	baseRouter.HandleFunc("/providers/metadata/cover", chainGlueCors(a.ProviderMetaCoverGet)).Methods(http.MethodOptions, http.MethodGet)
 	baseRouter.HandleFunc("/providers/metadata/cover/{album_identifier}", chainGlueCors(a.ProviderMetaCoverPut)).Methods(http.MethodOptions, http.MethodPut)
