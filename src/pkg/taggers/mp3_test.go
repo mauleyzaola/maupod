@@ -42,6 +42,10 @@ func TestMP3Tagger(t *testing.T) {
 			tagger, err := TaggerFactory(tt.args.filename)
 			require.NoError(t, err)
 
+			if !tagger.ProgramExist() {
+				t.Skip("program not found in path")
+			}
+
 			if tt.wantErr {
 				err := tagger.RemoveAll(tt.args.filename)
 				assert.Error(t, err)

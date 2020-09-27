@@ -9,8 +9,9 @@ import (
 )
 
 type Tagger interface {
-	Tag(media *pb.Media, filename string) error
+	ProgramExist() bool
 	RemoveAll(filename string) error
+	Tag(media *pb.Media, filename string) error
 }
 
 func TaggerFactory(filename string) (Tagger, error) {

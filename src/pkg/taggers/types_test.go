@@ -38,6 +38,12 @@ func TestTaggerFactory(t *testing.T) {
 				t.Errorf("TaggerFactory() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
+			//check if program is present in the path
+			if got != nil {
+				if !got.ProgramExist() {
+					t.Skip("tagger program not present")
+				}
+			}
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("TaggerFactory() got = %v, want %v", got, tt.want)
 			}

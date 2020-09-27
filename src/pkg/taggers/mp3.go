@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/mauleyzaola/maupod/src/pkg/helpers"
+
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
 )
 
@@ -49,4 +51,8 @@ func (t *MP3Tagger) RemoveAll(filename string) error {
 		return err
 	}
 	return nil
+}
+
+func (t *MP3Tagger) ProgramExist() bool {
+	return helpers.ProgramExists(mp3TagProgram)
 }

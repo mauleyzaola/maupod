@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/mauleyzaola/maupod/src/pkg/helpers"
+
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
 )
 
@@ -52,4 +54,8 @@ func (t *FLACTagger) RemoveAll(filename string) error {
 		return err
 	}
 	return nil
+}
+
+func (t *FLACTagger) ProgramExist() bool {
+	return helpers.ProgramExists(flacTagProgram)
 }
