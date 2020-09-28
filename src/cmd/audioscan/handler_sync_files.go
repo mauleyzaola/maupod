@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata"
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
@@ -64,34 +65,41 @@ func (m *MsgHandler) handlerSyncFiles(msg *nats.Msg) {
 	}
 
 	// execute sync for each media file
+	var fileCount int
+	var now = time.Now()
 	for _, v := range media {
-		if err = syncFile(
+		ok, localErr := syncFile(
 			filepath.Join(srcDir, v.Location),
 			filepath.Join(destDir, v.Location),
-		); err != nil {
-			log.Println(err)
-			output.Error = err.Error()
+		)
+		if localErr != nil {
+			log.Println(localErr)
+			output.Error = localErr.Error()
 			return
 		}
+		if ok {
+			fileCount++
+		}
 	}
+	log.Printf("[INFO] completed sync for: %d files elapsed: %s", fileCount, time.Since(now))
 	return
 }
 
 // syncFile will copy one source file to destination if they are different
 // on the modified date or the size
 // or the destination file does not exist
-func syncFile(src, dest string) error {
+func syncFile(src, dest string) (bool, error) {
 	var needsSync bool
 	srcInfo, err := os.Stat(src)
 	if err != nil {
 		log.Println(err)
-		return err
+		return false, err
 	}
 	destInfo, err := os.Stat(dest)
 	if err != nil {
 		if !os.IsNotExist(err) {
 			log.Println(err)
-			return err
+			return false, err
 		}
 		needsSync = true
 	}
@@ -101,20 +109,20 @@ func syncFile(src, dest string) error {
 	}
 	if !needsSync {
 		log.Printf("file: %s no sync needed\n", src)
-		return nil
+		return false, err
 	}
 
 	// make sure the dest directory exists
 	dir := filepath.Dir(dest)
 	if err = os.MkdirAll(dir, os.ModePerm); err != nil {
 		log.Println(err)
-		return err
+		return false, err
 	}
 
 	srcFile, err := os.Open(src)
 	if err != nil {
 		log.Println(err)
-		return err
+		return false, err
 	}
 	defer func() {
 		if err = srcFile.Close(); err != nil {
@@ -124,7 +132,7 @@ func syncFile(src, dest string) error {
 	destFile, err := os.OpenFile(dest, os.O_TRUNC|os.O_CREATE|os.O_WRONLY, os.ModePerm)
 	if err != nil {
 		log.Println(err)
-		return err
+		return false, err
 	}
 	defer func() {
 		if err = destFile.Close(); err != nil {
@@ -134,9 +142,9 @@ func syncFile(src, dest string) error {
 	byteCount, err := io.Copy(destFile, srcFile)
 	if err != nil {
 		log.Println(err)
-		return err
+		return false, err
 	}
 	log.Printf("[INFO] successfully copied %d bytes to %s\n", byteCount, dest)
 
-	return nil
+	return true, nil
 }
