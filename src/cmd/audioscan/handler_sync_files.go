@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"errors"
 	"io"
 	"log"
 	"os"
@@ -50,11 +49,25 @@ func (m *MsgHandler) handlerSyncFiles(msg *nats.Msg) {
 		return
 	}
 
+	srcDir, destDir := paths.RootDirectory(), paths.SyncRootDirectory()
+
+	if _, err = os.Stat(srcDir); err != nil {
+		log.Println(err)
+		output.Error = err.Error()
+		return
+	}
+
+	if _, err = os.Stat(destDir); err != nil {
+		log.Println(err)
+		output.Error = err.Error()
+		return
+	}
+
 	// execute sync for each media file
 	for _, v := range media {
 		if err = syncFile(
-			filepath.Join(paths.RootDirectory(), v.Location),
-			filepath.Join(paths.SyncRootDirectory(), v.Location),
+			filepath.Join(srcDir, v.Location),
+			filepath.Join(destDir, v.Location),
 		); err != nil {
 			log.Println(err)
 			output.Error = err.Error()
@@ -125,5 +138,5 @@ func syncFile(src, dest string) error {
 	}
 	log.Printf("[INFO] successfully copeid %d bytes to %s\n", byteCount, dest)
 
-	return errors.New("not implemented")
+	return nil
 }
