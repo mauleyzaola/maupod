@@ -136,7 +136,7 @@ func syncFile(src, dest string) error {
 		log.Println(err)
 		return err
 	}
-	log.Printf("[INFO] successfully copeid %d bytes to %s\n", byteCount, dest)
+	log.Printf("[INFO] successfully copied %d bytes to %s\n", byteCount, dest)
 
 	return nil
 }
