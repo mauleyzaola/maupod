@@ -4,6 +4,8 @@ import (
 	"context"
 	"errors"
 
+	"github.com/volatiletech/sqlboiler/queries"
+
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata/conversion"
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata/orm"
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
@@ -222,4 +224,25 @@ func (s *MediaStore) PlaylistMods(filter QueryFilter) []qm.QueryMod {
 		mods = append(mods, filter.ModOr(cols.Name))
 	}
 	return mods
+}
+
+// PlayedMediaList will return a list of media which has been played at least once
+// based on its related events
+func (s *MediaStore) PlayedMediaList(ctx context.Context, conn boil.ContextExecutor) ([]*pb.Media, error) {
+	var sqlQuery = `
+	select m.*
+	from media m
+	where exists(
+		select null
+		from   media_event
+		where  m.sha = sha
+		and     event = $1)
+`
+	var medias orm.MediumSlice
+	query := queries.Raw(sqlQuery, pb.Message_MESSAGE_EVENT_ON_TRACK_PLAY_COUNT_INCREASE)
+	err := query.Bind(ctx, conn, &medias)
+	if err != nil {
+		return nil, err
+	}
+	return conversion.MediasFromORM(medias...), nil
 }

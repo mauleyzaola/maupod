@@ -26,6 +26,7 @@ enum Message {
     MESSAGE_UPSERT_MEDIA_EVENT = 21;
     MESSAGE_ARTWORK_FIND_ALBUM_COVER = 22;
     MESSAGE_ARTWORK_DOWNLOAD = 23;
+    MESSAGE_SYNC_FILES = 24;
 
     MESSAGE_IPC = 100;
 
@@ -215,6 +216,14 @@ message SpectrumGenerateOutput {
     Media media = 1;
     bytes data = 2;
     string error = 3;
+}
+
+message SyncFilesInput {
+    string target_directory = 1;
+}
+
+message SyncFilesOutput {
+    string error = 1;
 }
 
 message TrackStartedInput {

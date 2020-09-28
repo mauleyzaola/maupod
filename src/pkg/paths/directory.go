@@ -7,6 +7,7 @@ import (
 )
 
 const MediaStoreEnvName = "MAUPOD_MEDIA_STORE"
+const SyncPathEnvName = "MAUPOD_SYNC_PATH"
 
 // RootDirectory returns the root directory for calculating the location on the media files
 func RootDirectory() string {
@@ -20,4 +21,13 @@ func MediaFullPathAudioFile(location string) string {
 
 func LocationPath(fullPath string) string {
 	return strings.TrimPrefix(fullPath, RootDirectory())
+}
+
+// SyncFullPath the path to the sync directory within the docker image
+func SyncFullPath(location string) string {
+	return filepath.Join(SyncRootDirectory(), location)
+}
+
+func SyncRootDirectory() string {
+	return filepath.Join("/", "sync")
 }
