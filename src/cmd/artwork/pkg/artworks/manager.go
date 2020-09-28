@@ -25,10 +25,6 @@ import (
 	"github.com/nats-io/nats.go"
 )
 
-func ArtworkPathFromEnvironment() string {
-	return os.Getenv("MAUPOD_ARTWORK")
-}
-
 // IsArtworkValidSize will return true if image complies with requested image features
 // filename should be an existent absolute path to the image
 // for the time being: at least 500x500 pixeles and to be square (same width and height)

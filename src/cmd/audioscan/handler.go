@@ -34,6 +34,10 @@ func (m *MsgHandler) Register() error {
 			Subject: strconv.Itoa(int(pb.Message_MESSAGE_MICRO_SERVICE_AUDIOSCAN)),
 			Handler: m.handlerMicroService,
 		},
+		handler.Subscription{
+			Subject: strconv.Itoa(int(pb.Message_MESSAGE_SYNC_FILES)),
+			Handler: m.handlerSyncFiles,
+		},
 	)
 }
 

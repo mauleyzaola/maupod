@@ -123,6 +123,7 @@ export MAUPOD_BASE_IP_ADDRESS=192.168.0.135
 export MAUPOD_SOCKET_PORT=8181
 export MAUPOD_MEDIA_STORE=/mnt/music-library
 export MAUPOD_ARTWORK="$MAUPOD_MEDIA_STORE/artwork"
+export MAUPOD_SYNC_PATH="$HOME/sync"
 export REACT_APP_MAUPOD_API="http://$MAUPOD_BASE_IP_ADDRESS:7400"
 export REACT_APP_MAUPOD_ARTWORK="http://$MAUPOD_BASE_IP_ADDRESS:7401"
 export REACT_APP_MAUPOD_SOCKET="ws://$MAUPOD_BASE_IP_ADDRESS:$MAUPOD_SOCKET_PORT"
@@ -133,6 +134,7 @@ Basically you would need to override these variables:
 ```
 MAUPOD_BASE_IP_ADDRESS
 MAUPOD_MEDIA_STORE
+MAUPOD_SYNC_PATH
 ```
 
 The rest are inferred automatically

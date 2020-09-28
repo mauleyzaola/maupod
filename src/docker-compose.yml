@@ -25,6 +25,7 @@ services:
       - MAUPOD_MEDIA_STORE=/music-store
     volumes:
       - $MAUPOD_MEDIA_STORE:/music-store
+      - $MAUPOD_SYNC_PATH:/sync
 
   maupod-mediainfo:
     image: mauleyzaola/maupod-mediainfo
