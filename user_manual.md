@@ -35,7 +35,7 @@
   9. [Extra](#extra)
 - D. [Others](#)
 
-### <a name="geberal-specifications">A. General Specifications</a>
+### <a name="general-specifications">A. General Specifications</a>
 
 1. <a name="audio-files">Valid `Audio File` **extensions**</a>: `MPEG Audio` (*`MP3`*), `MPEG-4`, `M4A` and `FLAC` (*`Free Lossless Audio Codec`*).
 2. <a name="format-images">Valid **formats** for Artwork images</a>: `JPEG` (*`JPG`*) and `PNG`.
@@ -48,14 +48,14 @@
 1. `Timer` (minutes. seconds).
 2. `Performer` (clickable name of the artist that takes you to the artist's all albums album page).
 3. `Album` (clickable name of the album that takes you to that albums individual page).
-4. `Paly`, `Pause`, `Skip` (buttones).
+4. `Play`, `Pause`, `Skip` (buttones).
 5. Track Progress <a name="spectrum">`Spectrum`</a> (clickable `Spectrum Image` wich shows track playing progress and allows jumping, forward or backwards, on the same track, multiple times).
 
 ### <a name="navigation-bar">C. Navigation Bar</a>
 
 ![alt text](assets/images/maupod-navbar.png)
 
-`Navigation Bar` allows you to navigate through all Maupod's pages and features. And, it has 7 TABs and one `Search` section:
+`Navigation Bar` allows you to navigate through all Maupod's pages and features. It has 7 TABs and one `Search` section:
 
   1. [Dashboard](#dashboard)
   2. [Albums](#albums)
@@ -75,7 +75,7 @@ NOTE: *`Music Timeline` and `Control Buttons` only appears if there's a song pla
 
 ## <a name="albums">2. Albums</a>
 
-You can have a `General Display` of the `Maupod's Albums Library` or you can open an especific `Album` by clicking it's name and opening it's `Individual Display` page.
+You can have a `General Display` of the Maupod's `Albums Library` or you can open an especific `Album` by clicking it's name and opening it's `Individual Display` page (`Album View`).
 
 ### <a name="albums-library">2.1. Albums Library General Display</a>
 
@@ -160,7 +160,7 @@ You can add a missing `Album Artwork` directly from the `Album View` by clicking
 
 ![alt text](assets/images/album-cover-album-view-06.png)
 
-If either, steps `C` or `D` are positive, then it will be necesarry to find the `Album Artwork` somwhere else and add it directly to the album's folder with a file sized **500x500 px** minimum and named `cover.jpg` or `cover.png`.
+If either, steps `C` or `D` are positive, then it will be necesary to find the `Album Artwork` somewhere else and add it directly to the album's folder with a file sized **500x500 px** minimum and named `cover.jpg` or `cover.png`.
 
 #### <a name="replacecover-albumview">2.3.2. Replacing Album Cover from Album View</a>
 
