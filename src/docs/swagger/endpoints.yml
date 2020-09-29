@@ -33,9 +33,19 @@ paths:
       tags:
         - audio
       summary: Scan Audio Files
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScanDirectoryAudioFilesInput'
       responses:
         200:
           description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
         400:
           description: Bad Request
         500:
@@ -212,7 +222,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Result'
+                  $ref: '#/components/schemas/ApiResponse'
   /providers/metadata/cover/{album_identifier}:
     put:
       tags:
@@ -232,7 +242,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Result'
+                  $ref: '#/components/schemas/ApiResponse'
         400:
           description: Bad Request  
   /system/ping:
@@ -300,6 +310,15 @@ paths:
           
 components:
   schemas:
+    ApiResponse:
+      description: generic api response to requests
+      type: object
+      properties:
+        ok:
+          type: boolean
+        error:
+          type: string
+
     Artwork:
       type: object
       properties:
@@ -309,13 +328,7 @@ components:
           type: array
           items:      
             type: string  
-    Community:
-      type: object
-      properties:
-        want:
-          type: integer
-        have:
-          type: integer
+
     DirectoryReadOutput:
       type: object
       properties:
@@ -325,6 +338,7 @@ components:
             $ref: '#/components/schemas/FileItem'          
         error:
           type: string    
+
     FileItem:
       type: object
       properties:
@@ -339,6 +353,7 @@ components:
             type: string
           id:
             type: string
+
     IPCInput:
       type: object
       properties:
@@ -348,6 +363,7 @@ components:
           type: string
         command:
           $ref: '#/components/schemas/Message'
+
     Media:
       type: object
       properties:
@@ -359,7 +375,8 @@ components:
         location:
           type: string 
         last_scan:
-          $ref: '#/components/schemas/Timestamp'  
+          type: string
+          format: 'date-time'
         directory:
           type: string
         file_extension:
@@ -451,11 +468,13 @@ components:
         writing_library:
           type: string 
         modified_date:
-          $ref: '#/components/schemas/Timestamp' 
+          type: string
+          format: 'date-time'
         composer:
           type: string 
         last_image_scan:
-          $ref: '#/components/schemas/Timestamp'  
+          type: string
+          format: 'date-time'
         image_location:
           type: string 
         album_identifier:
@@ -474,14 +493,17 @@ components:
           sha:
             type: string
           ts:
-            $ref: '#/components/schemas/Time'       
+            type: string
+            format: 'date-time'
           event:
             type: integer  
+
     PingOutput:
       type: object
       properties:
         message:
           type: string    
+
     Queue:
       type: object
       properties:
@@ -491,6 +513,7 @@ components:
           $ref: '#/components/schemas/Media'
         position:
           type: integer       
+
     QueueOutput:
       type: object
       properties:
@@ -500,6 +523,7 @@ components:
             $ref: '#/components/schemas/Queue'
         error:
           type: string
+
     QueueInput:
       type: object
       properties:
@@ -509,61 +533,18 @@ components:
           type: integer
         named_position:
           type: integer
-    Result:
+
+    ScanDirectoryAudioFilesInput:
       type: object
       properties:
-        uuid:
+        root:
           type: string
-        country:
+        scan_date:
           type: string
-        year:
-          type: string
-        format:
-          type: array
-          items: 
-            type: string
-        label:
-          type: array
-          items: 
-            type: string        
-        type:
-          type: string
-        genre:
-          type: array
-          items: 
-            type: string        
-        style:
-          type: array
-          items: 
-            type: string        
-        id:
-          type: integer
-        barcode:
-          type: array
-          items: 
-            type: string          
-        user_data:
-          $ref: '#/components/schemas/UserData'
-        master_id:
-          type: integer
-        master_url:
-          type: string
-        uri:
-          type: string
-        catno:
-          type: string
-        title:
-          type: string
-        thumb:
-          type: string
-        cover_image:
-          type: string
-        resource_url:
-          type: string
-        comunity:
-          $ref: '#/components/schemas/Community'
-        format_quantity:
-          type: integer
+          format: 'date-time'
+        force:
+          type: boolean
+
     SpectrumGenerateInput:
           type: object
           properties:
@@ -575,31 +556,7 @@ components:
               height:
                 type: integer  
                 format: int64       
-    UserData:
-      type: object
-      properties:
-        in_wantlist:
-          type: boolean
-        in_collection:
-          type: boolean        
-    Time:
-      type: object
-      properties:
-        wall:
-          type: integer
-          format : int64
-        ext: 
-          type: integer
-          format: int64       
-    Timestamp:
-      type: object
-      properties:
-        seconds:
-          type: integer
-          format : int64
-        nanos:
-          type: integer
-          format: int32  
+
     ViewAlbum:
       type: object
       properties:
@@ -635,6 +592,7 @@ components:
         file_size:
           type: integer
           format: int64        
+
     ViewGenre:
       type: object
       properties:
