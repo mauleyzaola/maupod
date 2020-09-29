@@ -67,10 +67,9 @@ paths:
               schema:
                 type: array
                 items:
-                  type: string          
+                   $ref: '#/components/schemas/Artwork'         
         500:
-          description: Internal Server Error           
-                
+          description: Internal Server Error                    
   /ipc:
     post:
       tags:
@@ -85,7 +84,6 @@ paths:
                 $ref: '#/components/schemas/IPCInput'           
         400:
           description: Bad Request
-
   /events:
     get:
       tags:
@@ -97,7 +95,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PingOutput'
+                $ref: '#/components/schemas/MediaEvent'
+        500:
+          description: Estatus Internal Server Error        
     post:
       tags:
         - events
@@ -105,10 +105,10 @@ paths:
       responses:
         200:
           description: ok
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PingOutput'
+        400:
+          description: Bad Request 
+        500:
+          description: Internal Server Error
   /file-browser/directory:
     post:
       tags:
@@ -120,18 +120,22 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PingOutput'
+                $ref: '#/components/schemas/DirectoryReadOutput'
+        400:
+          description: Bad Request 
+        500:
+          description: Internal Server Error     
   /media/{field}/distinct:
     get:
       tags:
         - media
       summary: List
       parameters:
-        - name: "field"
-          in: "path"
+        - name: field
+          in: path
           required: true
-          type: "string"
-          format:
+          schema:
+            type : string
       responses:
         200:
           description: ok
@@ -140,7 +144,7 @@ paths:
               schema:
                 type: array
                 items:
-                $ref: '#/components/schemas/Media'
+                  $ref: '#/components/schemas/Media'
   /media:
     get:
       tags:
@@ -155,6 +159,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Media'
+        400:
+          description: Bad Request
   /media/albums:
     get:
       tags:
@@ -168,24 +174,31 @@ paths:
               schema:
                 type: array
                 items:
-                $ref: '#/components/schemas/Media' 
+                  $ref: '#/components/schemas/ViewAlbum' 
+        400:
+          description: Bad Request                
   /media/{id}/spectrum:
     get:
       tags:
         - media
       summary: get spectrum imagen
       parameters:
-        - name: "id"
-          in: "path"
+        - name: id
+          in: path
           required: true
-          type: "string"      
+          schema:
+            type : string     
       responses:
         200:
           description: ok
-          # content:
-          #   application/json:
-          #     schema:
-          #       $ref: '#/components/schemas/PingOutput'      
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpectrumGenerateInput'
+        400:
+          description: Bad Request
+        404:
+          description: Not Found        
   /providers/metadata/cover:
     get:
       tags:
@@ -206,10 +219,11 @@ paths:
         - providers
       summary: Metadata of an albums
       parameters:
-        - name: "album_identifier"
-          in: "path"
+        - name: album_identifier
+          in: path
           required: true
-          type: "string"       
+          schema:
+            type: string       
       responses:
         200:
           description: ok
@@ -219,6 +233,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Result'
+        400:
+          description: Bad Request  
   /system/ping:
     get:
       tags:
@@ -245,6 +261,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/QueueOutput'  
+        500:
+          description: Internal Server Error
     post:
       tags:
         - queue
@@ -255,17 +273,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/QueueInput'
+                $ref: '#/components/schemas/QueueOutput'
+        400:
+          description: Status Bad Request        
   /queue/{index}:
     delete:
       tags:
         - queue
       summary: Delete element queue
       parameters:
-        - name: "index"
-          in: "path"
+        - name: index
+          in: path
           required: true
-          type: "string"    
+          schema:
+            type: string    
       responses:
         302:
           description: ok
@@ -273,15 +294,60 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/QueueOutput'         
+        400:
+          description: Status Bad Request 
 
-
+          
 components:
   schemas:
-    PingOutput:
+    Artwork:
       type: object
       properties:
-        message:
+        genre:
+          type: string 
+        imagen:
+          type: array
+          items:      
+            type: string  
+    Community:
+      type: object
+      properties:
+        want:
+          type: integer
+        have:
+          type: integer
+    DirectoryReadOutput:
+      type: object
+      properties:
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/FileItem'          
+        error:
+          type: string    
+    FileItem:
+      type: object
+      properties:
+          location:
+            type: string
+          is_dir:
+            type: boolean
+          size:
+            type: integer
+            format: 'int64'
+          name:
+            type: string
+          id:
+            type: string
+    IPCInput:
+      type: object
+      properties:
+        media:
+          $ref: '#/components/schemas/Media'
+        value:
           type: string
+        command:
+          $ref: '#/components/schemas/Message'
     Media:
       type: object
       properties:
@@ -293,7 +359,7 @@ components:
         location:
           type: string 
         last_scan:
-          type: time
+          $ref: '#/components/schemas/Timestamp'  
         directory:
           type: string
         file_extension:
@@ -385,15 +451,37 @@ components:
         writing_library:
           type: string 
         modified_date:
-          type: timestamp 
+          $ref: '#/components/schemas/Timestamp' 
         composer:
           type: string 
         last_image_scan:
-          type: timestamp   
+          $ref: '#/components/schemas/Timestamp'  
         image_location:
           type: string 
         album_identifier:
           type: string 
+    Message:
+      type: object
+      properties:
+        message:
+          type: integer
+          format: int32     
+    MediaEvent:
+      type: object
+      properties:
+          id:
+            type: string
+          sha:
+            type: string
+          ts:
+            $ref: '#/components/schemas/Time'       
+          event:
+            type: integer  
+    PingOutput:
+      type: object
+      properties:
+        message:
+          type: string    
     Queue:
       type: object
       properties:
@@ -476,7 +564,17 @@ components:
           $ref: '#/components/schemas/Community'
         format_quantity:
           type: integer
-        formats:                            
+    SpectrumGenerateInput:
+          type: object
+          properties:
+              media:
+                $ref: '#/components/schemas/Media'
+              width:
+                type: integer
+                format: int64
+              height:
+                type: integer  
+                format: int64       
     UserData:
       type: object
       properties:
@@ -484,13 +582,59 @@ components:
           type: boolean
         in_collection:
           type: boolean        
-    Community:
+    Time:
       type: object
       properties:
-        want:
+        wall:
           type: integer
-        have:
+          format : int64
+        ext: 
           type: integer
+          format: int64       
+    Timestamp:
+      type: object
+      properties:
+        seconds:
+          type: integer
+          format : int64
+        nanos:
+          type: integer
+          format: int32  
+    ViewAlbum:
+      type: object
+      properties:
+        id:
+          type: string
+        album_identifier:
+          type: string
+        album: 
+          type: string
+        duration:
+          type: integer
+          format: int64
+        bit_rate:
+          type: integer
+          format: int64
+        performer:
+          type: string   
+        genre:
+          type: string
+        recorded_date:
+          type: integer
+          format: int64
+        sampling_rate:
+          type: integer
+          format: int64        
+        track_name_total:
+          type: integer
+          format: int64        
+        image_location:
+          type: string        
+        format:
+          type: string        
+        file_size:
+          type: integer
+          format: int64        
     ViewGenre:
       type: object
       properties:
@@ -507,20 +651,4 @@ components:
           format: float
         total:
           type: number
-          format: float
-    IPCInput:
-      type: object
-      properties:
-        media:
-          $ref: '#/components/schemas/Media'
-        value:
-          type: string
-        command:
-          $ref: '#/components/schemas/Message'
-    Message:
-      type: object
-      properties:
-        message:
-          type: integer
-          format: int32     
-
+          format: float 
