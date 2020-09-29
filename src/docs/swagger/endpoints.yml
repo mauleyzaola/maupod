@@ -8,23 +8,15 @@ servers:
 
 tags:
   - name: audio
-    description: "description"
   - name: events
-    description: "description"
   - name: file-browser
-    description: "description"
   - name: genres
-    description: "description" 
   - name: ipc
-    description: "description" 
   - name: media
-    description: "description"           
+  - name: playlist
   - name: providers
-    description: "description"  
   - name: queue
-    description: "description"         
   - name: system
-    description: "description"            
 
 
 paths:
@@ -208,7 +200,193 @@ paths:
         400:
           description: Bad Request
         404:
-          description: Not Found        
+          description: Not Found
+
+  /playlists/{id}:
+    delete:
+      tags:
+        - playlist
+      summary: removes a playlist from database
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        204:
+          description: no content
+    put:
+      tags:
+        - playlist
+      summary: updates one playlist in database
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlaylistInput'
+      responses:
+        201:
+          description: created
+    get:
+      tags:
+        - playlist
+      summary: returns one playlist object
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Playlist'
+
+  /playlists:
+    post:
+      tags:
+        - playlist
+      summary: stores one playlist in database
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlaylistInput'
+      responses:
+        201:
+          description: created
+    get:
+      tags:
+        - playlist
+      summary: returns an array of playlists
+      parameters:
+        - in: query
+          required: false
+          name: limit
+          schema:
+            type: integer
+        - in: query
+          required: false
+          name: offset
+          schema:
+            type: string
+        - in: query
+          required: false
+          name: direction
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+        - in: query
+          required: false
+          name: sort
+          schema:
+            type: string
+      responses:
+        200:
+          description: ok
+
+  /playlists/{id}/items:
+    put:
+      tags:
+        - playlist
+      summary: changes the position of one item in the playlist
+      parameters:
+        - in: path
+          name: id
+          description: the playlist id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlaylistItem'
+      responses:
+        201:
+          description: ok
+    post:
+      tags:
+        - playlist
+      summary: appends one item to a playlist
+      parameters:
+        - in: path
+          name: id
+          description: the playlist id
+          schema:
+            type: string
+            format: uuid
+            required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlaylistItem'
+      responses:
+        201:
+          description: created
+    get:
+      tags:
+        - playlist
+      summary: returns the items of a given playlist
+      parameters:
+        - in: path
+          name: id
+          description: the playlist id
+          schema:
+            type: string
+            format: uuid
+            required: true
+      responses:
+        201:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PlaylistItem'
+
+  /playlists/{id}/items/{position}:
+    delete:
+      tags:
+        - playlist
+      summary: removes one item from a playlist at a given position
+      parameters:
+        - in: path
+          name: id
+          description: the playlist id
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: path
+          name: position
+          description: the index of the playlist
+          schema:
+            type: integer
+          required: true
+      responses:
+        201:
+          description: ok
+
+
   /providers/metadata/cover:
     get:
       tags:
@@ -479,12 +657,14 @@ components:
           type: string 
         album_identifier:
           type: string 
+
     Message:
       type: object
       properties:
         message:
           type: integer
           format: int32     
+
     MediaEvent:
       type: object
       properties:
@@ -496,13 +676,41 @@ components:
             type: string
             format: 'date-time'
           event:
-            type: integer  
+            type: integer
+
+    Playlist:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+
+    PlaylistInput:
+      type: object
+      properties:
+        name:
+          type: string
+
+    PlaylistItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        playlist:
+          $ref: '#/components/schemas/Playlist'
+        position:
+          type: integer
+        media:
+          $ref: '#/components/schemas/Media'
 
     PingOutput:
       type: object
       properties:
         message:
-          type: string    
+          type: string
 
     Queue:
       type: object
