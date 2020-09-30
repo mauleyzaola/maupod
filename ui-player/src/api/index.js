@@ -45,6 +45,21 @@ const queueRemove = index => axios.delete(`/queue/${index}`);
 const objectToQueryString = data => querystring.stringify(data);
 const spectrumImage = (id) => axios.get(`/media/${id}/spectrum`);
 
+///PlayList
+
+const playListAdd = ({data}) => axios.post(`/playlists`,data);//ok
+const playLists = params => axios.get(`/playlists`,params); //ok
+
+const playListsGet = ({id}) => axios.get(`/playlists/${id}`) //ok
+const playListsPut = ({id, data}) => axios.put(`/playlists/${id}`, data)//ok
+const playListsDelete = ({id}) => axios.delete(`/playlists/${id}`);//ok
+
+const playListItemPost = ({id,data}) => axios.post(`/playlists/${id}/items`,data);//ok
+const playListItemsGet = ({id}) => axios.get(`/playlists/${id}/items`);//ok
+const playListItemPut = ({id, position, data}) => axios.put(`/playlists/${id}/items/${position}`, data);
+const PlayListItemDelete = ({id, position}) => axios.delete(`/playlists/${id}/items/${position}`)//ok
+
+
 export default {
     audioScan,
     albumViewList,
@@ -56,6 +71,15 @@ export default {
     genreList,
     mediaList,
     objectToQueryString,
+    playListAdd,
+    playListItemPost,
+    playListItemsGet,
+    playListItemPut,
+    PlayListItemDelete,    
+    playLists,
+    playListsGet,
+    playListsPut,
+    playListsDelete,
     providerMetadataCovers,
     providerMetadataCoverPut,
     queueAdd,
