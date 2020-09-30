@@ -2,8 +2,10 @@ package api
 
 import (
 	"context"
+	"database/sql"
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -197,8 +199,20 @@ func (a *ApiServer) PlaylistItemDelete(p TransactionExecutorParams) (status int,
 }
 
 func (a *ApiServer) PlaylistItemPut(p TransactionExecutorParams) (status int, result interface{}, err error) {
-	var input []*pb.PlaylistItem
+	var input pb.PlaylistItem
 	var id = p.Param("id")
+	positionStr := p.Param("position")
+	position, err := strconv.Atoi(positionStr)
+	if err != nil {
+		err = fmt.Errorf("cannot parse position to int: %s", positionStr)
+		status = http.StatusBadRequest
+		return
+	}
+	if position < 0 {
+		err = errors.New("position should be equal or greater than zero")
+		status = http.StatusBadRequest
+		return
+	}
 
 	// decode payload
 	if err = p.Decode(&input); err != nil {
@@ -206,41 +220,73 @@ func (a *ApiServer) PlaylistItemPut(p TransactionExecutorParams) (status int, re
 		return
 	}
 
-	// note: this is not the best approach, but it is simple to understand, easy to implement and read
-	// if a playlist has more than a couple of hundreds, we will need to start thinking about a better alternative
-
-	// count the previous items
-	var where = orm.PlaylistItemWhere
-	query := orm.PlaylistItems(where.PlaylistID.EQ(id))
-	rowCount, err := query.Count(p.ctx, p.conn)
-	if err != nil {
-		status = http.StatusInternalServerError
-		return
-	}
-
-	// check provided items count match
-	if expected, actual := int(rowCount), len(input); expected != actual {
+	// basic health check
+	if input.Media == nil || input.Media.Id == "" {
+		err = errors.New("missing media or media id")
 		status = http.StatusBadRequest
-		err = fmt.Errorf("playlist has: %d items but provided items are: %d", expected, actual)
 		return
 	}
 
-	// delete all the previous items
-	if _, err = query.DeleteAll(p.ctx, p.conn); err != nil {
-		status = http.StatusInternalServerError
+	// get current playlist items
+	items, err := playlistItemsList(p.ctx, p.conn, id)
+	if err != nil {
+		status = http.StatusBadRequest
 		return
 	}
-
-	// insert the provided items in the database considering they are in the right order
-	for i, v := range input {
-		item := conversion.PlaylistItemToORM(v)
-		item.Position = i
-		item.ID = helpers.NewUUID()
-		if err = item.Insert(p.ctx, p.conn, boil.Infer()); err != nil {
-			status = http.StatusBadRequest
-			return
+	// check position out of bounds
+	if length := len(items) - 1; position > length {
+		err = fmt.Errorf("invalid position: %d, max position is: %d", position, length)
+		status = http.StatusBadRequest
+		return
+	}
+	// find a matching item with input provided
+	var matchedItem *pb.PlaylistItem
+	for _, v := range items {
+		if v.Media.Id == input.Media.Id && v.Position == input.Position {
+			matchedItem = v
+			break
 		}
 	}
+
+	if matchedItem == nil {
+		if err == sql.ErrNoRows {
+			err = fmt.Errorf("didn't find any item in playlist at position: %d with media.id: %s", input.Position, input.Media.Id)
+			status = http.StatusNotFound
+		} else {
+			status = http.StatusBadRequest
+		}
+		return
+	}
+	if int(matchedItem.Position) == position {
+		status = http.StatusBadRequest
+		err = errors.New("the position and new position are the same value")
+		return
+	}
+
+	start := int(matchedItem.Position)
+	for i := start; i >= position; i-- {
+		items[i] = items[i-1]
+	}
+	items[position] = matchedItem
+
+	for _, v := range items {
+		log.Println("position,track: ", v.Position, v.Media.Track)
+	}
+	err = fmt.Errorf("xxx")
+	return
+
+	//var cols = orm.PlaylistItemColumns
+	//for i, v := range clonedItems {
+	//	if v.Position == i {
+	//		continue
+	//	}
+	//	v.Position = i
+	//	if _, err = v.Update(p.ctx, p.conn, boil.Whitelist(cols.Position)); err != nil {
+	//		status = http.StatusInternalServerError
+	//		return
+	//	}
+	//}
+
 	return
 }
 
