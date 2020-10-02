@@ -5,9 +5,10 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"log"
 	"net/http"
 	"strconv"
+
+	"github.com/mauleyzaola/maupod/src/pkg/types"
 
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata"
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata/conversion"
@@ -202,6 +203,8 @@ func (a *ApiServer) PlaylistItemPut(p TransactionExecutorParams) (status int, re
 	var input pb.PlaylistItem
 	var id = p.Param("id")
 	positionStr := p.Param("position")
+
+	// the new position of the track
 	position, err := strconv.Atoi(positionStr)
 	if err != nil {
 		err = fmt.Errorf("cannot parse position to int: %s", positionStr)
@@ -263,30 +266,52 @@ func (a *ApiServer) PlaylistItemPut(p TransactionExecutorParams) (status int, re
 		return
 	}
 
-	start := int(matchedItem.Position)
-	for i := start; i >= position; i-- {
-		items[i] = items[i-1]
-	}
-	items[position] = matchedItem
-
+	// convert to a media list
+	var medias types.Medias
 	for _, v := range items {
-		log.Println("position,track: ", v.Position, v.Media.Track)
+		medias = append(medias, v.Media)
 	}
-	err = fmt.Errorf("xxx")
-	return
+	if len(medias) == 0 {
+		status = http.StatusBadRequest
+		err = errors.New("empty playlist, cannot move items")
+		return
+	}
 
-	//var cols = orm.PlaylistItemColumns
-	//for i, v := range clonedItems {
-	//	if v.Position == i {
-	//		continue
-	//	}
-	//	v.Position = i
-	//	if _, err = v.Update(p.ctx, p.conn, boil.Whitelist(cols.Position)); err != nil {
-	//		status = http.StatusInternalServerError
-	//		return
-	//	}
-	//}
+	// take out the selected item
+	medias, err = medias.RemoveAt(int(matchedItem.Position))
+	if err != nil {
+		status = http.StatusInternalServerError
+		return
+	}
+	// insert at the selected position
+	medias, err = medias.InsertAt(matchedItem.Media, position)
+	if err != nil {
+		status = http.StatusInternalServerError
+		return
+	}
+	if expected, actual := len(medias), len(items); expected != actual {
+		status = http.StatusInternalServerError
+		err = fmt.Errorf("internal error, ended up with items: %d and medias: %d", expected, actual)
+		return
+	}
 
+	// update the changed positions
+	var cols = orm.PlaylistItemColumns
+	for i, item := range items {
+		media := medias[i]
+		if media.Id != item.Media.Id {
+			// this record needs to be updated in db
+			item.Media = media
+			item.Position = int32(i)
+			updatedMedia := conversion.PlaylistItemToORM(item)
+			if _, err = updatedMedia.Update(p.ctx, p.conn, boil.Whitelist(cols.Position, cols.MediaID)); err != nil {
+				status = http.StatusInternalServerError
+				return
+			}
+		}
+	}
+	status = http.StatusOK
+	result = medias
 	return
 }
 
