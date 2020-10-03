@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -227,6 +228,45 @@ func TestMediaParser(t *testing.T) {
 				assert.EqualValues(t, w.TrackName, g.TrackName)
 				assert.EqualValues(t, w.TrackNameTotal, g.TrackNameTotal)
 				assert.EqualValues(t, w.WritingLibrary, g.WritingLibrary)
+			}
+		})
+	}
+}
+
+func Test_dateRecordedParser(t *testing.T) {
+	type args struct {
+		v string
+	}
+	tests := []struct {
+		name string
+		args args
+		want int64
+	}{
+		{
+			args: args{"2015"},
+			want: 2015,
+		},
+		{
+			args: args{"-1"},
+			want: 0,
+		},
+		{
+			args: args{"UTC 2007-08-09 07:00:00"},
+			want: 2007,
+		},
+		{
+			args: args{"2007-08-09 07:00:00"},
+			want: 2007,
+		},
+		{
+			args: args{time.Now().Add(time.Hour * 24 * 400).Format("2006")},
+			want: 0,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := dateRecordedParser(tt.args.v); got != tt.want {
+				t.Errorf("dateRecordedParser() = %v, want %v", got, tt.want)
 			}
 		})
 	}
