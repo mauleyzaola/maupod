@@ -32,8 +32,8 @@ func (m *MsgHandler) handlerUpdateSHA(msg *nats.Msg) {
 		return
 	}
 
-	// check if new sha is empty, if that's the case simply update column
-	if input.OldSHA == "" {
+	// update if sha has changed
+	if input.OldSHA != input.NewSHA {
 		cols := orm.MediumColumns
 		media := &orm.Medium{
 			ID:  input.Media.Id,
