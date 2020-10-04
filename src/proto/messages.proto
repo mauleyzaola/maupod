@@ -27,6 +27,7 @@ enum Message {
     MESSAGE_ARTWORK_FIND_ALBUM_COVER = 22;
     MESSAGE_ARTWORK_DOWNLOAD = 23;
     MESSAGE_SYNC_FILES = 24;
+    MESSAGE_SHA_SCAN = 25;
 
     MESSAGE_IPC = 100;
 
@@ -155,6 +156,7 @@ message MediaInfosOutput {
 message MediaUpdateSHAInput {
     string oldSHA = 1;
     string newSHA = 2;
+    Media media = 3;
 }
 
 message MicroServiceDiscoveryInput {
@@ -199,6 +201,10 @@ message ScanDirectoryAudioFilesInput {
     string root = 1;
     google.protobuf.Timestamp scan_date = 2;
     bool force = 3;
+}
+
+message SHAScanInput {
+    Media media = 1;
 }
 
 message SocketTrackPositionChangeInput {

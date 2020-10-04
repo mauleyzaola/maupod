@@ -38,6 +38,10 @@ func PublishMediaSHAUpdate(nc *nats.Conn, input *pb.MediaUpdateSHAInput) error {
 	return PublishBroker(nc, pb.Message_MESSAGE_MEDIA_UPDATE_SHA, input)
 }
 
+func PublishMediaSHAScan(nc *nats.Conn, input *pb.SHAScanInput) error {
+	return PublishBroker(nc, pb.Message_MESSAGE_SHA_SCAN, input)
+}
+
 func PublishBrokerJSON(nc *nats.Conn, subject pb.Message, input proto.Message) error {
 	data, err := json.Marshal(input)
 	if err != nil {
