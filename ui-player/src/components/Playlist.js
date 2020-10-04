@@ -10,7 +10,6 @@ const ItemsHeader = ({playlist}) => (
 const MediaListHeader = () => (
     <thead>
     <tr>
-        <th>#</th>
         <th>Album</th>
         <th>Track</th>
         <th>Performer</th>
@@ -21,7 +20,6 @@ const MediaListHeader = () => (
 
 const MediaListRow = ({item}) => (
     <tr>
-        <td>{item.id}</td>
         <td>{item.media.album}</td>
         <td>{item.media.track}</td>
         <td>{item.media.performer}</td>
