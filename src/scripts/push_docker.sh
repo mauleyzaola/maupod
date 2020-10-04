@@ -2,7 +2,7 @@
 
 set -e
 
-echo "$DOCKER_PASS" | docker login --username "$DOCKER_USER" --password-stdin
+docker login --username "$DOCKER_USER" --password "$DOCKER_PASS"
 
 docker push mauleyzaola/maupod-restapi
 docker push mauleyzaola/maupod-mediainfo
