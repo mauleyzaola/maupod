@@ -38,6 +38,10 @@ func (m *MsgHandler) Register() error {
 			Subject: strconv.Itoa(int(pb.Message_MESSAGE_SYNC_FILES)),
 			Handler: m.handlerSyncFiles,
 		},
+		handler.Subscription{
+			Subject: strconv.Itoa(int(pb.Message_MESSAGE_SHA_SCAN)),
+			Handler: m.handlerSHAScan,
+		},
 	)
 }
 

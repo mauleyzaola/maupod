@@ -6,6 +6,7 @@ import (
 	"io"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func ParseMediaInfo(r io.Reader) (*MediaInfo, error) {
@@ -124,7 +125,7 @@ func ParseMediaInfo(r io.Reader) (*MediaInfo, error) {
 		case strings.ToLower("Performer"):
 			mi.Performer = defaultValue
 		case strings.ToLower("Recorded date"):
-			mi.RecordedDate = toInt(defaultValue)
+			mi.RecordedDate = dateRecordedParser(defaultValue)
 		case strings.ToLower("Samples count"):
 			for _, v := range value {
 				if val := toInt(v); val != 0 {
@@ -216,4 +217,40 @@ func toInfoData(r io.Reader) InfoData {
 		res[k] = val
 	}
 	return res
+}
+
+// dateRecordedParser will try to extract the year from a string, and return 0 if it was not possible
+func dateRecordedParser(v string) int64 {
+	values := strings.Fields(v)
+	if len(values) == 1 {
+		val, err := strconv.ParseInt(values[0], 10, 64)
+		if err == nil {
+			if dateRecordedValid(int(val)) {
+				return val
+			}
+		}
+	} else if len(values) == 2 {
+		val, err := time.Parse("2006-01-02", values[0])
+		if err == nil {
+			if dateRecordedValid(val.Year()) {
+				return int64(val.Year())
+			}
+		}
+	} else if len(values) == 3 {
+		if values[0] == "UTC" {
+			val, err := time.Parse("2006-01-02", values[1])
+			if err == nil {
+				if dateRecordedValid(val.Year()) {
+					return int64(val.Year())
+				}
+			}
+		}
+	}
+	return 0
+}
+
+func dateRecordedValid(v int) bool {
+	const minYear = 1
+	var maxYear = time.Now().Add(time.Hour * 24).Year()
+	return minYear < v && v <= maxYear
 }

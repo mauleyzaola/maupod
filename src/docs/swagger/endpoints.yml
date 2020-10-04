@@ -301,26 +301,6 @@ paths:
           description: ok
 
   /playlists/{id}/items:
-    put:
-      tags:
-        - playlist
-      summary: changes the position of one item in the playlist
-      parameters:
-        - in: path
-          name: id
-          description: the playlist id
-          required: true
-          schema:
-            type: string
-            format: uuid
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PlaylistItem'
-      responses:
-        201:
-          description: ok
     post:
       tags:
         - playlist
@@ -337,7 +317,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PlaylistItem'
+              $ref: '#/components/schemas/PlaylistItemPostInput'
       responses:
         201:
           description: created
@@ -364,6 +344,51 @@ paths:
                   $ref: '#/components/schemas/PlaylistItem'
 
   /playlists/{id}/items/{position}:
+    put:
+      tags:
+        - playlist
+      summary: changes the position of one item in the playlist
+      parameters:
+        - in: path
+          name: id
+          description: the playlist id
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - in: path
+          name: position
+          description: the new position in the playlist
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlaylistItemPutInput'
+
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Media'
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        500:
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
     delete:
       tags:
         - playlist
@@ -705,6 +730,28 @@ components:
           type: integer
         media:
           $ref: '#/components/schemas/Media'
+
+    PlaylistItemPostInput:
+      type: object
+      properties:
+        media:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+
+    PlaylistItemPutInput:
+      type: object
+      properties:
+        media:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+        position:
+          type: integer
 
     PingOutput:
       type: object

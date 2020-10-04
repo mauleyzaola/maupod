@@ -21,20 +21,47 @@ func (m *MsgHandler) handlerUpdateSHA(msg *nats.Msg) {
 	}
 	ctx := context.Background()
 	conn := m.db
-	var mods []qm.QueryMod
-	var where = orm.MediaEventWhere
-	var cols = orm.MediaEventColumns
-	mods = append(mods, where.Sha.EQ(input.OldSHA))
-	events, err := orm.MediaEvents(mods...).All(ctx, conn)
-	if err != nil {
-		log.Println(err)
+
+	if input.Media.Id == "" {
+		log.Println("[ERROR] missing Media.ID")
 		return
 	}
-	for _, v := range events {
-		v.Sha = input.NewSHA
-		if _, err = v.Update(ctx, conn, boil.Whitelist(cols.Sha)); err != nil {
+
+	if input.NewSHA == "" {
+		log.Println("[ERROR] missing new SHA")
+		return
+	}
+
+	// update if sha has changed
+	if input.OldSHA != input.NewSHA {
+		cols := orm.MediumColumns
+		media := &orm.Medium{
+			ID:  input.Media.Id,
+			Sha: input.NewSHA,
+		}
+		if _, err = media.Update(ctx, conn, boil.Whitelist(cols.Sha)); err != nil {
 			log.Println(err)
 			return
+		}
+	}
+
+	// update the SHA for each of the events
+	if input.OldSHA != "" {
+		var mods []qm.QueryMod
+		var where = orm.MediaEventWhere
+		var cols = orm.MediaEventColumns
+		mods = append(mods, where.Sha.EQ(input.OldSHA))
+		events, err := orm.MediaEvents(mods...).All(ctx, conn)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		for _, v := range events {
+			v.Sha = input.NewSHA
+			if _, err = v.Update(ctx, conn, boil.Whitelist(cols.Sha)); err != nil {
+				log.Println(err)
+				return
+			}
 		}
 	}
 }

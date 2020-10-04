@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"net/http"
 	"strconv"
 
@@ -55,6 +56,9 @@ func (p *TransactionExecutorParams) DecodeQuery(v interface{}) error {
 }
 
 func (p *TransactionExecutorParams) Decode(v interface{}) error {
+	if p.r.Body == nil {
+		return errors.New("missing body, cannot decode")
+	}
 	return json.NewDecoder(p.r.Body).Decode(v)
 }
 
