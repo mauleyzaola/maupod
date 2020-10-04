@@ -108,7 +108,7 @@ func syncFile(src, dest string) (bool, error) {
 			srcInfo.ModTime().After(destInfo.ModTime())
 	}
 	if !needsSync {
-		log.Printf("file: %s no sync needed\n", src)
+		//log.Printf("file: %s no sync needed\n", src)
 		return false, err
 	}
 

@@ -106,14 +106,14 @@ func ScanDirectoryAudioFiles(
 		}
 
 		if !force {
-			var relativePath=paths.LocationPath(filename)
+			var relativePath = paths.LocationPath(filename)
 			// a bit of speed improvement, avoid a second time scanning the same file unless it has been changed in the file system
 			if val, ok := mediaLocationKeys[relativePath]; ok {
 				if !rules.NeedsMediaUpdate(val) {
 					log.Println("[INFO] no need to scan this file: ", relativePath)
 					return false
 				}
-			}else{
+			} else {
 				log.Println("[INFO] location not found in db: ", relativePath)
 			}
 		}
@@ -147,12 +147,6 @@ func ScanDirectoryAudioFiles(
 			continue
 		}
 
-		// create/update sha
-		if m.Sha, err = helpers.SHAFromFile(fullPath); err != nil {
-			log.Println(err)
-			return err
-		}
-
 		m.Id = helpers.NewUUID()
 		m.LastScan = helpers.TimeToTs(&scanDate)
 		m.Location = location
@@ -161,27 +155,12 @@ func ScanDirectoryAudioFiles(
 
 		// if the location is the same and we made it here, that means we need to update the row
 		if val, ok := mediaLocationKeys[location]; ok {
-			// if this is an update we need to read the old sha value from database
-			oldMedia, err := store.FindMedia(ctx, conn, &pb.Media{Location: m.Location})
-			if err != nil {
-				log.Println(m.Id, err)
-				return err
-			}
-
 			m.Id = val.Id
 			m.AlbumIdentifier = val.AlbumIdentifier
 			if err = store.Update(ctx, conn, m, updatableFields()...); err != nil {
 				return err
 			}
-			if oldMedia.Sha != m.Sha {
-				var input = pb.MediaUpdateSHAInput{
-					OldSHA: oldMedia.Sha,
-					NewSHA: m.Sha,
-				}
-				if err = broker.PublishMediaSHAUpdate(nc, &input); err != nil {
-					return err
-				}
-			}
+
 		} else {
 			// consider assigning album identifier (experimental feature only on new media)
 			var albumIdentifier string
@@ -194,6 +173,12 @@ func ScanDirectoryAudioFiles(
 				log.Println(err)
 				return err
 			}
+		}
+
+		// send SHA update message
+		if err = broker.PublishMediaSHAScan(nc, &pb.SHAScanInput{Media: m}); err != nil {
+			log.Println(err)
+			return err
 		}
 
 		// send message for extracting artwork if album has identifier
