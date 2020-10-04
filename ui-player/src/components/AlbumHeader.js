@@ -16,10 +16,10 @@ const Thumbnail = ({album}) => {
 const AlbumHeader = ({album, onClick}) => {
     if(!album) return null;
     return(
-        <div className="row with-pointer" onClick={onClick}>
+        <div className='row'>
             <div className='col'>
-                <div className='text-left'>
-                    <Thumbnail album={album} />
+                <div className='text-left with-pointer'  onClick={onClick}>
+                    <Thumbnail album={album}  />
                 </div>
             </div>
             <div className='col'>

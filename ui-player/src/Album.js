@@ -3,15 +3,15 @@ import AlbumHeader from "./components/AlbumHeader";
 import API from "./api";
 import {msToString } from "./helpers";
 import {TrackListControls} from "./components/Player";
+import Playlist from "./components/Playlist";
 
 const CoverLine = ({c, onClick}) => (
     <div className="cover-item">
         <div className="card">
-            <img src={c.cover_image} className="card-img-topx" alt="..." width="200" onClick={() => onClick(c)} />
+            <img src={c.cover_image} alt="..." width="200" onClick={() => onClick(c)} />
         </div>
     </div>
 )
-
 
 const TrackListHeader = ({isCompilation}) => {
     if(isCompilation) {
@@ -146,6 +146,7 @@ class Album extends React.Component{
                 covers = response.data;
                 this.setState({covers});
                 if(covers.length === 0){
+                    // TODO: make this better, like a notification alert in the ui
                     alert(`provider returned no cover images`);
                 }
             })
@@ -182,11 +183,48 @@ class Album extends React.Component{
             })
     }
 
+    // TODO: remove this function and remove the <Playlist /> below too
+    loadPlaylistData = id => {
+        // TODO: call the real API methods, for now just mocking the results
+        return {
+            playlist: {
+                id: '1',
+                name: 'beer is good',
+            },
+            items: [
+                {
+                    id: '12',
+                    media:{
+                        id:'123',
+                        album: 'Led Zepellin IV',
+                        track: 'Rock and Roll',
+                        performer: 'Led Zepellin',
+                        genre: 'Hard Rock',
+                    },
+                },
+                {
+                    id: '13',
+                    media:{
+                        id:'456',
+                        album: 'Out of the Blue',
+                        track: 'Jungle',
+                        performer: 'Electric Light Orchestra',
+                        genre: 'Pop',
+                    },
+                    position: 0,
+                },
+            ],
+        }
+    }
+
 
     render() {
         const { album, covers, rows, isCompilation } = this.state;
         return (
             <div>
+                <div>
+                    <Playlist onLoadData={this.loadPlaylistData} id='e9226a75-4fbd-4db5-b8a6-80485d50eeca' />
+                </div>
                 <AlbumHeader album={album} onClick={this.onCoverFormSubmit} />
                 <div className="row">
                     <div className="col">
