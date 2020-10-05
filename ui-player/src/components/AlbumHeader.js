@@ -3,14 +3,13 @@ import {msToString} from "../helpers";
 import { Link } from "react-router-dom";
 import { linkGenreList, linkPerformerList } from "../routes";
 
-const Thumbnail = ({album}) => {
-    if(!album.image_location){
-        return null;
-    }
-    return (
-        <img alt='cover' src={`${process.env.REACT_APP_MAUPOD_ARTWORK}/${album.image_location}`} />
-    )
-}
+const Thumbnail = ({album}) => (
+    <div>
+
+        {album.image_location && <img alt='cover' src={`${process.env.REACT_APP_MAUPOD_ARTWORK}/${album.image_location}`} />}
+        <button className='btn btn-primary'>Lookup Cover Image</button>
+    </div>
+)
 
 
 const AlbumHeader = ({album, onClick}) => {
