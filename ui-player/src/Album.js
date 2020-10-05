@@ -3,7 +3,6 @@ import AlbumHeader from "./components/AlbumHeader";
 import API from "./api";
 import {msToString } from "./helpers";
 import {TrackListControls} from "./components/Player";
-import Playlist from "./components/Playlist";
 
 const CoverLine = ({c, onClick}) => (
     <div className="cover-item">

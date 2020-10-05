@@ -47,17 +47,84 @@ const spectrumImage = (id) => axios.get(`/media/${id}/spectrum`);
 
 ///PlayList
 
-const playListAdd = ({data}) => axios.post(`/playlists`,data);//ok
-const playLists = params => axios.get(`/playlists`,params); //ok
+const playListAdd = async ({data}) => {
+    try {
+        const response = await axios.post(`/playlists`,data);
+        return response.data;
+    } catch (e){
+        return e;
+    }
+}
+const playLists = async params => {
+    try {
+        const response = await axios.get(`/playlists`,params);
+        return response.data;
+    } catch (e){
+        return e;
+    }
+}
 
-const playListsGet = ({id}) => axios.get(`/playlists/${id}`) //ok
-const playListsPut = ({id, data}) => axios.put(`/playlists/${id}`, data)//ok
-const playListsDelete = ({id}) => axios.delete(`/playlists/${id}`);//ok
+const playListsGet = async ({id}) => {
+    try {
+        const response = await axios.get(`/playlists/${id}`)
+        return response.data;
+    } catch (e){
+        return e;
+    }
+}
+const playListsPut = async ({id, data}) => {
+    try {
+        const response = await axios.put(`/playlists/${id}`, data)
+        return response.data;
+    } catch (e){
+        return e;
+    }
+}
+const playListsDelete = async ({id}) => {
+    try {
+        const response = await axios.delete(`/playlists/${id}`)
+        return response.data;
+    } catch (e){
+        return e;
+    }
+}
 
-const playListItemPost = ({id,data}) => axios.post(`/playlists/${id}/items`,data);//ok
-const playListItemsGet = ({id}) => axios.get(`/playlists/${id}/items`);//ok
-const playListItemPut = ({id, position, data}) => axios.put(`/playlists/${id}/items/${position}`, data);
-const PlayListItemDelete = ({id, position}) => axios.delete(`/playlists/${id}/items/${position}`)//ok
+const playListItemPost = async ({id,data}) => {
+    try {
+        const response = await axios.post(`/playlists/${id}/items`,data)
+        return response.data;
+    } catch (e){
+        return e;
+    }
+}
+const playListItemsGet = async ({id}) => {
+    {
+        try {
+            const response = await axios.get(`/playlists/${id}/items`)
+            return response.data;
+        } catch (e){
+            return e;
+        }
+    }
+}
+const playListItemPut = async ({id, position, data}) => {
+    try {
+        const response = await axios.put(`/playlists/${id}/items/${position}`, data)
+        return response.data;
+    } catch (e){
+        return e;
+    }
+}
+const PlayListItemDelete = async ({id, position}) => {
+    {
+        try {
+            const response = await axios.delete(`/playlists/${id}/items/${position}`)
+            return response.data;
+        } catch (e){
+            return e;
+        }
+    }
+}
 
 
 export default {

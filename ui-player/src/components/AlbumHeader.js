@@ -5,9 +5,8 @@ import { linkGenreList, linkPerformerList } from "../routes";
 
 const Thumbnail = ({album}) => (
     <div>
-
         {album.image_location && <img alt='cover' src={`${process.env.REACT_APP_MAUPOD_ARTWORK}/${album.image_location}`} />}
-        <button className='btn btn-primary'>Lookup Cover Image</button>
+        <button type="button" className="btn btn-primary">Lookup Cover Image</button>
     </div>
 )
 
