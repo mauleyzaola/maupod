@@ -15,6 +15,7 @@ import FileBrowser from "./components/FileBrowser";
 import TrackControl from "./components/TrackControl";
 import Queue from "./components/Queue";
 import Setup from "./components/Setup";
+import PlayLists from "./PlayLists"
 
 class App extends React.Component{
     onSubmit = e => {
@@ -46,6 +47,7 @@ class App extends React.Component{
                         <Route path='/queue' component={Queue} />
                         <Route path='/file-browser' component={FileBrowser} />
                         <Route path='/setup' component={Setup} />
+                        <Route path='/playlists' component={PlayLists} />
                     </Switch>
                 </div>
             </div>
