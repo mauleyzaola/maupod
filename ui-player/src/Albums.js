@@ -77,7 +77,7 @@ class Albums extends React.Component{
     componentDidMount() {
         const data = API.decodeURL(this.props.location.search);
         if(!data.limit){
-            data.limit = 100;
+            data.limit = 1000;
         }
         this.loadData(data);
     }
