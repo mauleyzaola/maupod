@@ -1,10 +1,8 @@
 import React, { Component } from "react";
-import API from "./api";
 import { Link } from "react-router-dom";
-// import PlayList from "./PlayListItem";
+import API from "./api";
 
 const CardImagen = ({image_location}) => {
-    // console.log(image_location);
 
     if(!image_location) return null;
     return (
@@ -22,7 +20,6 @@ const CardImagenPanel = ({image_location}) => {
         alt="  "/>
     )
 }
-
 const PanelImagen = ({tracks}) => {
 
     return (
@@ -47,18 +44,14 @@ const PanelImagen = ({tracks}) => {
 
     )
 }
-
-
 const CardBody = ({playList}) => {
 
-    const disctImage = [...new Set(playList.tracks.map(items => items.imagen_location))];    
-  
     return(
         <div  className="card border-dark bg-dark p-0 pb-0 mx-2 no-rounded" style={{width:"200px",height:"250px"}} >
             <div className="card-body p-0 m-0">
-                    {(disctImage.length < 3)? 
-                    <CardImagen image_location={disctImage[0]}/>: 
-                    <PanelImagen tracks={disctImage}/>}
+                    {(playList.tracks.length < 3)? 
+                    <CardImagen image_location={playList.tracks[0]}/>: 
+                    <PanelImagen tracks={playList.tracks}/>}
                 <div className="card-img-overlay text-white">
                     <h5 className="card-title">
                         <Link data-tip data-for="fullNameAlbum" to={playList.id} title="Play">{playList.name}</Link></h5>
@@ -78,31 +71,6 @@ const CardBody = ({playList}) => {
 
     )
 }
-// const ListGroup = ({track}) => {
-//     return (
-//         <a href="#" className="list-group-item list-group-item-action flex-column align-items-start bg-dark active px-2 py-0 mx-0">
-//             <p className="my-0">{ track.track }</p>
-//             <small className="py-0"> {track.performer} / {track.album}</small>
-//         </a> 
-//     )
-// }
-// const CardBody = ({playList}) => {
-//     return (
-//             <div  className="card border-secondary bg-dark p-2 pb-0 mx-2 no-rounded" style={{width:"220px"}} >
-//                 {<CardImagen image_location={ playList.imagen_location }/>}
-//                 <div className="card-body p-1 m-0">
-//                     <h3 className="card-title text-center">{ playList.name }</h3>
-//                 </div>
-
-//                 <small>Include</small>
-//                 <div className="list-group p-0 mx-0">
-//                     { playList.tracks.map(track => <ListGroup key={track.id} track={track} />) }
-//                  </div>
-//                 <footer>Play</footer>
-//         </div> 
-//     )
-// }
-
 class PlayLists extends Component{
 
     constructor(props) {
@@ -112,14 +80,30 @@ class PlayLists extends Component{
         }
     }
 
-    loadData = data =>  API.playLists().then(res => res.data || []).then(playLists => this.setState({playLists}));
+    loadData () {
+        let aPlayList = [];
+           API.playLists()
+              .then(data => {
+                data.map(items => { 
+                    API.playListItemsGet({id:items.id})
+                       .then(medias => {
+                            if (medias !== null) {
+                            const distImage = [...new Set(medias.map(item => item.media.image_location))];
+                                  items.tracks = distImage.filter(imagen => imagen !== undefined);
+                                  aPlayList.push(items);
+                        }
+                       })
+                }) 
+                this.setState({playLists: aPlayList});
+            })
+            
+    }
 
     loadMockedData() {
         return [
             {
               id: "9e196558-1bed-4b77-8dc8-867c87985fed",
               name: "Only Rock",
-              imagen_location : "4dd32f59-fbd0-48a3-b3c1-574dd3130353.png",
               tracks: [
                      {
                         id:"1",
@@ -155,7 +139,6 @@ class PlayLists extends Component{
             {
               id: "7316c65a-4837-4244-87ea-c93c165e0163",
               name: "Musica Colombiana",
-              imagen_location : "32612fe4-5b4a-42ff-824c-0ccb83d63eec.png",
               tracks: [
                 {
                    id:"1",  
@@ -190,7 +173,6 @@ class PlayLists extends Component{
             {
               id: "2d2a5d55-5154-4679-aeb5-bcd772486617",
               name: "Rock Urbano",
-              imagen_location: "3ad3b977-97d6-49bc-a88d-313fa496acba.png",
               tracks: [
                 {
                    id:"1", 
@@ -226,29 +208,18 @@ class PlayLists extends Component{
     }
 
     componentDidMount(){
-        //this.LoadData()
-        const playLists = this.loadMockedData();
-        this.setState({playLists});
+        this.loadData()
+        // const playLists = this.loadMockedData();
+        // this.setState({playLists});
     }
     
 
     render(){
-        
         const {playLists} = this.state;
-
-        // playLists.map(playList => {
-        //     const distImage = [...new Set(playList.tracks.map(items => items.imagen_location))];    
-        //     console.log(distImage);
-        // })
-
-        // <div className="card-columns col-6">
-        // {playLists.map(playList => <CardBody key={playList.id} playList={ playList } />)}
         
         return(
             <>
             <div className="card-columns col-6">
-                 {/* {playLists.map(playList => <CardBody key={playList.id} playList={ playList } />)} */}
-                 
                  {playLists.map(playList => <CardBody key={playList.id} playList={ playList } />)}
             </div>
             </>
