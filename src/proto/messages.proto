@@ -224,8 +224,14 @@ message SpectrumGenerateOutput {
     string error = 3;
 }
 
+// SyncFilesInput is the structure for sending a sync request
 message SyncFilesInput {
+
+    // the target directory to write the files we are sync
     string target_directory = 1;
+
+    // when true, it will sync all the files in the same directory
+    bool include_directory = 2;
 }
 
 message SyncFilesOutput {
