@@ -27,8 +27,10 @@ func (a *ApiServer) DirectoryReadGet(p TransactionExecutorParams) (status int, r
 
 func (a *ApiServer) FileSync(p TransactionExecutorParams) (status int, result interface{}, err error) {
 	var input pb.SyncFilesInput
-	// for the time being no need to parse anything from the caller, since we're taking the target from env
-	// variables
+	if err = p.Decode(&input); err != nil {
+		status = http.StatusBadRequest
+		return
+	}
 	input.TargetDirectory = paths.SyncRootDirectory()
 	nc := a.nc
 	if err = broker.PublishBroker(nc, pb.Message_MESSAGE_SYNC_FILES, &input); err != nil {
