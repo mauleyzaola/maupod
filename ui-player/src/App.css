@@ -1,3 +1,8 @@
+/* body {
+   background-color: black;
+  
+  } */
+
 .album-card {
     padding: 5px;
 }
@@ -51,4 +56,51 @@
     width: 100%;
     overflow-y: scroll;
     height: 70%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Roboto',sans-serif;
+    color: #111;
+    font-weight: 400;
+    margin: 6px 0;
+}
+.entry-title {
+    font-size: 44px;
+    line-height: 54px;
+    margin-bottom: 14px;
+    color: #fff;
+}
+.ec-stars-wrapper {
+	/* Espacio entre los inline-block (los hijos, los `a`) 
+	   http://ksesocss.blogspot.com/2012/03/display-inline-block-y-sus-empeno-en.html */
+	font-size: 0;
+	/* Podríamos quitarlo, 
+		pero de esta manera (siempre que no le demos padding), 
+		sólo aplicará la regla .ec-stars-wrapper:hover a cuando
+		también se esté haciendo hover a alguna estrella */
+	display: inline-block;
+}
+.ec-stars-wrapper a {
+	text-decoration: none;
+	display: inline-block;
+	/* Volver a dar tamaño al texto */
+	font-size: 32px;
+	font-size: 2rem;
+	
+	color: #888;
+}
+.ec-stars-wrapper:hover a {
+	color: rgb(247, 220, 111);
+}
+/*
+ * El selector de hijo, es necesario para aumentar la especifidad
+ */
+.ec-stars-wrapper > a:hover ~ a {
+	color: #888;
+}
+.text-delete{
+    font-family: 'Roboto',sans-serif;
+    color: #FFFF00;
+    font-weight: 100;
+    margin: 6px 0;
 }

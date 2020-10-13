@@ -6,7 +6,7 @@ const ImageCard = ({r}) => {
 
     if(!r.image_location) return null;
     return (
-        <img className="card-img-top p-0 m-0 w-40"
+        <img className="card-img-top p-0 m-0 w-40 "
         src={r.image_location}
         alt="cover"/>
     )
@@ -15,7 +15,7 @@ const ImageCardPanel = ({r}) => {
 
     if(!r.image_location) return null;
     return (
-        <img className="card-img" style={{width:"99px", height:"99px"}}
+        <img className="card-img no-rounded" style={{width:"99px", height:"99px"}}
         src={r.image_location}
              alt="cover"/>
     )
@@ -24,7 +24,7 @@ const ImagePanel = ({tracks}) => {
 
     return (
         <>
-        <div className="row">
+        <div className="row ">
             <div className="col pr-0 mr-0">
                 {<ImageCardPanel r={tracks[0]}/>}
             </div>
@@ -36,7 +36,7 @@ const ImagePanel = ({tracks}) => {
             <div className="col pr-0 mr-0">
                 {<ImageCardPanel r={tracks[2]}/>}
             </div>    
-            <div className="col pl-0 ml-0">
+            <div className="col pl-0 ml-0 ">
                 {(tracks.count >= 3)? <ImageCardPanel r={tracks[3]}/>: ""}
             </div>
         </div>       
@@ -46,32 +46,42 @@ const ImagePanel = ({tracks}) => {
 }
 const CardBody = ({playList}) => {
 
+    
     return(
-        <div  className="card border-dark bg-dark p-0 pb-0 mx-2 no-rounded" style={{width:"200px",height:"250px"}} >
-            <div className="card-body p-0 m-0">
-                    {(playList.tracks.length < 3)? 
-                    <ImageCard r={playList.tracks[0]}/>:
-                    <ImagePanel tracks={playList.tracks}/>}
-                <div className="card-img-overlay text-white">
-                    <h5 className="card-title">
-                        <Link data-tip data-for="fullNameAlbum" to={playList.id}
-                              title="Play">{playList.name}
-                        </Link>
-                    </h5>
-                    <p className="card-text">Last updated 3 mins ago</p>
+            <div  className="card border-dark bg-dark p-0 pb-0 mx-2 no-rounded" 
+            style={{width:"200px",height:"250px"}} >
+                
+                <div className="card-body p-0 m-0">
+                        {(playList.tracks.length < 3)? 
+                        <ImageCard r={playList.tracks[0]}/>:
+                        <ImagePanel tracks={playList.tracks}/>}
                 </div>
-            </div>
-            <footer className="text-center font-weight-bold text-info">
-                <div className="row">
-                    
-                        <div className="col">
-                        <Link data-tip  to={playList.id} title="Play">{playList.tracks.length} tracks
-                        </Link> 
+                <footer className="text-center font-weight-bold bg-transparent">
+                    <div className="row pt-2">
+                        <div className='col font-italic text-nowrap small'>
+                            <Link data-tip  to={playList.id} title="Play">{playList.name}
+                            </Link>
+                        </div>
+                        <div className='col font-italic text-nowrap small'>
+                        {playList.tracks.length} tracks
+                        </div>
                     </div>
-                </div>
-            </footer>
-     </div>
 
+                    <div className="row pl-4" >
+                        <div className="ec-stars-wrapper">
+                            <a href="#" data-value="1" title="Votar con 1 estrellas">&#9733;</a>
+                            <a href="#" data-value="2" title="Votar con 2 estrellas">&#9733;</a>
+                            <a href="#" data-value="3" title="Votar con 3 estrellas">&#9733;</a>
+                            <a href="#" data-value="4" title="Votar con 4 estrellas">&#9733;</a>
+                            <a href="#" data-value="5" title="Votar con 5 estrellas">&#9733;</a>
+                        </div>
+                    </div>
+                    <div className="row pl-3" >
+                        <Link data-tip  className="text-delete font-weight-bold p-0 m-0 small" to={playList.id} title="Delete playlist">Delete playlist
+                            </Link>
+                    </div>
+                </footer>
+            </div>
     )
 }
 class PlayLists extends Component{
@@ -86,24 +96,6 @@ class PlayLists extends Component{
     loadData () {
         const playlists = this.loadMockedData()
         this.setState({playlists})
-        // this should be resolved in the server, not here
-        // TODO: create a gh issue with the parameters you need, so we return in one request, all the information
-
-        // let aPlayList = [];
-        //    API.playLists()
-        //       .then(data => {
-        //         data.map(items => {
-        //             API.playListItemsGet({id:items.id})
-        //                .then(medias => {
-        //                     if (medias !== null) {
-        //                     const distImage = [...new Set(medias.map(item => item.media.image_location))];
-        //                           items.tracks = distImage.filter(imagen => imagen !== undefined);
-        //                           aPlayList.push(items);
-        //                 }
-        //                })
-        //         })
-        //         this.setState({playLists: aPlayList});
-        //     })
             
     }
 
@@ -156,20 +148,20 @@ class PlayLists extends Component{
                    album  : "Frank",
                     image_location : sadeLoveDeluxeCoverURL,
                 },
-                {
-                   id:"2", 
-                   track : "You Sent Me Flying / Cherry",
-                   performer : "Amy Winehouse",
-                   album  : "Frank",
-                    image_location : sadeLoveDeluxeCoverURL,
-                },
-                {
-                   id:"3", 
-                   track : "Know You Now",
-                   performer : "Amy Winehouse",
-                   album  : "Frank",
-                    image_location : sadeLoveDeluxeCoverURL,
-                },
+                // {
+                //    id:"2", 
+                //    track : "You Sent Me Flying / Cherry",
+                //    performer : "Amy Winehouse",
+                //    album  : "Frank",
+                //     image_location : sadeLoveDeluxeCoverURL,
+                // },
+                // {
+                //    id:"3", 
+                //    track : "Know You Now",
+                //    performer : "Amy Winehouse",
+                //    album  : "Frank",
+                //     image_location : sadeLoveDeluxeCoverURL,
+                // },
          ]
             },
             {
@@ -211,8 +203,6 @@ class PlayLists extends Component{
 
     componentDidMount(){
         this.loadData()
-        // const playLists = this.loadMockedData();
-        // this.setState({playLists});
     }
     
 
@@ -221,6 +211,7 @@ class PlayLists extends Component{
         
         return(
             <>
+            <h1 className="entry-title text-center">The best playlists</h1>
             <div className="card-columns col-6">
                  {playlists.map(p => <CardBody key={p.id} playList={ p } />)}
             </div>
