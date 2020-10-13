@@ -5814,7 +5814,8 @@ proto.pb.SyncFilesInput.prototype.toObject = function(opt_includeInstance) {
  */
 proto.pb.SyncFilesInput.toObject = function(includeInstance, msg) {
   var f, obj = {
-    targetDirectory: jspb.Message.getFieldWithDefault(msg, 1, "")
+    targetDirectory: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    includeDirectory: jspb.Message.getBooleanFieldWithDefault(msg, 2, false)
   };
 
   if (includeInstance) {
@@ -5855,6 +5856,10 @@ proto.pb.SyncFilesInput.deserializeBinaryFromReader = function(msg, reader) {
       var value = /** @type {string} */ (reader.readString());
       msg.setTargetDirectory(value);
       break;
+    case 2:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIncludeDirectory(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -5891,6 +5896,13 @@ proto.pb.SyncFilesInput.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
+  f = message.getIncludeDirectory();
+  if (f) {
+    writer.writeBool(
+      2,
+      f
+    );
+  }
 };
 
 
@@ -5909,6 +5921,24 @@ proto.pb.SyncFilesInput.prototype.getTargetDirectory = function() {
  */
 proto.pb.SyncFilesInput.prototype.setTargetDirectory = function(value) {
   return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional bool include_directory = 2;
+ * @return {boolean}
+ */
+proto.pb.SyncFilesInput.prototype.getIncludeDirectory = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 2, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.pb.SyncFilesInput} returns this
+ */
+proto.pb.SyncFilesInput.prototype.setIncludeDirectory = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 2, value);
 };
 
 
