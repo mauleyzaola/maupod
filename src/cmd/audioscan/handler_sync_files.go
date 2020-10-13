@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"io"
 	"log"
 	"os"
@@ -64,13 +65,52 @@ func (m *MsgHandler) handlerSyncFiles(msg *nats.Msg) {
 		return
 	}
 
+	// store the media files we will process
+	// the selection will depend on either choosing files or directories
+	// so, we use a map to store the files and avoid double processing
+	var sources, destinations []string
+	var albumKey = make(map[string]struct{})
+
+	for _, v := range media {
+		var medias []*pb.Media
+		if _, ok := albumKey[v.AlbumIdentifier]; ok {
+			continue
+		}
+		if input.IncludeDirectory {
+			// load the rest of the files from the same album
+			// we are assuming same album files are in the same directory
+			medias, err = store.FindMedias(ctx, conn, &pb.Media{AlbumIdentifier: v.AlbumIdentifier}, 0)
+			if err != nil {
+				log.Println(err)
+				output.Error = err.Error()
+				return
+			}
+		} else {
+			medias = []*pb.Media{v}
+		}
+
+		for _, media := range medias {
+			sources = append(sources, filepath.Join(srcDir, media.Location))
+			destinations = append(destinations, filepath.Join(destDir, media.Location))
+		}
+		albumKey[v.AlbumIdentifier] = struct{}{}
+	}
+
+	if l1, l2 := len(sources), len(destinations); l1 != l2 {
+		err = fmt.Errorf("sources: %d destinations: %d cannot process", l1, l2)
+		log.Println(err)
+		output.Error = err.Error()
+		return
+	}
+
 	// execute sync for each media file
 	var fileCount int
 	var now = time.Now()
-	for _, v := range media {
+	for i, src := range sources {
+		dest := destinations[i]
 		ok, localErr := syncFile(
-			filepath.Join(srcDir, v.Location),
-			filepath.Join(destDir, v.Location),
+			src,
+			dest,
 		)
 		if localErr != nil {
 			log.Println(localErr)
