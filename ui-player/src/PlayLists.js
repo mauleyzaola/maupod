@@ -67,18 +67,12 @@ const CardBody = ({playList}) => {
                         </div>
                     </div>
 
-                    <div className="row pl-4" >
-                        <div className="ec-stars-wrapper">
-                            <a href="#" data-value="1" title="Votar con 1 estrellas">&#9733;</a>
-                            <a href="#" data-value="2" title="Votar con 2 estrellas">&#9733;</a>
-                            <a href="#" data-value="3" title="Votar con 3 estrellas">&#9733;</a>
-                            <a href="#" data-value="4" title="Votar con 4 estrellas">&#9733;</a>
-                            <a href="#" data-value="5" title="Votar con 5 estrellas">&#9733;</a>
-                        </div>
-                    </div>
                     <div className="row pl-3" >
-                        <Link data-tip  className="text-delete font-weight-bold p-0 m-0 small" to={playList.id} title="Delete playlist">Delete playlist
-                            </Link>
+                        <Link
+                            data-tip
+                            className="text-delete font-weight-bold p-0 m-0 small"
+                            to={playList.id}
+                            title="Delete playlist">Delete</Link>
                     </div>
                 </footer>
             </div>
@@ -211,7 +205,7 @@ class PlayLists extends Component{
         
         return(
             <>
-            <h1 className="entry-title text-center">The best playlists</h1>
+            <h1 className="entry-title">Playlists</h1>
             <div className="card-columns col-6">
                  {playlists.map(p => <CardBody key={p.id} playList={ p } />)}
             </div>
