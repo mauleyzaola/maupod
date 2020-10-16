@@ -4,67 +4,14 @@ import (
 	"context"
 	"log"
 
-	"github.com/mauleyzaola/maupod/src/pkg/broker"
-	"github.com/mauleyzaola/maupod/src/pkg/dbdata/conversion"
-	"github.com/mauleyzaola/maupod/src/pkg/dbdata/orm"
+	"github.com/mauleyzaola/maupod/src/pkg/types"
+
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
-	"github.com/mauleyzaola/maupod/src/pkg/types"
 	"github.com/nats-io/nats.go"
-	"github.com/volatiletech/sqlboiler/v4/boil"
-	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 )
 
-func queueList(ctx context.Context, conn boil.ContextExecutor) (types.Medias, error) {
-	rows, err := orm.MediaQueues(qm.OrderBy(orm.MediaQueueColumns.ID+" asc")).All(ctx, conn)
-	if err != nil {
-		return nil, err
-	}
-
-	var ids []interface{}
-	for _, v := range rows {
-		ids = append(ids, v.MediaID)
-	}
-
-	medias, err := orm.Media(qm.WhereIn(orm.MediumColumns.ID+" in ?", ids...)).All(ctx, conn)
-	if err != nil {
-		return nil, err
-	}
-	var keys = make(map[string]*pb.Media)
-	for _, v := range medias {
-		keys[v.ID] = conversion.MediaFromORM(v)
-	}
-
-	var res []*pb.Media
-	for _, v := range rows {
-		val, ok := keys[v.MediaID]
-		if !ok {
-			continue
-		}
-		res = append(res, val)
-	}
-	return res, nil
-}
-
-// TODO: improve this shit
-func queueSave(ctx context.Context, conn boil.ContextExecutor, rows types.Medias) error {
-	_, err := orm.MediaQueues().DeleteAll(ctx, conn)
-	if err != nil {
-		return err
-	}
-	for i, v := range rows {
-		q := orm.MediaQueue{
-			ID:       helpers.NewUUID(),
-			Position: i,
-			MediaID:  v.Id,
-		}
-		if err = q.Insert(ctx, conn, boil.Infer()); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
+// handlerQueueList returns a list of queues along with the medias related
 func (m *MsgHandler) handlerQueueList(msg *nats.Msg) {
 	var output pb.QueueOutput
 
@@ -81,19 +28,24 @@ func (m *MsgHandler) handlerQueueList(msg *nats.Msg) {
 			log.Println(err)
 		}
 	}()
-	output.Rows = mediasToQueues(m.queueItems)
+	ctx := context.Background()
+	conn := m.db
+	medias, err := queueList(ctx, conn)
+	if err != nil {
+		output.Error = err.Error()
+		return
+	}
+	output.Rows = mediasToQueues(medias)
 }
 
+// handlerQueueAdd adds one media to the queue
 func (m *MsgHandler) handlerQueueAdd(msg *nats.Msg) {
 	var input pb.QueueInput
 	var err error
 	var output pb.QueueOutput
 
 	defer func() {
-		if err = m.queueSave(); err != nil {
-			log.Println(err)
-			return
-		}
+		onQueueNotifyChanged(m.base.NATS())
 		if msg.Reply == "" {
 			return
 		}
@@ -112,8 +64,13 @@ func (m *MsgHandler) handlerQueueAdd(msg *nats.Msg) {
 		output.Error = err.Error()
 		return
 	}
-
-	list := m.queueItems
+	ctx := context.Background()
+	conn := m.db
+	list, err := queueList(ctx, conn)
+	if err != nil {
+		output.Error = err.Error()
+		return
+	}
 
 	if input.Index == -1 {
 		if input.NamedPosition == pb.NamedPosition_POSITION_TOP {
@@ -130,33 +87,23 @@ func (m *MsgHandler) handlerQueueAdd(msg *nats.Msg) {
 			return
 		}
 	}
-	m.queueItems = list
+	if err = m.queueSaveToDB(list); err != nil {
+		log.Println(err)
+		return
+	}
 	output.Rows = mediasToQueues(list)
-
-	// trigger a notification that queue has been changed
-	defer onQueueNotifyChanged(m.base.NATS())
 
 	return
 }
 
-func onQueueNotifyChanged(nc *nats.Conn) {
-	var input pb.QueueChangedInput
-	if err := broker.PublishBrokerJSON(nc, pb.Message_MESSAGE_SOCKET_QUEUE_CHANGE, &input); err != nil {
-		log.Println(err)
-		return
-	}
-}
-
+// handlerQueueRemove removes one media from the queue
 func (m *MsgHandler) handlerQueueRemove(msg *nats.Msg) {
 	var input pb.QueueInput
 	var err error
 	var output pb.QueueOutput
 
 	defer func() {
-		if err = m.queueSave(); err != nil {
-			log.Println(err)
-			return
-		}
+		onQueueNotifyChanged(m.base.NATS())
 		if msg.Reply == "" {
 			return
 		}
@@ -174,35 +121,32 @@ func (m *MsgHandler) handlerQueueRemove(msg *nats.Msg) {
 		log.Println(err)
 		return
 	}
-	list := m.queueItems
+	ctx := context.Background()
+	conn := m.db
+	list, err := queueList(ctx, conn)
+	if err != nil {
+		output.Error = err.Error()
+		return
+	}
 	if list, err = list.RemoveAt(int(input.Index)); err != nil {
 		output.Error = err.Error()
 		return
 	}
-	m.queueItems = list
-	output.Rows = mediasToQueues(list)
+	if err = m.queueSaveToDB(list); err != nil {
+		log.Println(err)
+		return
+	}
 
-	// trigger a notification that queue has been changed
-	defer onQueueNotifyChanged(m.base.NATS())
+	output.Rows = mediasToQueues(list)
 
 	return
 }
 
-func mediasToQueues(medias types.Medias) []*pb.Queue {
-	var result []*pb.Queue
-	for i, v := range medias {
-		result = append(result, &pb.Queue{
-			Id:       helpers.NewUUID(),
-			Media:    v,
-			Position: int32(i),
-		})
-	}
-	return result
-}
-
-func (m *MsgHandler) queueSave() error {
+// queueSaveToDB saves queue to db within a db transaction scope
+func (m *MsgHandler) queueSaveToDB(medias types.Medias) error {
 	conn, err := m.db.Begin()
 	if err != nil {
+		log.Println(err)
 		return err
 	}
 	defer func() {
@@ -215,26 +159,10 @@ func (m *MsgHandler) queueSave() error {
 			log.Println(err)
 		}
 	}()
-	if _, err = conn.Exec("truncate table " + orm.TableNames.MediaQueue); err != nil {
+	ctx := context.Background()
+	if err = queueSave(ctx, conn, medias); err != nil {
+		log.Println(err)
 		return err
 	}
-	log.Printf("[INFO] persisting %d queue items to db\n", len(m.queueItems))
-	ctx := context.Background()
-	for i, v := range m.queueItems {
-		item := &orm.MediaQueue{
-			ID:       helpers.NewUUID(),
-			Position: i,
-			MediaID:  v.Id,
-		}
-		if err = item.Insert(ctx, conn, boil.Infer()); err != nil {
-			return err
-		}
-	}
-	return err
-}
-
-func (m *MsgHandler) handlerQueueSave(msg *nats.Msg) {
-	if err := m.queueSave(); err != nil {
-		log.Println(err)
-	}
+	return nil
 }
