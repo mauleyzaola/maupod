@@ -1,35 +1,25 @@
 package main
 
 import (
-	"context"
 	"database/sql"
-	"log"
 	"strconv"
 
 	"github.com/mauleyzaola/maupod/src/pkg/handler"
 	"github.com/mauleyzaola/maupod/src/pkg/pb"
-	"github.com/mauleyzaola/maupod/src/pkg/types"
 	"github.com/nats-io/nats.go"
 )
 
 type MsgHandler struct {
-	base       *handler.MsgHandler
-	config     *pb.Configuration
-	db         *sql.DB
-	queueItems types.Medias
+	base   *handler.MsgHandler
+	config *pb.Configuration
+	db     *sql.DB
 }
 
 func NewMsgHandler(config *pb.Configuration, nc *nats.Conn, db *sql.DB) *MsgHandler {
-	queueItems, err := queueList(context.Background(), db)
-	if err != nil {
-		log.Println("[ERROR] queueList() ", err)
-	}
-
 	return &MsgHandler{
-		base:       handler.NewMsgHandler(nc),
-		config:     config,
-		db:         db,
-		queueItems: queueItems,
+		base:   handler.NewMsgHandler(nc),
+		config: config,
+		db:     db,
 	}
 }
 
@@ -59,7 +49,6 @@ func (m *MsgHandler) Register() error {
 			Subject: strconv.Itoa(int(pb.Message_MESSAGE_MEDIA_UPDATE_SHA)),
 			Handler: m.handlerUpdateSHA,
 		},
-
 		handler.Subscription{
 			Subject: strconv.Itoa(int(pb.Message_MESSAGE_QUEUE_LIST)),
 			Handler: m.handlerQueueList,
@@ -71,10 +60,6 @@ func (m *MsgHandler) Register() error {
 		handler.Subscription{
 			Subject: strconv.Itoa(int(pb.Message_MESSAGE_QUEUE_REMOVE)),
 			Handler: m.handlerQueueRemove,
-		},
-		handler.Subscription{
-			Subject: strconv.Itoa(int(pb.Message_MESSAGE_QUEUE_SAVE)),
-			Handler: m.handlerQueueSave,
 		},
 		handler.Subscription{
 			Subject: strconv.Itoa(int(pb.Message_MESSAGE_DIRECTORY_READ)),
