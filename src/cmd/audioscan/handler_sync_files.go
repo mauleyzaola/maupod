@@ -43,9 +43,9 @@ func (m *MsgHandler) handlerSyncFiles(msg *nats.Msg) {
 	ctx := context.Background()
 	conn := m.db
 
-	// get the media that needs to be sync
+	// get the playedMediaList that needs to be sync
 	store := dbdata.NewMediaStore()
-	media, err := store.PlayedMediaList(ctx, conn)
+	playedMediaList, err := store.PlayedMediaList(ctx, conn)
 	if err != nil {
 		output.Error = err.Error()
 		return
@@ -65,18 +65,19 @@ func (m *MsgHandler) handlerSyncFiles(msg *nats.Msg) {
 		return
 	}
 
-	// store the media files we will process
+	// store the playedMediaList files we will process
 	// the selection will depend on either choosing files or directories
 	// so, we use a map to store the files and avoid double processing
 	var sources, destinations []string
 	var albumKey = make(map[string]struct{})
 
-	for _, v := range media {
+	for _, v := range playedMediaList {
 		var medias []*pb.Media
-		if _, ok := albumKey[v.AlbumIdentifier]; ok {
-			continue
-		}
 		if input.IncludeDirectory {
+			// ignore the file if the same album directory has been processed already
+			if _, ok := albumKey[v.AlbumIdentifier]; ok {
+				continue
+			}
 			// load the rest of the files from the same album
 			// we are assuming same album files are in the same directory
 			medias, err = store.FindMedias(ctx, conn, &pb.Media{AlbumIdentifier: v.AlbumIdentifier}, 0)
@@ -103,7 +104,7 @@ func (m *MsgHandler) handlerSyncFiles(msg *nats.Msg) {
 		return
 	}
 
-	// execute sync for each media file
+	// execute sync for each playedMediaList file
 	var fileCount int
 	var now = time.Now()
 	for i, src := range sources {
@@ -121,6 +122,7 @@ func (m *MsgHandler) handlerSyncFiles(msg *nats.Msg) {
 			fileCount++
 		}
 	}
+	log.Printf("[INFO] total played files: %d total included files: %d\n", len(playedMediaList), len(sources))
 	log.Printf("[INFO] completed sync for: %d files elapsed: %s", fileCount, time.Since(now))
 	return
 }
