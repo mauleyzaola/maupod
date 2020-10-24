@@ -130,6 +130,12 @@ class Album extends React.Component{
             const genre = rows[0].genre;
             this.setState({genre});
         }
+        const { search } = this.props.location
+        if(prevProps.search !== search){
+            // TODO: get rid of the warning
+            const uri = API.decodeURL(window.location.search)
+            this.loadData(uri)
+        }
     }
 
     onCoverFormSubmit = e => {
