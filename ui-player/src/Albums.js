@@ -72,21 +72,23 @@ class Albums extends React.Component{
         }
     }
 
-    loadData = data =>  API.albumViewList(data).then(res => res.data || []).then(rows => this.setState({rows}));
+    loadData = data =>  API.albumViewList(data).then(res => res.data || [])
 
     componentDidMount() {
         const data = API.decodeURL(this.props.location.search);
         if(!data.limit){
             data.limit = 1000;
         }
-        this.loadData(data);
+        this.loadData(data)
+            .then(rows => this.setState({rows}));
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if(JSON.stringify(prevProps.location) === JSON.stringify(this.props.location)){
             return;
         }
-        this.loadData(API.decodeURL(this.props.location.search));
+        this.loadData(API.decodeURL(this.props.location.search))
+            .then(rows => this.setState({rows}));
     }
 
 

@@ -40,7 +40,7 @@ class App extends React.Component{
                     <Switch>
                         <Route exact path='/' component={Dashboard} />
                         <Route exact path='/albums' component={Albums} />
-                        <Route path='/album' component={Album} />
+                        <Route path='/album/:id' component={Album} />
                         <Route exact path='/performers' component={Performers} />
                         <Route exact path='/genres' component={Genres} />
                         <Route path='/media' component={MediaList} />

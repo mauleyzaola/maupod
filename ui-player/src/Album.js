@@ -3,6 +3,7 @@ import AlbumHeader from "./components/AlbumHeader";
 import API from "./api";
 import {msToString } from "./helpers";
 import {TrackListControls} from "./components/Player";
+// import { useParams } from 'react-router-dom'
 
 const CoverLine = ({c, onClick}) => (
     <div className="cover-item">
@@ -103,15 +104,16 @@ class Album extends React.Component{
         return false;
     }
 
-    loadData = search => {
+    loadData = id => {
+        const data = {album_identifier: id}
         let album = null;
-        API.albumViewList(search)
+        API.albumViewList(data)
             .then(response => {
                 const data = response.data || [];
                 if(data.length !== 1) return;
                 album  = data[0];
             })
-            .then(() => API.mediaList({ sort:'track_position', direction: 'asc', ...search}))
+            .then(() => API.mediaList({ sort:'track_position', direction: 'asc', ...data}))
             .then(res => res.data || [])
             .then(rows => {
                 const isCompilation = this.isCompilation(rows);
@@ -120,21 +122,15 @@ class Album extends React.Component{
     }
 
     componentDidMount() {
-        const uri = API.decodeURL(window.location.search);
-        this.loadData(uri);
+        const { id } = this.props.match.params
+        this.loadData(id);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        const { rows } = this.state;
-        if(prevState.rows.length !== rows.length && rows.length !== 0){
-            const genre = rows[0].genre;
-            this.setState({genre});
-        }
-        const { search } = this.props.location
-        if(prevProps.search !== search){
-            // TODO: get rid of the warning
-            const uri = API.decodeURL(window.location.search)
-            this.loadData(uri)
+        const { id } = this.props.match.params
+        const { album } = this.state
+        if(album.album_identifier && album.album_identifier !== id){
+            this.loadData(id)
         }
     }
 
