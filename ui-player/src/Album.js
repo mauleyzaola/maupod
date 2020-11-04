@@ -140,7 +140,7 @@ class Album extends React.Component{
         if(rows.length === 0) return;
         let { performer: artist, recorded_date: year, album: title } = rows[0];
         const type = 'master';
-        const data = { artist, year, title, type };
+        const data = { artist, title, type };
         API.providerMetadataCovers({params: data})
             .then(response => {
                 let { covers } = this.state;
