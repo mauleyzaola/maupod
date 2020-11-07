@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/protos"
 
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 
@@ -38,7 +38,7 @@ func ConnectNATS(natsURL string, retries int, delay time.Duration) (*nats.Conn, 
 func RestAPIPing(nc *nats.Conn, retries int, delay, timeout time.Duration) error {
 	var ok bool
 	fn := func(retry int) bool {
-		if _, err := MicroServicePing(nc, pb.Message_MESSAGE_MICRO_SERVICE_RESTAPI, timeout); err != nil {
+		if _, err := MicroServicePing(nc, protos.Message_MESSAGE_MICRO_SERVICE_RESTAPI, timeout); err != nil {
 			return false
 		}
 		ok = true

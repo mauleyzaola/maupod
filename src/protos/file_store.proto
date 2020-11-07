@@ -1,6 +1,6 @@
 syntax = "proto3";
-package pb;
-option go_package = "github.com/mauleyzaola/maupod/src/pb";
+package protos;
+option go_package = "github.com/mauleyzaola/maupod/src/protos";
 
 message FileStore {
     string name = 1;

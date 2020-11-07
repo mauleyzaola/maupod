@@ -8,8 +8,8 @@ import (
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata/conversion"
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata/orm"
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/mauleyzaola/maupod/src/pkg/types"
+	"github.com/mauleyzaola/maupod/src/protos"
 	"github.com/nats-io/nats.go"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
@@ -31,12 +31,12 @@ func queueList(ctx context.Context, conn boil.ContextExecutor) (types.Medias, er
 	if err != nil {
 		return nil, err
 	}
-	var keys = make(map[string]*pb.Media)
+	var keys = make(map[string]*protos.Media)
 	for _, v := range medias {
 		keys[v.ID] = conversion.MediaFromORM(v)
 	}
 
-	var res []*pb.Media
+	var res []*protos.Media
 	for _, v := range rows {
 		val, ok := keys[v.MediaID]
 		if !ok {
@@ -68,18 +68,18 @@ func queueSave(ctx context.Context, conn boil.ContextExecutor, rows types.Medias
 
 // onQueueNotifyChanged notifies listeners that queue has been changed
 func onQueueNotifyChanged(nc *nats.Conn) {
-	var input pb.QueueChangedInput
-	if err := broker.PublishBrokerJSON(nc, pb.Message_MESSAGE_SOCKET_QUEUE_CHANGE, &input); err != nil {
+	var input protos.QueueChangedInput
+	if err := broker.PublishBrokerJSON(nc, protos.Message_MESSAGE_SOCKET_QUEUE_CHANGE, &input); err != nil {
 		log.Println(err)
 		return
 	}
 }
 
 // mediasToQueues converts medias to queues, taking the position from the slice index
-func mediasToQueues(medias types.Medias) []*pb.Queue {
-	var result []*pb.Queue
+func mediasToQueues(medias types.Medias) []*protos.Queue {
+	var result []*protos.Queue
 	for i, v := range medias {
-		result = append(result, &pb.Queue{
+		result = append(result, &protos.Queue{
 			Id:       helpers.NewUUID(),
 			Media:    v,
 			Position: int32(i),

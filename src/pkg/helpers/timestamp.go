@@ -6,6 +6,7 @@ import (
 	"github.com/golang/protobuf/ptypes/timestamp"
 )
 
+// TODO: remove all these functions
 func TimeToTs(time *time.Time) *timestamp.Timestamp {
 	if time == nil {
 		return nil
@@ -26,7 +27,6 @@ func TsToTime(ts *timestamp.Timestamp) *time.Time {
 		return nil
 	}
 	res := &time.Time{}
-	// TODO consider nano units as well
 	*res = time.Unix(ts.Seconds, int64(ts.Nanos)).UTC()
 	return res
 }

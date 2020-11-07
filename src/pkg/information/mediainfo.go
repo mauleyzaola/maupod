@@ -3,10 +3,10 @@ package information
 import (
 	"bytes"
 
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/protos"
 )
 
-func MediaFromRaw(raw string) (*pb.Media, error) {
+func MediaFromRaw(raw string) (*protos.Media, error) {
 	m, err := ParseMediaInfo(bytes.NewBufferString(raw))
 	if err != nil {
 		return nil, err
@@ -64,8 +64,8 @@ type MediaInfo struct {
 	WritingLibrary        string
 }
 
-func (m *MediaInfo) ToProto() *pb.Media {
-	res := &pb.Media{
+func (m *MediaInfo) ToProto() *protos.Media {
+	res := &protos.Media{
 		FileExtension:         m.FileExtension,
 		Format:                m.Format,
 		FileSize:              m.FileSize,

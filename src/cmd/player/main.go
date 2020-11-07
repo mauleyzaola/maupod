@@ -10,9 +10,9 @@ import (
 
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/mauleyzaola/maupod/src/pkg/rules"
 	"github.com/mauleyzaola/maupod/src/pkg/types"
+	"github.com/mauleyzaola/maupod/src/protos"
 	"github.com/nats-io/nats.go"
 )
 
@@ -55,9 +55,9 @@ func run() error {
 
 	// check for dependent micro services to be up
 	timeout := time.Second * time.Duration(config.Delay)
-	var dependentMicroServices = map[pb.Message]bool{
-		pb.Message_MESSAGE_MICRO_SERVICE_RESTAPI:   false,
-		pb.Message_MESSAGE_MICRO_SERVICE_MEDIAINFO: false,
+	var dependentMicroServices = map[protos.Message]bool{
+		protos.Message_MESSAGE_MICRO_SERVICE_RESTAPI:   false,
+		protos.Message_MESSAGE_MICRO_SERVICE_MEDIAINFO: false,
 	}
 
 	for k := range dependentMicroServices {
@@ -107,9 +107,9 @@ func run() error {
 }
 
 // TODO: implement retry logic in case nats listener is not available yet
-func autoPlayQueue(nc *nats.Conn, config *pb.Configuration) error {
+func autoPlayQueue(nc *nats.Conn, config *protos.Configuration) error {
 	var timeout = rules.Timeout(config)
-	output, err := broker.RequestQueueList(nc, &pb.QueueInput{}, timeout)
+	output, err := broker.RequestQueueList(nc, &protos.QueueInput{}, timeout)
 	if err != nil {
 		return err
 	}
@@ -121,15 +121,15 @@ func autoPlayQueue(nc *nats.Conn, config *pb.Configuration) error {
 	}
 	next := output.Rows[0]
 	// send a nats message
-	var input = &pb.IPCInput{
+	var input = &protos.IPCInput{
 		Media:   next.Media,
 		Value:   "",
-		Command: pb.Message_IPC_PLAY,
+		Command: protos.Message_IPC_PLAY,
 	}
 	if err = broker.RequestIPCCommand(nc, input, timeout); err != nil {
 		return err
 	}
-	if _, err = broker.RequestQueueRemove(nc, &pb.QueueInput{
+	if _, err = broker.RequestQueueRemove(nc, &protos.QueueInput{
 		Media: next.Media,
 		Index: 0,
 	}, timeout); err != nil {

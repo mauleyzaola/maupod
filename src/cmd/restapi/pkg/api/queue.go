@@ -5,12 +5,12 @@ import (
 	"strconv"
 
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/mauleyzaola/maupod/src/pkg/rules"
+	"github.com/mauleyzaola/maupod/src/protos"
 )
 
 func (a *ApiServer) QueueGet(p TransactionExecutorParams) (status int, result interface{}, err error) {
-	var input pb.QueueInput
+	var input protos.QueueInput
 	result, err = broker.RequestQueueList(a.nc, &input, rules.Timeout(a.config))
 	if err != nil {
 		status = http.StatusInternalServerError
@@ -20,7 +20,7 @@ func (a *ApiServer) QueueGet(p TransactionExecutorParams) (status int, result in
 }
 
 func (a *ApiServer) QueuePost(p TransactionExecutorParams) (status int, result interface{}, err error) {
-	var input pb.QueueInput
+	var input protos.QueueInput
 	if err = p.Decode(&input); err != nil {
 		status = http.StatusBadRequest
 		return
@@ -41,7 +41,7 @@ func (a *ApiServer) QueueDelete(p TransactionExecutorParams) (status int, result
 		status = http.StatusBadRequest
 		return
 	}
-	var input = pb.QueueInput{
+	var input = protos.QueueInput{
 		Index: int64(val),
 	}
 	output, err := broker.RequestQueueRemove(a.nc, &input, rules.Timeout(a.config))

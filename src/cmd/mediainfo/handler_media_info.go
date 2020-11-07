@@ -5,19 +5,20 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/mauleyzaola/maupod/src/protos"
+
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/pkg/information"
 	"github.com/mauleyzaola/maupod/src/pkg/paths"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/nats-io/nats.go"
 )
 
 func (m *MsgHandler) handlerMediaInfo(msg *nats.Msg) {
 	var err error
-	var input pb.MediaInfoInput
+	var input protos.MediaInfoInput
 
-	output := &pb.MediaInfoOutput{
-		Response: &pb.Response{
+	output := &protos.MediaInfoOutput{
+		Response: &protos.Response{
 			Ok:    false,
 			Error: "",
 		},

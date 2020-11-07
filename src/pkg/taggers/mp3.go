@@ -6,14 +6,14 @@ import (
 
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/protos"
 )
 
 const mp3TagProgram = "id3v2"
 
 type MP3Tagger struct{}
 
-func (t *MP3Tagger) Tag(media *pb.Media, filename string) error {
+func (t *MP3Tagger) Tag(media *protos.Media, filename string) error {
 	var params []string
 	addParam := func(name, value string) {
 		params = append(params, fmt.Sprintf("%s=%s", name, value))

@@ -8,13 +8,12 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/mauleyzaola/maupod/src/pkg/types"
-
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata"
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata/conversion"
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata/orm"
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/pkg/types"
+	"github.com/mauleyzaola/maupod/src/protos"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 )
@@ -47,7 +46,7 @@ func (a *ApiServer) PlaylistsGet(p TransactionExecutorParams) (status int, resul
 }
 
 func (a *ApiServer) PlaylistPost(p TransactionExecutorParams) (status int, result interface{}, err error) {
-	var playlist pb.PlayList
+	var playlist protos.PlayList
 	if err = p.Decode(&playlist); err != nil {
 		status = http.StatusBadRequest
 		return
@@ -69,7 +68,7 @@ func (a *ApiServer) PlaylistPost(p TransactionExecutorParams) (status int, resul
 }
 
 func (a *ApiServer) PlaylistPut(p TransactionExecutorParams) (status int, result interface{}, err error) {
-	var playlist pb.PlayList
+	var playlist protos.PlayList
 	if err = p.Decode(&playlist); err != nil {
 		status = http.StatusBadRequest
 		return
@@ -94,7 +93,7 @@ func (a *ApiServer) PlaylistPut(p TransactionExecutorParams) (status int, result
 }
 
 func (a *ApiServer) PlaylistDelete(p TransactionExecutorParams) (status int, result interface{}, err error) {
-	var input pb.PlaylistDeleteInput
+	var input protos.PlaylistDeleteInput
 	if err = p.DecodeQuery(&input); err != nil {
 		status = http.StatusBadRequest
 		return
@@ -126,12 +125,12 @@ func (a *ApiServer) PlaylistDelete(p TransactionExecutorParams) (status int, res
 }
 
 func (a *ApiServer) PlaylistItemPost(p TransactionExecutorParams) (status int, result interface{}, err error) {
-	var item pb.PlaylistItem
+	var item protos.PlaylistItem
 	if err = p.Decode(&item); err != nil {
 		status = http.StatusBadRequest
 		return
 	}
-	item.Playlist = &pb.PlayList{Id: p.Param("id")}
+	item.Playlist = &protos.PlayList{Id: p.Param("id")}
 	if item.Media == nil {
 		err = errors.New("missing media in request")
 		status = http.StatusBadRequest
@@ -200,7 +199,7 @@ func (a *ApiServer) PlaylistItemDelete(p TransactionExecutorParams) (status int,
 }
 
 func (a *ApiServer) PlaylistItemPut(p TransactionExecutorParams) (status int, result interface{}, err error) {
-	var input pb.PlaylistItem
+	var input protos.PlaylistItem
 	var id = p.Param("id")
 	positionStr := p.Param("position")
 
@@ -243,7 +242,7 @@ func (a *ApiServer) PlaylistItemPut(p TransactionExecutorParams) (status int, re
 		return
 	}
 	// find a matching item with input provided
-	var matchedItem *pb.PlaylistItem
+	var matchedItem *protos.PlaylistItem
 	for _, v := range items {
 		if v.Media.Id == input.Media.Id && v.Position == input.Position {
 			matchedItem = v
@@ -323,7 +322,7 @@ func (a *ApiServer) PlaylistItems(p TransactionExecutorParams) (status int, resu
 	return
 }
 
-func playlistItemsList(ctx context.Context, conn boil.ContextExecutor, playlistID string) ([]*pb.PlaylistItem, error) {
+func playlistItemsList(ctx context.Context, conn boil.ContextExecutor, playlistID string) ([]*protos.PlaylistItem, error) {
 	var mods []qm.QueryMod
 	var cols = orm.PlaylistItemColumns
 	var where = orm.PlaylistItemWhere
@@ -333,7 +332,7 @@ func playlistItemsList(ctx context.Context, conn boil.ContextExecutor, playlistI
 	if err != nil {
 		return nil, err
 	}
-	var result []*pb.PlaylistItem
+	var result []*protos.PlaylistItem
 	for i, v := range items {
 		var media *orm.Medium
 		item := conversion.PlaylistItemFromORM(v)

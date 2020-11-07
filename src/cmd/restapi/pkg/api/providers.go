@@ -7,7 +7,7 @@ import (
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
 	"github.com/mauleyzaola/maupod/src/pkg/rules"
 
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/protos"
 
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/pkg/providers/discogs"
@@ -36,14 +36,14 @@ func (a *ApiServer) ProviderMetaCoverGet(p TransactionExecutorParams) (status in
 }
 
 func (a *ApiServer) ProviderMetaCoverPut(p TransactionExecutorParams) (status int, result interface{}, err error) {
-	var input pb.ArtworkDownloadInput
-	var output pb.ArtworkDownloadOutput
+	var input protos.ArtworkDownloadInput
+	var output protos.ArtworkDownloadOutput
 	if err = p.Decode(&input); err != nil {
 		status = http.StatusBadRequest
 		return
 	}
 	input.AlbumIdentifier = p.Param("album_identifier")
-	if err = broker.DoRequest(a.nc, pb.Message_MESSAGE_ARTWORK_DOWNLOAD, &input, &output, rules.Timeout(a.config)); err != nil {
+	if err = broker.DoRequest(a.nc, protos.Message_MESSAGE_ARTWORK_DOWNLOAD, &input, &output, rules.Timeout(a.config)); err != nil {
 		status = http.StatusBadRequest
 		return
 	}

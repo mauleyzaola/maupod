@@ -8,7 +8,7 @@ import (
 
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata/orm"
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/protos"
 	"github.com/stretchr/testify/assert"
 	"github.com/volatiletech/null/v8"
 )
@@ -70,7 +70,7 @@ var sampleMedium = &orm.Medium{
 	ImageLocation:         "51",
 	AlbumIdentifier:       "52",
 }
-var sampleMedia = &pb.Media{
+var sampleMedia = &protos.Media{
 	Id:                    "1",
 	Sha:                   "2",
 	Location:              "3",
@@ -131,7 +131,7 @@ var samplePlaylistORM = &orm.Playlist{
 	ID:   "1",
 	Name: "Playlist Rock",
 }
-var samplePlaylistPB = &pb.PlayList{
+var samplePlaylistPB = &protos.PlayList{
 	Id:   "1",
 	Name: "Playlist Rock",
 }
@@ -143,16 +143,16 @@ var samplePlaylistItemORM = &orm.PlaylistItem{
 	Position:   1,
 	MediaID:    "12345678",
 }
-var samplePlaylistItemPB = &pb.PlaylistItem{
+var samplePlaylistItemPB = &protos.PlaylistItem{
 	Id:       "1",
-	Playlist: &pb.PlayList{Id: "1"},
+	Playlist: &protos.PlayList{Id: "1"},
 	Position: 1,
-	Media:    &pb.Media{Id: "12345678"},
+	Media:    &protos.Media{Id: "12345678"},
 }
 
 func TestMediaToORM(t *testing.T) {
 	type args struct {
-		v *pb.Media
+		v *protos.Media
 	}
 	tests := []struct {
 		name string
@@ -233,7 +233,7 @@ func TestMediaFromORM(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want *pb.Media
+		want *protos.Media
 	}{
 		{
 			name: "check all fields are present",
@@ -309,12 +309,12 @@ func TestMediasFromORM(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want []*pb.Media
+		want []*protos.Media
 	}{
 		{
 			name: "check mapping matches one item",
 			args: args{a: []*orm.Medium{sampleMedium}},
-			want: []*pb.Media{sampleMedia},
+			want: []*protos.Media{sampleMedia},
 		},
 	}
 	for _, tt := range tests {
@@ -329,7 +329,7 @@ func TestMediasFromORM(t *testing.T) {
 //Function PlayList
 func TestPlaylistToORM(t *testing.T) {
 	type args struct {
-		v *pb.PlayList
+		v *protos.PlayList
 	}
 	tests := []struct {
 		name string
@@ -360,7 +360,7 @@ func TestPlaylistFromORM(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want *pb.PlayList
+		want *protos.PlayList
 	}{
 		{
 			name: "check all fields are present",
@@ -386,12 +386,12 @@ func TestPlayListsFromORM(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want []*pb.PlayList
+		want []*protos.PlayList
 	}{
 		{
 			name: "check mapping matches one item",
 			args: args{a: []*orm.Playlist{samplePlaylistORM}},
-			want: []*pb.PlayList{samplePlaylistPB},
+			want: []*protos.PlayList{samplePlaylistPB},
 		},
 	}
 	for _, tt := range tests {
@@ -405,7 +405,7 @@ func TestPlayListsFromORM(t *testing.T) {
 
 func TestPlaylistItemToORM(t *testing.T) {
 	type args struct {
-		v *pb.PlaylistItem
+		v *protos.PlaylistItem
 	}
 	tests := []struct {
 		name string
@@ -439,7 +439,7 @@ func TestPlaylistItemFromORM(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want *pb.PlaylistItem
+		want *protos.PlaylistItem
 	}{
 		{
 			name: "check all fields are present",
@@ -470,12 +470,12 @@ func TestPlaylistItemsFromORM(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want []*pb.PlaylistItem
+		want []*protos.PlaylistItem
 	}{
 		{
 			name: "check mapping matches one item",
 			args: args{a: []*orm.PlaylistItem{samplePlaylistItemORM}},
-			want: []*pb.PlaylistItem{samplePlaylistItemPB},
+			want: []*protos.PlaylistItem{samplePlaylistItemPB},
 		},
 	}
 	for _, tt := range tests {

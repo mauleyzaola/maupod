@@ -6,8 +6,9 @@ import (
 	"os"
 	"time"
 
+	"github.com/mauleyzaola/maupod/src/protos"
+
 	"github.com/DexterLB/mpvipc"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
 )
 
 type DispatcherFunc func(v interface{})
@@ -43,8 +44,8 @@ type IPC struct {
 	connection *mpvipc.Connection
 	isPaused   bool
 	processor  MPVProcessor
-	listeners  map[pb.Message]*EventListener
-	lastMedia  *pb.Media
+	listeners  map[protos.Message]*EventListener
+	lastMedia  *protos.Media
 	control    *PlayerControl
 
 	// workaround to avoid a second play event
@@ -65,20 +66,20 @@ func NewIPC(processor MPVProcessor, control *PlayerControl) (*IPC, error) {
 		control:    control,
 	}
 	// configure which events will be listening to mpv actions
-	ipc.listeners = map[pb.Message]*EventListener{
-		pb.Message_MESSAGE_MPV_PERCENT_POS: {
+	ipc.listeners = map[protos.Message]*EventListener{
+		protos.Message_MESSAGE_MPV_PERCENT_POS: {
 			eventName: "percent-pos",
 			trigger:   ipc.triggerPercentPos,
 		},
-		pb.Message_MESSAGE_MPV_TIME_POS: {
+		protos.Message_MESSAGE_MPV_TIME_POS: {
 			eventName: "time-pos",
 			trigger:   ipc.triggerTimePos,
 		},
-		pb.Message_MESSAGE_MPV_TIME_REMAINING: {
+		protos.Message_MESSAGE_MPV_TIME_REMAINING: {
 			eventName: "time-remaining",
 			trigger:   ipc.triggerTimeRemaining,
 		},
-		pb.Message_MESSAGE_MPV_EOF_REACHED: {
+		protos.Message_MESSAGE_MPV_EOF_REACHED: {
 			eventName: "eof-reached",
 			trigger:   ipc.triggerStartsEnds,
 		},
@@ -111,7 +112,7 @@ func (m *IPC) configureListeners() error {
 
 	go func() {
 		for v := range events {
-			dispatcher, ok := m.listeners[pb.Message(v.ID)]
+			dispatcher, ok := m.listeners[protos.Message(v.ID)]
 			if !ok {
 				continue
 			}
@@ -142,7 +143,7 @@ func (m *IPC) restart(filename string) error {
 	return nil
 }
 
-func (m *IPC) Load(media *pb.Media) error {
+func (m *IPC) Load(media *protos.Media) error {
 	var filename = media.Location
 	err := m.restart(filename)
 	if err != nil {

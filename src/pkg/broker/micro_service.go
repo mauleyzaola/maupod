@@ -5,14 +5,14 @@ import (
 	"time"
 
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/protos"
 	"github.com/nats-io/nats.go"
 )
 
 func MicroServiceRespond(msg *nats.Msg, name string) error {
 	var err error
-	var input pb.MicroServiceDiscoveryInput
-	var output pb.MicroServiceDiscoveryOutput
+	var input protos.MicroServiceDiscoveryInput
+	var output protos.MicroServiceDiscoveryOutput
 	if err = helpers.ProtoUnmarshal(msg.Data, &input); err != nil {
 		log.Println(err)
 		return err
@@ -33,9 +33,9 @@ func MicroServiceRespond(msg *nats.Msg, name string) error {
 	return nil
 }
 
-func MicroServicePing(nc *nats.Conn, name pb.Message, timeout time.Duration) (*pb.MicroServiceDiscoveryOutput, error) {
-	var input = pb.MicroServiceDiscoveryInput{}
-	var output pb.MicroServiceDiscoveryOutput
+func MicroServicePing(nc *nats.Conn, name protos.Message, timeout time.Duration) (*protos.MicroServiceDiscoveryOutput, error) {
+	var input = protos.MicroServiceDiscoveryInput{}
+	var output protos.MicroServiceDiscoveryOutput
 	if err := DoRequest(nc, name, &input, &output, timeout); err != nil {
 		return nil, err
 	}

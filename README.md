@@ -65,8 +65,6 @@ Ensure to meet the following requirements
 
 [Tagger](src/pkg/taggers/README.md)
 
-[Protoc](src/docs/protocol-buffers.md)
-
 [Mediainfo](src/docs/mediainfo.md)
 
 ### Related Software

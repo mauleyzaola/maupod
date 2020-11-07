@@ -12,9 +12,9 @@ import (
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata"
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/pkg/paths"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/mauleyzaola/maupod/src/pkg/rules"
 	"github.com/mauleyzaola/maupod/src/pkg/types"
+	"github.com/mauleyzaola/maupod/src/protos"
 )
 
 func main() {
@@ -42,9 +42,9 @@ func run() error {
 
 	// create directory if not exists
 	if val := os.Getenv(paths.MediaStoreEnvName); val != "" {
-		config.MediaStores = []*pb.FileStore{
+		config.MediaStores = []*protos.FileStore{
 			{
-				Type:     pb.FileStore_FILE_SYSTEM,
+				Type:     protos.FileStore_FILE_SYSTEM,
 				Name:     "media-store",
 				Location: val,
 			},

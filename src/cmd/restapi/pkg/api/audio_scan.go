@@ -7,11 +7,11 @@ import (
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/pkg/paths"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/protos"
 )
 
 func (a *ApiServer) AudioScanPost(p TransactionExecutorParams) (status int, result interface{}, err error) {
-	var input pb.ScanDirectoryAudioFilesInput
+	var input protos.ScanDirectoryAudioFilesInput
 	if err = p.Decode(&input); err != nil {
 		status = http.StatusBadRequest
 		return
@@ -23,7 +23,7 @@ func (a *ApiServer) AudioScanPost(p TransactionExecutorParams) (status int, resu
 	// so this value goes to db
 	input.ScanDate = helpers.TimeToTs2(time.Now())
 
-	if err = broker.PublishBroker(a.nc, pb.Message_MESSAGE_AUDIO_SCAN, &input); err != nil {
+	if err = broker.PublishBroker(a.nc, protos.Message_MESSAGE_AUDIO_SCAN, &input); err != nil {
 		status = http.StatusInternalServerError
 		return
 	}

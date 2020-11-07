@@ -7,6 +7,8 @@ const nc = NATS.connect({json: true, servers: servers});
 const messages = require('./nodepb/messages_pb');
 const subjects = messages.Message;
 
+// TODO: import from src/proto directory and generate the JS files there
+
 console.log(`started websocket server on: ${JSON.stringify(wsOptions)}`);
 
 const broadcastMessage = data => {

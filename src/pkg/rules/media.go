@@ -3,17 +3,18 @@ package rules
 import (
 	"errors"
 	"fmt"
-	"github.com/mauleyzaola/maupod/src/pkg/helpers"
-	"github.com/mauleyzaola/maupod/src/pkg/paths"
 	"log"
 	"os"
 	"time"
 
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/pkg/helpers"
+	"github.com/mauleyzaola/maupod/src/pkg/paths"
+
+	"github.com/mauleyzaola/maupod/src/protos"
 )
 
 // FileInfo returns the information from the file system about a media item
-func FileInfo(m *pb.Media) (os.FileInfo, error) {
+func FileInfo(m *protos.Media) (os.FileInfo, error) {
 	if m.Location == "" {
 		return nil, errors.New("missing location")
 	}
@@ -22,7 +23,7 @@ func FileInfo(m *pb.Media) (os.FileInfo, error) {
 }
 
 // Needs update compares the file system modified date vs database value
-func NeedsMediaUpdate(m *pb.Media) bool {
+func NeedsMediaUpdate(m *protos.Media) bool {
 	info, err := FileInfo(m)
 	if err != nil {
 		log.Println("[ERROR] ", err)
@@ -32,11 +33,11 @@ func NeedsMediaUpdate(m *pb.Media) bool {
 		return true
 	}
 
-	var lastScan=helpers.TsToTime(m.LastScan)
+	var lastScan = helpers.TsToTime(m.LastScan)
 	return lastScan.Before(info.ModTime())
 }
 
-func MediaCheckMinimalData(m *pb.Media) error {
+func MediaCheckMinimalData(m *protos.Media) error {
 	if m.Album == "" {
 		return errors.New("media missing: album")
 	}
@@ -50,7 +51,7 @@ func MediaCheckMinimalData(m *pb.Media) error {
 }
 
 // MediaPercentToSeconds converts the percent of the track to seconds played
-func MediaPercentToSeconds(m *pb.Media, percent float64) (*time.Duration, error) {
+func MediaPercentToSeconds(m *protos.Media, percent float64) (*time.Duration, error) {
 	if percent < 0 || percent > 100 {
 		return nil, fmt.Errorf("percent out of range: %v", percent)
 	}
@@ -62,7 +63,7 @@ func MediaPercentToSeconds(m *pb.Media, percent float64) (*time.Duration, error)
 	return &duration, nil
 }
 
-func MediaTotalSeconds(m *pb.Media) (*time.Duration, error) {
+func MediaTotalSeconds(m *protos.Media) (*time.Duration, error) {
 	if m.Duration == 0 {
 		return nil, errors.New("missing duration, cannot calculate percent")
 	}

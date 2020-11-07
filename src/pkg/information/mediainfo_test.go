@@ -3,7 +3,7 @@ package information
 import (
 	"testing"
 
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/protos"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -58,7 +58,7 @@ func TestMediaInfo_ToProto(t *testing.T) {
 	tests := []struct {
 		name   string
 		fields fields
-		want   *pb.Media
+		want   *protos.Media
 	}{
 		{
 			name: "check fields matches",
@@ -109,7 +109,7 @@ func TestMediaInfo_ToProto(t *testing.T) {
 				TrackNameTotal:        44,
 				WritingLibrary:        "45",
 			},
-			want: &pb.Media{
+			want: &protos.Media{
 				Album:                 "1",
 				AlbumPerformer:        "2",
 				AudioCount:            3,

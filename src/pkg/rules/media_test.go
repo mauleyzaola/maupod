@@ -5,12 +5,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/protos"
 )
 
 func TestMediaPercentToSeconds(t *testing.T) {
 	type args struct {
-		m       *pb.Media
+		m       *protos.Media
 		percent float64
 	}
 	duration1 := time.Millisecond * time.Duration(26250)
@@ -23,7 +23,7 @@ func TestMediaPercentToSeconds(t *testing.T) {
 		{
 			name: "04:22",
 			args: args{
-				m:       &pb.Media{Duration: 262506},
+				m:       &protos.Media{Duration: 262506},
 				percent: 10,
 			},
 			wantErr: false,
