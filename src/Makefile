@@ -59,24 +59,11 @@ logs:
 orm:
 	./orm.sh
 
-prepare-proto: force
-	sudo rm -rf ./pkg/pb
-	mkdir -p ./pkg/pb
-
-prepare-proto-node: force
-	rm -rf ./cmd/socket/nodepb
-	mkdir -p ./cmd/socket/nodepb
-
 prod: dockers
 	bash -x ./scripts/push_docker.sh
 
 proto:
-#	protoc --proto_path=proto --go_out=pkg/pb --go_opt=paths=source_relative ./proto/*
 	$(MAKE) -C ./protos docker-build
-
-proto-node: prepare-proto-node
-    # commonjs was the only way of make it work from nodejs with generated js files
-	protoc --proto_path=proto --js_out=import_style=commonjs,binary:cmd/socket/nodepb ./proto/*
 
 pg-backup:
 	docker-compose exec pg pg_dump maupod -U postgres > $(HOME)/Downloads/postgres.maupod.sql
