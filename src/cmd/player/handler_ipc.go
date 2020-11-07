@@ -8,13 +8,13 @@ import (
 
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/pkg/paths"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/protos"
 	"github.com/nats-io/nats.go"
 )
 
 func (m *MsgHandler) handlerIPC(msg *nats.Msg) {
 	var err error
-	var input pb.IPCInput
+	var input protos.IPCInput
 
 	if err = helpers.ProtoUnmarshal(msg.Data, &input); err != nil {
 		log.Println(err)
@@ -44,7 +44,7 @@ func (m *MsgHandler) handlerIPC(msg *nats.Msg) {
 	}
 
 	switch input.Command {
-	case pb.Message_IPC_PLAY:
+	case protos.Message_IPC_PLAY:
 		if err = m.ipc.Load(input.Media); err != nil {
 			log.Println(err)
 			return
@@ -53,22 +53,22 @@ func (m *MsgHandler) handlerIPC(msg *nats.Msg) {
 			log.Println(err)
 			return
 		}
-	case pb.Message_IPC_PAUSE:
+	case protos.Message_IPC_PAUSE:
 		if err = m.ipc.PauseToggle(); err != nil {
 			log.Println(err)
 			return
 		}
-	case pb.Message_IPC_LOAD:
+	case protos.Message_IPC_LOAD:
 		if err = m.ipc.Load(input.Media); err != nil {
 			log.Println(err)
 			return
 		}
-	case pb.Message_IPC_SKIP:
+	case protos.Message_IPC_SKIP:
 		if input.Media == nil {
 			return
 		}
 		m.ipc.Skip()
-	case pb.Message_IPC_VOLUME:
+	case protos.Message_IPC_VOLUME:
 		val, err := strconv.ParseInt(input.Value, 10, 64)
 		if err != nil {
 			log.Println(err)

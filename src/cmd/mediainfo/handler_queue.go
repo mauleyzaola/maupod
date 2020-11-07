@@ -4,16 +4,17 @@ import (
 	"context"
 	"log"
 
+	"github.com/mauleyzaola/maupod/src/protos"
+
 	"github.com/mauleyzaola/maupod/src/pkg/types"
 
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/nats-io/nats.go"
 )
 
 // handlerQueueList returns a list of queues along with the medias related
 func (m *MsgHandler) handlerQueueList(msg *nats.Msg) {
-	var output pb.QueueOutput
+	var output protos.QueueOutput
 
 	defer func() {
 		if msg.Reply == "" {
@@ -40,9 +41,9 @@ func (m *MsgHandler) handlerQueueList(msg *nats.Msg) {
 
 // handlerQueueAdd adds one media to the queue
 func (m *MsgHandler) handlerQueueAdd(msg *nats.Msg) {
-	var input pb.QueueInput
+	var input protos.QueueInput
 	var err error
-	var output pb.QueueOutput
+	var output protos.QueueOutput
 
 	defer func() {
 		onQueueNotifyChanged(m.base.NATS())
@@ -73,9 +74,9 @@ func (m *MsgHandler) handlerQueueAdd(msg *nats.Msg) {
 	}
 
 	if input.Index == -1 {
-		if input.NamedPosition == pb.NamedPosition_POSITION_TOP {
+		if input.NamedPosition == protos.NamedPosition_POSITION_TOP {
 			list = list.InsertTop(input.Media)
-		} else if input.NamedPosition == pb.NamedPosition_POSITION_BOTTOM {
+		} else if input.NamedPosition == protos.NamedPosition_POSITION_BOTTOM {
 			list = list.InsertBottom(input.Media)
 		} else {
 			output.Error = "invalid named position and missing index, what should we do"
@@ -98,9 +99,9 @@ func (m *MsgHandler) handlerQueueAdd(msg *nats.Msg) {
 
 // handlerQueueRemove removes one media from the queue
 func (m *MsgHandler) handlerQueueRemove(msg *nats.Msg) {
-	var input pb.QueueInput
+	var input protos.QueueInput
 	var err error
-	var output pb.QueueOutput
+	var output protos.QueueOutput
 
 	defer func() {
 		onQueueNotifyChanged(m.base.NATS())

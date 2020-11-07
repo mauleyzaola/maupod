@@ -3,8 +3,9 @@ package main
 import (
 	"strconv"
 
+	"github.com/mauleyzaola/maupod/src/protos"
+
 	"github.com/mauleyzaola/maupod/src/pkg/handler"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/nats-io/nats.go"
 )
 
@@ -21,7 +22,7 @@ func NewMsgHandler(nc *nats.Conn) *MsgHandler {
 func (m *MsgHandler) Register() error {
 	return m.base.Register(
 		handler.Subscription{
-			Subject: strconv.Itoa(int(pb.Message_MESSAGE_MICRO_SERVICE_RESTAPI)),
+			Subject: strconv.Itoa(int(protos.Message_MESSAGE_MICRO_SERVICE_RESTAPI)),
 			Handler: m.handlerMicroService,
 		},
 	)

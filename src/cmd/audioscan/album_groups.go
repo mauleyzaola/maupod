@@ -3,16 +3,17 @@ package main
 import (
 	"context"
 
+	"github.com/mauleyzaola/maupod/src/protos"
+
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata/orm"
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 )
 
 // AlbumGroupDetection will calculate based on the current media, the album_identifier,
 // and whether it is or not a compilation
-func AlbumGroupDetection(ctx context.Context, conn boil.ContextExecutor, media *pb.Media) (albumIdentifier string, err error) {
+func AlbumGroupDetection(ctx context.Context, conn boil.ContextExecutor, media *protos.Media) (albumIdentifier string, err error) {
 	var mods []qm.QueryMod
 	var where = orm.MediumWhere
 	var cols = orm.MediumColumns

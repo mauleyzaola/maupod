@@ -2,18 +2,18 @@ package main
 
 import (
 	"context"
+	"github.com/mauleyzaola/maupod/src/protos"
 	"log"
 
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata"
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata/orm"
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/nats-io/nats.go"
 )
 
 func (m *MsgHandler) handlerMediaUpdateDb(msg *nats.Msg) {
 	var err error
-	var input pb.MediaInfoInput
+	var input protos.MediaInfoInput
 
 	if err = helpers.ProtoUnmarshal(msg.Data, &input); err != nil {
 		log.Println(err)

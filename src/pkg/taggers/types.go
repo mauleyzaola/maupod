@@ -5,13 +5,13 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/protos"
 )
 
 type Tagger interface {
 	ProgramExist() bool
 	RemoveAll(filename string) error
-	Tag(media *pb.Media, filename string) error
+	Tag(media *protos.Media, filename string) error
 }
 
 func TaggerFactory(filename string) (Tagger, error) {

@@ -5,15 +5,16 @@ import (
 	"log"
 	"time"
 
+	"github.com/mauleyzaola/maupod/src/protos"
+
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata"
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/nats-io/nats.go"
 )
 
 func (m *MsgHandler) handlerAudioScan(msg *nats.Msg) {
 	start := time.Now()
-	var input pb.ScanDirectoryAudioFilesInput
+	var input protos.ScanDirectoryAudioFilesInput
 	err := helpers.ProtoUnmarshal(msg.Data, &input)
 	if err != nil {
 		log.Println(err)

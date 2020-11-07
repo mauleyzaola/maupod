@@ -3,7 +3,7 @@ package taggers
 import (
 	"testing"
 
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/protos"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -11,18 +11,18 @@ import (
 func TestMP3Tagger(t *testing.T) {
 	type args struct {
 		filename    string
-		taggedMedia *pb.Media
+		taggedMedia *protos.Media
 	}
 	tests := []struct {
 		name         string
 		args         args
 		wantErr      bool
-		removedMedia *pb.Media
+		removedMedia *protos.Media
 	}{
 		{
 			args: args{
 				filename: "./test_data/sample.mp3",
-				taggedMedia: &pb.Media{
+				taggedMedia: &protos.Media{
 					Album:          "Abbey Road",
 					Track:          "Here comes the sun",
 					TrackPosition:  7,
@@ -34,7 +34,7 @@ func TestMP3Tagger(t *testing.T) {
 				},
 			},
 			wantErr:      false,
-			removedMedia: &pb.Media{},
+			removedMedia: &protos.Media{},
 		},
 	}
 	for _, tt := range tests {

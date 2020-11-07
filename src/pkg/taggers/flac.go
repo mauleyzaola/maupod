@@ -6,14 +6,14 @@ import (
 
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/protos"
 )
 
 const flacTagProgram = "metaflac"
 
 type FLACTagger struct{}
 
-func (t *FLACTagger) Tag(media *pb.Media, filename string) error {
+func (t *FLACTagger) Tag(media *protos.Media, filename string) error {
 	var params []string
 	addParam := func(name, value string) {
 		params = append(params, fmt.Sprintf("--remove-tag=%s", name))

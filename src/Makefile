@@ -70,8 +70,9 @@ prepare-proto-node: force
 prod: dockers
 	bash -x ./scripts/push_docker.sh
 
-proto: proto-node prepare-proto
-	protoc --proto_path=proto --go_out=pkg/pb --go_opt=paths=source_relative ./proto/*
+proto:
+#	protoc --proto_path=proto --go_out=pkg/pb --go_opt=paths=source_relative ./proto/*
+	$(MAKE) -C ./protos docker-build
 
 proto-node: prepare-proto-node
     # commonjs was the only way of make it work from nodejs with generated js files

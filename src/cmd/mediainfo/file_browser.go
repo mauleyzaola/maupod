@@ -5,17 +5,18 @@ import (
 	"log"
 	"path/filepath"
 
+	"github.com/mauleyzaola/maupod/src/protos"
+
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/pkg/paths"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/mauleyzaola/maupod/src/pkg/rules"
 	"github.com/nats-io/nats.go"
 )
 
 func (m *MsgHandler) handlerReadDirectory(msg *nats.Msg) {
-	var input pb.DirectoryReadInput
+	var input protos.DirectoryReadInput
 	var err error
-	var output pb.DirectoryReadOutput
+	var output protos.DirectoryReadOutput
 
 	defer func() {
 		data, err := helpers.ProtoMarshal(&output)
@@ -43,7 +44,7 @@ func (m *MsgHandler) handlerReadDirectory(msg *nats.Msg) {
 		if !info.IsDir() && !rules.FileIsValidExtension(m.config, info.Name()) {
 			continue
 		}
-		var file = &pb.FileItem{
+		var file = &protos.FileItem{
 			Location: paths.LocationPath(filepath.Join(root, info.Name())),
 			IsDir:    info.IsDir(),
 			Size:     info.Size(),

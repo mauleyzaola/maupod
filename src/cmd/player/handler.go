@@ -8,7 +8,7 @@ import (
 	"github.com/mauleyzaola/maupod/src/cmd/player/pkg"
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
 	"github.com/mauleyzaola/maupod/src/pkg/handler"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/protos"
 	"github.com/nats-io/nats.go"
 	"google.golang.org/protobuf/proto"
 )
@@ -29,15 +29,15 @@ func NewMsgHandler(nc *nats.Conn) *MsgHandler {
 func (m *MsgHandler) Register() error {
 	return m.base.Register(
 		handler.Subscription{
-			Subject: strconv.Itoa(int(pb.Message_MESSAGE_IPC)),
+			Subject: strconv.Itoa(int(protos.Message_MESSAGE_IPC)),
 			Handler: m.handlerIPC,
 		},
 		handler.Subscription{
-			Subject: strconv.Itoa(int(pb.Message_MESSAGE_SOCKET_TRACK_POSITION_PERCENT_CHANGE)),
+			Subject: strconv.Itoa(int(protos.Message_MESSAGE_SOCKET_TRACK_POSITION_PERCENT_CHANGE)),
 			Handler: m.handlerPositionPercentChange,
 		},
 		handler.Subscription{
-			Subject: strconv.Itoa(int(pb.Message_MESSAGE_MICRO_SERVICE_PLAYER)),
+			Subject: strconv.Itoa(int(protos.Message_MESSAGE_MICRO_SERVICE_PLAYER)),
 			Handler: m.handlerMicroService,
 		},
 	)
@@ -61,17 +61,17 @@ func (m *MsgHandler) InitializeIPC(filename string) error {
 	if err != nil {
 		return err
 	}
-	var publishFn broker.PublisherFunc = func(subject pb.Message, payload proto.Message) error {
+	var publishFn broker.PublisherFunc = func(subject protos.Message, payload proto.Message) error {
 		return broker.PublishBroker(m.base.NATS(), subject, payload)
 	}
-	var requestFn broker.RequestFunc = func(subject pb.Message, input, output proto.Message) error {
+	var requestFn broker.RequestFunc = func(subject protos.Message, input, output proto.Message) error {
 		// TODO: timeout should come from configuration
 		return broker.DoRequest(m.base.NATS(), subject, input, output, time.Second)
 	}
-	var publishFnJSON broker.PublisherFuncJSON = func(subject pb.Message, payload interface{}) error {
+	var publishFnJSON broker.PublisherFuncJSON = func(subject protos.Message, payload interface{}) error {
 		val, ok := payload.(proto.Message)
 		if !ok {
-			log.Println("[ERROR] cannot cast to pb.Message: ", payload)
+			log.Println("[ERROR] cannot cast to protos.Message: ", payload)
 		}
 		return broker.PublishBrokerJSON(m.base.NATS(), subject, val)
 	}

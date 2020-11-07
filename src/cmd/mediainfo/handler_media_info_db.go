@@ -2,20 +2,20 @@ package main
 
 import (
 	"context"
+	"github.com/mauleyzaola/maupod/src/protos"
 	"log"
 
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata"
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/nats-io/nats.go"
 )
 
 func (m *MsgHandler) handlerMediaInfoDBSelect(msg *nats.Msg) {
 	var err error
-	var input pb.MediaInfoInput
+	var input protos.MediaInfoInput
 
-	output := &pb.MediaInfosOutput{
-		Response: &pb.Response{
+	output := &protos.MediaInfosOutput{
+		Response: &protos.Response{
 			Ok:    false,
 			Error: "",
 		},

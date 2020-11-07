@@ -11,8 +11,8 @@ import (
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata/orm"
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/pkg/paths"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/mauleyzaola/maupod/src/pkg/rules"
+	"github.com/mauleyzaola/maupod/src/protos"
 	"github.com/nats-io/nats.go"
 	"github.com/volatiletech/sqlboiler/boil"
 )
@@ -80,7 +80,7 @@ func ScanDirectoryAudioFiles(
 	scanDate time.Time,
 	store *dbdata.MediaStore,
 	root string,
-	config *pb.Configuration,
+	config *protos.Configuration,
 	force bool,
 ) error {
 
@@ -132,8 +132,8 @@ func ScanDirectoryAudioFiles(
 	for _, f := range files {
 		var location = paths.LocationPath(f)
 		var fullPath = paths.MediaFullPathAudioFile(location)
-		var m *pb.Media
-		var output *pb.MediaInfoOutput
+		var m *protos.Media
+		var output *protos.MediaInfoOutput
 		if output, err = broker.RequestMediaInfoScan(nc, fullPath, timeout); err != nil {
 			log.Println(err)
 			continue
@@ -176,7 +176,7 @@ func ScanDirectoryAudioFiles(
 		}
 
 		// send SHA update message
-		if err = broker.PublishMediaSHAScan(nc, &pb.SHAScanInput{Media: m}); err != nil {
+		if err = broker.PublishMediaSHAScan(nc, &protos.SHAScanInput{Media: m}); err != nil {
 			log.Println(err)
 			return err
 		}
@@ -185,8 +185,8 @@ func ScanDirectoryAudioFiles(
 		// this will only look for image files in the same directory of the audio files
 		// no scanning of audio files content should be done
 		if m.AlbumIdentifier != "" {
-			if err = broker.PublishBroker(nc, pb.Message_MESSAGE_ARTWORK_SCAN,
-				&pb.ArtworkExtractInput{
+			if err = broker.PublishBroker(nc, protos.Message_MESSAGE_ARTWORK_SCAN,
+				&protos.ArtworkExtractInput{
 					Media:    m,
 					ScanDate: helpers.TimeToTs2(scanDate),
 				}); err != nil {

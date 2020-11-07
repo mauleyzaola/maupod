@@ -4,12 +4,12 @@ import (
 	"testing"
 
 	"github.com/mauleyzaola/maupod/src/pkg/information"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/protos"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
-func readMediaInfo(filename string) (*pb.Media, error) {
+func readMediaInfo(filename string) (*protos.Media, error) {
 	raw, err := information.MediaInfoFromFile(filename)
 	if err != nil {
 		return nil, err
@@ -21,7 +21,7 @@ func readMediaInfo(filename string) (*pb.Media, error) {
 	return mediaInfo.ToProto(), nil
 }
 
-func compareMedia(t *testing.T, m1, m2 *pb.Media) {
+func compareMedia(t *testing.T, m1, m2 *protos.Media) {
 	assert.EqualValues(t, m1.Album, m2.Album)
 	assert.EqualValues(t, m1.TrackPosition, m2.TrackPosition)
 	assert.EqualValues(t, m1.Performer, m2.Performer)
@@ -34,18 +34,18 @@ func compareMedia(t *testing.T, m1, m2 *pb.Media) {
 func TestFLACTagger(t *testing.T) {
 	type args struct {
 		filename    string
-		taggedMedia *pb.Media
+		taggedMedia *protos.Media
 	}
 	tests := []struct {
 		name         string
 		args         args
 		wantErr      bool
-		removedMedia *pb.Media
+		removedMedia *protos.Media
 	}{
 		{
 			args: args{
 				filename: "./test_data/sample.flac",
-				taggedMedia: &pb.Media{
+				taggedMedia: &protos.Media{
 					Album:          "Abbey Road",
 					Track:          "Here comes the sun",
 					TrackPosition:  7,
@@ -57,7 +57,7 @@ func TestFLACTagger(t *testing.T) {
 				},
 			},
 			wantErr:      false,
-			removedMedia: &pb.Media{},
+			removedMedia: &protos.Media{},
 		},
 		{
 			args: args{

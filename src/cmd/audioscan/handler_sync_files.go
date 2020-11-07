@@ -12,13 +12,13 @@ import (
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata"
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/pkg/paths"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/protos"
 	"github.com/nats-io/nats.go"
 )
 
 func (m *MsgHandler) handlerSyncFiles(msg *nats.Msg) {
-	var input pb.SyncFilesInput
-	var output pb.SyncFilesOutput
+	var input protos.SyncFilesInput
+	var output protos.SyncFilesOutput
 	var err error
 
 	defer func() {
@@ -72,7 +72,7 @@ func (m *MsgHandler) handlerSyncFiles(msg *nats.Msg) {
 	var albumKey = make(map[string]struct{})
 
 	for _, v := range playedMediaList {
-		var medias []*pb.Media
+		var medias []*protos.Media
 		if input.IncludeDirectory {
 			// ignore the file if the same album directory has been processed already
 			if _, ok := albumKey[v.AlbumIdentifier]; ok {
@@ -80,14 +80,14 @@ func (m *MsgHandler) handlerSyncFiles(msg *nats.Msg) {
 			}
 			// load the rest of the files from the same album
 			// we are assuming same album files are in the same directory
-			medias, err = store.FindMedias(ctx, conn, &pb.Media{AlbumIdentifier: v.AlbumIdentifier}, 0)
+			medias, err = store.FindMedias(ctx, conn, &protos.Media{AlbumIdentifier: v.AlbumIdentifier}, 0)
 			if err != nil {
 				log.Println(err)
 				output.Error = err.Error()
 				return
 			}
 		} else {
-			medias = []*pb.Media{v}
+			medias = []*protos.Media{v}
 		}
 
 		for _, media := range medias {

@@ -11,19 +11,18 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/mauleyzaola/maupod/src/pkg/broker"
-
 	"github.com/mauleyzaola/maupod/src/cmd/artwork/pkg/artworks"
+	"github.com/mauleyzaola/maupod/src/pkg/broker"
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/mauleyzaola/maupod/src/pkg/rules"
+	"github.com/mauleyzaola/maupod/src/protos"
 	"github.com/nats-io/nats.go"
 )
 
 func (m *MsgHandler) handlerArtworkDownload(msg *nats.Msg) {
 	var err error
-	var input pb.ArtworkDownloadInput
-	var output pb.ArtworkDownloadOutput
+	var input protos.ArtworkDownloadInput
+	var output protos.ArtworkDownloadOutput
 
 	defer func() {
 		if msg.Reply == "" {
@@ -76,10 +75,10 @@ func (m *MsgHandler) handlerArtworkDownload(msg *nats.Msg) {
 	var nc = m.base.NATS()
 
 	// check file is valid and store image location
-	var baseMedia = &pb.Media{AlbumIdentifier: input.AlbumIdentifier}
+	var baseMedia = &protos.Media{AlbumIdentifier: input.AlbumIdentifier}
 
 	// send message for each media in this album
-	medium, err := broker.RequestMediaInfoScanFromDB(nc, &pb.MediaInfoInput{
+	medium, err := broker.RequestMediaInfoScanFromDB(nc, &protos.MediaInfoInput{
 		Media: baseMedia,
 	}, rules.Timeout(m.config))
 	if err != nil {

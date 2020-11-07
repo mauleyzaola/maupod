@@ -5,24 +5,24 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/protos"
 )
 
 var (
-	m1 = &pb.Media{
+	m1 = &protos.Media{
 		Id: "1",
 	}
-	m2 = &pb.Media{
+	m2 = &protos.Media{
 		Id: "2",
 	}
-	m3 = &pb.Media{
+	m3 = &protos.Media{
 		Id: "3",
 	}
 )
 
 func TestMedias_InsertAt(t *testing.T) {
 	type args struct {
-		media *pb.Media
+		media *protos.Media
 		index int
 	}
 	tests := []struct {
@@ -171,7 +171,7 @@ func TestMedias_RemoveAt(t *testing.T) {
 
 func TestMedias_InsertTop(t *testing.T) {
 	type args struct {
-		media *pb.Media
+		media *protos.Media
 	}
 	tests := []struct {
 		name string
@@ -208,7 +208,7 @@ func TestMedias_InsertTop(t *testing.T) {
 
 func TestMedias_InsertBottom(t *testing.T) {
 	type args struct {
-		media *pb.Media
+		media *protos.Media
 	}
 	tests := []struct {
 		name string

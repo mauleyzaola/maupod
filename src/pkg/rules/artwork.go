@@ -1,8 +1,8 @@
 package rules
 
-import "github.com/mauleyzaola/maupod/src/pkg/pb"
+import "github.com/mauleyzaola/maupod/src/protos"
 
-func ArtworkFileName(media *pb.Media) string {
+func ArtworkFileName(media *protos.Media) string {
 	if media.AlbumIdentifier == "" {
 		return ""
 	}

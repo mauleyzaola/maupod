@@ -4,15 +4,16 @@ import (
 	"context"
 	"log"
 
+	"github.com/mauleyzaola/maupod/src/protos"
+
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata/orm"
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/nats-io/nats.go"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 )
 
 func (m *MsgHandler) handlerMediaEventUpsert(msg *nats.Msg) {
-	var input pb.MediaEventInput
+	var input protos.MediaEventInput
 
 	if err := helpers.ProtoUnmarshal(msg.Data, &input); err != nil {
 		log.Println(err)

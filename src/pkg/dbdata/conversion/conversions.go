@@ -3,29 +3,30 @@ package conversion
 import (
 	"strings"
 
+	"github.com/mauleyzaola/maupod/src/protos"
+
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata/orm"
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/volatiletech/null/v8"
 )
 
 // covert playlist back and forth
-func PlaylistToORM(v *pb.PlayList) *orm.Playlist {
+func PlaylistToORM(v *protos.PlayList) *orm.Playlist {
 	return &orm.Playlist{
 		ID:   v.Id,
 		Name: v.Name,
 	}
 }
 
-func PlaylistFromORM(v *orm.Playlist) *pb.PlayList {
-	return &pb.PlayList{
+func PlaylistFromORM(v *orm.Playlist) *protos.PlayList {
+	return &protos.PlayList{
 		Id:   v.ID,
 		Name: v.Name,
 	}
 }
 
-func PlaylistsFromORM(a ...*orm.Playlist) []*pb.PlayList {
-	var result []*pb.PlayList
+func PlaylistsFromORM(a ...*orm.Playlist) []*protos.PlayList {
+	var result []*protos.PlayList
 	for _, v := range a {
 		result = append(result, PlaylistFromORM(v))
 	}
@@ -33,7 +34,7 @@ func PlaylistsFromORM(a ...*orm.Playlist) []*pb.PlayList {
 }
 
 // covert playlistItemcls back and forth
-func PlaylistItemToORM(v *pb.PlaylistItem) *orm.PlaylistItem {
+func PlaylistItemToORM(v *protos.PlaylistItem) *orm.PlaylistItem {
 	return &orm.PlaylistItem{
 		ID:         v.Id,
 		PlaylistID: v.Playlist.Id,
@@ -42,21 +43,21 @@ func PlaylistItemToORM(v *pb.PlaylistItem) *orm.PlaylistItem {
 	}
 }
 
-func PlaylistItemFromORM(v *orm.PlaylistItem) *pb.PlaylistItem {
-	return &pb.PlaylistItem{
+func PlaylistItemFromORM(v *orm.PlaylistItem) *protos.PlaylistItem {
+	return &protos.PlaylistItem{
 		Id: v.ID,
-		Playlist: &pb.PlayList{
+		Playlist: &protos.PlayList{
 			Id: v.PlaylistID,
 		},
 		Position: int32(v.Position),
-		Media: &pb.Media{
+		Media: &protos.Media{
 			Id: v.MediaID,
 		},
 	}
 }
 
-func PlaylistItemsFromORM(a ...*orm.PlaylistItem) []*pb.PlaylistItem {
-	var result []*pb.PlaylistItem
+func PlaylistItemsFromORM(a ...*orm.PlaylistItem) []*protos.PlaylistItem {
+	var result []*protos.PlaylistItem
 	for _, v := range a {
 		result = append(result, PlaylistItemFromORM(v))
 	}
@@ -64,7 +65,7 @@ func PlaylistItemsFromORM(a ...*orm.PlaylistItem) []*pb.PlaylistItem {
 }
 
 // covert media back and forth
-func MediaToORM(v *pb.Media) *orm.Medium {
+func MediaToORM(v *protos.Media) *orm.Medium {
 	return &orm.Medium{
 		Album:                 v.Album,
 		AlbumPerformer:        v.AlbumPerformer,
@@ -123,8 +124,8 @@ func MediaToORM(v *pb.Media) *orm.Medium {
 	}
 }
 
-func MediaFromORM(v *orm.Medium) *pb.Media {
-	return &pb.Media{
+func MediaFromORM(v *orm.Medium) *protos.Media {
+	return &protos.Media{
 		Album:                 v.Album,
 		AlbumPerformer:        v.AlbumPerformer,
 		AudioCount:            v.AudioCount,
@@ -182,16 +183,16 @@ func MediaFromORM(v *orm.Medium) *pb.Media {
 	}
 }
 
-func MediasFromORM(a ...*orm.Medium) []*pb.Media {
-	var result []*pb.Media
+func MediasFromORM(a ...*orm.Medium) []*protos.Media {
+	var result []*protos.Media
 	for _, v := range a {
 		result = append(result, MediaFromORM(v))
 	}
 	return result
 }
 
-func ViewAlbumToMedia(v *orm.ViewAlbum) *pb.Media {
-	m := &pb.Media{
+func ViewAlbumToMedia(v *orm.ViewAlbum) *protos.Media {
+	m := &protos.Media{
 		Id:              v.ID.String,
 		Format:          v.Format.String,
 		FileSize:        v.FileSize.Int64,
@@ -209,8 +210,8 @@ func ViewAlbumToMedia(v *orm.ViewAlbum) *pb.Media {
 	return m
 }
 
-func ViewAlbumsToMedia(a ...*orm.ViewAlbum) []*pb.Media {
-	var result []*pb.Media
+func ViewAlbumsToMedia(a ...*orm.ViewAlbum) []*protos.Media {
+	var result []*protos.Media
 	for _, v := range a {
 		result = append(result, ViewAlbumToMedia(v))
 	}

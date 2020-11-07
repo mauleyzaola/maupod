@@ -7,17 +7,17 @@ import (
 
 	"github.com/mauleyzaola/maupod/src/cmd/artwork/pkg/artworks"
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/protos"
 	"github.com/nats-io/nats.go"
 )
 
-type extractFn func(conn *nats.Conn, configuration *pb.Configuration, media *pb.Media) error
+type extractFn func(conn *nats.Conn, configuration *protos.Configuration, media *protos.Media) error
 
 // handlerArtworkExtract this will only look for image files in the same directory of the audio files
 // no scanning of audio files content should be done
 func (m *MsgHandler) handlerArtworkExtract(msg *nats.Msg) {
 	var err error
-	var input pb.ArtworkExtractInput
+	var input protos.ArtworkExtractInput
 	if err = helpers.ProtoUnmarshal(msg.Data, &input); err != nil {
 		log.Println(err)
 		return

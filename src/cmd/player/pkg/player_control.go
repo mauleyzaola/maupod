@@ -3,13 +3,11 @@ package pkg
 import (
 	"log"
 
-	"github.com/mauleyzaola/maupod/src/pkg/rules"
-
-	"github.com/mauleyzaola/maupod/src/pkg/paths"
-
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/pkg/paths"
+	"github.com/mauleyzaola/maupod/src/pkg/rules"
+	"github.com/mauleyzaola/maupod/src/protos"
 )
 
 const (
@@ -23,7 +21,7 @@ type PlayerControl struct {
 	publishFn       broker.PublisherFunc
 	publishFnJSON   broker.PublisherFuncJSON
 	requestFn       broker.RequestFunc
-	m               *pb.Media
+	m               *protos.Media
 	lastTimePos     float64
 	lastPercentPos  float64
 	lastIsCompleted bool // true when based in the percent position, track is assumed to be complete
@@ -38,11 +36,11 @@ func NewPlayerControl(publishFn broker.PublisherFunc, publishFnJSON broker.Publi
 	return p
 }
 
-func (p *PlayerControl) OnSongEnded(m *pb.Media, isSkip bool) {
+func (p *PlayerControl) OnSongEnded(m *protos.Media, isSkip bool) {
 	// check if track has completely played
 	if !isSkip {
 		// send message to notify track has completely played
-		_ = p.publishFn(pb.Message_MESSAGE_EVENT_ON_TRACK_PLAY_COUNT_INCREASE, &pb.TrackPlayedInput{
+		_ = p.publishFn(protos.Message_MESSAGE_EVENT_ON_TRACK_PLAY_COUNT_INCREASE, &protos.TrackPlayedInput{
 			Media:     m,
 			Timestamp: helpers.TimeToTs(helpers.Now()),
 		})
@@ -50,13 +48,13 @@ func (p *PlayerControl) OnSongEnded(m *pb.Media, isSkip bool) {
 
 	} else {
 		//  send message to notify track has been skipped
-		_ = p.publishFn(pb.Message_MESSAGE_EVENT_ON_TRACK_SKIP_COUNT_INCREASE, &pb.TrackPlayedInput{
+		_ = p.publishFn(protos.Message_MESSAGE_EVENT_ON_TRACK_SKIP_COUNT_INCREASE, &protos.TrackPlayedInput{
 			Media:     m,
 			Timestamp: helpers.TimeToTs(helpers.Now()),
 		})
 	}
-	var output pb.QueueOutput
-	if err := p.requestFn(pb.Message_MESSAGE_QUEUE_LIST, &pb.QueueInput{}, &output); err != nil {
+	var output protos.QueueOutput
+	if err := p.requestFn(protos.Message_MESSAGE_QUEUE_LIST, &protos.QueueInput{}, &output); err != nil {
 		log.Println(err)
 		return
 	}
@@ -69,28 +67,28 @@ func (p *PlayerControl) OnSongEnded(m *pb.Media, isSkip bool) {
 
 	// play next song in the queue
 	var input = output.Rows[0]
-	var ipcInput = pb.IPCInput{
+	var ipcInput = protos.IPCInput{
 		Media:   input.Media,
-		Command: pb.Message_IPC_PLAY,
+		Command: protos.Message_IPC_PLAY,
 	}
-	if err := p.publishFn(pb.Message_MESSAGE_IPC, &ipcInput); err != nil {
+	if err := p.publishFn(protos.Message_MESSAGE_IPC, &ipcInput); err != nil {
 		log.Println(err)
 		return
 	}
 
 	// remove the first element from the queue
 	log.Println("[DEBUG] remove from queue: ", input.Media.Track)
-	var queueInput = &pb.QueueInput{
+	var queueInput = &protos.QueueInput{
 		Media: input.Media,
 		Index: 0,
 	}
-	if err := p.publishFn(pb.Message_MESSAGE_QUEUE_REMOVE, queueInput); err != nil {
+	if err := p.publishFn(protos.Message_MESSAGE_QUEUE_REMOVE, queueInput); err != nil {
 		log.Println(err)
 		return
 	}
 }
 
-func (p *PlayerControl) OnSongStarted(m *pb.Media) {
+func (p *PlayerControl) OnSongStarted(m *protos.Media) {
 	// TODO: how can this happen? it does :(
 	if m == nil {
 		return
@@ -102,14 +100,14 @@ func (p *PlayerControl) OnSongStarted(m *pb.Media) {
 	p.lastTimePos = 0
 	p.lastIsCompleted = false
 	log.Printf("OnSongStarted id: %v track: %v\n", p.m.Id, p.m.Track)
-	input := &pb.TrackStartedInput{
+	input := &protos.TrackStartedInput{
 		Media:     p.m,
 		Timestamp: helpers.TimeToTs(helpers.Now()),
 	}
-	_ = p.publishFn(pb.Message_MESSAGE_EVENT_ON_TRACK_STARTED, input)
+	_ = p.publishFn(protos.Message_MESSAGE_EVENT_ON_TRACK_STARTED, input)
 
 	// send message to the UI through websockets
-	_ = p.publishFnJSON(pb.Message_MESSAGE_SOCKET_PLAY_TRACK, &pb.PlayTrackInput{Media: m})
+	_ = p.publishFnJSON(protos.Message_MESSAGE_SOCKET_PLAY_TRACK, &protos.PlayTrackInput{Media: m})
 }
 
 func (p *PlayerControl) onTimePosChanged(v float64) {
@@ -128,7 +126,7 @@ func (p *PlayerControl) OnTimePosChanged(v float64) {
 	//log.Println("OnTimePosChanged: ", v)
 }
 
-func (p *PlayerControl) onPercentPosChanged(media *pb.Media, v float64) {
+func (p *PlayerControl) onPercentPosChanged(media *protos.Media, v float64) {
 	if media == nil {
 		return
 	}
@@ -136,7 +134,7 @@ func (p *PlayerControl) onPercentPosChanged(media *pb.Media, v float64) {
 	p.OnPercentPosChanged(media, v)
 }
 
-func (p *PlayerControl) OnPercentPosChanged(media *pb.Media, v float64) {
+func (p *PlayerControl) OnPercentPosChanged(media *protos.Media, v float64) {
 	// location should be relative
 	tmpMedia := *media
 	tmpMedia.Location = paths.LocationPath(tmpMedia.Location)
@@ -146,7 +144,7 @@ func (p *PlayerControl) OnPercentPosChanged(media *pb.Media, v float64) {
 		return
 	}
 	// we need to send json here, so easier to deal for node
-	if err := p.publishFnJSON(pb.Message_MESSAGE_SOCKET_TRACK_POSITION_PERCENT, &pb.TrackPositionInput{
+	if err := p.publishFnJSON(protos.Message_MESSAGE_SOCKET_TRACK_POSITION_PERCENT, &protos.TrackPositionInput{
 		Media:        &tmpMedia,
 		Percent:      float32(v),
 		Seconds:      float32(p.lastTimePos),

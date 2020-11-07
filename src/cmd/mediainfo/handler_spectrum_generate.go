@@ -9,15 +9,16 @@ import (
 	"os/exec"
 	"path/filepath"
 
+	"github.com/mauleyzaola/maupod/src/protos"
+
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/pkg/paths"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/nats-io/nats.go"
 )
 
 func (m *MsgHandler) handlerMediaSpectrumGenerate(msg *nats.Msg) {
-	var input pb.SpectrumGenerateInput
-	var output pb.SpectrumGenerateOutput
+	var input protos.SpectrumGenerateInput
+	var output protos.SpectrumGenerateOutput
 	var err error
 
 	defer func() {

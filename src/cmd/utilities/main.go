@@ -12,7 +12,7 @@ import (
 	"github.com/volatiletech/sqlboiler/v4/boil"
 
 	"github.com/mauleyzaola/maupod/src/pkg/paths"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/protos"
 
 	_ "github.com/lib/pq"
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
@@ -91,7 +91,7 @@ func cmdCheckFilesExist(conn boil.ContextExecutor) error {
 	return nil
 }
 
-func loadAllMedia(ctx context.Context, conn boil.ContextExecutor) ([]*pb.Media, error) {
+func loadAllMedia(ctx context.Context, conn boil.ContextExecutor) ([]*protos.Media, error) {
 	store := dbdata.MediaStore{}
 	var cols = orm.MediumColumns
 	rows, err := store.List(ctx, conn, dbdata.MediaFilter{
@@ -106,7 +106,7 @@ func loadAllMedia(ctx context.Context, conn boil.ContextExecutor) ([]*pb.Media, 
 	return rows, nil
 }
 
-func checkFileExist(m *pb.Media) error {
+func checkFileExist(m *protos.Media) error {
 	var location = paths.MediaFullPathAudioFile(m.Location)
 	_, err := os.Stat(location)
 	return err

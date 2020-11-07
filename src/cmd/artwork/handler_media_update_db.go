@@ -3,15 +3,16 @@ package main
 import (
 	"log"
 
+	"github.com/mauleyzaola/maupod/src/protos"
+
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/mauleyzaola/maupod/src/pkg/taggers"
 	"github.com/nats-io/nats.go"
 )
 
 func (m *MsgHandler) handlerTagUpdate(msg *nats.Msg) {
 	var err error
-	var input pb.MediaInfoInput
+	var input protos.MediaInfoInput
 
 	if err = helpers.ProtoUnmarshal(msg.Data, &input); err != nil {
 		log.Println(err)

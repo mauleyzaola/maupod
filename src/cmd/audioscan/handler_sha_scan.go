@@ -3,16 +3,17 @@ package main
 import (
 	"log"
 
+	"github.com/mauleyzaola/maupod/src/protos"
+
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/pkg/paths"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/nats-io/nats.go"
 )
 
 func (m *MsgHandler) handlerSHAScan(msg *nats.Msg) {
 	var err error
-	var input pb.SHAScanInput
+	var input protos.SHAScanInput
 
 	defer func() {
 		// TODO: handle err != nil
@@ -31,7 +32,7 @@ func (m *MsgHandler) handlerSHAScan(msg *nats.Msg) {
 		return
 	}
 	// if sha different than provided SHA, send an update SHA message
-	if err = broker.PublishMediaSHAUpdate(m.base.NATS(), &pb.MediaUpdateSHAInput{
+	if err = broker.PublishMediaSHAUpdate(m.base.NATS(), &protos.MediaUpdateSHAInput{
 		Media:  input.Media,
 		OldSHA: input.Media.Sha,
 		NewSHA: sha,

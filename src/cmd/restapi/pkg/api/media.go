@@ -11,8 +11,8 @@ import (
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata"
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/mauleyzaola/maupod/src/pkg/rules"
+	"github.com/mauleyzaola/maupod/src/protos"
 )
 
 func (a *ApiServer) DistinctListGet(p TransactionExecutorParams) (status int, result interface{}, err error) {
@@ -78,13 +78,13 @@ func (a *ApiServer) MediaSpectrumGet() http.HandlerFunc {
 			return
 		}
 
-		var input = pb.SpectrumGenerateInput{
+		var input = protos.SpectrumGenerateInput{
 			Media:  media,
 			Width:  int64(width),
 			Height: int64(height),
 		}
-		var output pb.SpectrumGenerateOutput
-		if err = broker.DoRequest(a.nc, pb.Message_MESSAGE_MEDIA_SPECTRUM_GENERATE, &input, &output, rules.Timeout(a.config)+(time.Second*5)); err != nil {
+		var output protos.SpectrumGenerateOutput
+		if err = broker.DoRequest(a.nc, protos.Message_MESSAGE_MEDIA_SPECTRUM_GENERATE, &input, &output, rules.Timeout(a.config)+(time.Second*5)); err != nil {
 			log.Println(err)
 			helpers.WriteJson(w, err, http.StatusInternalServerError, nil)
 			return

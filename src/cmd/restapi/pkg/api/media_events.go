@@ -4,13 +4,12 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
+	"github.com/mauleyzaola/maupod/src/protos"
 	"io"
 	"net/http"
 	"time"
 
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
-
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata/orm"
@@ -62,11 +61,11 @@ func (a *ApiServer) MediaEventsPost() http.HandlerFunc {
 				helpers.WriteJson(w, err, http.StatusBadRequest, nil)
 				return
 			}
-			input := &pb.MediaEventInput{
+			input := &protos.MediaEventInput{
 				Id:    e.ID,
 				Sha:   e.Sha,
 				Ts:    helpers.TimeToTs(&e.TS),
-				Event: pb.Message(e.Event),
+				Event: protos.Message(e.Event),
 			}
 			if err = broker.PublishMediaEventUpsert(nc, input); err != nil {
 				helpers.WriteJson(w, err, http.StatusInternalServerError, nil)

@@ -4,16 +4,16 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/protos"
 )
 
-func FileStoreValidate(store *pb.FileStore) error {
+func FileStoreValidate(store *protos.FileStore) error {
 	if store == nil {
 		return errors.New("fs is nil")
 	}
 	switch store.Type {
-	case pb.FileStore_FILE_SYSTEM:
-	case pb.FileStore_S3:
+	case protos.FileStore_FILE_SYSTEM:
+	case protos.FileStore_S3:
 	default:
 		return fmt.Errorf("unsupported file store: %s", store.Type)
 	}

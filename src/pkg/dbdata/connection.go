@@ -6,14 +6,15 @@ import (
 	"log"
 	"time"
 
+	"github.com/mauleyzaola/maupod/src/protos"
+
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
 )
 
 const maupodDbName = "maupod"
 
 // DbBootstrap creates the db if it doesn't exists and executes migrations
-func DbBootstrap(config *pb.Configuration) (*sql.DB, error) {
+func DbBootstrap(config *protos.Configuration) (*sql.DB, error) {
 	pgConn := config.PgConn
 	dbConn := config.DbConn
 

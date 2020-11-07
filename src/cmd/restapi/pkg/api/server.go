@@ -9,19 +9,19 @@ import (
 	schema "github.com/gorilla/Schema"
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata"
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
+	"github.com/mauleyzaola/maupod/src/protos"
 	"github.com/nats-io/nats.go"
 )
 
 type ApiServer struct {
-	config     *pb.Configuration
+	config     *protos.Configuration
 	decoder    *schema.Decoder
 	db         *sql.DB
 	mediaStore *dbdata.MediaStore
 	nc         *nats.Conn
 }
 
-func NewApiServer(config *pb.Configuration, db *sql.DB, nc *nats.Conn) (*ApiServer, error) {
+func NewApiServer(config *protos.Configuration, db *sql.DB, nc *nats.Conn) (*ApiServer, error) {
 	s := &ApiServer{
 		config:     config,
 		db:         db,

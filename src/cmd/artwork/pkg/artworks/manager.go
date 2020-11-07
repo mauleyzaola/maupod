@@ -20,8 +20,8 @@ import (
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/pkg/images"
 	"github.com/mauleyzaola/maupod/src/pkg/paths"
-	"github.com/mauleyzaola/maupod/src/pkg/pb"
 	"github.com/mauleyzaola/maupod/src/pkg/rules"
+	"github.com/mauleyzaola/maupod/src/protos"
 	"github.com/nats-io/nats.go"
 )
 
@@ -57,13 +57,13 @@ func ArtworkSize(nc *nats.Conn, filename string) (x, y int, err error) {
 }
 
 // ArtworkFullPath returns the absolute path on this micro service for an artwork file, based on a media object
-func ArtworkFullPath(config *pb.Configuration, media *pb.Media) string {
+func ArtworkFullPath(config *protos.Configuration, media *protos.Media) string {
 	filename := filepath.Join(config.ArtworkStore.Location, rules.ArtworkFileName(media))
 	return paths.LocationPath(filename)
 }
 
 // ArtworkFileExist will check if the artwork file already exists
-func ArtworkFileExist(config *pb.Configuration, media *pb.Media) bool {
+func ArtworkFileExist(config *protos.Configuration, media *protos.Media) bool {
 	_, err := os.Stat(ArtworkFullPath(config, media))
 	return err == nil
 }
@@ -97,7 +97,7 @@ func FindArtworkFilesInDirectory(dir string) ([]string, error) {
 }
 
 // PublishSaveArtworkTrack will send a message to update the db with the artwork related info in the media
-func PublishSaveArtworkTrack(nc *nats.Conn, media *pb.Media) error {
+func PublishSaveArtworkTrack(nc *nats.Conn, media *protos.Media) error {
 	return broker.PublishMediaArtworkUpdate(nc, media)
 }
 
@@ -120,7 +120,7 @@ func ArtworkCropFile(source, target string, toX, toY int) error {
 }
 
 // ExtractWithinAudioFile will try to extract the image from the audio file
-func ExtractWithinAudioFile(nc *nats.Conn, config *pb.Configuration, media *pb.Media) error {
+func ExtractWithinAudioFile(nc *nats.Conn, config *protos.Configuration, media *protos.Media) error {
 	var err error
 	// search for any image location on any track of the same album
 	artworkExists := ArtworkFileExist(config, media)
@@ -155,7 +155,7 @@ func ExtractWithinAudioFile(nc *nats.Conn, config *pb.Configuration, media *pb.M
 	return nil
 }
 
-func ExtractFromCoverFile(nc *nats.Conn, config *pb.Configuration, media *pb.Media) error {
+func ExtractFromCoverFile(nc *nats.Conn, config *protos.Configuration, media *protos.Media) error {
 	var err error
 
 	media.LastImageScan = helpers.TimeToTs(helpers.Now())
@@ -210,7 +210,7 @@ func ExtractFromCoverFile(nc *nats.Conn, config *pb.Configuration, media *pb.Med
 
 // TODO: use this function for the other artwork methods as well
 // UpdateArtworkCoverFile will try to update the artwork for one media file, if force is true it will overwrite the current artwork
-func UpdateArtworkCoverFile(nc *nats.Conn, config *pb.Configuration, media *pb.Media, artworkData []byte, force bool) error {
+func UpdateArtworkCoverFile(nc *nats.Conn, config *protos.Configuration, media *protos.Media, artworkData []byte, force bool) error {
 	var err error
 
 	if len(artworkData) == 0 {
