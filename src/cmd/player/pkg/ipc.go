@@ -55,9 +55,12 @@ type IPC struct {
 
 	// keep state of the last media played on the last position reported by the IPC
 	playedStateFn PlayedStateFunc
+
+	// pass an event to allow setting when a track stops playing either because eof or manually stopped
+	stoppedState func()
 }
 
-func NewIPC(processor MPVProcessor, control *PlayerControl, playedStateFn PlayedStateFunc) (*IPC, error) {
+func NewIPC(processor MPVProcessor, control *PlayerControl, playedStateFn PlayedStateFunc, stoppedState func()) (*IPC, error) {
 	if processor == nil {
 		return nil, errors.New("missing parameter: processor")
 	}
@@ -70,6 +73,7 @@ func NewIPC(processor MPVProcessor, control *PlayerControl, playedStateFn Played
 		processor:     processor,
 		control:       control,
 		playedStateFn: playedStateFn,
+		stoppedState:  stoppedState,
 	}
 	// configure which events will be listening to mpv actions
 	ipc.listeners = map[protos.Message]*EventListener{

@@ -60,6 +60,9 @@ func (m *IPC) triggerStartsEnds(v interface{}) {
 	}
 
 	if val {
+		if m.stoppedState != nil {
+			m.stoppedState()
+		}
 		m.control.OnSongEnded(m.lastMedia, false)
 	} else {
 		m.control.OnSongStarted(m.lastMedia)
