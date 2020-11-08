@@ -8,17 +8,17 @@ import (
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 )
 
-const mediaInfoProgram = "mediainfo"
+const MediaInfoProgram = "mediainfo"
 
 func MediaInfoFromFile(filename string) (*bytes.Buffer, error) {
-	if !helpers.ProgramExists(mediaInfoProgram) {
-		return nil, fmt.Errorf("could not find program: %s in path", mediaInfoProgram)
+	if !helpers.ProgramExists(MediaInfoProgram) {
+		return nil, fmt.Errorf("could not find program: %s in path", MediaInfoProgram)
 	}
 	var p = []string{
 		"-f",
 	}
 	p = append(p, filename)
-	cmd := exec.Command(mediaInfoProgram, p...)
+	cmd := exec.Command(MediaInfoProgram, p...)
 	output := &bytes.Buffer{}
 	errOutput := &bytes.Buffer{}
 	cmd.Stdout = output

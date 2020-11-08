@@ -37,6 +37,10 @@ func TestFLACTagger(t *testing.T) {
 	if !helpers.ProgramExists(flacTagProgram) {
 		t.Skipf("cannot find program: %s", flacTagProgram)
 	}
+	if !helpers.ProgramExists(information.MediaInfoProgram) {
+		t.Skipf("cannot find program: %s", information.MediaInfoProgram)
+	}
+
 	type args struct {
 		filename    string
 		taggedMedia *protos.Media

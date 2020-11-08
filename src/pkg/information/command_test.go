@@ -10,8 +10,8 @@ import (
 )
 
 func TestInfoFromFile(t *testing.T) {
-	if !helpers.ProgramExists(mediaInfoProgram) {
-		t.Skipf("cannot find program: %s", mediaInfoProgram)
+	if !helpers.ProgramExists(MediaInfoProgram) {
+		t.Skipf("cannot find program: %s", MediaInfoProgram)
 	}
 
 	raw, err := MediaInfoFromFile("./test_data/sample1.m4a")
