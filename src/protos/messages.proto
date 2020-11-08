@@ -260,9 +260,9 @@ message TrackPlayedInput {
 
 message TrackPositionInput {
     Media media = 1;
-    float percent = 2;
-    float seconds = 3;
-    float secondsTotal = 4;
+    double percent = 2;
+    double seconds = 3;
+    double secondsTotal = 4;
 }
 
 message TrackSkippedInput {
