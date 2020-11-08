@@ -6,15 +6,13 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/mauleyzaola/maupod/src/pkg/paths"
-
-	"github.com/mauleyzaola/maupod/src/pkg/helpers"
-
 	"github.com/go-redis/redis/v8"
-
+	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/mauleyzaola/maupod/src/cmd/player/pkg"
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
 	"github.com/mauleyzaola/maupod/src/pkg/handler"
+	"github.com/mauleyzaola/maupod/src/pkg/helpers"
+	"github.com/mauleyzaola/maupod/src/pkg/paths"
 	"github.com/mauleyzaola/maupod/src/protos"
 	"github.com/nats-io/nats.go"
 	"google.golang.org/protobuf/proto"
@@ -71,10 +69,11 @@ func (m *MsgHandler) Close() {
 			log.Println(err)
 		}
 	} else {
+		// TODO: enable this when completed debugging
 		// clear last media played for next player start up
-		if err := m.rc.Del(ctx, key).Err(); err != nil {
-			log.Println(err)
-		}
+		//if err := m.rc.Del(ctx, key).Err(); err != nil {
+		//	log.Println(err)
+		//}
 	}
 
 	log.Println("saving state of player to redis")
@@ -166,7 +165,8 @@ func (m *MsgHandler) Start() error {
 		return err
 	}
 
-	var inputs = []*protos.IPCInput{
+	log.Printf("[INFO] found a tracks that needs to be resumed: %s at: %v%%\n", resumedMedia.Media.Track, resumedMedia.Percent)
+	var ipcInputs = []*protos.IPCInput{
 		{
 			Media:   resumedMedia.Media,
 			Value:   "",
@@ -174,15 +174,31 @@ func (m *MsgHandler) Start() error {
 		},
 		{
 			Media:   resumedMedia.Media,
-			Value:   strconv.FormatFloat(resumedMedia.Percent, 'f', 2, 64),
-			Command: protos.Message_MESSAGE_MPV_PERCENT_POS,
+			Value:   "",
+			Command: protos.Message_IPC_PAUSE,
 		},
 	}
-	log.Printf("[INFO] found a tracks that needs to be resumed: %s at: %v%%\n", resumedMedia.Media.Track, resumedMedia.Percent)
-	for _, v := range inputs {
-		if err = broker.RequestIPCCommand(m.base.NATS(), v, m.timeout); err != nil {
+	for _, ipcInput := range ipcInputs {
+		if err = broker.RequestIPCCommand(m.base.NATS(), ipcInput, m.timeout); err != nil {
 			log.Println(err)
 		}
+	}
+	posInput := &protos.SocketTrackPositionChangeInput{
+		Media:   media,
+		Percent: resumedMedia.Percent,
+	}
+	//	 TODO: move this function to helpers package
+	// need to send this message as json so it matches the signature from socket server
+	jp := runtime.JSONPb{}
+	if data, err = jp.Marshal(posInput); err != nil {
+		log.Println(err)
+		return err
+	}
+	// TODO: this should be a signal from the handler instead of fixed duration
+	time.Sleep(time.Second * 2)
+	if err = m.base.NATS().Publish(strconv.Itoa(int(protos.Message_MESSAGE_SOCKET_TRACK_POSITION_PERCENT_CHANGE)), data); err != nil {
+		log.Println(err)
+		return err
 	}
 	return nil
 }

@@ -146,9 +146,9 @@ func (p *PlayerControl) OnPercentPosChanged(media *protos.Media, v float64) {
 	// we need to send json here, so easier to deal for node
 	if err := p.publishFnJSON(protos.Message_MESSAGE_SOCKET_TRACK_POSITION_PERCENT, &protos.TrackPositionInput{
 		Media:        &tmpMedia,
-		Percent:      float32(v),
-		Seconds:      float32(p.lastTimePos),
-		SecondsTotal: float32(secondsTotal.Seconds()),
+		Percent:      v,
+		Seconds:      p.lastTimePos,
+		SecondsTotal: secondsTotal.Seconds(),
 	}); err != nil {
 		log.Println(err)
 	}
