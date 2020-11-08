@@ -3,6 +3,8 @@ package taggers
 import (
 	"testing"
 
+	"github.com/mauleyzaola/maupod/src/pkg/helpers"
+
 	"github.com/mauleyzaola/maupod/src/pkg/information"
 	"github.com/mauleyzaola/maupod/src/protos"
 	"github.com/stretchr/testify/assert"
@@ -32,6 +34,9 @@ func compareMedia(t *testing.T, m1, m2 *protos.Media) {
 }
 
 func TestFLACTagger(t *testing.T) {
+	if !helpers.ProgramExists(flacTagProgram) {
+		t.Skipf("cannot find program: %s", flacTagProgram)
+	}
 	type args struct {
 		filename    string
 		taggedMedia *protos.Media

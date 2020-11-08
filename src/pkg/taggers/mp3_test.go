@@ -3,12 +3,17 @@ package taggers
 import (
 	"testing"
 
+	"github.com/mauleyzaola/maupod/src/pkg/helpers"
+
 	"github.com/mauleyzaola/maupod/src/protos"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestMP3Tagger(t *testing.T) {
+	if !helpers.ProgramExists(mp3TagProgram) {
+		t.Skipf("cannot find program: %s", mp3TagProgram)
+	}
 	type args struct {
 		filename    string
 		taggedMedia *protos.Media
