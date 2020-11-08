@@ -8,8 +8,9 @@ import (
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 )
 
+const mediaInfoProgram = "mediainfo"
+
 func MediaInfoFromFile(filename string) (*bytes.Buffer, error) {
-	const mediaInfoProgram = "mediainfo"
 	if !helpers.ProgramExists(mediaInfoProgram) {
 		return nil, fmt.Errorf("could not find program: %s in path", mediaInfoProgram)
 	}
