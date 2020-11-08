@@ -69,11 +69,10 @@ func (m *MsgHandler) Close() {
 			log.Println(err)
 		}
 	} else {
-		// TODO: enable this when completed debugging
 		// clear last media played for next player start up
-		//if err := m.rc.Del(ctx, key).Err(); err != nil {
-		//	log.Println(err)
-		//}
+		if err := m.rc.Del(ctx, key).Err(); err != nil {
+			log.Println(err)
+		}
 	}
 
 	log.Println("saving state of player to redis")
@@ -98,8 +97,7 @@ func (m *MsgHandler) InitializeIPC(filename string) error {
 		return broker.PublishBroker(m.base.NATS(), subject, payload)
 	}
 	var requestFn broker.RequestFunc = func(subject protos.Message, input, output proto.Message) error {
-		// TODO: timeout should come from configuration
-		return broker.DoRequest(m.base.NATS(), subject, input, output, time.Second)
+		return broker.DoRequest(m.base.NATS(), subject, input, output, m.timeout)
 	}
 	var publishFnJSON broker.PublisherFuncJSON = func(subject protos.Message, payload interface{}) error {
 		val, ok := payload.(proto.Message)
@@ -112,7 +110,6 @@ func (m *MsgHandler) InitializeIPC(filename string) error {
 
 	// pass a function handler that stores the position played and the media, so we can continue playing on re-starting maupod-player
 	var lastPlayedState = func(lastMedia *protos.Media, percent float64) {
-		// TODO: probably need to handle this on another trigger like STOP?
 		if lastMedia == nil {
 			m.lastMediaPlayed = nil
 			return
@@ -123,10 +120,15 @@ func (m *MsgHandler) InitializeIPC(filename string) error {
 		m.lastMediaPlayed.Media = lastMedia
 		m.lastMediaPlayed.Percent = percent
 	}
-	if m.ipc, err = pkg.NewIPC(processor, control, lastPlayedState); err != nil {
+	var stoppedState = func() {
+		m.lastMediaPlayed = nil
+	}
+	if m.ipc, err = pkg.NewIPC(processor, control, lastPlayedState, stoppedState); err != nil {
 		return err
 	}
 	m.isInitialized = true
+	// need to delay a couple of seconds to allow ipc socket connection
+	time.Sleep(time.Second * 1)
 	return nil
 }
 
