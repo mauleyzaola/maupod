@@ -76,6 +76,15 @@ services:
     ports:
       - 5499:5432
 
+  redis:
+    image: redis:5-alpine
+    command: "redis-server --appendonly yes"
+    volumes:
+      - $PWD/dockerfiles/redis.conf:/usr/local/etc/redis/redis.conf
+      - $HOME/data/maupod/redis/data:/data
+    ports:
+      - "6379:6379"
+
   swagger-ui:
     image: swaggerapi/swagger-ui
     container_name: swagger-ui

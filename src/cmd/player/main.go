@@ -1,19 +1,20 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"log"
 	"os"
 	"os/signal"
 	"time"
 
+	"github.com/go-redis/redis/v8"
+
+	"github.com/mauleyzaola/maupod/src/pkg/dbdata"
+
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
 	"github.com/mauleyzaola/maupod/src/pkg/rules"
-	"github.com/mauleyzaola/maupod/src/pkg/types"
 	"github.com/mauleyzaola/maupod/src/protos"
-	"github.com/nats-io/nats.go"
 )
 
 func main() {
@@ -38,7 +39,26 @@ func run() error {
 		return err
 	}
 
+	timeout := time.Second * time.Duration(config.Delay)
+
+	// connect to redis
+	var rc *redis.Client
+	// TODO: support ip address connection
+	host, port := "localhost", "6379"
+	if _, err = helpers.RetryFunc(fmt.Sprintf("connecting to redis %s:%s\n", host, port), int(config.Retries), timeout, func(retryCount int) bool {
+		rc, err = dbdata.ConnectRedis(host, port)
+		if err != nil {
+			log.Println(err)
+			return false
+		}
+		return true
+	}); err != nil {
+		log.Println("could not connect to redis")
+		return err
+	}
+
 	// don't use common NATS port
+	// TODO: support ip address
 	config.NatsUrl = "nats://127.0.0.1:4244"
 
 	nc, err := broker.ConnectNATS(config.NatsUrl, int(config.Retries), time.Second*time.Duration(config.Delay))
@@ -47,21 +67,19 @@ func run() error {
 	}
 	log.Println("successfully connected to NATS")
 
-	var hnd types.Broker
-	hnd = NewMsgHandler(nc)
+	hnd := NewMsgHandler(nc, rc, timeout)
 	if err = hnd.Register(); err != nil {
 		return err
 	}
 
 	// check for dependent micro services to be up
-	timeout := time.Second * time.Duration(config.Delay)
 	var dependentMicroServices = map[protos.Message]bool{
 		protos.Message_MESSAGE_MICRO_SERVICE_RESTAPI:   false,
 		protos.Message_MESSAGE_MICRO_SERVICE_MEDIAINFO: false,
 	}
 
 	for k := range dependentMicroServices {
-		helpers.RetryFunc(k.String(), int(config.Retries), timeout, func(retryCount int) bool {
+		_, _ = helpers.RetryFunc(k.String(), int(config.Retries), timeout, func(retryCount int) bool {
 			if _, err := broker.MicroServicePing(nc, k, timeout); err != nil {
 				return false
 			}
@@ -77,8 +95,8 @@ func run() error {
 	}
 	log.Println("[INFO] all micro services are up")
 
-	// TODO: configure this feature somewhere else
-	if err := autoPlayQueue(nc, config); err != nil {
+	// start handler in case we need to resume playing
+	if err = hnd.Start(); err != nil {
 		log.Println(err)
 	}
 
@@ -103,37 +121,5 @@ func run() error {
 
 	<-cleanupDone
 
-	return nil
-}
-
-// TODO: implement retry logic in case nats listener is not available yet
-func autoPlayQueue(nc *nats.Conn, config *protos.Configuration) error {
-	var timeout = rules.Timeout(config)
-	output, err := broker.RequestQueueList(nc, &protos.QueueInput{}, timeout)
-	if err != nil {
-		return err
-	}
-	if len(output.Rows) == 0 {
-		return nil
-	}
-	if output.Error != "" {
-		return errors.New(output.Error)
-	}
-	next := output.Rows[0]
-	// send a nats message
-	var input = &protos.IPCInput{
-		Media:   next.Media,
-		Value:   "",
-		Command: protos.Message_IPC_PLAY,
-	}
-	if err = broker.RequestIPCCommand(nc, input, timeout); err != nil {
-		return err
-	}
-	if _, err = broker.RequestQueueRemove(nc, &protos.QueueInput{
-		Media: next.Media,
-		Index: 0,
-	}, timeout); err != nil {
-		return err
-	}
 	return nil
 }

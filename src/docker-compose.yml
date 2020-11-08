@@ -9,7 +9,7 @@ services:
     environment:
       MAUPOD_SOCKET_PORT: ${MAUPOD_SOCKET_PORT}
     ports:
-    - $MAUPOD_SOCKET_PORT:${MAUPOD_SOCKET_PORT}
+      - $MAUPOD_SOCKET_PORT:${MAUPOD_SOCKET_PORT}
 
   maupod-artwork:
     image: mauleyzaola/maupod-artwork
