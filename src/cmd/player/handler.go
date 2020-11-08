@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/go-redis/redis/v8"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/mauleyzaola/maupod/src/cmd/player/pkg"
 	"github.com/mauleyzaola/maupod/src/pkg/broker"
 	"github.com/mauleyzaola/maupod/src/pkg/handler"
@@ -189,10 +188,8 @@ func (m *MsgHandler) Start() error {
 		Media:   media,
 		Percent: resumedMedia.Percent,
 	}
-	//	 TODO: move this function to helpers package
 	// need to send this message as json so it matches the signature from socket server
-	jp := runtime.JSONPb{}
-	if data, err = jp.Marshal(posInput); err != nil {
+	if data, err = helpers.ProtoMarshalJSON(posInput); err != nil {
 		log.Println(err)
 		return err
 	}
