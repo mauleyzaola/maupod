@@ -20,6 +20,8 @@ type EventListener struct {
 
 type CommandEnum int
 
+type PlayedStateFunc func(media *protos.Media, percent float64)
+
 const defaultStartupSecs = 1
 
 const (
@@ -50,9 +52,12 @@ type IPC struct {
 
 	// workaround to avoid a second play event
 	lastStartTrackEvent time.Time
+
+	// keep state of the last media played on the last position reported by the IPC
+	playedStateFn PlayedStateFunc
 }
 
-func NewIPC(processor MPVProcessor, control *PlayerControl) (*IPC, error) {
+func NewIPC(processor MPVProcessor, control *PlayerControl, playedStateFn PlayedStateFunc) (*IPC, error) {
 	if processor == nil {
 		return nil, errors.New("missing parameter: processor")
 	}
@@ -60,10 +65,11 @@ func NewIPC(processor MPVProcessor, control *PlayerControl) (*IPC, error) {
 	connection := mpvipc.NewConnection(processor.SocketFileName())
 
 	ipc := &IPC{
-		connection: connection,
-		isPaused:   true,
-		processor:  processor,
-		control:    control,
+		connection:    connection,
+		isPaused:      true,
+		processor:     processor,
+		control:       control,
+		playedStateFn: playedStateFn,
 	}
 	// configure which events will be listening to mpv actions
 	ipc.listeners = map[protos.Message]*EventListener{

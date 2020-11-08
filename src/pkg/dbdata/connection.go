@@ -6,9 +6,8 @@ import (
 	"log"
 	"time"
 
-	"github.com/mauleyzaola/maupod/src/protos"
-
 	"github.com/mauleyzaola/maupod/src/pkg/helpers"
+	"github.com/mauleyzaola/maupod/src/protos"
 )
 
 const maupodDbName = "maupod"

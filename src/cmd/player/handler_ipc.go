@@ -25,6 +25,7 @@ func (m *MsgHandler) handlerIPC(msg *nats.Msg) {
 
 	var filename string
 
+	// TODO: make this cleaner with a wrapper struct around it
 	// check ipc has been initialized
 	if val := input.Media.Location; val != "" {
 		var location = paths.LocationPath(val)
@@ -34,7 +35,6 @@ func (m *MsgHandler) handlerIPC(msg *nats.Msg) {
 			return
 		}
 	}
-	log.Printf("[DEBUG] location: %s\n", filename)
 	input.Media.Location = filename
 
 	// check the file exists before emit the event to mpv https://github.com/mauleyzaola/maupod/issues/75

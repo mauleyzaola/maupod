@@ -6,9 +6,10 @@ require (
 	github.com/DexterLB/mpvipc v0.0.0-20190216161438-2a226fa01bbd
 	github.com/anthonynsimon/bild v0.12.0
 	github.com/friendsofgo/errors v0.9.2
-	github.com/garyburd/redigo v1.6.0 // indirect
+	github.com/garyburd/redigo v1.6.2 // indirect
+	github.com/go-redis/redis/v8 v8.3.3
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
-	github.com/golang/protobuf v1.4.0
+	github.com/golang/protobuf v1.4.2
 	github.com/google/uuid v1.1.1
 	github.com/gorilla/Schema v1.1.0
 	github.com/gorilla/handlers v1.4.2
@@ -17,7 +18,8 @@ require (
 	github.com/nats-io/nats.go v1.9.1
 	github.com/rubenv/sql-migrate v0.0.0-20200429072036-ae26b214fa43
 	github.com/spf13/viper v1.7.0
-	github.com/stretchr/testify v1.4.0
+	github.com/stretchr/testify v1.6.1
+	github.com/volatiletech/null v8.0.0+incompatible // indirect
 	github.com/volatiletech/null/v8 v8.1.0
 	github.com/volatiletech/sqlboiler v3.7.1+incompatible
 	github.com/volatiletech/sqlboiler/v4 v4.1.2

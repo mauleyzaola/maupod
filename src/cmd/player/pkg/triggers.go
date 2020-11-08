@@ -29,6 +29,9 @@ func (m *IPC) triggerPercentPos(v interface{}) {
 	if !ok {
 		return
 	}
+	if m.playedStateFn != nil {
+		m.playedStateFn(m.lastMedia, val)
+	}
 	m.control.onPercentPosChanged(m.lastMedia, val)
 }
 
