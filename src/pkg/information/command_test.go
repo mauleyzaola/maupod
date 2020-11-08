@@ -3,11 +3,17 @@ package information
 import (
 	"testing"
 
+	"github.com/mauleyzaola/maupod/src/pkg/helpers"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestInfoFromFile(t *testing.T) {
+	if !helpers.ProgramExists(MediaInfoProgram) {
+		t.Skipf("cannot find program: %s", MediaInfoProgram)
+	}
+
 	raw, err := MediaInfoFromFile("./test_data/sample1.m4a")
 	info, err := ParseMediaInfo(raw)
 	require.NoError(t, err, "file should be present")
