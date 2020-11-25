@@ -71,7 +71,7 @@ services:
       - $PWD/dockerfiles/redis.conf:/usr/local/etc/redis/redis.conf
       - $HOME/data/maupod/redis/data:/data
     ports:
-      - "6379:6379"
+      - "14100:6379"
 
   swagger-ui:
     image: swaggerapi/swagger-ui

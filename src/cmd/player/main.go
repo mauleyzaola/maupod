@@ -43,8 +43,8 @@ func run() error {
 
 	// connect to redis
 	var rc *redis.Client
-	// TODO: support ip address connection
-	host, port := "localhost", "6379"
+	// TODO: support ip:port address connection
+	host, port := "localhost", "14100"
 	if _, err = helpers.RetryFunc(fmt.Sprintf("connecting to redis %s:%s\n", host, port), int(config.Retries), timeout, func(retryCount int) bool {
 		rc, err = dbdata.ConnectRedis(host, port)
 		if err != nil {
