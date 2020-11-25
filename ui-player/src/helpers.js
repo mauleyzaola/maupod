@@ -32,9 +32,15 @@ const secondsToDate = seconds => {
     epoch.setSeconds(seconds);
     return epoch;
 }
+const msToDate = ms => {
+    const epoch = new Date(1970,0,1);
+    epoch.setMilliseconds(ms);
+    return epoch;
+}
 
 export {
     groupOnFirstChar,
+    msToDate,
     msToString,
     secondsToDate,
 }

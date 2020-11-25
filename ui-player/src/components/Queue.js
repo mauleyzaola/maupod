@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {AlbumLink} from "./TrackList";
-import {msToString} from "../helpers";
+import {msToDate, msToString} from "../helpers";
 import {Link} from "react-router-dom";
 import {linkGenreList, linkPerformerList} from "../routes";
 import {FaMinusSquare} from "react-icons/fa/index";
@@ -72,9 +72,12 @@ class Queue extends React.Component{
 
     render() {
         const { queues } = this.props;
+        const totalMs = queues.reduce((x,i) => x + i.media.duration, 0)
+        const toDate = msToDate(totalMs)
+        const totalFormat = toDate.toTimeString().substring(0,8)
         return (
             <div>
-                <h2>Queue List</h2>
+                <h2>{`Queue List (${totalFormat})`}</h2>
                 <TrackListHeader>
                     {queues.map((row, index) => <TrackListRow key={row.id} row={row.media} index={index} onDelete={this.onDelete} />)}
                 </TrackListHeader>
