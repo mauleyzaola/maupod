@@ -1,10 +1,11 @@
 import React from 'react';
-import {msToString, secondsToDate} from "../helpers";
+import {msToString} from "../helpers";
 import {Link} from "react-router-dom";
 import { linkAlbumView, linkGenreList, linkPerformerList } from "../routes";
 import {TrackListControls} from "./Player";
 
-const TrackListHeader = () => (
+const TrackList = ({children}) => (
+    <table className='table table-bordered table-hover table-striped small'>
     <thead>
     <tr>
         <th></th>
@@ -18,6 +19,10 @@ const TrackListHeader = () => (
         <th>Format</th>
     </tr>
     </thead>
+    <tbody>
+        {children}
+    </tbody>
+    </table>
 )
 
 const AlbumLink = ({r}) => r.album_identifier ? <Link to={linkAlbumView(r)}>{r.album}</Link> : <span>{r.album}</span>;
@@ -66,6 +71,6 @@ const TrackListRow = ({i, row}) => {
 
 export {
     AlbumLink,
-    TrackListHeader,
+    TrackList,
     TrackListRow,
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import API from "./api";
-import { TrackListHeader, TrackListRow } from "./components/TrackList";
+import {TrackList, TrackListRow} from "./components/TrackList";
 
 class MediaList extends React.Component{
     constructor(props) {
@@ -33,12 +33,9 @@ class MediaList extends React.Component{
         const { rows } = this.state;
         return (
             <div>
-                <table className='table table-bordered table-hover table-striped'>
-                    <TrackListHeader />
-                    <tbody>
+                <TrackList>
                     {rows.map((row, i) => <TrackListRow key={row.id} row={row} i={i} />)}
-                    </tbody>
-                </table>
+                </TrackList>
             </div>
         )
     }
