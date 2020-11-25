@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FaForward, FaPlay, FaPause, FaAngleDoubleUp, FaAngleDoubleDown } from "react-icons/all";
+import { FaForward, FaPlay, FaPause, FaAngleDoubleUp, FaAngleDoubleDown } from "react-icons/fa";
 import {IPC_PAUSE, IPC_PLAY, IPC_SKIP, POSITION_BOTTOM, POSITION_TOP} from "../consts";
 import API from "../api";
 
