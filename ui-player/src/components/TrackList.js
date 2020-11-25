@@ -14,9 +14,7 @@ const TrackListHeader = () => (
         <th>Genre</th>
         <th>Duration</th>
         <th>Album</th>
-        <th>Sampling Rate</th>
         <th>Year</th>
-        <th>Last Modified</th>
         <th>Format</th>
     </tr>
     </thead>
@@ -26,7 +24,6 @@ const AlbumLink = ({r}) => r.album_identifier ? <Link to={linkAlbumView(r)}>{r.a
 
 const TrackListRow = ({i, row}) => {
     row.recorded_date = row.recorded_date || '';
-    const modifiedDate = row.modified_date ? secondsToDate(row.modified_date.seconds).toLocaleDateString() : '';
     const Thumbnail = () => {
         if(!row.image_location){
             return null;
@@ -61,9 +58,7 @@ const TrackListRow = ({i, row}) => {
             <td>
                 <AlbumLink r={row} />
             </td>
-            <td>{row.sampling_rate}</td>
             <td>{row.recorded_date}</td>
-            <td>{modifiedDate}</td>
             <td>{row.format}</td>
         </tr>
     )
