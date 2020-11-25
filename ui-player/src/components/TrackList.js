@@ -1,10 +1,11 @@
 import React from 'react';
-import {msToString, secondsToDate} from "../helpers";
+import {msToString} from "../helpers";
 import {Link} from "react-router-dom";
 import { linkAlbumView, linkGenreList, linkPerformerList } from "../routes";
 import {TrackListControls} from "./Player";
 
-const TrackListHeader = () => (
+const TrackList = ({children}) => (
+    <table className='table table-bordered table-hover table-striped small'>
     <thead>
     <tr>
         <th></th>
@@ -14,19 +15,20 @@ const TrackListHeader = () => (
         <th>Genre</th>
         <th>Duration</th>
         <th>Album</th>
-        <th>Sampling Rate</th>
         <th>Year</th>
-        <th>Last Modified</th>
         <th>Format</th>
     </tr>
     </thead>
+    <tbody>
+        {children}
+    </tbody>
+    </table>
 )
 
 const AlbumLink = ({r}) => r.album_identifier ? <Link to={linkAlbumView(r)}>{r.album}</Link> : <span>{r.album}</span>;
 
 const TrackListRow = ({i, row}) => {
     row.recorded_date = row.recorded_date || '';
-    const modifiedDate = row.modified_date ? secondsToDate(row.modified_date.seconds).toLocaleDateString() : '';
     const Thumbnail = () => {
         if(!row.image_location){
             return null;
@@ -61,9 +63,7 @@ const TrackListRow = ({i, row}) => {
             <td>
                 <AlbumLink r={row} />
             </td>
-            <td>{row.sampling_rate}</td>
             <td>{row.recorded_date}</td>
-            <td>{modifiedDate}</td>
             <td>{row.format}</td>
         </tr>
     )
@@ -71,6 +71,6 @@ const TrackListRow = ({i, row}) => {
 
 export {
     AlbumLink,
-    TrackListHeader,
+    TrackList,
     TrackListRow,
 }

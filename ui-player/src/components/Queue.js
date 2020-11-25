@@ -1,13 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {AlbumLink} from "./TrackList";
-import {msToString, secondsToDate} from "../helpers";
+import {msToString} from "../helpers";
 import {Link} from "react-router-dom";
 import {linkGenreList, linkPerformerList} from "../routes";
 import {FaMinusSquare} from "react-icons/fa/index";
 import {handleDeleteQueue, handleLoadQueue} from "../actions/queue";
 
-const TrackListHeader = () => (
+const TrackListHeader = ({children}) => (
+    <table className='table table-bordered table-hover table-striped'>
     <thead>
     <tr>
         <th>#</th>
@@ -16,18 +17,19 @@ const TrackListHeader = () => (
         <th>Genre</th>
         <th>Duration</th>
         <th>Album</th>
-        <th>Sampling Rate</th>
         <th>Year</th>
-        <th>Last Modified</th>
         <th>Format</th>
         <th></th>
     </tr>
     </thead>
+        <tbody>
+        {children}
+        </tbody>
+    </table>
 )
 
 const TrackListRow = ({index, row, onDelete}) => {
     row.recorded_date = row.recorded_date || '';
-    const modifiedDate = row.modified_date ? secondsToDate(row.modified_date.seconds).toLocaleDateString() : '';
     return (
         <tr>
             <td>{index + 1}</td>
@@ -46,9 +48,7 @@ const TrackListRow = ({index, row, onDelete}) => {
             <td>
                 <AlbumLink r={row} />
             </td>
-            <td>{row.sampling_rate}</td>
             <td>{row.recorded_date}</td>
-            <td>{modifiedDate}</td>
             <td>{row.format}</td>
             <td>
                 <span
@@ -63,7 +63,6 @@ const TrackListRow = ({index, row, onDelete}) => {
 }
 
 
-// TODO: this list should be updated when a track is either added or removed from the queue
 class Queue extends React.Component{
     componentDidMount() {
         return this.loadData();
@@ -76,13 +75,9 @@ class Queue extends React.Component{
         return (
             <div>
                 <h2>Queue List</h2>
-
-                <table className='table table-bordered table-hover table-striped'>
-                    <TrackListHeader />
-                    <tbody>
+                <TrackListHeader>
                     {queues.map((row, index) => <TrackListRow key={row.id} row={row.media} index={index} onDelete={this.onDelete} />)}
-                    </tbody>
-                </table>
+                </TrackListHeader>
             </div>
         )
     }

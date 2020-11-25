@@ -98,14 +98,12 @@ const playListItemPost = async ({id,data}) => {
     }
 }
 const playListItemsGet = async ({id}) => {
-    {
         try {
             const response = await axios.get(`/playlists/${id}/items`)
             return response.data;
         } catch (e){
             return e;
         }
-    }
 }
 const playListItemPut = async ({id, position, data}) => {
     try {
@@ -116,14 +114,12 @@ const playListItemPut = async ({id, position, data}) => {
     }
 }
 const PlayListItemDelete = async ({id, position}) => {
-    {
         try {
             const response = await axios.delete(`/playlists/${id}/items/${position}`)
             return response.data;
         } catch (e){
             return e;
         }
-    }
 }
 
 
