@@ -17,7 +17,7 @@ const queues = (state = [], action) => {
             })
             return newState;
         case LOAD_QUEUE:
-            console.log(`action.rows: ${JSON.stringify(action)}`)
+            // console.log(`action.rows: ${JSON.stringify(action)}`)
             return action.rows;
         default:
             return state;
