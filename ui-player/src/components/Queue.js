@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {AlbumLink} from "./TrackList";
-import {msToDate, msToString} from "../helpers";
+import { msToString, secondsToDate} from "../helpers";
 import {Link} from "react-router-dom";
 import {linkGenreList, linkPerformerList} from "../routes";
 import {FaMinusSquare} from "react-icons/fa/index";
@@ -72,8 +72,8 @@ class Queue extends React.Component{
 
     render() {
         const { queues } = this.props;
-        const totalMs = queues.reduce((x,i) => x + i.media.duration, 0)
-        const toDate = msToDate(totalMs)
+        const totalSeconds = queues.reduce((x,i) => x + i.media.seconds, 0)
+        const toDate = secondsToDate(totalSeconds)
         const totalFormat = toDate.toTimeString().substring(0,8)
         return (
             <div>
