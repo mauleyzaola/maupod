@@ -18,10 +18,10 @@ build:
 			$(proto_file); \
 	)
 
+clean:
+	-rm -f $(shell find ./ -type f -name "*.go")
+
 inject-tag:
 	$(foreach go_file, $(shell find . -type f -name "*.go"), \
 		protoc-go-inject-tag -input=$(go_file); \
 	)
-
-clean:
-	-rm -f $(shell find ./ -type f -name "*.go")

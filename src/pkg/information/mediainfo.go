@@ -2,6 +2,7 @@ package information
 
 import (
 	"bytes"
+	"math"
 
 	"github.com/mauleyzaola/maupod/src/protos"
 )
@@ -110,6 +111,7 @@ func (m *MediaInfo) ToProto() *protos.Media {
 		PartTotal:             m.PartTotal,
 		StreamIdentifier:      m.StreamIdentifier,
 		WritingLibrary:        m.WritingLibrary,
+		Seconds:               int64(math.Floor(m.Duration / 1000)),
 	}
 
 	return res

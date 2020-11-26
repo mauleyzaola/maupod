@@ -73,5 +73,8 @@ message Media {
 
     string image_location = 56;
     string album_identifier = 57;
+
+    // the duration truncated to the second
+    int64 seconds = 58;
 }
 

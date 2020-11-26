@@ -1,6 +1,7 @@
 package conversion
 
 import (
+	"math"
 	"strings"
 
 	"github.com/mauleyzaola/maupod/src/protos"
@@ -180,6 +181,7 @@ func MediaFromORM(v *orm.Medium) *protos.Media {
 		ImageLocation:         v.ImageLocation,
 		AlbumIdentifier:       v.AlbumIdentifier,
 		Directory:             v.Directory,
+		Seconds:               int64(math.Floor(v.Duration / 1000)),
 	}
 }
 

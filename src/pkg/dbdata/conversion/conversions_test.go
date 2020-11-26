@@ -2,7 +2,6 @@ package conversion
 
 import (
 	"reflect"
-	"strings"
 	"testing"
 	"time"
 
@@ -15,14 +14,14 @@ import (
 
 var year2000 = time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC)
 var year2001 = year2000.AddDate(1, 0, 0)
-var sampleMedium = &orm.Medium{
+var sampleMedium = orm.Medium{
 	ID:                    "1",
 	Sha:                   "2",
 	Location:              "3",
 	FileExtension:         ".FLAC",
 	Format:                "5",
 	FileSize:              6,
-	Duration:              7,
+	Duration:              265906,
 	OverallBitRateMode:    "8",
 	OverallBitRate:        9,
 	StreamSize:            10,
@@ -70,14 +69,14 @@ var sampleMedium = &orm.Medium{
 	ImageLocation:         "51",
 	AlbumIdentifier:       "52",
 }
-var sampleMedia = &protos.Media{
+var sampleMedia = protos.Media{
 	Id:                    "1",
 	Sha:                   "2",
 	Location:              "3",
 	FileExtension:         ".FLAC",
 	Format:                "5",
 	FileSize:              6,
-	Duration:              7,
+	Duration:              265906,
 	OverallBitRateMode:    "8",
 	OverallBitRate:        9,
 	StreamSize:            10,
@@ -124,6 +123,7 @@ var sampleMedia = &protos.Media{
 	LastImageScan:         helpers.TimeToTs(&year2000),
 	ImageLocation:         "51",
 	AlbumIdentifier:       "52",
+	Seconds:               265,
 }
 
 //Object Playlist
@@ -161,67 +161,126 @@ func TestMediaToORM(t *testing.T) {
 	}{
 		{
 			name: "check all fields are present",
-			args: args{v: sampleMedia},
-			want: sampleMedium,
+			args: args{
+				v: &protos.Media{
+					Album:                 "11",
+					AlbumIdentifier:       "52",
+					AlbumPerformer:        "32",
+					AudioCount:            33,
+					BitDepth:              24,
+					BitDepthString:        "34",
+					BitRateMode:           "29",
+					BitRate:               30,
+					Channels:              "19",
+					ChannelPositions:      "20",
+					ChannelLayout:         "21",
+					Comment:               "18",
+					CommercialName:        "35",
+					CompleteName:          "36",
+					Composer:              "49",
+					CompressionMode:       "25",
+					CountOfAudioStreams:   37,
+					Duration:              265906,
+					EncodedLibraryName:    "27",
+					EncodedLibraryDate:    "38",
+					EncodedLibraryVersion: "28",
+					FileName:              "39",
+					FolderName:            "40",
+					FormatInfo:            "41",
+					FormatUrl:             "42",
+					FileExtension:         ".FLAC",
+					FileSize:              6,
+					Format:                "FLAC",
+					Genre:                 "16",
+					Id:                    "1",
+					ImageLocation:         "51",
+					InternetMediaType:     "43",
+					KindOfStream:          "44",
+					LastImageScan:         helpers.TimeToTs2(year2000),
+					LastScan:              helpers.TimeToTs2(year2000),
+					Location:              "3",
+					ModifiedDate:          helpers.TimeToTs2(year2001),
+					OverallBitRate:        9,
+					OverallBitRateMode:    "8",
+					Part:                  45,
+					PartTotal:             46,
+					Performer:             "15",
+					RecordedDate:          1789,
+					SamplingRate:          22,
+					SamplingCount:         23,
+					Seconds:               265,
+					Sha:                   "2",
+					StreamIdentifier:      47,
+					StreamSize:            10,
+					Title:                 "12",
+					Track:                 "13",
+					TrackNameTotal:        31,
+					TrackPosition:         14,
+					WritingLibrary:        "48",
+				},
+			},
+			want: &orm.Medium{
+				BitDepth:              24,
+				CompressionMode:       "25",
+				EncodedLibraryName:    "27",
+				EncodedLibraryVersion: "28",
+				BitRateMode:           "29",
+				BitRate:               30,
+				TrackNameTotal:        31,
+				AlbumPerformer:        "32",
+				AudioCount:            33,
+				BitDepthString:        "34",
+				CommercialName:        "35",
+				CompleteName:          "36",
+				CountOfAudioStreams:   37,
+				EncodedLibraryDate:    "38",
+				FileName:              "39",
+				FolderName:            "40",
+				FormatInfo:            "41",
+				FormatURL:             "42",
+				InternetMediaType:     "43",
+				KindOfStream:          "44",
+				Part:                  45,
+				PartTotal:             46,
+				StreamIdentifier:      47,
+				WritingLibrary:        "48",
+				Composer:              "49",
+				ImageLocation:         "51",
+				AlbumIdentifier:       "52",
+				Album:                 "11",
+				Channels:              "19",
+				ChannelPositions:      "20",
+				ChannelLayout:         "21",
+				Comment:               "18",
+				Duration:              265906,
+				FileExtension:         ".flac",
+				FileSize:              6,
+				Format:                "FLAC",
+				Genre:                 "16",
+				ID:                    "1",
+				LastImageScan:         null.TimeFrom(year2000),
+				LastScan:              year2000,
+				Location:              "3",
+				ModifiedDate:          year2001,
+				OverallBitRate:        9,
+				OverallBitRateMode:    "8",
+				Performer:             "15",
+				RecordedDate:          1789,
+				SamplingRate:          22,
+				SamplingCount:         23,
+				Sha:                   "2",
+				StreamSize:            10,
+				Title:                 "12",
+				Track:                 "13",
+				TrackPosition:         14,
+			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			g := MediaToORM(tt.args.v)
 			w := tt.want
-
-			assert.EqualValues(t, w.ID, g.ID)
-			assert.EqualValues(t, w.Sha, g.Sha)
-			assert.EqualValues(t, w.LastScan, g.LastScan)
-			assert.EqualValues(t, strings.ToLower(w.FileExtension), g.FileExtension)
-			assert.EqualValues(t, w.Format, g.Format)
-			assert.EqualValues(t, w.FileSize, g.FileSize)
-			assert.EqualValues(t, w.Duration, g.Duration)
-			assert.EqualValues(t, w.OverallBitRateMode, g.OverallBitRateMode)
-			assert.EqualValues(t, w.OverallBitRate, g.OverallBitRate)
-			assert.EqualValues(t, w.StreamSize, g.StreamSize)
-			assert.EqualValues(t, w.Album, g.Album)
-			assert.EqualValues(t, w.Title, g.Title)
-			assert.EqualValues(t, w.Track, g.Track)
-			assert.EqualValues(t, w.TrackPosition, g.TrackPosition)
-			assert.EqualValues(t, w.Performer, g.Performer)
-			assert.EqualValues(t, w.Genre, g.Genre)
-			assert.EqualValues(t, w.RecordedDate, g.RecordedDate)
-			assert.EqualValues(t, w.Comment, g.Comment)
-			assert.EqualValues(t, w.Channels, g.Channels)
-			assert.EqualValues(t, w.ChannelPositions, g.ChannelPositions)
-			assert.EqualValues(t, w.ChannelLayout, g.ChannelLayout)
-			assert.EqualValues(t, w.SamplingRate, g.SamplingRate)
-			assert.EqualValues(t, w.SamplingCount, g.SamplingCount)
-			assert.EqualValues(t, w.BitDepth, g.BitDepth)
-			assert.EqualValues(t, w.CompressionMode, g.CompressionMode)
-			assert.EqualValues(t, w.EncodedLibraryName, g.EncodedLibraryName)
-			assert.EqualValues(t, w.EncodedLibraryVersion, g.EncodedLibraryVersion)
-			assert.EqualValues(t, w.BitRateMode, g.BitRateMode)
-			assert.EqualValues(t, w.BitRate, g.BitRate)
-			assert.EqualValues(t, w.TrackNameTotal, g.TrackNameTotal)
-			assert.EqualValues(t, w.AlbumPerformer, g.AlbumPerformer)
-			assert.EqualValues(t, w.AudioCount, g.AudioCount)
-			assert.EqualValues(t, w.BitDepthString, g.BitDepthString)
-			assert.EqualValues(t, w.CommercialName, g.CommercialName)
-			assert.EqualValues(t, w.CompleteName, g.CompleteName)
-			assert.EqualValues(t, w.CountOfAudioStreams, g.CountOfAudioStreams)
-			assert.EqualValues(t, w.EncodedLibraryDate, g.EncodedLibraryDate)
-			assert.EqualValues(t, w.FileName, g.FileName)
-			assert.EqualValues(t, w.FolderName, g.FolderName)
-			assert.EqualValues(t, w.FormatInfo, g.FormatInfo)
-			assert.EqualValues(t, w.FormatURL, g.FormatURL)
-			assert.EqualValues(t, w.InternetMediaType, g.InternetMediaType)
-			assert.EqualValues(t, w.KindOfStream, g.KindOfStream)
-			assert.EqualValues(t, w.Part, g.Part)
-			assert.EqualValues(t, w.PartTotal, g.PartTotal)
-			assert.EqualValues(t, w.StreamIdentifier, g.StreamIdentifier)
-			assert.EqualValues(t, w.WritingLibrary, g.WritingLibrary)
-			assert.EqualValues(t, w.ModifiedDate, g.ModifiedDate)
-			assert.EqualValues(t, w.Composer, g.Composer)
-			assert.EqualValues(t, w.LastImageScan, g.LastImageScan)
-			assert.EqualValues(t, w.ImageLocation, g.ImageLocation)
-			assert.EqualValues(t, w.AlbumIdentifier, g.AlbumIdentifier)
+			assert.EqualValues(t, w, g)
 		})
 	}
 }
@@ -237,67 +296,23 @@ func TestMediaFromORM(t *testing.T) {
 	}{
 		{
 			name: "check all fields are present",
-			args: args{v: sampleMedium},
-			want: sampleMedia,
+			args: args{
+				v: &orm.Medium{
+					Duration: 265906,
+				},
+			},
+			want: &protos.Media{
+				Duration: 265906,
+				Seconds:  265,
+			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			g := MediaFromORM(tt.args.v)
 			w := tt.want
-
-			assert.EqualValues(t, w.Id, g.Id)
-			assert.EqualValues(t, w.Sha, g.Sha)
-			assert.EqualValues(t, w.LastScan, g.LastScan)
-			assert.EqualValues(t, w.FileExtension, g.FileExtension)
-			assert.EqualValues(t, w.Format, g.Format)
-			assert.EqualValues(t, w.FileSize, g.FileSize)
 			assert.EqualValues(t, w.Duration, g.Duration)
-			assert.EqualValues(t, w.OverallBitRateMode, g.OverallBitRateMode)
-			assert.EqualValues(t, w.OverallBitRate, g.OverallBitRate)
-			assert.EqualValues(t, w.StreamSize, g.StreamSize)
-			assert.EqualValues(t, w.Album, g.Album)
-			assert.EqualValues(t, w.Title, g.Title)
-			assert.EqualValues(t, w.Track, g.Track)
-			assert.EqualValues(t, w.TrackPosition, g.TrackPosition)
-			assert.EqualValues(t, w.Performer, g.Performer)
-			assert.EqualValues(t, w.Genre, g.Genre)
-			assert.EqualValues(t, w.RecordedDate, g.RecordedDate)
-			assert.EqualValues(t, w.Comment, g.Comment)
-			assert.EqualValues(t, w.Channels, g.Channels)
-			assert.EqualValues(t, w.ChannelPositions, g.ChannelPositions)
-			assert.EqualValues(t, w.ChannelLayout, g.ChannelLayout)
-			assert.EqualValues(t, w.SamplingRate, g.SamplingRate)
-			assert.EqualValues(t, w.SamplingCount, g.SamplingCount)
-			assert.EqualValues(t, w.BitDepth, g.BitDepth)
-			assert.EqualValues(t, w.CompressionMode, g.CompressionMode)
-			assert.EqualValues(t, w.EncodedLibraryName, g.EncodedLibraryName)
-			assert.EqualValues(t, w.EncodedLibraryVersion, g.EncodedLibraryVersion)
-			assert.EqualValues(t, w.BitRateMode, g.BitRateMode)
-			assert.EqualValues(t, w.BitRate, g.BitRate)
-			assert.EqualValues(t, w.TrackNameTotal, g.TrackNameTotal)
-			assert.EqualValues(t, w.AlbumPerformer, g.AlbumPerformer)
-			assert.EqualValues(t, w.AudioCount, g.AudioCount)
-			assert.EqualValues(t, w.BitDepthString, g.BitDepthString)
-			assert.EqualValues(t, w.CommercialName, g.CommercialName)
-			assert.EqualValues(t, w.CompleteName, g.CompleteName)
-			assert.EqualValues(t, w.CountOfAudioStreams, g.CountOfAudioStreams)
-			assert.EqualValues(t, w.EncodedLibraryDate, g.EncodedLibraryDate)
-			assert.EqualValues(t, w.FileName, g.FileName)
-			assert.EqualValues(t, w.FolderName, g.FolderName)
-			assert.EqualValues(t, w.FormatInfo, g.FormatInfo)
-			assert.EqualValues(t, w.FormatUrl, g.FormatUrl)
-			assert.EqualValues(t, w.InternetMediaType, g.InternetMediaType)
-			assert.EqualValues(t, w.KindOfStream, g.KindOfStream)
-			assert.EqualValues(t, w.Part, g.Part)
-			assert.EqualValues(t, w.PartTotal, g.PartTotal)
-			assert.EqualValues(t, w.StreamIdentifier, g.StreamIdentifier)
-			assert.EqualValues(t, w.WritingLibrary, g.WritingLibrary)
-			assert.EqualValues(t, w.ModifiedDate, g.ModifiedDate)
-			assert.EqualValues(t, w.Composer, g.Composer)
-			assert.EqualValues(t, w.LastImageScan.Nanos, g.LastImageScan.Nanos)
-			assert.EqualValues(t, w.ImageLocation, g.ImageLocation)
-			assert.EqualValues(t, w.AlbumIdentifier, g.AlbumIdentifier)
+			assert.EqualValues(t, w.Seconds, g.Seconds)
 		})
 	}
 }
@@ -313,8 +328,8 @@ func TestMediasFromORM(t *testing.T) {
 	}{
 		{
 			name: "check mapping matches one item",
-			args: args{a: []*orm.Medium{sampleMedium}},
-			want: []*protos.Media{sampleMedia},
+			args: args{a: []*orm.Medium{&sampleMedium}},
+			want: []*protos.Media{&sampleMedia},
 		},
 	}
 	for _, tt := range tests {
