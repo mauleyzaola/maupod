@@ -40,21 +40,20 @@ It is important you keep the other values unchanged as above, otherwise maupod w
 In one terminal go to `src/` directory in the repo
 
 ```
-make server
-```
-```
 cd $GOPATH/src/github.com/mauleyzaola/maupod/src
 make server
 ```
 
 Once that is done, run in another terminal
 ```
+cd $GOPATH/src/github.com/mauleyzaola/maupod/src
 make browser
 ```
 
 And finally, on a third terminal, run this
 
 ```
+cd $GOPATH/src/github.com/mauleyzaola/maupod/src
 ./maupod-player
 ```
 
