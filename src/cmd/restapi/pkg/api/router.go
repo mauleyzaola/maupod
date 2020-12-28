@@ -56,6 +56,8 @@ func SetupRoutes(a *ApiServer, output io.Writer) http.Handler {
 	baseRouter.HandleFunc("/queue", chainGlueCors(a.QueuePost)).Methods(http.MethodOptions, http.MethodPost)
 	baseRouter.HandleFunc("/queue/{index}", chainGlueCors(a.QueueDelete)).Methods(http.MethodOptions, http.MethodDelete)
 
+	baseRouter.HandleFunc("/volume", chainGlueCors(a.VolumeChange)).Methods(http.MethodPost)
+
 	baseRouter.HandleFunc("/system/ping", chainFn(handlerPing, cors)).Methods(http.MethodOptions, http.MethodGet)
 
 	if output != nil {

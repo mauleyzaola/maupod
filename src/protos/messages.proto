@@ -65,6 +65,9 @@ enum Message {
     MESSAGE_SOCKET_TRACK_POSITION_PERCENT_CHANGE = 501;
     MESSAGE_SOCKET_QUEUE_CHANGE = 502;
     MESSAGE_SOCKET_PLAY_TRACK = 503;
+
+    // volume control via amixer
+    MESSAGE_VOLUME_CHANGE = 550;
 }
 
 enum NamedPosition {
@@ -268,4 +271,13 @@ message TrackPositionInput {
 message TrackSkippedInput {
     Media media = 1;
     google.protobuf.Timestamp timestamp = 2;
+}
+
+message VolumeChangeInput {
+    int32 offset = 1;
+}
+
+message VolumeChangeOutput {
+    string error = 1;
+    bool ok = 2;
 }

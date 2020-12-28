@@ -5,6 +5,7 @@ import (
 	"errors"
 	"log"
 	"net/http"
+	"time"
 
 	schema "github.com/gorilla/Schema"
 	"github.com/mauleyzaola/maupod/src/pkg/dbdata"
@@ -89,4 +90,8 @@ func (a *ApiServer) JSONHandler(w http.ResponseWriter, r *http.Request, fn Trans
 	}
 
 	helpers.WriteJson(w, nil, status, result)
+}
+
+func (a *ApiServer) Timeout() time.Duration {
+	return time.Second * time.Duration(a.config.Delay)
 }
