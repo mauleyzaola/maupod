@@ -15,34 +15,48 @@ const cleanMedia = media => {
     return result;
 }
 
-
 const audioScan = data => axios.post(`/audio/scan`, data);
+
 const albumViewList = data => axios.get(`/media/albums`, {
     params: data,
 })
+
 const decodeURL = search => querystring.decode(search.replace('?',''));
+
 const directoryRead = async data => {
     const response = await axios.post(`/file-browser/directory`, data);
     return response.data.files || [];
 }
+
 const distinctListGet = ({field, filter}) => axios.get(`/media/${field}/distinct`, {
     params: filter,
 });
+
 const ipcCommand = data => {
     data.media = cleanMedia(data.media);
     return axios.post(`/ipc`, data);
 }
+
 const genreList = data => axios.get(`/genres`, { params: data});
+
 const genreArtworkList = params => axios.get(`/genres/artwork`, { params });
+
 const mediaList = (data) => axios.get(`/media`, {
     params: data,
 });
+
 const providerMetadataCovers = ({params}) => axios.get(`/providers/metadata/cover`, {params});
+
 const providerMetadataCoverPut = ({params, data}) => axios.put(`/providers/metadata/cover/${params.album_identifier}`, data);
+
 const queueAdd = ({media, index = -1, named_position}) => axios.post(`/queue`, {media: cleanMedia(media), index, named_position});
+
 const queueList = () => axios.get(`/queue`);
+
 const queueRemove = index => axios.delete(`/queue/${index}`);
+
 const objectToQueryString = data => querystring.stringify(data);
+
 const spectrumImage = (id) => axios.get(`/media/${id}/spectrum`);
 
 ///PlayList
@@ -55,6 +69,7 @@ const playListAdd = async ({data}) => {
         return e;
     }
 }
+
 const playLists = async params => {
     try {
         const response = await axios.get(`/playlists`,params);
@@ -72,6 +87,7 @@ const playListsGet = async ({id}) => {
         return e;
     }
 }
+
 const playListsPut = async ({id, data}) => {
     try {
         const response = await axios.put(`/playlists/${id}`, data)
@@ -80,6 +96,7 @@ const playListsPut = async ({id, data}) => {
         return e;
     }
 }
+
 const playListsDelete = async ({id}) => {
     try {
         const response = await axios.delete(`/playlists/${id}`)
@@ -97,6 +114,7 @@ const playListItemPost = async ({id,data}) => {
         return e;
     }
 }
+
 const playListItemsGet = async ({id}) => {
         try {
             const response = await axios.get(`/playlists/${id}/items`)
@@ -105,6 +123,7 @@ const playListItemsGet = async ({id}) => {
             return e;
         }
 }
+
 const playListItemPut = async ({id, position, data}) => {
     try {
         const response = await axios.put(`/playlists/${id}/items/${position}`, data)
@@ -113,6 +132,7 @@ const playListItemPut = async ({id, position, data}) => {
         return e;
     }
 }
+
 const PlayListItemDelete = async ({id, position}) => {
         try {
             const response = await axios.delete(`/playlists/${id}/items/${position}`)
@@ -122,6 +142,14 @@ const PlayListItemDelete = async ({id, position}) => {
         }
 }
 
+const volumeChange = async (data) => {
+        try {
+            const response = await axios.post(`/volume`, data)
+            return response.data;
+        } catch (e){
+            return e;
+        }
+}
 
 export default {
     audioScan,
@@ -149,4 +177,5 @@ export default {
     queueList,
     queueRemove,
     spectrumImage,
+    volumeChange,
 }
