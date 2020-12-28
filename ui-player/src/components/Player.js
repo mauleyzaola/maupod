@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FaForward, FaPlay, FaPause, FaAngleDoubleUp, FaAngleDoubleDown } from "react-icons/fa";
+import { FaForward, FaPlay, FaPause, FaAngleDoubleUp, FaAngleDoubleDown, FaVolumeDown, FaVolumeUp } from "react-icons/fa";
 import {IPC_PAUSE, IPC_PLAY, IPC_SKIP, POSITION_BOTTOM, POSITION_TOP} from "../consts";
 import API from "../api";
 
@@ -9,6 +9,8 @@ const TrackPlayControls = ({media}) => (
         <PlayerPlay media={media} />
         <PlayerPause media={media} />
         <PlayerSkip media={media} />
+        <PlayerVolumeDown />
+        <PlayerVolumeUp />
     </div>
 )
 
@@ -115,6 +117,42 @@ class PlayerSkip extends React.Component{
     }
 }
 
+class PlayerVolumeDown extends React.Component{
+    onClick = () => {
+        API.volumeChange(({ offset: -5 }))
+            .then(() => {})
+    }
+
+    render() {
+        return (
+            <button type="button"
+                    title="volume down"
+                    className="btn btn-secondary btn-sm"
+                    onClick={() => this.onClick()}>
+                <FaVolumeDown />
+            </button>
+        )
+    }
+}
+
+class PlayerVolumeUp extends React.Component{
+    onClick = () => {
+        API.volumeChange(({ offset: 5 }))
+            .then(() => {})
+    }
+
+    render() {
+        return (
+            <button type="button"
+                    title="volume up"
+                    className="btn btn-secondary btn-sm"
+                    onClick={() => this.onClick()}>
+                <FaVolumeUp />
+            </button>
+        )
+    }
+}
+
 PlayerPlay.propTypes = {
     media: PropTypes.object.isRequired,
 }
@@ -140,6 +178,8 @@ export {
     PlayerPlayNext,
     PlayerPause,
     PlayerSkip,
+    PlayerVolumeDown,
+    PlayerVolumeUp,
     TrackListControls,
     TrackPlayControls,
 }

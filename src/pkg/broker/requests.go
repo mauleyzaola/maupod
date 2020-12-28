@@ -114,3 +114,14 @@ func RequestFileBrowserDirectory(nc *nats.Conn, input *protos.DirectoryReadInput
 	}
 	return &output, nil
 }
+
+func RequestVolumeChange(nc *nats.Conn, input *protos.VolumeChangeInput, timeout time.Duration) (*protos.VolumeChangeOutput, error) {
+	var output protos.VolumeChangeOutput
+	if err := DoRequest(nc, protos.Message_MESSAGE_VOLUME_CHANGE, input, &output, timeout); err != nil {
+		return nil, err
+	}
+	if output.Error != "" {
+		return nil, errors.New(output.Error)
+	}
+	return &output, nil
+}

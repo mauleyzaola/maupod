@@ -51,6 +51,10 @@ func (m *MsgHandler) Register() error {
 			Subject: strconv.Itoa(int(protos.Message_MESSAGE_MICRO_SERVICE_PLAYER)),
 			Handler: m.handlerMicroService,
 		},
+		handler.Subscription{
+			Subject: strconv.Itoa(int(protos.Message_MESSAGE_VOLUME_CHANGE)),
+			Handler: m.handlerVolumeChange,
+		},
 	)
 }
 
